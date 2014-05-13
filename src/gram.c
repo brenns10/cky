@@ -51,6 +51,8 @@
  */
 void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
 {
+  int i;
+
   // Assign values
   pNewRule->lhs = lhs;
   pNewRule->rhs_len = rhs_len;
@@ -61,11 +63,11 @@ void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
     RAISE(ALLOCATION_ERROR);
     free(pNewRule);
     SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
-    return NULL;
+    return;
   }
 
   // Set all items in the right hand side to none.
-  for (int i = 0; i < rhs_len; i++) {
+  for (i = 0; i < rhs_len; i++) {
     pNewRule->rhs[i] = CFG_SYMBOL_NONE;
   }
 }
@@ -218,9 +220,9 @@ cfg *cfg_create(int type)
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg));
 
-  cnf_rule_init(pGram, type);
+  cfg_init(pGram, type);
   
-  return pNewRule;
+  return pGram;
 }
 
 /**
@@ -232,21 +234,22 @@ cfg *cfg_create(int type)
  */
 void cfg_destroy(cfg *pGram, bool free_symbols)
 {
-  DATA *d;
+  int i;
+  DATA d;
 
   if (free_symbols) {
-    for (int i = 0; i < al_length(&pGram->symbols); i++) {
+    for (i = 0; i < al_length(&pGram->symbols); i++) {
       d = al_get(&pGram->symbols, i);
-      free(d->data_ptr);
+      free(d.data_ptr);
     }
   }
 
-  for (int i = 0; i < al_length(&pGram->rules); i++) {
+  for (i = 0; i < al_length(&pGram->rules); i++) {
     d = al_get(&pGram->rules, i);
     if (pGram->type == CFG_TYPE_REG)
-      cfg_rule_delete((cfg_rule *)d->data_ptr);
+      cfg_rule_delete((cfg_rule *)d.data_ptr);
     else
-      cnf_rule_delete((cnf_rule *)d->data_ptr);
+      cnf_rule_delete((cnf_rule *)d.data_ptr);
   }
 
   al_destroy(&pGram->symbols);
