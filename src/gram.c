@@ -194,21 +194,17 @@ void cnf_rule_delete(cnf_rule *pRule)
    @brief Initialize a CFG.
 
    @param pGram The grammar to initialize
-   @param type The type of grammar (CNF or regular)
  */
-void cfg_init(cfg *pGram, int type)
+void cfg_init(cfg *pGram)
 {
-  pGram->type = type;
   al_init(&pGram->symbols);
   al_init(&pGram->rules);
 }
 
 /**
    @brief Allocate and initialize a CFG.
-
-   @param type The type of grammar (CNF or regular)
  */
-cfg *cfg_create(int type)
+cfg *cfg_create(void)
 {
   // Allocate the new grammar
   cfg *pGram = (cfg *) malloc(sizeof(cfg));
@@ -220,7 +216,7 @@ cfg *cfg_create(int type)
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg));
 
-  cfg_init(pGram, type);
+  cfg_init(pGram);
   
   return pGram;
 }
@@ -246,10 +242,7 @@ void cfg_destroy(cfg *pGram, bool free_symbols)
 
   for (i = 0; i < al_length(&pGram->rules); i++) {
     d = al_get(&pGram->rules, i);
-    if (pGram->type == CFG_TYPE_REG)
-      cfg_rule_delete((cfg_rule *)d.data_ptr);
-    else
-      cnf_rule_delete((cnf_rule *)d.data_ptr);
+    cfg_rule_delete((cfg_rule *)d.data_ptr);
   }
 
   al_destroy(&pGram->symbols);
@@ -267,5 +260,80 @@ void cfg_delete(cfg *pGram, bool free_symbols)
 {
   cfg_destroy(pGram, free_symbols);
   SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg));
+  free(pGram);
+}
+
+/**
+   @brief Initialize a CNF grammar.
+
+   @param pGram The grammar to initialize
+ */
+void cnf_init(cnf *pGram)
+{
+  al_init(&pGram->symbols);
+  al_init(&pGram->rules_one);
+  al_init(&pGram->rules_two);
+}
+
+/**
+   @brief Allocate and initialize a CNF grammar.
+ */
+cnf *cnf_create(void)
+{
+  // Allocate the new grammar
+  cnf *pGram = (cnf *) malloc(sizeof(cnf));
+
+  // Check for allocation error
+  if (!pGram) {
+    RAISE(ALLOCATION_ERROR);
+    return NULL;
+  }
+  SMB_INCREMENT_MALLOC_COUNTER(sizeof(cnf));
+
+  cnf_init(pGram);
+  
+  return pGram;
+}
+
+/**
+   @brief Clean up the fields of a CNF grammar.  Do not free.
+
+   @param pGram The grammar to clean up
+   @param free_symbols Do we free the symbols?  If so, the allocation counter is
+   not decremented.
+ */
+void cnf_destroy(cnf *pGram, bool free_symbols)
+{
+  int i;
+  DATA d;
+
+  if (free_symbols) {
+    for (i = 0; i < al_length(&pGram->symbols); i++) {
+      d = al_get(&pGram->symbols, i);
+      free(d.data_ptr);
+    }
+  }
+
+  for (i = 0; i < al_length(&pGram->rules_one); i++) {
+    d = al_get(&pGram->rules_one, i);
+    cnf_rule_delete((cnf_rule *)d.data_ptr);
+  }
+
+  al_destroy(&pGram->symbols);
+  al_destroy(&pGram->rules_one);
+  al_destroy(&pGram->rules_two);
+}
+
+/**
+   @brief Clean up and free a CNF grammar.
+
+   @param pGram The grammar to free
+   @param free_symbols Do we free the symbols? If so, the allocation counter is
+   not decremented.
+ */
+void cnf_delete(cnf *pGram, bool free_symbols)
+{
+  cnf_destroy(pGram, free_symbols);
+  SMB_DECREMENT_MALLOC_COUNTER(sizeof(cnf));
   free(pGram);
 }

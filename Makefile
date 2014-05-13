@@ -45,7 +45,7 @@ LFLAGS=$(FLAGS)
 all: bin/main
 
 clean:
-	rm -rf bin/* obj/* src/libstephen.h && make -C libstephen clean
+	rm -rf bin/* obj/* src/libstephen.h src/*.gch && make -C libstephen clean
 
 # Get libstephen.h from the latest version
 src/libstephen.h: libstephen/src/libstephen.h

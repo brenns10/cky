@@ -42,8 +42,6 @@
 #include "libstephen.h"
 
 #define CFG_SYMBOL_NONE -1
-#define CFG_TYPE_REG 0
-#define CFG_TYPE_CNF 1
 
 typedef struct {
 
@@ -63,11 +61,18 @@ typedef struct {
 
 typedef struct {
 
-  int type;
   smb_al symbols;
   smb_al rules;
 
 } cfg;
+
+typedef struct {
+
+  smb_al symbols;
+  smb_al rules_one;
+  smb_al rules_two;
+
+} cnf;
 
 void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len);
 cfg_rule *cfg_rule_create(int lhs, int rhs_len);
@@ -79,9 +84,14 @@ cnf_rule *cnf_rule_create(int lhs, int rhs_one, int rhs_two);
 void cnf_rule_destroy(cnf_rule *pRule);
 void cnf_rule_delete(cnf_rule *pRule);
 
-void cfg_init(cfg *pGram, int type);
-cfg *cfg_create(int type);
+void cfg_init(cfg *pGram);
+cfg *cfg_create(void);
 void cfg_destroy(cfg *pGram, bool free_symbols);
 void cfg_delete(cfg *pGram, bool free_symbols);
+
+void cnf_init(cnf *pGram);
+cnf *cnf_create(void);
+void cnf_destroy(cnf *pGram, bool free_symbols);
+void cnf_delete(cnf *pGram, bool free_symbols);
 
 #endif
