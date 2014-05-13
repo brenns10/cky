@@ -68,4 +68,19 @@ typedef struct {
 
 } cfg;
 
+void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len);
+cfg_rule *cfg_rule_create(int lhs, int rhs_len);
+void cfg_rule_destroy(cfg_rule *pRule);
+void cfg_rule_delete(cfg_rule *pRule);
+
+void cnf_rule_init(cnf_rule *pNewRule, int lhs, int rhs_one, int rhs_two);
+cnf_rule *cnf_rule_create(int lhs, int rhs_one, int rhs_two);
+void cnf_rule_destroy(cnf_rule *pRule);
+void cnf_rule_delete(cnf_rule *pRule);
+
+void cfg_init(cfg *pGram, int type);
+cfg *cfg_create(int type);
+void cfg_destroy(cfg *pGram, bool free_symbols);
+void cfg_delete(cfg *pGram, bool free_symbols);
+
 #endif
