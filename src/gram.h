@@ -38,6 +38,7 @@
 #ifndef SMB_GRAM_H
 #define SMB_GRAM_H
 
+#include <stdbool.h>
 #include "libstephen.h"
 
 #define CFG_SYMBOL_NONE -1
