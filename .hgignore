@@ -3,5 +3,7 @@ obj/*
 bin/*
 doc/*
 *~
+src/libstephen.h
+src/*.gch
 syntax: regexp
 (.*/)?\#[^/]*\#$

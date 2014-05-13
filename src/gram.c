@@ -6,7 +6,7 @@
 
   Date Created: Monday, 12 May 2014
 
-  Description:  Context-free grammar data structure.
+  Description:  Context-free grammar data structures.
 
   Copyright (c) 2014, Stephen Brennan
   All rights reserved.
@@ -35,50 +35,237 @@
 
 *******************************************************************************/
 
-#include "libstephen.h"
-#include "gram.h"
+#include "gram.h" // also includes libstephen.h
+#include <stdbool.h>
 
 /**
-   @brief Create a new CFG symbol (for either CNF or CFG).
+   @brief Initialize a new CFG rule.
 
-   @param type The type of the symbol (terminal or nonterminal).
-   @param name The name of the symbol.
-   @param next Pointer to next symbol in the list.
+   Creates a CFG rule, and allocates the space for the right hand side.
+   However, does not allow the caller to specify the actual right hand side
+   values.  This must be done post-call.
+
+   @param pNewRule The memory to initialize
+   @param lhs The index of the lhs symbol
+   @param rhs_len The number of symbols in the rhs
  */
-cfg_sym *cfg_sym_new(int type, char *name, cfg_sym *next)
+void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
 {
-  cfg_sym *pNew = (cfg_sym *) malloc(sizeof(cfg_sym));
+  int i;
 
-  if (!pNew) {
+  // Assign values
+  pNewRule->lhs = lhs;
+  pNewRule->rhs_len = rhs_len;
+  pNewRule->rhs = (int *) malloc(rhs_len * sizeof(int));
+
+  // Check for another allocation error
+  if (!pNewRule->rhs) {
+    RAISE(ALLOCATION_ERROR);
+    free(pNewRule);
+    SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
+    return;
+  }
+
+  // Set all items in the right hand side to none.
+  for (i = 0; i < rhs_len; i++) {
+    pNewRule->rhs[i] = CFG_SYMBOL_NONE;
+  }
+}
+
+/**
+   @brief Allocate and initialize a new CFG rule.
+
+   Creates a CFG rule, and allocates the space for the right hand side.
+   However, does not allow the caller to specify the actual right hand side
+   values.  This must be done post-call.
+
+   @param lhs The index of the lhs symbol
+   @param rhs_len The number of symbols in the rhs
+ */
+cfg_rule *cfg_rule_create(int lhs, int rhs_len)
+{
+  // Allocate the new rule
+  cfg_rule *pNewRule = (cfg_rule *) malloc(sizeof(cfg_rule));
+
+  // Check for allocation error
+  if (!pNewRule) {
     RAISE(ALLOCATION_ERROR);
     return NULL;
   }
-  SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg_sym));
+  SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
 
-  pNew->type = type;
-  pNew->name = name;
-  pNew->next = next;
+  cfg_rule_init(pNewRule, lhs, rhs_len);
 
-  return pNew;
+  return pNewRule;
 }
 
-cfg_rhs *cfg_rhs_new(cfg_sym *sym, cfg_rhs *next)
-{
-  cfg_rhs *pNew = (cfg_rhs *) malloc(sizeof(cfg_rhs));
+/**
+   @brief Clean up the fields of the CFG rule, but don't free.
 
-  if (!pNew) {
+   @param pRule The rule to clean up
+ */
+void cfg_rule_destroy(cfg_rule *pRule)
+{
+  SMB_DECREMENT_MALLOC_COUNTER(pRule->rhs_len * sizeof(int));
+  free(pRule->rhs);
+}
+
+/**
+   @brief Cleanup and free the CFG rule.
+
+   @param pRule The rule to delete.
+ */
+void cfg_rule_delete(cfg_rule *pRule)
+{
+  cfg_rule_destroy(pRule);
+  SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
+  free(pRule);
+}
+
+/**
+
+/**
+   @brief Initialize a CNF rule.
+
+   Initializes the fields of a CNF rule.  You could just fill them yourself, but
+   this conforms to the patterns set in libstephen.
+
+   @param pNewRule The pre-allocated rule memory
+   @param lhs The left hand side of the rule
+   @param rhs_one The first item in the rhs
+   @param rhs_two The second item in the rhs
+ */
+void cnf_rule_init(cnf_rule *pNewRule, int lhs, int rhs_one, int rhs_two)
+{
+  pNewRule->lhs = lhs;
+  pNewRule->rhs_one = rhs_one;
+  pNewRule->rhs_two = rhs_two;
+}
+
+/**
+   @brief Allocate and initialize a CNF rule.
+
+   Allocates a CNF rule and initializes the space.
+
+   @param lhs The left hand side of the rule
+   @param rhs_one The first item in the rhs
+   @param rhs_two The second item in the rhs
+ */
+cnf_rule *cnf_rule_create(int lhs, int rhs_one, int rhs_two)
+{
+  // Allocate the new rule
+  cnf_rule *pNewRule = (cnf_rule *) malloc(sizeof(cnf_rule));
+
+  // Check for allocation error
+  if (!pNewRule) {
     RAISE(ALLOCATION_ERROR);
     return NULL;
   }
-  SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg_rhs));
+  SMB_INCREMENT_MALLOC_COUNTER(sizeof(cnf_rule));
 
-  pNew->sym = sym;
-  pNew->next = next;
-
-  return pNew;
+  cnf_rule_init(pNewRule, lhs, rhs_one, rhs_two);
+  
+  return pNewRule;
 }
 
-cfg_rule *cfg_rule_new(cfg_sym *lhs, cfg_rhs *rhs)
+/**
+   @brief Clean up the fields of a CNF rule.  Nothing is actually done here.
+
+   @param pRule The rule to clean up
+ */
+void cnf_rule_destroy(cnf_rule *pRule)
 {
-  cfg_rule *pNew = (cfg_rule *) malloc(sizeof(cfg_rule));
+  // Do nothing...
+}
+
+/**
+   @brief Free a CNF rule.
+
+   @param pRule The rule to delete
+ */
+void cnf_rule_delete(cnf_rule *pRule)
+{
+  cnf_rule_destroy(pRule);
+  SMB_DECREMENT_MALLOC_COUNTER(sizeof(cnf_rule));
+  free(pRule);
+}
+
+/**
+   @brief Initialize a CFG.
+
+   @param pGram The grammar to initialize
+   @param type The type of grammar (CNF or regular)
+ */
+void cfg_init(cfg *pGram, int type)
+{
+  pGram->type = type;
+  al_init(&pGram->symbols);
+  al_init(&pGram->rules);
+}
+
+/**
+   @brief Allocate and initialize a CFG.
+
+   @param type The type of grammar (CNF or regular)
+ */
+cfg *cfg_create(int type)
+{
+  // Allocate the new grammar
+  cfg *pGram = (cfg *) malloc(sizeof(cfg));
+
+  // Check for allocation error
+  if (!pGram) {
+    RAISE(ALLOCATION_ERROR);
+    return NULL;
+  }
+  SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg));
+
+  cfg_init(pGram, type);
+  
+  return pGram;
+}
+
+/**
+   @brief Clean up the fields of a CFG.  Do not free.
+
+   @param pGram The grammar to clean up
+   @param free_symbols Do we free the symbols?  If so, the allocation counter is
+   not decremented.
+ */
+void cfg_destroy(cfg *pGram, bool free_symbols)
+{
+  int i;
+  DATA d;
+
+  if (free_symbols) {
+    for (i = 0; i < al_length(&pGram->symbols); i++) {
+      d = al_get(&pGram->symbols, i);
+      free(d.data_ptr);
+    }
+  }
+
+  for (i = 0; i < al_length(&pGram->rules); i++) {
+    d = al_get(&pGram->rules, i);
+    if (pGram->type == CFG_TYPE_REG)
+      cfg_rule_delete((cfg_rule *)d.data_ptr);
+    else
+      cnf_rule_delete((cnf_rule *)d.data_ptr);
+  }
+
+  al_destroy(&pGram->symbols);
+  al_destroy(&pGram->rules);
+}
+
+/**
+   @brief Clean up and free a CFG.
+
+   @param pGram The grammar to free
+   @param free_symbols Do we free the symbols? If so, the allocation counter is
+   not decremented.
+ */
+void cfg_delete(cfg *pGram, bool free_symbols)
+{
+  cfg_destroy(pGram, free_symbols);
+  SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg));
+  free(pGram);
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
 
-  File:         gram.h
+  File:         main.c
 
   Author:       Stephen Brennan
 
-  Date Created: Monday, 12 May 2014
+  Date Created: Tuesday, 13 May 2014
 
-  Description:  Context-free grammar data structures.
+  Description:  CKY parser project main program.
 
   Copyright (c) 2014, Stephen Brennan
   All rights reserved.
@@ -35,37 +35,13 @@
 
 *******************************************************************************/
 
-#ifndef SMB_GRAM_H
-#define SMB_GRAM_H
+#include <stdio.h>
 
 #include "libstephen.h"
+#include "gram.h"
 
-#define CFG_SYMBOL_NONE -1
-#define CFG_TYPE_REG 0
-#define CFG_TYPE_CNF 1
-
-typedef struct {
-
-  int lhs;
-  int *rhs;
-  int rhs_len;
-
-} cfg_rule;
-
-typedef struct {
-
-  int lhs;
-  int rhs_one;
-  int rhs_two;
-
-} cnf_rule;
-
-typedef struct {
-
-  int type;
-  smb_al symbols;
-  smb_al rules;
-
-} cfg;
-
-#endif
+int main(int argc, char **argv)
+{
+  printf("Hello, world!\n");
+  return 0;
+}
