@@ -42,6 +42,29 @@
 
 int main(int argc, char **argv)
 {
-  printf("Hello, world!\n");
+  char *start = "start";
+  char *plus = "+";
+  char *minus = "-";
+
+  cfg *gram = cfg_create();
+  int nStart = cfg_add_symbol(gram, start);
+  int nPlus = cfg_add_symbol(gram, plus);
+  int nMinus = cfg_add_symbol(gram, minus);
+
+  cfg_rule *rule_plus = cfg_rule_create(nStart, 3);
+  cfg_rule *rule_minus = cfg_rule_create(nStart, 3);
+
+  rule_plus->rhs[0] = nStart;
+  rule_plus->rhs[1] = nPlus;
+  rule_plus->rhs[2] = nStart;
+  rule_minus->rhs[0] = nStart;
+  rule_minus->rhs[1] = nMinus;
+  rule_minus->rhs[2] = nStart;
+
+  cfg_add_rule(gram, rule_plus);
+  cfg_add_rule(gram, rule_minus);
+
+  cfg_print(gram);
+
   return 0;
 }
