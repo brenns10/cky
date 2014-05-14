@@ -95,4 +95,8 @@ cnf *cnf_create(void);
 void cnf_destroy(cnf *pGram, bool free_symbols);
 void cnf_delete(cnf *pGram, bool free_symbols);
 
+int cfg_add_symbol(cfg *pGram, char *symbol);
+void cfg_add_rule(cfg *pGram, cfg_rule *newRule);
+void cfg_print(cfg *pGram);
+
 #endif
