@@ -63,6 +63,7 @@ typedef struct {
 
   smb_al symbols;
   smb_al rules;
+  int start;
 
 } cfg;
 

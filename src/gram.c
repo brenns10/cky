@@ -37,6 +37,7 @@
 
 #include "gram.h" // also includes libstephen.h
 #include <stdbool.h>
+#include <stdio.h>
 
 /**
    @brief Initialize a new CFG rule.
@@ -199,6 +200,7 @@ void cfg_init(cfg *pGram)
 {
   al_init(&pGram->symbols);
   al_init(&pGram->rules);
+  pGram->start = -1;
 }
 
 /**
@@ -261,6 +263,62 @@ void cfg_delete(cfg *pGram, bool free_symbols)
   cfg_destroy(pGram, free_symbols);
   SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg));
   free(pGram);
+}
+
+/**
+   @brief Add a string symbol to the grammar.
+
+   @param pGram The grammar to add to
+   @param symbol The symbol to add
+ */
+int cfg_add_symbol(cfg *pGram, char *symbol)
+{
+  DATA d;
+  int idx;
+  d.data_ptr = symbol;
+  idx = al_index_of(&pGram->symbols, d);
+  if (idx != -1) {
+    return idx;
+  } else {
+    al_append(&pGram->symbols, d);
+    return al_length(&pGram->symbols) - 1;
+  }
+}
+
+/**
+   @brief Add a rule to the grammar.
+
+   @param pGram The grammar to add to
+   @param newRule The rule to add
+ */
+void cfg_add_rule(cfg *pGram, cfg_rule *newRule)
+{
+  DATA d;
+  d.data_ptr = newRule;
+  al_append(&pGram->rules, d);
+}
+
+/**
+   @brief Print the grammar to stdout.
+
+   @param pGram The grammar to print to stdout.
+ */
+void cfg_print(cfg *pGram)
+{
+  int i, j;
+  DATA d, e;
+  cfg_rule *rule;
+  for (i = 0; i < al_length(&pGram->rules); i++) {
+    d = al_get(&pGram->rules, i);
+    rule = d.data_ptr;
+    e = al_get(&pGram->symbols, rule->lhs);
+    printf("%s --> ", (char *) e.data_ptr);
+    for (j = 0; j < rule->rhs_len; j++) {
+      e = al_get(&pGram->symbols, rule->rhs[j]);
+      printf("%s ", (char *)e.data_ptr);
+    }
+    printf("\n");
+  }
 }
 
 /**
