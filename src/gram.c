@@ -54,6 +54,8 @@ void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
 {
   int i;
 
+  CLEAR_ALL_ERRORS;
+
   // Assign values
   pNewRule->lhs = lhs;
   pNewRule->rhs_len = rhs_len;
@@ -62,8 +64,6 @@ void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
   // Check for another allocation error
   if (!pNewRule->rhs) {
     RAISE(ALLOCATION_ERROR);
-    free(pNewRule);
-    SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
     return;
   }
 
@@ -88,6 +88,8 @@ cfg_rule *cfg_rule_create(int lhs, int rhs_len)
   // Allocate the new rule
   cfg_rule *pNewRule = (cfg_rule *) malloc(sizeof(cfg_rule));
 
+  CLEAR_ALL_ERRORS;
+
   // Check for allocation error
   if (!pNewRule) {
     RAISE(ALLOCATION_ERROR);
@@ -96,6 +98,12 @@ cfg_rule *cfg_rule_create(int lhs, int rhs_len)
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
 
   cfg_rule_init(pNewRule, lhs, rhs_len);
+
+  if (CHECK(ALLOCATION_ERROR)) {
+    free(pNewRule);
+    SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
+    return NULL;
+  }
 
   return pNewRule;
 }
@@ -156,6 +164,8 @@ cnf_rule *cnf_rule_create(int lhs, int rhs_one, int rhs_two)
 {
   // Allocate the new rule
   cnf_rule *pNewRule = (cnf_rule *) malloc(sizeof(cnf_rule));
+
+  CLEAR_ALL_ERRORS;
 
   // Check for allocation error
   if (!pNewRule) {
