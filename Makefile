@@ -63,14 +63,19 @@ libstephen_build:
 src/gram.c: src/gram.h src/libstephen.h
 src/gram.h: src/libstephen.h
 src/main.c: src/gram.h
+src/fsm.h: src/libstephen.h
+src/fsm.c: src/fsm.h src/libstephen.h
 
 # --- Objects
 obj/gram.o: src/gram.c
 	$(CC) $(CFLAGS) src/gram.c -o obj/gram.o
 
-obj/main.o: src/main.c src/gram.h src/libstephen.h
+obj/main.o: src/main.c
 	$(CC) $(CFLAGS) src/main.c -o obj/main.o
 
+obj/fsm.o: src/fsm.c
+	$(CC) $(CFLAGS) src/fsm.c -o obj/fsm.o
+
 # --- Binaries
-bin/main: obj/gram.o obj/main.o obj/libstephen.a
-	$(CC) $(LFLAGS) obj/gram.o obj/main.o obj/libstephen.a -o bin/main
+bin/main: obj/gram.o obj/main.o obj/fsm.o obj/libstephen.a
+	$(CC) $(LFLAGS) obj/gram.o obj/main.o obj/fsm.o obj/libstephen.a -o bin/main
