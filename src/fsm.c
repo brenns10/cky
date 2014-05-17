@@ -215,7 +215,6 @@ bool fsm_trans_check(const fsm_trans *ft, wchar_t c)
 void fsm_init(fsm *f)
 {
   CLEAR_ALL_ERRORS;
-  f->nStates = 0;
   f->start = -1;
   al_init(&f->transitions);
   if (CHECK(ALLOCATION_ERROR))
@@ -257,12 +256,19 @@ fsm *fsm_create(void)
  */
 void fsm_destroy(fsm *f, bool free_transitions)
 {
-  int i;
-  if (free_transitions) {
-    for (i = 0; i < al_length(&f->transitions); i++) {
-      fsm_trans_delete((fsm_trans *) al_get(&f->transitions, i).data_ptr);
+  int i, j;
+  smb_al *list;
+
+  for (i = 0; i < al_length(&f->transitions); i++) {
+    list = (smb_al *) al_get(&f->transitions, i).data_ptr;
+    if (free_transitions) {
+      for (j = 0; j < al_length(list); j++) {
+        fsm_trans_delete((fsm_trans *) al_get(list, j).data_ptr);
+      }
     }
+    al_delete(list);
   }
+
   al_destroy(&f->transitions);
   al_destroy(&f->accepting);
 }
@@ -278,4 +284,90 @@ void fsm_delete(fsm *f, bool free_transitions)
   fsm_destroy(f, free_transitions);
   free(f);
   SMB_DECREMENT_MALLOC_COUNTER(sizeof(fsm));
+}
+
+/**
+   @brief Add a state to the FSM
+   @param f The FSM to add to
+   @return The index of the state
+ */
+int fsm_add_state(fsm *f, bool accepting)
+{
+  DATA d;
+  int index;
+  d.data_ptr = (void *) al_create();
+  al_append(&f->transitions, d);
+  index = al_length(&f->transitions) - 1;
+  if (accepting) {
+    d.data_llint = index;
+    al_append(&f->accepting, d);
+  }
+  return index;
+}
+
+/**
+   @brief Add a transition to the FSM.
+
+   @param f The FSM to add the transition to
+   @param state The state the transition is from
+   @param ft The transition to add
+ */
+void fsm_add_trans(fsm *f, int state, const fsm_trans *ft)
+{
+  smb_al *list = (smb_al *) al_get(&f->transitions, state).data_ptr;
+  DATA d;
+  d.data_ptr = (void *) ft;
+  al_append(list, d);
+}
+
+/**
+   @brief Run the finite state machine as a deterministic one.
+
+   Simulates a DFSM.  Any possible input at any given state should have exactly
+   one transition.  Zero transitions are allowed (and interpreted as an
+   immediate reject).
+
+   @param f The FSM to simulate
+   @param input The string of input
+ */
+bool fsm_sim_det(fsm *f, const wchar_t *input)
+{
+  DATA d;
+  int i, next, state;
+  smb_al *list;
+  fsm_trans *trans;
+  state = f->start;
+
+  // While we have not exhausted our input
+  while (*input != '\0') {
+    printf("State: %d, Input %Lc\n", state, *input);
+    // Get the list of transitions from this state
+    list = (smb_al *) al_get(&f->transitions, state).data_ptr;
+    next = -1;
+    // Look for transitions that match this character
+    for (i = 0; i < al_length(list); i++) {
+      trans = (fsm_trans *) al_get(list, i).data_ptr;
+      if (fsm_trans_check(trans, *input)) {
+        if (next == -1) {
+          next = trans->dest;
+        } else {
+          // If there are two matching transitions, error.
+          fprintf(stderr, "Error: non-deterministic FSM simulated as deterministic.\n");
+        }
+      }
+    }
+    // If there are no transitions, fail.
+    if (next == -1) {
+      printf("No available transitions, reject.\n");
+      return false;
+    }
+    state = next;
+    input++;
+  }
+
+  printf("State: %d, Input finished.\n", state);
+
+  // If the state is in the accepting states, we accept, else reject
+  d.data_llint = state;
+  return al_index_of(&f->accepting, d) != -1;
 }

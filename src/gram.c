@@ -67,6 +67,8 @@ void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
     return;
   }
 
+  SMB_INCREMENT_MALLOC_COUNTER(rhs_len * sizeof(int));
+
   // Set all items in the right hand side to none.
   for (i = 0; i < rhs_len; i++) {
     pNewRule->rhs[i] = CFG_SYMBOL_NONE;

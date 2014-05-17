@@ -36,11 +36,83 @@
 *******************************************************************************/
 
 #include <stdio.h>
+#include <wchar.h>
 
-#include "libstephen.h"
 #include "gram.h"
+#include "fsm.h"
+
+void simple_gram(void);
+void simple_fsm(void);
 
 int main(int argc, char **argv)
+{
+  printf("Initial bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+
+  simple_gram();
+
+  printf("Intermediate bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+
+  simple_fsm();
+
+  printf("Final bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+  return 0;
+}
+
+void simple_fsm(void)
+{
+  fsm *f = fsm_create();
+
+  fsm_trans *T01 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 1);
+  fsm_trans *T10 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 0);
+  fsm_trans *T13 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 3);
+  fsm_trans *T31 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 1);
+  fsm_trans *T32 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 2);
+  fsm_trans *T23 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 3);
+  fsm_trans *T20 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 0);
+  fsm_trans *T02 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 2);
+
+  wchar_t *i1 = L"abab";
+  wchar_t *i2 = L"aab";
+  wchar_t *i3 = L"aaaabbbba";
+
+  f->start = 0;
+
+  fsm_add_state(f, true);  // 0
+  fsm_add_state(f, false); // 1
+  fsm_add_state(f, false); // 2
+  fsm_add_state(f, false); // 3
+
+  fsm_add_trans(f, 0, T01);
+  fsm_add_trans(f, 1, T10);
+  fsm_add_trans(f, 1, T13);
+  fsm_add_trans(f, 3, T31);
+  fsm_add_trans(f, 3, T32);
+  fsm_add_trans(f, 2, T23);
+  fsm_add_trans(f, 2, T20);
+  fsm_add_trans(f, 0, T02);
+
+  printf("Running on i1=\"%Ls\"\n", i1);
+  if (fsm_sim_det(f, i1))
+    printf("Accept.\n");
+  else
+    printf("Reject.\n");
+
+  printf("Running on i2=\"%Ls\"\n", i2);
+  if (fsm_sim_det(f, i2))
+    printf("Accept.\n");
+  else
+    printf("Reject.\n");
+
+  printf("Running on i3=\"%Ls\"\n", i3);
+  if (fsm_sim_det(f, i3))
+    printf("Accept.\n");
+  else
+    printf("Reject.\n");
+
+  fsm_delete(f, true);
+}
+
+void simple_gram(void)
 {
   char *start = "start";
   char *plus = "+";
@@ -65,6 +137,5 @@ int main(int argc, char **argv)
   cfg_add_rule(gram, rule_minus);
 
   cfg_print(gram);
-
-  return 0;
+  cfg_delete(gram, false);
 }

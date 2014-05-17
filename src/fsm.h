@@ -58,7 +58,6 @@ typedef struct {
 
 typedef struct {
 
-  int nStates;
   int start;
   smb_al transitions; // List of lists, indexed by state D:
   smb_al accepting;
@@ -79,5 +78,9 @@ void fsm_init(fsm *f);
 fsm *fsm_create(void);
 void fsm_destroy(fsm *f, bool free_transitions);
 void fsm_delete(fsm *f, bool free_transitions);
+
+int fsm_add_state(fsm *f, bool accepting);
+void fsm_add_trans(fsm *f, int state, const fsm_trans *ft);
+bool fsm_sim_det(fsm *f, const wchar_t *input);
 
 #endif
