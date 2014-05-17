@@ -39,16 +39,20 @@
 #define SMB_FSM_H
 
 #include <stdbool.h>
+#include <wchar.h>
 #include "libstephen.h"
 
 #define FSM_TRANS_POSITIVE 0
 #define FSM_TRANS_NEGATIVE 1
 
+#define EPSILON -2
+
 typedef struct {
 
   int type;
-  char *start;
-  char *end;
+  wchar_t *start;
+  wchar_t *end;
+  int dest;
 
 } fsm_trans;
 
@@ -61,15 +65,15 @@ typedef struct {
 
 } fsm;
 
-void fsm_trans_init(fsm_trans *ft, int n, int type);
-fsm_trans *fsm_trans_create(int n, int type);
+void fsm_trans_init(fsm_trans *ft, int n, int type, int dest);
+fsm_trans *fsm_trans_create(int n, int type, int dest);
 void fsm_trans_destroy(fsm_trans *ft);
 void fsm_trans_delete(fsm_trans *ft);
 
-void fsm_trans_init_single(fsm_trans *ft, char start, char end, int type);
-fsm_trans *fsm_trans_create_single(char start, char end, int type);
+void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type, int dest);
+fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type, int dest);
 
-bool fsm_trans_check(const fsm_trans *ft, char c);
+bool fsm_trans_check(const fsm_trans *ft, wchar_t c);
 
 void fsm_init(fsm *f);
 fsm *fsm_create(void);

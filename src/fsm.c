@@ -37,7 +37,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <wchar.h>
 #include <stdbool.h>
 #include "libstephen.h" // already in fsm.h, but used here too
 #include "fsm.h"
@@ -56,12 +56,12 @@
    @param n The number of transition criteria
    @param type The type of transition (positive or negative)
  */
-void fsm_trans_init(fsm_trans *ft, int n, int type)
+void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
 {
   ft->type = type;
 
   // Allocate space for the start range, plus null terminator
-  ft->start = (char *) malloc((n + 1) * sizeof(char));
+  ft->start = (wchar_t *) malloc((n + 1) * sizeof(wchar_t));
   if (!ft->start) {
     RAISE(ALLOCATION_ERROR);
     fprintf(stderr, "libstephen: fsm_trans_init(): Memory allocation failed.\n");
@@ -69,7 +69,7 @@ void fsm_trans_init(fsm_trans *ft, int n, int type)
   }
 
   // Allocate space for the end range, plus null terminator
-  ft->end = (char *) malloc((n + 1) * sizeof(char));
+  ft->end = (wchar_t *) malloc((n + 1) * sizeof(wchar_t));
   if (!ft->end) {
     RAISE(ALLOCATION_ERROR);
     fprintf(stderr, "libstephen: fsm_trans_init(): Memory allocation failed.\n");
@@ -77,8 +77,10 @@ void fsm_trans_init(fsm_trans *ft, int n, int type)
     return;
   }
 
+  ft->dest = dest;
+
   // Count the allocated space.
-  SMB_INCREMENT_MALLOC_COUNTER(2 * (n + 1) * sizeof(char));
+  SMB_INCREMENT_MALLOC_COUNTER(2 * (n + 1) * sizeof(wchar_t));
 }
 
 /**
@@ -87,7 +89,7 @@ void fsm_trans_init(fsm_trans *ft, int n, int type)
    @param n The number of ranges
    @param type The type of transition
  */
-fsm_trans *fsm_trans_create(int n, int type)
+fsm_trans *fsm_trans_create(int n, int type, int dest)
 {
   // Allocate the space
   fsm_trans *ft = (fsm_trans *) malloc(sizeof(fsm_trans));
@@ -100,7 +102,7 @@ fsm_trans *fsm_trans_create(int n, int type)
   }
 
   // Run initialization
-  fsm_trans_init(ft, n, type);
+  fsm_trans_init(ft, n, type, dest);
 
   // If the initialization failed, free and return
   if (CHECK(ALLOCATION_ERROR)) {
@@ -121,7 +123,7 @@ fsm_trans *fsm_trans_create(int n, int type)
 void fsm_trans_destroy(fsm_trans *ft)
 {
   if (ft && ft->start && ft->end) {
-    int len = strlen(ft->start); // assume len(start) == len(end)
+    int len = wcslen(ft->start); // assume len(start) == len(end)
     free(ft->start);
     free(ft->end);
   } else {
@@ -153,9 +155,11 @@ void fsm_trans_delete(fsm_trans *ft)
    @param end The end of the range
    @param type The type of the object
  */
-void fsm_trans_init_single(fsm_trans *ft, char start, char end, int type)
+void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type, int dest)
 {
-  fsm_trans_init(ft, 1, type);
+  fsm_trans_init(ft, 1, type, dest);
+  if (end < start)
+    fprintf(stderr, "Error: initialization of invalid range in FSM.\n");
   ft->start[0] = start;
   ft->end[0] = end;
 }
@@ -167,10 +171,13 @@ void fsm_trans_init_single(fsm_trans *ft, char start, char end, int type)
    @param end The end of the range
    @param type The type of the object
  */
-fsm_trans *fsm_trans_create_single(char start, char end, int type)
+fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type, int dest)
 {
-  fsm_trans *ft = fsm_trans_create(1, type);
-  fsm_trans_init_single(ft, start, end, type);
+  fsm_trans *ft = fsm_trans_create(1, type, dest);
+  if (end < start)
+    fprintf(stderr, "Error: initialization of invalid range in FSM.\n");
+  ft->start[0] = start;
+  ft->end[0] = end;
   return ft;
 }
 
@@ -180,9 +187,9 @@ fsm_trans *fsm_trans_create_single(char start, char end, int type)
    @param ft The transition to check
    @param c The character to check
  */
-bool fsm_trans_check(const fsm_trans *ft, char c)
+bool fsm_trans_check(const fsm_trans *ft, wchar_t c)
 {
-  char *start = ft->start, *end = ft->end;
+  wchar_t *start = ft->start, *end = ft->end;
 
   while (start && end && *start != '\0' && *end != '\0') {
     if (c >= *start && c <= *end) {
@@ -245,7 +252,7 @@ fsm *fsm_create(void)
 /**
    @brief Clean up a FSM, but do not free it.
 
-   @param f The FSM to free
+   @param f The FSM to clean up
    @param free_transitions Do we free the transitions too?
  */
 void fsm_destroy(fsm *f, bool free_transitions)
@@ -263,7 +270,8 @@ void fsm_destroy(fsm *f, bool free_transitions)
 /**
    @brief Clean up and free an FSM.
 
-   @param 
+   @param f The FSM to free
+   @param free_transitions Do we free the transitions too?
  */
 void fsm_delete(fsm *f, bool free_transitions)
 {
