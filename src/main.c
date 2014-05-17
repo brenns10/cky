@@ -43,6 +43,7 @@
 
 void simple_gram(void);
 void simple_fsm(void);
+void read_fsm(void);
 
 int main(int argc, char **argv)
 {
@@ -54,7 +55,12 @@ int main(int argc, char **argv)
 
   simple_fsm();
 
+  printf("Intermediate bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+
+  read_fsm();
+
   printf("Final bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+
   return 0;
 }
 
@@ -91,6 +97,48 @@ void simple_fsm(void)
   fsm_add_trans(f, 2, T20);
   fsm_add_trans(f, 0, T02);
 
+  printf("Running on i1=\"%Ls\"\n", i1);
+  if (fsm_sim_det(f, i1))
+    printf("Accept.\n");
+  else
+    printf("Reject.\n");
+
+  printf("Running on i2=\"%Ls\"\n", i2);
+  if (fsm_sim_det(f, i2))
+    printf("Accept.\n");
+  else
+    printf("Reject.\n");
+
+  printf("Running on i3=\"%Ls\"\n", i3);
+  if (fsm_sim_det(f, i3))
+    printf("Accept.\n");
+  else
+    printf("Reject.\n");
+
+  fsm_delete(f, true);
+}
+
+void read_fsm(void) {
+  const wchar_t *input = 
+    L"start: 0\n"
+    L"accept:0\n"
+    L"0-1:+a-a\n"
+    L"1-0:+a-a\n"
+    L"1-3:+b-b\n"
+    L"3-1:+b-b\n"
+    L"3-2:+a-a\n"
+    L"2-3:+a-\\u0061\n"
+    L"2-0:+b-b\n"
+    L"0-2:+b-b";
+  const wchar_t *i1 = L"abab";
+  const wchar_t *i2 = L"aab";
+  const wchar_t *i3 = L"aaaabbbba";
+
+  fsm *f = fsm_read(input);
+  if (f == NULL) {
+    return;
+  }
+  
   printf("Running on i1=\"%Ls\"\n", i1);
   if (fsm_sim_det(f, i1))
     printf("Accept.\n");

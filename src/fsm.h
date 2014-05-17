@@ -81,6 +81,8 @@ void fsm_delete(fsm *f, bool free_transitions);
 
 int fsm_add_state(fsm *f, bool accepting);
 void fsm_add_trans(fsm *f, int state, const fsm_trans *ft);
+fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end, int type);
 bool fsm_sim_det(fsm *f, const wchar_t *input);
+fsm *fsm_read(const wchar_t *source);
 
 #endif

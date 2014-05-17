@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <wchar.h>
+#include <wctype.h>
 #include <stdbool.h>
 #include "libstephen.h" // already in fsm.h, but used here too
 #include "fsm.h"
@@ -58,6 +59,7 @@
  */
 void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
 {
+  int i;
   ft->type = type;
 
   // Allocate space for the start range, plus null terminator
@@ -76,6 +78,13 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
     free(ft->start);
     return;
   }
+
+  for (i = 0; i < n; i++) {
+    ft->start[i] = (wchar_t) EOF;
+    ft->end[i] = (wchar_t) EOF;
+  }
+  ft->start[n] = L'\0';
+  ft->end[n] = L'\0';
 
   ft->dest = dest;
 
@@ -126,6 +135,7 @@ void fsm_trans_destroy(fsm_trans *ft)
     int len = wcslen(ft->start); // assume len(start) == len(end)
     free(ft->start);
     free(ft->end);
+    SMB_DECREMENT_MALLOC_COUNTER(2 * (len+1) * sizeof(wchar_t));
   } else {
     fprintf(stderr, "libstephen: fsm_trans_destroy() called with null pointers.\n");
   }
@@ -321,6 +331,30 @@ void fsm_add_trans(fsm *f, int state, const fsm_trans *ft)
 }
 
 /**
+   @brief Add a single range transition to the FSM.
+
+   This function simplifies the allocation and addition of the more common
+   single range transitions.  It returns the fsm_trans pointer if the programmer
+   wishes to do manual memory management.  However, the return value can be
+   ignored, and false passed to fsm_delete() in order to have the transition
+   freed automatically.
+
+   @param f The FSM to add to
+   @param from The state the transition is from
+   @param to The state the transition is to
+   @param start The character at the start of the range
+   @param end The character at the end of the range
+   @param type The type of range (positive or negative)
+   @return Pointer to the fsm_trans created by the function.
+ */
+fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end, int type)
+{
+  fsm_trans *new = fsm_trans_create_single(start, end, type, to);
+  fsm_add_trans(f, from, new);
+  return new;
+}
+
+/**
    @brief Run the finite state machine as a deterministic one.
 
    Simulates a DFSM.  Any possible input at any given state should have exactly
@@ -340,7 +374,7 @@ bool fsm_sim_det(fsm *f, const wchar_t *input)
 
   // While we have not exhausted our input
   while (*input != '\0') {
-    printf("State: %d, Input %Lc\n", state, *input);
+    SMB_DP("State: %d, Input %Lc\n", state, *input);
     // Get the list of transitions from this state
     list = (smb_al *) al_get(&f->transitions, state).data_ptr;
     next = -1;
@@ -358,16 +392,333 @@ bool fsm_sim_det(fsm *f, const wchar_t *input)
     }
     // If there are no transitions, fail.
     if (next == -1) {
-      printf("No available transitions, reject.\n");
+      SMB_DP("No available transitions, reject.\n");
       return false;
     }
     state = next;
     input++;
   }
 
-  printf("State: %d, Input finished.\n", state);
+  SMB_DP("State: %d, Input finished.\n", state);
 
   // If the state is in the accepting states, we accept, else reject
   d.data_llint = state;
   return al_index_of(&f->accepting, d) != -1;
+}
+
+/**
+   @brief Get an integer value from a key-value line.
+
+   The line is in the form "key: value ", where whitespace is not allowed in the
+   key section, but is allowed for the value section.  The value must be a
+   positive decimal integer.
+
+   @param start Pointer to the string pointer.  This function advances the
+   pointer to the start of the next line.
+   @param prefix The "key:" prefix the line should match.
+   @returns The integer value
+ */
+static int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)
+{
+  int prefix_len = wcslen(prefix);
+  int value = 0;
+
+  if (wcsncmp(*start, prefix, prefix_len) != 0) {
+    return -1;
+  }
+  SMB_DP("   Good prefix (\"%Ls\").\n", prefix);
+
+  (*start) += prefix_len; // advance pointer to end of prefix
+  // Advance through any whitespace
+  while (**start != L'\n' && iswspace(**start)) {
+    (*start)++;
+  }
+
+  if (!iswdigit(**start)) {
+    fprintf(stderr, "Error: digit expected after prefix.\n");
+  }
+
+  // Note: this assumes only '0' - '9' digits.  There may be more in the entire
+  // Unicode spec...
+  while (iswdigit(**start)) {
+    SMB_DP("   Read digit: '%Lc'\n", **start);
+    value = 10 * value + **start - L'0';
+    (*start)++;
+  }
+  SMB_DP("   Value: %d\n", value);
+
+  // Advance to end of line
+  while (**start != L'\n') {
+    (*start)++;
+  }
+
+  // Leave pointer pointing at next line
+  (*start)++;
+  return value;
+}
+
+/**
+   @brief Get the value of a hexadecimal digit.
+   @param digit The digit
+   @return The value of the digit in hexadecimal.
+ */
+static int hexit_val(wchar_t digit) {
+  if (iswdigit(digit)) {
+    return digit - L'0';
+  } else if (digit == L'a' || digit == L'b' || digit == L'c' || digit == L'd'
+             || digit == L'e' || digit == L'f' || digit == L'A' || digit == L'B'
+             || digit == L'C' || digit == L'D' || digit == L'E' || digit == L'F'){
+    return 10 + towupper(digit) - L'A';
+  }
+}
+
+/**
+   @brief Get an escaped character from the string source.
+
+   This function will advance the source pointer to after the escape sequence.
+   It can get escapes abfnrtv\0xu, which includes octal, hexadecimal, and
+   unicode escapes.
+
+   @brief source The source pointer
+   @return The character that was escaped
+ */
+static wchar_t get_escape(const wchar_t **source) {
+  wchar_t value = 0;
+  wchar_t specifier = **source;
+  SMB_DP("      Escape specifier '%Lc'\n", specifier);
+  (*source)++;
+  switch (specifier) {
+  case L'a':
+    return L'\a';
+  case L'b':
+    return L'\b';
+  case L'f':
+    return L'\f';
+  case L'n':
+    return L'\n';
+  case L'r':
+    return L'\r';
+  case L't':
+    return L'\t';
+  case L'v':
+    return L'\v';
+  case L'\\':
+    return L'\\';
+  case L'0':
+    value += 64 * (**source);
+    (*source)++;
+    value += 8 * (**source);
+    (*source)++;
+    value += **source;
+    (*source)++;
+    SMB_DP("      Escaped octal: '%Lc'\n", value);
+    return value;
+  case L'x':
+    value += 16 * hexit_val(**source);
+    (*source)++;
+    value += hexit_val(**source);
+    (*source)++;
+    SMB_DP("      Escaped hex: '%Lc'\n", value);
+    return value;
+  case L'u':
+    value += 16 * 16 * 16 * hexit_val(**source);
+    (*source)++;
+    value += 16 * 16 * hexit_val(**source);
+    (*source)++;
+    value += 16 * hexit_val(**source);
+    (*source)++;
+    value += hexit_val(**source);
+    (*source)++;
+    SMB_DP("      Escaped unicode: '%Lc'\n", value);
+    return value;
+  default:
+    return specifier;
+  }
+}
+
+/**
+   @brief Reads a transition from a line.
+
+   This function reads a transition from a line.  It can only be a single range
+   transition, although this may change in the future.  The line should be of
+   the form: "X-Y:[+|-]A-B", where X and Y are state numbers, A and B are
+   characters forming a range, and the + or - determine whether the transition
+   is positive (only those in the range) or negative (everything not in that
+   range).
+
+   @param source The source pointer.  It is advanced to the beginning of the
+   next line.
+   @param [OUT] start Where to put the start state of the transition.
+   @return The transition.
+ */
+static fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
+{
+  int state = 0, s1 = 0, s2 = 0, type = -1;
+  wchar_t c1, c2;
+
+  #define SFIRSTSTATE 0
+  #define SSECONDSTATE 1
+  #define SFIRSTCHAR 2
+  #define SSECONDCHAR 3
+  #define SFINISHED 4
+
+  while (**source != L'\n' && **source != L'\0' && state != SFINISHED) {
+    SMB_DP("   => Current char: '%Lc'.  Current state: ", **source);
+    switch (state) {
+    case SFIRSTSTATE:
+      SMB_DP("SFIRSTSTATE\n");
+      if (**source == L'-') {
+        state = SSECONDSTATE;
+        SMB_DP("      Read '-', go to SSECONDSTATE\n");
+      } else if (!iswdigit(**source)) {
+        fprintf(stderr, "Error: expected digit, found %Lc.\n", **source);
+        return NULL;
+      } else {
+        s1 = s1 * 10 + **source - L'0';
+        SMB_DP("      Read '%Lc', new s1 is %d.\n", **source, s1);
+      }
+      break;
+    case SSECONDSTATE:
+      SMB_DP("SSECONDSTATE\n");
+      if (**source == L':') {
+        SMB_DP("      Read ':', go to SFIRSTCHAR.\n");
+        state = SFIRSTCHAR;
+      } else if (!iswdigit(**source)) {
+        fprintf(stderr, "Error: expected digit, found %Lc.\n", **source);
+        return NULL;
+      } else {
+        s2 = s2 * 10 + **source - L'0';
+        SMB_DP("      Read '%Lc', new s2 is %d.\n", **source, s2);
+      }
+      break;
+    case SFIRSTCHAR:
+      SMB_DP("SFIRSTCHAR\n");
+      if (**source == L'-') {
+        type = FSM_TRANS_NEGATIVE;
+        SMB_DP("      Negative transition\n");
+      } else if (**source == L'+') {
+        type = FSM_TRANS_POSITIVE;
+        SMB_DP("      Positive transition\n");
+      } else {
+        fprintf(stderr, "Error: bad transition type specifier: '%Lc'.\n", **source);
+        return NULL;
+      }
+      (*source)++;
+      SMB_DP("      Next char '%Lc'\n", **source);
+      if (**source == L'\\') {
+        (*source)++;
+        c1 = get_escape(source); //advances after the escape
+        SMB_DP("      Got c1 from escape.\n");
+      } else {
+        c1 = **source;
+        SMB_DP("      Got c1: '%Lc'\n", c1);
+        (*source)++; // advance to hyphen, then again to next char
+      }
+      SMB_DP("      Next char '%Lc'\n", **source);
+      if (**source != L'-') {
+        fprintf(stderr, "Error: bad char separator: '%Lc'.\n", **source);
+        return NULL;
+      }
+      state = SSECONDCHAR;
+      break;
+    case SSECONDCHAR:
+      SMB_DP("SSECONDCHAR\n");
+      if (**source == L'\\') {
+        (*source)++;
+        c2 = get_escape(source);
+        (*source)--;
+        SMB_DP("      Got c2 from escape.\n");
+      } else {
+        c2 = **source;
+        SMB_DP("      Got c2: '%Lc'\n", c2);
+      }
+      state = SFINISHED;
+      break;
+    }
+    (*source)++;
+  }
+  SMB_DP("   TRANSITION LOOP COMPLETE\n");
+  if (state != SFINISHED) {
+    fprintf(stderr, "Error: premature line end.\n");
+    return NULL;
+  }
+  if (**source == '\n') {
+    (*source)++;
+  }
+  fsm_trans *t = fsm_trans_create_single(c1, c2, type, s2);
+  *start = s1;
+  return t;
+}
+
+/**
+   @brief Read a FSM from a string!  The format is as follows:
+
+   @code
+   START LINE (start: n)
+   ACCEPTING LINES ... (>=1) (accept: n)
+   TRANSITION LINES (X-Y:[+|-]A-B)
+   @endcode
+   @see fsm_read_get_int() for info on START LINE and ACCEPTING LINES
+   @see fsm_read_trans() for info on the TRANSITION LINES
+
+   Note that this function produces heavy output on stdout if compiled with
+   SMD_ENABLE_DIAGNOSTIC_PRINTING.
+
+   @param The string source
+   @return A FSM from the string if possible, NULL on error.
+ */
+fsm *fsm_read(const wchar_t *source)
+{
+  fsm *new = fsm_create();
+  fsm_trans *ft;
+  smb_al *list;
+  int n, max;
+  DATA d;
+
+  SMB_DP("BEGIN READING A FSM\n");
+
+  // Get start state
+  SMB_DP("=> Read first line (start state spec).\n");
+  n  = fsm_read_get_int(&source, L"start:");
+  if (n == -1) {
+    fprintf(stderr, "Error: FSM spec didn't contain \"start:\" at expected location.\n");
+    fsm_destroy(new, true);
+    return NULL;
+  } else {
+    SMB_DP("   *Start state is %d*\n\n", n);
+    new->start = n;
+  }
+
+  // Get accepting states
+  SMB_DP("=> Reading for accepting states.\n");
+  while ((d.data_llint =fsm_read_get_int(&source, L"accept:")) != -1) {
+    al_append(&new->accepting, d);
+    SMB_DP("\n=> Reading for additional accepting states.\n");
+  }
+  SMB_DP("   No more accepting states.\n\n");
+
+  // Get transitions
+  SMB_DP("Reading transitions.\n");
+  while (*source != L'\0') {
+    SMB_DP("=> READING A TRANSITION\n");
+    ft = fsm_read_trans(&source, &n);
+    if (ft == NULL) {
+      fsm_destroy(new, true);
+      fprintf(stderr, "Error: got bad transition.\n");
+      return NULL;
+    }
+    max = (n>ft->dest ? n : ft->dest) + 1;
+    SMB_DP("   Max observed state %d, current # states %d.\n", max, al_length(&new->transitions));
+    while (al_length(&new->transitions) < max) {
+      fsm_add_state(new, false);
+      SMB_DP("   Added a state (now have %d).\n", al_length(&new->transitions));
+    }
+    list = (smb_al *)al_get(&new->transitions, n).data_ptr;
+    d.data_ptr = (void *) ft;
+    al_append(list, d);
+    SMB_DP("   *Added transition*\n\n");
+  }
+
+  SMB_DP("FSM CREATION COMPLETE!\n");
+  return new;
 }

@@ -37,7 +37,7 @@
 
 CC=gcc
 FLAGS=
-CFLAGS=$(FLAGS) -c -g
+CFLAGS=$(FLAGS) -c -g $(shell if [ -f src/libstephen_conf.h ] ; then echo "-DSMB_CONF" ; fi)
 LFLAGS=$(FLAGS)
 
 .PHONY: all clean libstephen_build
