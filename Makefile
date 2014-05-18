@@ -35,11 +35,13 @@
 #
 #-------------------------------------------------------------------------------
 
+# Variable declarations
 CC=gcc
 FLAGS=
 CFLAGS=$(FLAGS) -c -g $(shell if [ -f src/libstephen_conf.h ] ; then echo "-DSMB_CONF" ; fi)
 LFLAGS=$(FLAGS)
 
+# Main targets
 .PHONY: all clean libstephen_build
 
 all: bin/main
@@ -65,8 +67,12 @@ src/gram.h: src/libstephen.h
 src/main.c: src/gram.h
 src/fsm.h: src/libstephen.h
 src/fsm.c: src/fsm.h src/libstephen.h
+src/regex.c: src/regex.h src/fsm.h src/libstephen.h
+src/regex.h: src/fsm.h
 
 # --- Objects
+OBJECTS = obj/gram.o obj/main.o obj/fsm.o obj/regex.o
+
 obj/gram.o: src/gram.c
 	$(CC) $(CFLAGS) src/gram.c -o obj/gram.o
 
@@ -76,6 +82,9 @@ obj/main.o: src/main.c
 obj/fsm.o: src/fsm.c
 	$(CC) $(CFLAGS) src/fsm.c -o obj/fsm.o
 
+obj/regex.o: src/regex.c
+	$(CC) $(CFLAGS) src/regex.c -o obj/regex.o
+
 # --- Binaries
-bin/main: obj/gram.o obj/main.o obj/fsm.o obj/libstephen.a
-	$(CC) $(LFLAGS) obj/gram.o obj/main.o obj/fsm.o obj/libstephen.a -o bin/main
+bin/main: $(OBJECTS) obj/libstephen.a
+	$(CC) $(LFLAGS) $(OBJECTS) obj/libstephen.a -o bin/main
