@@ -807,3 +807,287 @@ void fsm_print(fsm *f, FILE *dest)
     }
   }
 }
+
+/**
+   @brief Initialize an fsm_sim struct
+   @param fs The struct to init
+   @param f The FSM to simulate 
+   @param curr The current state of the simulation
+   @param input The input string
+ */
+void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input)
+{
+  fs->f = f;
+  fs->curr = curr;
+  fs->input = input;
+}
+
+/**
+   @brief Allocate and initialize an fsm_sim struct
+   @param f The FSM to simulate 
+   @param curr The current state of the simulation
+   @param input The input string
+   @return The allocated simulation
+ */
+fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input)
+{
+  fsm_sim *fs = (fsm_sim *) malloc(sizeof(fsm_sim));
+
+  if (!fs) {
+    RAISE(ALLOCATION_ERROR);
+    return NULL;
+  }
+  SMB_INCREMENT_MALLOC_COUNTER(sizeof(fsm_sim));
+
+  fsm_sim_init(fs, f, curr, input);
+  return fs;
+}
+
+/**
+   @brief Clean up any resources held by the fsm_sim
+   @param fs The simulation
+   @param free_curr Do we free the state list (generally, true)
+ */
+void fsm_sim_destroy(fsm_sim *fs, bool free_curr)
+{
+  if (free_curr) {
+    al_delete(fs->curr);
+  }
+}
+
+/**
+   @brief Clean up and any resources held by the fsm_sim, and free it.
+   @param fs The simulation
+   @param free_curr Do we free the state list (generally, true)
+ */
+void fsm_sim_delete(fsm_sim *fs, bool free_curr)
+{
+  fsm_sim_destroy(fs, free_curr);
+  free(fs);
+  SMB_DECREMENT_MALLOC_COUNTER(sizeof(fsm_sim));
+}
+
+/**
+   @brief Begin a non-deterministic simulation of this finite state machine.
+
+   This simulation is designed to be run in steps.  First, call this function.
+   Then, loop through many calls to fsm_sim_nondet_step(), until it returns a
+   value that indicates that the simulation has finished (generally, that is
+   FSM_SIM_REJECTED or FSM_SIM_ACCEPTED).
+
+   @param f The FSM to simulate
+   @param input The input to run on
+ */
+fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input)
+{
+  DATA d;
+  smb_al *curr = al_create();
+  d.data_llint = f->start;
+  al_append(curr, d);
+  fsm_sim *fs = fsm_sim_create(f, curr, input);
+  return fs;
+}
+
+/**
+   @brief Return the epsilon closure of the state on this FSM.
+
+   The epsilon closure is the set of all states that can be reached from this
+   state without consuming any input.
+
+   @param f The FSM
+   @param state The state to calculate from
+   @return A list of states in the epsilon closure
+ */
+static smb_al *epsilon_closure(fsm *f, int state)
+{
+  smb_al *closure = al_create();
+  smb_al *trans_list;
+  smb_al *visit_queue = al_create();
+  fsm_trans *ft;
+  DATA d;
+  int i;
+
+  d.data_llint = state;
+  al_push_back(visit_queue, d);
+
+  // Breadth first search here: while queue is not empty.
+  while (al_length(visit_queue) > 0) {
+    // Get next state to expand, mark it as visited (in the closure)
+    d = al_pop_front(visit_queue);
+    al_append(closure, d);
+    trans_list = (smb_al *)al_get(&f->transitions, d.data_llint).data_ptr;
+    // For every transition out of it
+    for (i = 0; i < al_length(trans_list); i++) {
+      // If epsilon transitions out of it, and we haven't visited or put it in
+      // the queue yet, add it to the visit queue.
+      ft = (fsm_trans *) al_get(trans_list, i).data_ptr;
+      d.data_llint = ft->dest;
+      if (fsm_trans_check(ft, EPSILON) && 
+          al_index_of(visit_queue, d) == -1 &&
+          al_index_of(closure, d) == -1){
+        d.data_llint = ft->dest;
+        al_push_back(visit_queue, d);
+      }
+    }
+  }
+
+  al_delete(visit_queue);
+  return closure;
+}
+
+/**
+   @brief Combine the two lists (with no duplicates), and free the second.
+
+   @param first The target list (which will be added to)
+   @param second The list which will be combined into first and freed.
+ */
+static void union_and_delete(smb_al *first, smb_al *second)
+{
+  int i;
+  DATA d;
+  for (i = 0; i < al_length(second); i++) {
+    d = al_get(second, i);
+    if (al_index_of(first, d) == -1) {
+      al_append(first, d);
+    }
+  }
+  al_delete(second);
+}
+
+/**
+   @brief Test if the intersection between the two lists is non-empty.
+ */
+static bool non_empty_intersection(smb_al *first, smb_al *second)
+{
+  int i;
+  DATA d;
+  for (i = 0; i < al_length(first); i++) {
+    d = al_get(first, i);
+    if (al_index_of(second, d) != -1)
+      return true;
+  }
+  return false;
+}
+
+/**
+   @brief Perform a single step in the non-deterministic simulation.
+
+   This function performs a single iteration of the simulation algorithm.  It
+   takes the current states, finds next states with the input character, and
+   then adds in the epsilon closures of all the states.  Finally, it returns a
+   value that indicates the state of the simulation.
+
+   @param s The simulation state struct
+   @retval FSM_SIM_ACCEPTING when the simulation has not ended, but is accepting
+   @retval FSM_SIM_NOT_ACCEPTING when the simulation has not ended, and is not
+   accepting
+   @retval FSM_SIM_REJECTED when the simulation has ended and rejected
+   @retval FSM_SIM_ACCEPTED when the simulation has ended and accepted
+ */
+int fsm_sim_nondet_step(fsm_sim *s)
+{
+  int i, j, state, original;
+  DATA d;
+  fsm_trans *t;
+  smb_al *next = al_create();
+  smb_al *trans;
+
+  // For diagnostics, print out the entire current state set
+  SMB_DP("Current state: ");
+  for (i = 0; i < al_length(s->curr); i++) {
+    SMB_DP("%Ld ", al_get(s->curr, i).data_llint);
+  }
+  SMB_DP("\n");
+
+  // For each current state:
+  for (i = 0; i < al_length(s->curr); i++) {
+    state = (int) al_get(s->curr, i).data_llint;
+    trans = (smb_al *) al_get(&s->f->transitions, state).data_ptr;
+
+    // For each transition out:
+    for (j = 0; j < al_length(trans); j++) {
+      t = (fsm_trans *)al_get(trans, j).data_ptr;
+      d.data_llint = t->dest;
+
+      // If the transition contains the current input, and it's not already in
+      // the next state list, add it to the next state list.
+      if (fsm_trans_check(t, *s->input) &&
+          al_index_of(next, d) == -1) {
+        al_append(next, d);
+      }
+    }
+  }
+
+  // For each state in the original next state list, union in all their epsilon
+  // closures.
+  original = al_length(next);
+  for (i = 0; i < original; i++) {
+    state = (int) al_get(next, i).data_llint;
+    union_and_delete(next, epsilon_closure(s->f, state));
+  }
+
+  // Delete the old state, set the new one, and advance the input
+  al_delete(s->curr);
+  s->curr = next;
+  s->input++;
+
+  // For diagnostics, print the new state
+  SMB_DP("New state: ");
+  for (i = 0; i < al_length(s->curr); i++) {
+    SMB_DP("%Ld ", al_get(s->curr, i).data_llint);
+  }
+  SMB_DP("\n");
+
+  // If the current state is empty, REJECT
+  if (al_length(s->curr) == 0) {
+    return FSM_SIM_REJECTED;
+  }
+  if (non_empty_intersection(&s->f->accepting, s->curr)) {
+    // If one of our current states is accepting...
+    if (*s->input == L'\0') {
+      // ... and input is exhausted, ACCEPT
+      return FSM_SIM_ACCEPTED;
+    } else {
+      // ... and input remains, we are accepting, but not done
+      return FSM_SIM_ACCEPTING;
+    }
+  } else {
+    // If no current state is accepting ...
+    if (*s->input == L'\0') {
+      // ... and the input is exhausted, REJECT
+      return FSM_SIM_REJECTED;
+    } else {
+      // ... and input remains, we are not accepting, but not done
+      return FSM_SIM_NOT_ACCEPTING;
+    }
+  }
+}
+
+/**
+   @brief Simulate the FSM as a non-deterministic state machine.
+
+   This function is a convenience function that executes the NDFSM to
+   completion.  The other functions, begin, step, and delete, can be used to
+   perform a more customizable simulation.
+
+   @param f The FSM to simulate
+   @param input The input string to run with
+   @retval true if the machine accepts
+   @retval false if the machine rejects
+ */
+bool fsm_sim_nondet(fsm *f, const wchar_t *input)
+{
+  int res= FSM_SIM_NOT_ACCEPTING;
+  fsm_sim *sim = fsm_sim_nondet_begin(f, input);
+
+  while (res != FSM_SIM_REJECTED && res != FSM_SIM_ACCEPTED) {
+    res = fsm_sim_nondet_step(sim);
+    SMB_DP("Current result: %d\n", res);
+  }
+
+  fsm_sim_delete(sim, true);
+  if (res == FSM_SIM_REJECTED)
+    return false;
+  else
+    return true;
+}

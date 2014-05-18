@@ -47,7 +47,13 @@
 #define FSM_TRANS_POSITIVE 0
 #define FSM_TRANS_NEGATIVE 1
 
-#define EPSILON -2
+#define FSM_SIM_ACCEPTING 0
+#define FSM_SIM_NOT_ACCEPTING 1
+#define FSM_SIM_REJECTED 2
+#define FSM_SIM_ACCEPTED 3
+
+// TODO: determine a safe value for EPSILON
+#define EPSILON ((wchar_t)-2)
 
 typedef struct {
 
@@ -65,6 +71,14 @@ typedef struct {
   smb_al accepting;
 
 } fsm;
+
+typedef struct {
+
+  fsm *f;
+  smb_al *curr;
+  const wchar_t *input;
+
+} fsm_sim;
 
 void fsm_trans_init(fsm_trans *ft, int n, int type, int dest);
 fsm_trans *fsm_trans_create(int n, int type, int dest);
@@ -87,5 +101,9 @@ fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end, 
 bool fsm_sim_det(fsm *f, const wchar_t *input);
 fsm *fsm_read(const wchar_t *source);
 void fsm_print(fsm *f, FILE *dest);
+void fsm_sim_delete(fsm_sim *fs, bool free_curr);
+fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input);
+int fsm_sim_nondet_step(fsm_sim *s);
+bool fsm_sim_nondet(fsm *f, const wchar_t *input);
 
 #endif
