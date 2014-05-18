@@ -124,7 +124,7 @@ void read_fsm(void) {
   const wchar_t *input = 
     L"start: 0\n"
     L"accept:0\n"
-    L"0-1:+a-a\n"
+    L"0-1:+a-a c-d\n"
     L"1-0:+a-a\n"
     L"1-3:+b-b\n"
     L"3-1:+b-b\n"
@@ -159,6 +159,7 @@ void read_fsm(void) {
   else
     printf("Reject.\n");
 
+  fsm_print(f, stdout);
   fsm_delete(f, true);
 }
 
