@@ -494,6 +494,8 @@ static wchar_t get_escape(const wchar_t **source) {
     return L'\a';
   case L'b':
     return L'\b';
+  case L'e':
+    return EPSILON;
   case L'f':
     return L'\f';
   case L'n':
@@ -774,6 +776,31 @@ fsm *fsm_read(const wchar_t *source)
   return new;
 }
 
+static wchar_t fsm_print_filter(wchar_t input)
+{
+  switch (input) {
+  case EPSILON:
+    return L'e';
+  default:
+    return input;
+  }
+}
+
+static void fsm_print_pair(FILE *dest, wchar_t c1, wchar_t c2)
+{
+  wchar_t c1alt = fsm_print_filter(c1);
+  wchar_t c2alt = fsm_print_filter(c2);
+  if (c1alt != c1 && c2alt != c2) {
+    fprintf(dest, "\\%Lc-\\%Lc", c1alt, c2alt);
+  } else if (c1alt != c1 && c2alt == c2) {
+    fprintf(dest, "\\%Lc-%Lc", c1alt, c2);
+  } else if (c1alt == c1 && c2alt != c2) {
+    fprintf(dest, "%Lc-\\%Lc", c1, c2alt);
+  } else {
+    fprintf(dest, "%Lc-%Lc", c1, c2);
+  }
+}
+
 /**
    @brief Print a string representation of the FSM to a file (or stdout).
 
@@ -800,10 +827,12 @@ void fsm_print(fsm *f, FILE *dest)
       start = ft->start;
       end = ft->end;
       while (*(start+1) != L'\0') {
-        fprintf(dest, "%Lc-%Lc ", *start, *end);
+        fsm_print_pair(dest, *start, *end);
+        fprintf(stdout, " ");
         start++; end++;
       }
-      fprintf(dest, "%Lc-%Lc\n", *start, *end);
+      fsm_print_pair(dest, *start, *end);
+      fprintf(dest, "\n");
     }
   }
 }
@@ -868,27 +897,6 @@ void fsm_sim_delete(fsm_sim *fs, bool free_curr)
 }
 
 /**
-   @brief Begin a non-deterministic simulation of this finite state machine.
-
-   This simulation is designed to be run in steps.  First, call this function.
-   Then, loop through many calls to fsm_sim_nondet_step(), until it returns a
-   value that indicates that the simulation has finished (generally, that is
-   FSM_SIM_REJECTED or FSM_SIM_ACCEPTED).
-
-   @param f The FSM to simulate
-   @param input The input to run on
- */
-fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input)
-{
-  DATA d;
-  smb_al *curr = al_create();
-  d.data_llint = f->start;
-  al_append(curr, d);
-  fsm_sim *fs = fsm_sim_create(f, curr, input);
-  return fs;
-}
-
-/**
    @brief Return the epsilon closure of the state on this FSM.
 
    The epsilon closure is the set of all states that can be reached from this
@@ -936,6 +944,26 @@ static smb_al *epsilon_closure(fsm *f, int state)
 }
 
 /**
+   @brief Begin a non-deterministic simulation of this finite state machine.
+
+   This simulation is designed to be run in steps.  First, call this function.
+   Then, loop through many calls to fsm_sim_nondet_step().  When
+   fsm_sim_nondet_state() returns a value indicating that the simulation is
+   complete, you will have your answer.  Note that you should also call
+   fsm_sim_nondet_state() after a call to this function, because the input may
+   be empty.
+
+   @param f The FSM to simulate
+   @param input The input to run on
+ */
+fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input)
+{
+  smb_al *curr = epsilon_closure(f, f->start);
+  fsm_sim *fs = fsm_sim_create(f, curr, input);
+  return fs;
+}
+
+/**
    @brief Combine the two lists (with no duplicates), and free the second.
 
    @param first The target list (which will be added to)
@@ -970,21 +998,52 @@ static bool non_empty_intersection(smb_al *first, smb_al *second)
 }
 
 /**
-   @brief Perform a single step in the non-deterministic simulation.
-
-   This function performs a single iteration of the simulation algorithm.  It
-   takes the current states, finds next states with the input character, and
-   then adds in the epsilon closures of all the states.  Finally, it returns a
-   value that indicates the state of the simulation.
-
-   @param s The simulation state struct
+   @brief Check the state of the simulation.
+   @param s The simulation to check.
    @retval FSM_SIM_ACCEPTING when the simulation has not ended, but is accepting
    @retval FSM_SIM_NOT_ACCEPTING when the simulation has not ended, and is not
    accepting
    @retval FSM_SIM_REJECTED when the simulation has ended and rejected
    @retval FSM_SIM_ACCEPTED when the simulation has ended and accepted
  */
-int fsm_sim_nondet_step(fsm_sim *s)
+int fsm_sim_nondet_state(const fsm_sim *s)
+{
+  // If the current state is empty, REJECT
+  if (al_length(s->curr) == 0) {
+    return FSM_SIM_REJECTED;
+  }
+  if (non_empty_intersection(&s->f->accepting, s->curr)) {
+    // If one of our current states is accepting...
+    if (*s->input == L'\0') {
+      // ... and input is exhausted, ACCEPT
+      return FSM_SIM_ACCEPTED;
+    } else {
+      // ... and input remains, we are accepting, but not done
+      return FSM_SIM_ACCEPTING;
+    }
+  } else {
+    // If no current state is accepting ...
+    if (*s->input == L'\0') {
+      // ... and the input is exhausted, REJECT
+      return FSM_SIM_REJECTED;
+    } else {
+      // ... and input remains, we are not accepting, but not done
+      return FSM_SIM_NOT_ACCEPTING;
+    }
+  }
+}
+
+/**
+   @brief Perform a single step in the non-deterministic simulation.
+
+   This function performs a single iteration of the simulation algorithm.  It
+   takes the current states, finds next states with the input character, and
+   then adds in the epsilon closures of all the states.  You should use
+   fsm_sim_nondet_state() to determine the state of the simulation after a step.
+
+   @param s The simulation state struct
+ */
+void fsm_sim_nondet_step(fsm_sim *s)
 {
   int i, j, state, original;
   DATA d;
@@ -1037,30 +1096,6 @@ int fsm_sim_nondet_step(fsm_sim *s)
     SMB_DP("%Ld ", al_get(s->curr, i).data_llint);
   }
   SMB_DP("\n");
-
-  // If the current state is empty, REJECT
-  if (al_length(s->curr) == 0) {
-    return FSM_SIM_REJECTED;
-  }
-  if (non_empty_intersection(&s->f->accepting, s->curr)) {
-    // If one of our current states is accepting...
-    if (*s->input == L'\0') {
-      // ... and input is exhausted, ACCEPT
-      return FSM_SIM_ACCEPTED;
-    } else {
-      // ... and input remains, we are accepting, but not done
-      return FSM_SIM_ACCEPTING;
-    }
-  } else {
-    // If no current state is accepting ...
-    if (*s->input == L'\0') {
-      // ... and the input is exhausted, REJECT
-      return FSM_SIM_REJECTED;
-    } else {
-      // ... and input remains, we are not accepting, but not done
-      return FSM_SIM_NOT_ACCEPTING;
-    }
-  }
 }
 
 /**
@@ -1077,11 +1112,12 @@ int fsm_sim_nondet_step(fsm_sim *s)
  */
 bool fsm_sim_nondet(fsm *f, const wchar_t *input)
 {
-  int res= FSM_SIM_NOT_ACCEPTING;
   fsm_sim *sim = fsm_sim_nondet_begin(f, input);
+  int res = fsm_sim_nondet_state(sim);
 
   while (res != FSM_SIM_REJECTED && res != FSM_SIM_ACCEPTED) {
-    res = fsm_sim_nondet_step(sim);
+    fsm_sim_nondet_step(sim);
+    res = fsm_sim_nondet_state(sim);
     SMB_DP("Current result: %d\n", res);
   }
 
@@ -1090,4 +1126,71 @@ bool fsm_sim_nondet(fsm *f, const wchar_t *input)
     return false;
   else
     return true;
+}
+
+/**
+   @brief Allocate an entirely new copy of an existing FSM transition.
+   @param ft The transition to copy
+   @return The copy of ft
+ */
+fsm_trans *fsm_trans_copy(const fsm_trans *ft)
+{
+  int i, rangeSize = wcslen(ft->start);
+  fsm_trans *new = fsm_trans_create(rangeSize, ft->type, ft->dest);
+  for (i = 0; i < rangeSize; i++) {
+    new->start[i] = ft->start[i];
+    new->end[i] = ft->end[i];
+  }
+  return new;
+}
+
+/**
+   @brief Copy all the values from one array list into another.
+   @param dest The destination array list
+   @param from The source array list
+ */
+void al_copy_all(smb_al *dest, const smb_al *from)
+{
+  int i;
+  for (i = 0; i < al_length(from); i++) {
+    al_append(dest, al_get(from, i));
+  }
+}
+
+/**
+   @brief Allocate an entirely new copy of an existing FSM.  
+
+   The transitions are completely disjoint, so freeing them in the original will
+   not affect the copy.
+
+   @param f The FSM to copy
+   @return A copy of the FSM
+ */
+fsm *fsm_copy(const fsm *f)
+{
+  int i, j;
+  smb_al *old, *newList;
+  fsm_trans *ft;
+  fsm *new = fsm_create();
+
+  // Copy basic members
+  new->start = f->start;
+  al_copy_all(&new->accepting, &f->accepting);
+
+  // Initialise the same number of states
+  for (i = 0; i < al_length(&f->transitions); i++) {
+    fsm_add_state(new, false);
+  }
+
+  // Copy all transitions.
+  for (i = 0; i < al_length(&f->transitions); i++) {
+    old = (smb_al *) al_get(&f->transitions, i).data_ptr;
+    for (j = 0; j < al_length(old); j++) {
+      ft = (fsm_trans *) al_get(old, j).data_ptr;
+      ft = fsm_trans_copy(ft);
+      fsm_add_trans(new, i, ft);
+    }
+  }
+
+  return new;
 }
