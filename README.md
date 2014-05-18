@@ -33,3 +33,36 @@ I would like to get this project to the point where it can take as inputs a file
 with a grammar specification, and lexical specifications for the terminals, and
 a file to parse, and then parse the file and output accept or reject, along with
 a parse tree if it accepts.  Perhaps it could even output the CKY table!
+
+## Current State
+
+- I have created a basic set of grammar structures for the project.  I have
+  created the basic memory management routines that go along with them, but not
+  much more.  I've decided that a lexical analyzer is an important part of the
+  project.
+
+- I have created a finite state machine structure for the project.  The FSM has
+  the following parts implemented:
+  - All memory management
+  - Basic addition of states and transitions
+  - Deterministic simulation
+  - Import and export to text representations
+  - Non-deterministic simulation
+
+While it would be nice to have non-deterministic to deterministic conversion, it
+is not very practical to spell out every possible input (in Unicode...) to every
+single state, in order to figure out which states are distinct.  Although I'm
+sure I could come up with a clever algorithm that could select only the
+characters which are necessary, I don't want to deal with that just now.  Simply
+simulating non-deterministic seems like it will likely do the job.
+
+I'm aiming to create a regular expression parser with the FSM structures.  In
+order to complete that, I'll need to create functions that will operate on FSM's
+like so:
+
+- Concatenate FSM's
+- Place FSM's in parallel
+- Kleene star
+
+With these, I'm pretty sure I will have everything necessary to implement a
+regex parser!
