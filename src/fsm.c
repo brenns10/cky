@@ -1005,6 +1005,10 @@ static bool non_empty_intersection(smb_al *first, smb_al *second)
    accepting
    @retval FSM_SIM_REJECTED when the simulation has ended and rejected
    @retval FSM_SIM_ACCEPTED when the simulation has ended and accepted
+   @see FSM_SIM_ACCEPTING
+   @see FSM_SIM_NOT_ACCEPTING
+   @see FSM_SIM_REJECTED
+   @see FSM_SIM_ACCEPTED
  */
 int fsm_sim_nondet_state(const fsm_sim *s)
 {

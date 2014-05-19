@@ -44,38 +44,187 @@
 #include <wchar.h>
 #include "libstephen.h"
 
+/**
+   @brief A value for fsm_trans.type indicating that the ranges are positive.
+
+   That is, the characters within the ranges are considered valid.
+
+   @see fsm_trans.type
+   @see FSM_TRANS_NEGATIVE
+ */
 #define FSM_TRANS_POSITIVE 0
+/**
+   @brief A value for fsm_trans.type indicating that the ranges are negative.
+
+   That is, the characters within the ranges not considered valid (but
+   everything else is).
+
+   @see fsm_trans.type
+   @see FSM_TRANS_POSITIVE
+ */
 #define FSM_TRANS_NEGATIVE 1
 
+/**
+   @brief A possible return value for fsm_sim_nondet_state().
+
+   This return value indicates that there is a part of the simulation that is
+   currently in an accepting state, but that not all input has been exhausted
+   yet.
+
+   @see fsm_sim_nondet_state()
+   @see FSM_SIM_NOT_ACCEPTING
+   @see FSM_SIM_REJECTED
+   @see FSM_SIM_ACCEPTED
+ */
 #define FSM_SIM_ACCEPTING 0
+/**
+   @brief A possible return value for fsm_sim_nondet_state().
+
+   This return value indicates that there no part of the simulation that is
+   currently in an accepting state, but that not all input has been exhausted
+   yet.
+
+   @see fsm_sim_nondet_state()
+   @see FSM_SIM_ACCEPTING
+   @see FSM_SIM_REJECTED
+   @see FSM_SIM_ACCEPTED
+ */
 #define FSM_SIM_NOT_ACCEPTING 1
+/**
+   @brief A possible return value for fsm_sim_nondet_state().
+
+   This return value indicates that the simulation is complete, and that all
+   possible runs of the NDFSM have rejected the input.
+
+   @see fsm_sim_nondet_state()
+   @see FSM_SIM_ACCEPTING
+   @see FSM_SIM_NOT_ACCEPTING
+   @see FSM_SIM_ACCEPTED
+ */
 #define FSM_SIM_REJECTED 2
+/**
+   @brief A possible return value for fsm_sim_nondet_state().
+
+   This return value indicates that the simulation is complete, and that there
+   is at least one possible run of the NDFSM that accepts the input.
+
+   @see fsm_sim_nondet_state()
+   @see FSM_SIM_ACCEPTING
+   @see FSM_SIM_NOT_ACCEPTING
+   @see FSM_SIM_REJECTED
+ */
 #define FSM_SIM_ACCEPTED 3
 
-// TODO: determine a safe value for EPSILON
+/**
+   @brief A value of type `wchar_t` that is used to represent the empty string.
+   @todo Research a better value for EPSILON.
+ */
 #define EPSILON ((wchar_t)-2)
 
+/**
+   @brief Contains information regarding a FSM transition.
+   
+   The contained information includes the destination, the ranges of characters
+   that are included in the transition, and the way to interpret these ranges.
+*/
 typedef struct {
 
+  /**
+     @brief Tells how to interpret the range.  
+
+     If it has value FSM_TRANS_POSITIVE, then everything within the range is
+     accepted in the transition.  If it has value FSM_TRANS_NEGATIVE, then
+     everything not within the range is accepted in the transition.
+
+     @see FSM_TRANS_POSITIVE
+     @see FSM_TRANS_NEGATIVE
+   */
   int type;
+
+  /**
+     @brief An array of characters that form the starts of the ranges.
+
+     This array (string) MUST be null-terminated.  The number of ranges is not
+     stored.
+   */
   wchar_t *start;
+
+  /**
+     @brief An array of characters that form the ends of the ranges.
+
+     This array (string) MUST be null-terminated.  The number of ranges is not
+     stored.  Furthermore, the number of elements MUST match the number of
+     elements in start.  This is all handled by fsm_trans_init() and
+     fsm_trans_create(), of course.
+   */
   wchar_t *end;
+
+  /**
+     @brief The index of the destination of this transition.
+   */
   int dest;
 
 } fsm_trans;
 
+/**
+   @brief A structure representing an FSM.
+
+   The machine represented may be deterministic or nondeterministic.  There is
+   not an implemented function to distinguish between the two, but it is
+   possible.
+
+   In this representation of the FSM, states are represented only by indices.
+   They have no associated string value.
+ */
 typedef struct {
 
+  /**
+     @brief The index of the start states.
+   */
   int start;
-  smb_al transitions; // List of lists, indexed by state D:
+
+  /**
+     @brief The transitions in the machine.
+
+     The transitions are stored as an array list (`smb_al`) of array lists
+     (`smb_al *`).  The outer list is indexed by state number.  The inner list
+     is a list of all transitions (`fsm_trans *`) out of that particular state.
+
+     The length of the outer list is the same as the number of states in the
+     FSM.
+   */
+  smb_al transitions;
+
+  /**
+     @brief The accepting states for this machine.
+
+     These accepting states are stored as integer values in the list.
+   */
   smb_al accepting;
 
 } fsm;
 
+/**
+   @brief Holds state for a nondeterministic finite state machine simulation.
+
+   None of these members are guaranteed to remain; they are to be considered
+   implementation details of the function fsm_sim_nondet() and friends.
+ */
 typedef struct {
 
+  /**
+     @brief The FSM being simulated.
+   */
   fsm *f;
+
+  /**
+     @brief The current "state", as a list of FSM states.
+   */
   smb_al *curr;
+
+  /**
+     @brief Pointer to the current input (advances each step of simulation).
+   */
   const wchar_t *input;
 
 } fsm_sim;
