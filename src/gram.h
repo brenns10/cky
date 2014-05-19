@@ -43,36 +43,120 @@
 #include <stdbool.h>
 #include "libstephen.h"
 
+/**
+   @brief A constant to indicate that there is no symbol in a grammar slot.
+ */
 #define CFG_SYMBOL_NONE -1
 
+/**
+   @brief A struct to represent a rule in a context-free grammar.
+
+   The structs and functions beginning with `cfg` are for context-free grammars
+   that are not restricted by a normal form.  That is, they can have arbitrary
+   left-hand sides.
+
+   @see cfg
+   @see cfg_rule_init
+   @see cfg_rule_create
+ */
 typedef struct {
 
+  /**
+     @brief The symbol on the left hand side of the rule.
+   */
   int lhs;
+
+  /**
+     @brief An array of symbols for the right hand side of the rule.
+   */
   int *rhs;
+
+  /**
+     @brief The number of symbols in the right hand side.
+   */
   int rhs_len;
 
 } cfg_rule;
 
+/**
+   @brief A struct to represent a rule in a CNF CFG.
+
+   CNF grammars are context-free grammars that are restricted in their form.
+   The rules may have the form `A -> b`, where `b` is a terminal symbol, or they
+   may be of the form `A -> B C`, where `B` and `C` are non-terminal symbols.
+
+   @see cnf 
+   @see cnf_rule_init
+   @see cnf_rule_create
+ */
 typedef struct {
 
+  /**
+     @brief The symbol on the left-hand side of the rule.
+   */
   int lhs;
+
+  /**
+     @brief The first symbol on the right hand side of the rule.
+   */
   int rhs_one;
+
+  /**
+     @brief The second (optional) symbol on the right hand side of the rule.
+   */
   int rhs_two;
 
 } cnf_rule;
 
+/**
+   @brief A struct to represent a context-free grammar.
+   @see cfg_rule
+   @see cfg_init
+   @see cfg_create
+ */
 typedef struct {
 
+  /**
+     @brief A list of symbols in the grammar.
+
+     The symbols are identified by an index in the list.  The list itself
+     contains the string representation of the symbol.
+   */
   smb_al symbols;
+
+  /**
+     @brief A list of rules in the grammar.
+   */
   smb_al rules;
+
+  /**
+     @brief The start symbol of the grammar.
+   */
   int start;
 
 } cfg;
 
+/**
+   @brief A structure to store a CNF context-free grammar.
+   @see cnf_rule
+   @see cnf_init
+   @see cnf_create
+ */
 typedef struct {
 
+  /**
+     @brief The symbols of the grammar.  Symbols are identified by index.
+   */
   smb_al symbols;
+
+  /**
+     @brief The rules that have one symbol in the RHS.
+   */
   smb_al rules_one;
+
+  /**
+     @brief The rules that have two symbols in the RHS.
+   */
   smb_al rules_two;
 
 } cnf;
