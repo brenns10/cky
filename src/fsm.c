@@ -46,6 +46,37 @@
 #include "fsm.h"
 
 /**
+   @brief Reading the 'source' state of the transition. 
+   @see fsm_read_trans()
+ */
+#define SFIRSTSTATE 0
+/**
+   @brief Reading the 'destination' state of the transition. 
+   @see fsm_read_trans()
+ */
+#define SSECONDSTATE 1
+/**
+   @brief Reading the first character in a range.
+   @see fsm_read_trans()
+ */
+#define SFIRSTCHAR 2
+/**
+   @brief Reading the second character in a range.
+   @see fsm_read_trans()
+ */
+#define SSECONDCHAR 3
+/**
+   @brief Finished reading the transition.
+   @see fsm_read_trans()
+ */
+#define SFINISHED 4
+/**
+   @brief Reading the type of the transition (positive or negative).
+   @see fsm_read_trans()
+*/
+#define SREADTYPE 5
+
+/**
    @brief Initialize an already-allocated FSM transition unit.
 
    An FSM transition unit defines what characters can and can't be accepted for
@@ -58,6 +89,7 @@
    @param ft The pre-allocated transition
    @param n The number of transition criteria
    @param type The type of transition (positive or negative)
+   @param dest The destination of the transition
  */
 void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
 {
@@ -99,6 +131,7 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
 
    @param n The number of ranges
    @param type The type of transition
+   @param dest The destination of the transition
  */
 fsm_trans *fsm_trans_create(int n, int type, int dest)
 {
@@ -166,6 +199,7 @@ void fsm_trans_delete(fsm_trans *ft)
    @param start The beginning of the range
    @param end The end of the range
    @param type The type of the object
+   @param dest The destination of the transition
  */
 void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type, int dest)
 {
@@ -182,6 +216,7 @@ void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type, 
    @param start The beginning of the range
    @param end The end of the range
    @param type The type of the object
+   @param dest The destination of the transition
  */
 fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type, int dest)
 {
@@ -301,6 +336,7 @@ void fsm_delete(fsm *f, bool free_transitions)
 /**
    @brief Add a state to the FSM
    @param f The FSM to add to
+   @param accepting Whether to add the state to the accepting list
    @return The index of the state
  */
 int fsm_add_state(fsm *f, bool accepting)
@@ -420,7 +456,7 @@ bool fsm_sim_det(fsm *f, const wchar_t *input)
    @param prefix The "key:" prefix the line should match.
    @returns The integer value
  */
-static int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)
+int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)
 {
   int prefix_len = wcslen(prefix);
   int value = 0;
@@ -464,7 +500,7 @@ static int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)
    @param digit The digit
    @return The value of the digit in hexadecimal.
  */
-static int hexit_val(wchar_t digit) {
+int hexit_val(wchar_t digit) {
   if (iswdigit(digit)) {
     return digit - L'0';
   } else if (digit == L'a' || digit == L'b' || digit == L'c' || digit == L'd'
@@ -484,7 +520,7 @@ static int hexit_val(wchar_t digit) {
    @brief source The source pointer
    @return The character that was escaped
  */
-static wchar_t get_escape(const wchar_t **source) {
+wchar_t get_escape(const wchar_t **source) {
   wchar_t value = 0;
   wchar_t specifier = **source;
   SMB_DP("      Escape specifier '%Lc'\n", specifier);
@@ -545,22 +581,22 @@ static wchar_t get_escape(const wchar_t **source) {
 
    This function reads a transition from a line.  The transition can have an
    arbitrary number of ranges, each separated by a space.  The line should be of
-   the form: "X-Y:[+|-]A-B[[A-B]...]", where X and Y are state numbers, A and B
-   are characters forming a range, and the + or - determine whether the
-   transition is positive (only those in the range) or negative (everything not
-   in that range).  Note that there is only one + or -; it applies for all
-   ranges in the transition.
+   the form: `X-Y:[+|-]A-B[[A-B]...]`, where `X` and `Y` are state numbers, `A`
+   and `B` are characters forming a range, and the `+` or `-` determine whether
+   the transition is positive (only those in the range) or negative (everything
+   not in that range).  Note that there is only one `+` or `-`; it applies for
+   all ranges in the transition.
 
    @param source The source pointer.  It is advanced to the beginning of the
    next line.
-   @param [OUT] start Where to put the start state of the transition.
+   @param[out] start Where to put the start state of the transition.
    @return The transition.
  */
-static fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
+fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
 {
   // state: FSM state.  s1, s2: from and to states for the trans.
   // type: the type of transition.  i: iteration var
-  int state = 0, s1 = 0, s2 = 0, type = -1, i;
+  int state = SFIRSTSTATE, s1 = 0, s2 = 0, type = -1, i;
   // first, second: array lists for first, second values in ranges
   smb_al first, second;
   // d: utility var for assigning to arraylists
@@ -570,12 +606,7 @@ static fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
   al_init(&second);
 
   // Input machine states
-  #define SFIRSTSTATE 0
-  #define SSECONDSTATE 1
-  #define SFIRSTCHAR 2
-  #define SSECONDCHAR 3
-  #define SFINISHED 4
-  #define SREADTYPE 5
+
 
   // A 'finite state machine' to read finite state machine tranistions!
   while (**source != L'\n' && **source != L'\0') {
@@ -717,7 +748,7 @@ static fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
    Note that this function produces heavy output on stdout if compiled with
    SMD_ENABLE_DIAGNOSTIC_PRINTING.
 
-   @param The string source
+   @param source The string source
    @return A FSM from the string if possible, NULL on error.
  */
 fsm *fsm_read(const wchar_t *source)
@@ -776,7 +807,18 @@ fsm *fsm_read(const wchar_t *source)
   return new;
 }
 
-static wchar_t fsm_print_filter(wchar_t input)
+/**
+   @brief Return a 'filtered' character.
+
+   This is to make printable versions of common non-printable characters.  It is
+   a subroutine of fsm_print_pair().  The only one that is filtered currently is
+   `EPSILON`, which is printed as `\e` instead.
+
+   @param input The character to filter 
+   @return The filtered version.  It should be backslash escaped if different
+   from the original character.
+ */
+wchar_t fsm_print_filter(wchar_t input)
 {
   switch (input) {
   case EPSILON:
@@ -786,7 +828,18 @@ static wchar_t fsm_print_filter(wchar_t input)
   }
 }
 
-static void fsm_print_pair(FILE *dest, wchar_t c1, wchar_t c2)
+/**
+   @brief Print a range pair of characters.
+
+   This function is a subroutine of fsm_print().  It prints the range, but
+   filters the characters and prints none, one, or both as backslash escapes
+   instead of the real character, if necessary.
+
+   @param dest The file fsm_print() is printing to.
+   @param c1 The first character in the range.
+   @param c2 The second character in the range.
+ */
+void fsm_print_pair(FILE *dest, wchar_t c1, wchar_t c2)
 {
   wchar_t c1alt = fsm_print_filter(c1);
   wchar_t c2alt = fsm_print_filter(c2);
@@ -906,7 +959,7 @@ void fsm_sim_delete(fsm_sim *fs, bool free_curr)
    @param state The state to calculate from
    @return A list of states in the epsilon closure
  */
-static smb_al *epsilon_closure(fsm *f, int state)
+smb_al *epsilon_closure(fsm *f, int state)
 {
   smb_al *closure = al_create();
   smb_al *trans_list;
@@ -969,7 +1022,7 @@ fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input)
    @param first The target list (which will be added to)
    @param second The list which will be combined into first and freed.
  */
-static void union_and_delete(smb_al *first, smb_al *second)
+void union_and_delete(smb_al *first, smb_al *second)
 {
   int i;
   DATA d;
@@ -984,8 +1037,12 @@ static void union_and_delete(smb_al *first, smb_al *second)
 
 /**
    @brief Test if the intersection between the two lists is non-empty.
+   @param first The first list
+   @param second The second list
+   @retval true when the intersection is NOT empty
+   @retval false when the intersection IS empty
  */
-static bool non_empty_intersection(smb_al *first, smb_al *second)
+bool non_empty_intersection(smb_al *first, smb_al *second)
 {
   int i;
   DATA d;
