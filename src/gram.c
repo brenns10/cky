@@ -136,8 +136,6 @@ void cfg_rule_delete(cfg_rule *pRule)
 }
 
 /**
-
-/**
    @brief Initialize a CNF rule.
 
    Initializes the fields of a CNF rule.  You could just fill them yourself, but

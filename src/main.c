@@ -49,6 +49,17 @@ void simple_fsm(void);
 void read_fsm(void);
 void read_combine_fsm(void);
 
+/**
+   @brief Main entry point of the program.
+
+   Currently, the program has no set interface or function.  I modify it to test
+   out certain features I have just developed.  As time goes on, I'll add some
+   sort of real test code.
+
+   @param argc Number of command line arguments
+   @param argv Array of command line arguments
+   @return The program's exit code.
+ */
 int main(int argc, char **argv)
 {
   printf("Initial bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
@@ -68,6 +79,14 @@ int main(int argc, char **argv)
   return 0;
 }
 
+/**
+   @brief A function to test reading and combining FSMs.
+
+   Reads in two FSMs: one to accept "Stephen" or "stephen".  Another to accept
+   "Brennan" or "brennan".  Then it creates the union, concatenation, and the
+   Kleene star of each.  Then it runs all the machines (nondeterministically) on
+   some test strings, and prints out the resulting FSMs.
+ */
 void read_combine_fsm(void)
 {
   const wchar_t *m1spec = 
@@ -141,6 +160,13 @@ void read_combine_fsm(void)
   fsm_delete(m2S, true);
 }
 
+/**
+   @brief A function that tests the basic construction of a simple FSM.
+
+   Using the actual creation functions, creates a FSM to accept a string with an
+   even number of a's and b's.  Currently, the function simulates it
+   nondeterministically, even though the machine is deterministic.
+ */
 void simple_fsm(void)
 {
   fsm *f = fsm_create();
@@ -195,11 +221,17 @@ void simple_fsm(void)
   fsm_delete(f, true);
 }
 
+/**
+   @brief This function tests reading in a FSM and running it.
+
+   It reads in the even a's and b's machine, and it simulates it on similar
+   inputs.
+ */
 void read_fsm(void) {
   const wchar_t *input = 
     L"start:0\n"
     L"accept:3\n"
-    L"0-0:+a-b\n"
+    L"0-0:+b-b\n"
     L"0-1:+a-a\n"
     L"1-2:+b-b\n"
     L"2-3:+a-a\n";
@@ -234,6 +266,9 @@ void read_fsm(void) {
   fsm_delete(f, true);
 }
 
+/**
+   @brief Tests creating a grammar, and printing it out.
+ */
 void simple_gram(void)
 {
   char *start = "start";
