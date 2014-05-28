@@ -110,6 +110,11 @@ typedef struct {
 
 /**
    @brief A struct to represent a context-free grammar.
+
+   The grammar is represented as a list of symbols, a list of terminal symbols,
+   a list of rules, and a start symbol.  When referred to within the structure,
+   symbols are indexes within the variable cfg.symbols.
+
    @see cfg_rule
    @see cfg_init
    @see cfg_create
@@ -125,6 +130,13 @@ typedef struct {
   smb_al symbols;
 
   /**
+     @brief A list of symbols that are terminal ones.
+
+     The list contains integers, which refer to the index within cfg.symbols.
+   */
+  smb_al terminals;
+
+  /**
      @brief A list of rules in the grammar.
    */
   smb_al rules;
@@ -138,6 +150,18 @@ typedef struct {
 
 /**
    @brief A structure to store a CNF context-free grammar.
+
+   CNF CFG's are stored differently than your average CFG.  The cfg.symbols
+   variable is replaced by two variables, cnf.terminals and cnf.nonterminals.
+   The indexes overlap, but that's ok, because you can always tell whether a
+   symbol in a rule is terminal or nonterminal, based on the type of rule.
+
+   The second list of symbols removes the need for the sparse list of terminals
+   that cfg has.
+
+   For efficiency, rules are stored in two lists.  One contains the A->a rules,
+   and the other stores the A->BC rules.
+
    @see cnf_rule
    @see cnf_init
    @see cnf_create
@@ -145,9 +169,20 @@ typedef struct {
 typedef struct {
 
   /**
-     @brief The symbols of the grammar.  Symbols are identified by index.
+     @brief The terminal symbols of the grammar.  
+
+     Terminal symbols are stored as a list of char* strings, and referred to by
+     their index.
    */
-  smb_al symbols;
+  smb_al terminals;
+
+  /**
+     @brief The nonterminal symbols of the grammar.
+
+     Nonterminal symbols are stored as a list of char* strings, and referred to
+     by their index.
+   */
+  smb_al nonterminals;
 
   /**
      @brief The rules that have one symbol in the RHS.
@@ -158,6 +193,11 @@ typedef struct {
      @brief The rules that have two symbols in the RHS.
    */
   smb_al rules_two;
+
+  /**
+     @brief The start symbol.
+   */
+  int start;
 
 } cnf;
 
@@ -181,7 +221,7 @@ cnf *cnf_create(void);
 void cnf_destroy(cnf *pGram, bool free_symbols);
 void cnf_delete(cnf *pGram, bool free_symbols);
 
-int cfg_add_symbol(cfg *pGram, char *symbol);
+int cfg_add_symbol(cfg *pGram, char *symbol, bool terminal);
 void cfg_add_rule(cfg *pGram, cfg_rule *newRule);
 void cfg_print(cfg *pGram);
 

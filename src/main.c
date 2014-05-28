@@ -64,17 +64,21 @@ int main(int argc, char **argv)
 {
   printf("Initial bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
 
-  read_combine_fsm();
+  simple_gram();
 
-  printf("Intermediate bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+  printf("After simple_gram(): %d\n", SMB_GET_MALLOC_COUNTER);
 
   //simple_fsm();
 
-  printf("Intermediate bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+  printf("After simple_fsm(): %d\n", SMB_GET_MALLOC_COUNTER);
 
   //read_fsm();
 
-  printf("Final bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+  printf("After read_fsm(): %d\n", SMB_GET_MALLOC_COUNTER);
+
+  //read_combine_fsm();
+
+  printf("After read_combine_fsm() [final]: %d\n", SMB_GET_MALLOC_COUNTER);
 
   return 0;
 }
@@ -274,14 +278,17 @@ void simple_gram(void)
   char *start = "start";
   char *plus = "+";
   char *minus = "-";
+  char *number = "NUMBER";
 
   cfg *gram = cfg_create();
-  int nStart = cfg_add_symbol(gram, start);
-  int nPlus = cfg_add_symbol(gram, plus);
-  int nMinus = cfg_add_symbol(gram, minus);
+  int nStart = cfg_add_symbol(gram, start, false);
+  int nPlus = cfg_add_symbol(gram, plus, true);
+  int nMinus = cfg_add_symbol(gram, minus, true);
+  int nNumber = cfg_add_symbol(gram, number, true);
 
   cfg_rule *rule_plus = cfg_rule_create(nStart, 3);
   cfg_rule *rule_minus = cfg_rule_create(nStart, 3);
+  cfg_rule *rule_number = cfg_rule_create(nStart, 1);
 
   rule_plus->rhs[0] = nStart;
   rule_plus->rhs[1] = nPlus;
@@ -289,9 +296,11 @@ void simple_gram(void)
   rule_minus->rhs[0] = nStart;
   rule_minus->rhs[1] = nMinus;
   rule_minus->rhs[2] = nStart;
+  rule_number->rhs[0] = nNumber;
 
   cfg_add_rule(gram, rule_plus);
   cfg_add_rule(gram, rule_minus);
+  cfg_add_rule(gram, rule_number);
 
   cfg_print(gram);
   cfg_delete(gram, false);

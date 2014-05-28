@@ -211,8 +211,9 @@ void cnf_rule_delete(cnf_rule *pRule)
 void cfg_init(cfg *pGram)
 {
   al_init(&pGram->symbols);
+  al_init(&pGram->terminals);
   al_init(&pGram->rules);
-  pGram->start = -1;
+  pGram->start = CFG_SYMBOL_NONE;
 }
 
 /**
@@ -260,6 +261,7 @@ void cfg_destroy(cfg *pGram, bool free_symbols)
   }
 
   al_destroy(&pGram->symbols);
+  al_destroy(&pGram->terminals);
   al_destroy(&pGram->rules);
 }
 
@@ -280,10 +282,19 @@ void cfg_delete(cfg *pGram, bool free_symbols)
 /**
    @brief Add a string symbol to the grammar.
 
+   This function can be called safely if the symbol already exists in the
+   grammar.  In that case, it simply returns the symbol's index.  However, note
+   that if the symbol exists in the grammar, this function will **not** update
+   its terminal status.  That is, if it is in the terminal list and terminal was
+   false, this function won't delete it from the list, and the same if it's not
+   in the list and terminal was true.
+
    @param pGram The grammar to add to
    @param symbol The symbol to add
+   @param terminal Whether or not to add the symbol to the list of terminals
+   @return The index of the new symbol.
  */
-int cfg_add_symbol(cfg *pGram, char *symbol)
+int cfg_add_symbol(cfg *pGram, char *symbol, bool terminal)
 {
   DATA d;
   int idx;
@@ -293,7 +304,12 @@ int cfg_add_symbol(cfg *pGram, char *symbol)
     return idx;
   } else {
     al_append(&pGram->symbols, d);
-    return al_length(&pGram->symbols) - 1;
+    idx = al_length(&pGram->symbols) - 1;
+    if (terminal) {
+      d.data_llint = idx;
+      al_append(&pGram->terminals, d);
+    }
+    return idx;
   }
 }
 
@@ -331,6 +347,13 @@ void cfg_print(cfg *pGram)
     }
     printf("\n");
   }
+  printf("Terminals: ");
+  for (i = 0; i < al_length(&pGram->terminals); i++) {
+    printf("%s ", (char *) al_get(&pGram->symbols, 
+                                  (int) al_get(&pGram->terminals, i).data_llint
+                                  ).data_ptr);
+  }
+  printf("\n");
 }
 
 /**
@@ -340,9 +363,11 @@ void cfg_print(cfg *pGram)
  */
 void cnf_init(cnf *pGram)
 {
-  al_init(&pGram->symbols);
+  al_init(&pGram->terminals);
+  al_init(&pGram->nonterminals);
   al_init(&pGram->rules_one);
   al_init(&pGram->rules_two);
+  pGram->start = CFG_SYMBOL_NONE;
 }
 
 /**
@@ -378,8 +403,12 @@ void cnf_destroy(cnf *pGram, bool free_symbols)
   DATA d;
 
   if (free_symbols) {
-    for (i = 0; i < al_length(&pGram->symbols); i++) {
-      d = al_get(&pGram->symbols, i);
+    for (i = 0; i < al_length(&pGram->terminals); i++) {
+      d = al_get(&pGram->terminals, i);
+      free(d.data_ptr);
+    }
+    for (i = 0; i < al_length(&pGram->nonterminals); i++) {
+      d = al_get(&pGram->nonterminals, i);
       free(d.data_ptr);
     }
   }
@@ -388,8 +417,13 @@ void cnf_destroy(cnf *pGram, bool free_symbols)
     d = al_get(&pGram->rules_one, i);
     cnf_rule_delete((cnf_rule *)d.data_ptr);
   }
+  for (i = 0; i < al_length(&pGram->rules_two); i++) {
+    d = al_get(&pGram->rules_two, i);
+    cnf_rule_delete((cnf_rule *)d.data_ptr);
+  }
 
-  al_destroy(&pGram->symbols);
+  al_destroy(&pGram->terminals);
+  al_destroy(&pGram->nonterminals);
   al_destroy(&pGram->rules_one);
   al_destroy(&pGram->rules_two);
 }
