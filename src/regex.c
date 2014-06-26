@@ -37,6 +37,8 @@
 
 *******************************************************************************/
 
+#include <stdbool.h>
+
 #include "regex.h"      // the functions we are defining
 #include "fsm.h"        // tools to implement regex
 #include "libstephen.h" // for smb_al
@@ -182,4 +184,159 @@ void fsm_kleene(fsm *f)
 
   // Change the start state (officially)
   f->start = newStart;
+}
+
+/**
+   @brief Adjust the FSM according to its modifier, if any.
+
+   When a character, character class, or parenthesized regex is read in, it
+   could be followed by the modifiers `*`, `+`, or `?`.  This function adjusts
+   the FSM for those modifiers, and adjusts the location pointer if one was
+   present.
+
+   @param new The newly read in FSM.
+   @param regex The pointer to the pointer to the location in the regex.
+ */
+void check_modifier(fsm *new, const wchar_t **regex)
+{
+  fsm *f;
+
+  switch ((*regex)[1]) {
+
+  case L'*':
+    fsm_kleene(new);
+    (*regex)++;
+    break;
+
+  case L'+':
+    f = fsm_copy(new);
+    fsm_kleene(f);
+    fsm_concat(new, f);
+    fsm_delete(f, true);
+    (*regex)++;
+    break;
+
+  case L'?':
+    // Create the machine that accepts the empty string
+    f = fsm_create();
+    f->start = fsm_add_state(f, true);
+    fsm_union(new, f);
+    fsm_delete(f, true);
+    (*regex)++;
+    break;
+  }
+}
+
+/**
+   @brief Creates a FSM for a single character.
+   @param character The character to make a transition for.
+   @returns FSM for the character.
+ */
+fsm *create_single_char(wchar_t character)
+{
+  fsm *f = fsm_create();
+  int s0 = fsm_add_state(f, false);
+  int s1 = fsm_add_state(f, true);
+  fsm_add_single(f, s0, s1, character, character, FSM_TRANS_POSITIVE);
+  f->start= s0;
+  return f;
+}
+
+/**
+   @brief Create a FSM for a character class.
+
+   Reads a character class (pointed by `*regex`), which it then converts to a
+   single transition FSM.
+
+   @param regex Pointer to pointer to location in string!
+   @returns FSM for character class.
+ */
+fsm *create_char_class(const wchar_t **regex)
+{
+  // TODO: Implement character classes.
+  while (**regex != L']') {
+    (*regex)++;
+  }
+
+  return create_single_char(L'x');
+}
+
+/**
+   @brief The workhorse recursive helper to create_regex_fsm().
+
+   Crawls through a regex, holding a FSM of the expression so far.  Single
+   characters are concatenated as simple 0 -> 1 machines.  Parenthesis initiate
+   a recursive call.  Pipes union the current regex with everything after.
+
+   Needs to be called with a non-NULL value for both, which is why there is a
+   top level function.
+
+   @param regex Local pointer to the location in the regular expression.
+   @param final Pointer to the parent's location.
+   @return An FSM for the regular expression.
+ */
+fsm *create_regex_fsm_recursive(const wchar_t *regex, const wchar_t **final)
+{
+  // Initial FSM is a machine that accepts the empty string.
+  int i = 0;
+  fsm *curr = fsm_create();
+  fsm *new;
+  curr->start = fsm_add_state(curr, true);
+
+  // ASSUME THAT ALL PARENS, ETC ARE BALANCED!
+
+  for ( ; *regex; regex++) {
+    switch (*regex) {
+
+    case L'(':
+      new = create_regex_fsm_recursive(regex + 1, &regex);
+      check_modifier(new, &regex);
+      fsm_concat(curr, new);
+      fsm_delete(new, true);
+      break;
+
+    case L')':
+      *final = regex;
+      return curr;
+      break;
+
+    case L'|':
+      // Need to pass control back up without attempting to check modifiers.
+      new = create_regex_fsm_recursive(regex + 1, &regex);
+      fsm_union(curr, new);
+      fsm_delete(new, true);
+      *final = regex;
+      return curr;
+      break;
+
+    case L']':
+      new = create_char_class(&regex);
+      check_modifier(new, &regex);
+      fsm_concat(curr, new);
+      fsm_delete(new, true);
+      break;
+
+    default:
+      // A regular letter
+      new = create_single_char(*regex);
+      check_modifier(new, &regex);
+      fsm_concat(curr, new);
+      fsm_delete(new, true);
+      break;
+
+      // TODO: Add escape character support.
+      
+    }
+  }
+  *final = regex;
+  return curr;
+}
+
+/**
+   @brief Construct a FSM to accept the given regex.
+   @param regex Regular expression string.
+   @return A FSM that can be used to decide the language of the regex.
+ */
+fsm *create_regex_fsm(const wchar_t *regex){
+  return create_regex_fsm_recursive(regex, &regex);
 }

@@ -38,6 +38,7 @@
 *******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <wchar.h>
 
 #include "gram.h"
@@ -48,6 +49,7 @@ void simple_gram(void);
 void simple_fsm(void);
 void read_fsm(void);
 void read_combine_fsm(void);
+void regex(int argc, char **argv);
 
 /**
    @brief Main entry point of the program.
@@ -64,7 +66,11 @@ int main(int argc, char **argv)
 {
   printf("Initial bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
 
-  simple_gram();
+  regex(argc, argv);
+
+  printf ("After regex(): %d\n",SMB_GET_MALLOC_COUNTER);
+
+  //simple_gram();
 
   printf("After simple_gram(): %d\n", SMB_GET_MALLOC_COUNTER);
 
@@ -81,6 +87,53 @@ int main(int argc, char **argv)
   printf("After read_combine_fsm() [final]: %d\n", SMB_GET_MALLOC_COUNTER);
 
   return 0;
+}
+
+/**
+   @brief A light test of my regular expression parser.
+
+   Runs a regular expression on a series of strings, and prints the results to
+   stdout.  `argv[1]` is used for the regular expression, and the following
+   elements of the array are the test strings.  Generally, argc and argv should
+   come from main().  It is expected that argv[0] contains the program name, and
+   is therefore skipped.
+
+   @param argc Number of items it the argv array.
+   @param argv An array of command line args to use.
+ */
+void regex(int argc, char **argv)
+{
+  wchar_t *regex, *str;
+  size_t len;
+  fsm * compiled_fsm;
+  argc--;
+  argv++;
+
+  if (argc == 0) {
+    printf("Too few args.\n");
+    return;
+  }
+
+  len = (mbstowcs(NULL, *argv, 0) + 1) * sizeof(wchar_t);
+  regex = (wchar_t *) malloc(len);
+  mbstowcs(regex, *argv, len);
+  printf("Regex is \"%Ls\".\n", regex);
+  compiled_fsm = create_regex_fsm(regex);
+
+  while (--argc) {
+    len = (mbstowcs(NULL, *(++argv), 0) + 1) * sizeof(wchar_t);
+    str = (wchar_t *) malloc(len);
+    mbstowcs(str, *argv, len);
+    printf("String \"%Ls\" %s.\n", str, 
+           fsm_sim_nondet(compiled_fsm, str) ? "accepted" : "rejected");
+    free(str);
+  }
+
+  //printf("Regex:\n");
+  //fsm_print(compiled_fsm, stdout);
+
+  free(regex);
+  fsm_delete(compiled_fsm, true);
 }
 
 /**
