@@ -292,6 +292,19 @@ fsm *digit_fsm(int type)
   return f;
 }
 
+/**
+   @brief Returns an FSM for an escape sequence, outside of a character class.
+
+   Basically, adds the \W, \w, \D, \d, \S, \s character classes to the already
+   existing character escape sequences covered by get_escape().
+   
+   Expects that `*regex` points to the backslash in the escape sequence.  Always
+   returns such that `*regex` points to the LAST character in the escape
+   sequence.
+
+   @param regex Pointer to the pointer to the backslash escape.
+   @return FSM to accept the backslash escape sequence.
+ */
 fsm *escaped_fsm(const wchar_t **regex)
 {
   char c;
@@ -344,12 +357,15 @@ fsm *create_char_class(const wchar_t **regex)
   ll_init(&start);
   ll_init(&end);
 
+  // Detect whether the character class is positive or negative
   (*regex)++;
   if (**regex == L'^') {
     type = FSM_TRANS_NEGATIVE;
     (*regex)++;
   }
   
+  // Loop through characters in the character class, recording each start-end
+  // pair for the transition.
   for ( ; **regex != L']'; (*regex)++) {
     if (**regex == L'-') {
       state = RANGE;
@@ -368,12 +384,15 @@ fsm *create_char_class(const wchar_t **regex)
         ll_append(&start, d);
         ll_append(&end, d);
       } else {
+        // Modify the last transition if this is a range
         ll_set(&end, ll_length(&end)-1, d);
         state = NORMAL;
       }
     }
   }
 
+  // Now, create an fsm and fsm_trans, and write the recorded pairs into the
+  // allocated start and end buffers.
   f = fsm_create();
   src = fsm_add_state(f, false);
   dest = fsm_add_state(f, true);
