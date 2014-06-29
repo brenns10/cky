@@ -42,8 +42,10 @@
 #include <wchar.h>
 #include <wctype.h>
 #include <stdbool.h>
+
 #include "libstephen.h" // already in fsm.h, but used here too
 #include "fsm.h"
+#include "str.h"
 
 /**
    @brief Reading the 'source' state of the transition. 
@@ -296,6 +298,21 @@ fsm *fsm_create(void)
 }
 
 /**
+   @brief Creates a FSM for a single character.
+   @param character The character to make a transition for.
+   @returns FSM for the character.
+ */
+fsm *fsm_create_single_char(wchar_t character)
+{
+  fsm *f = fsm_create();
+  int s0 = fsm_add_state(f, false);
+  int s1 = fsm_add_state(f, true);
+  fsm_add_single(f, s0, s1, character, character, FSM_TRANS_POSITIVE);
+  f->start= s0;
+  return f;
+}
+
+/**
    @brief Clean up a FSM, but do not free it.
 
    @param f The FSM to clean up
@@ -496,87 +513,6 @@ int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)
 }
 
 /**
-   @brief Get the value of a hexadecimal digit.
-   @param digit The digit
-   @return The value of the digit in hexadecimal.
- */
-int hexit_val(wchar_t digit) {
-  if (iswdigit(digit)) {
-    return digit - L'0';
-  } else if (digit == L'a' || digit == L'b' || digit == L'c' || digit == L'd'
-             || digit == L'e' || digit == L'f' || digit == L'A' || digit == L'B'
-             || digit == L'C' || digit == L'D' || digit == L'E' || digit == L'F'){
-    return 10 + towupper(digit) - L'A';
-  }
-}
-
-/**
-   @brief Get an escaped character from the string source.
-
-   This function will advance the source pointer to after the escape sequence.
-   It can get escapes abfnrtv\0xu, which includes octal, hexadecimal, and
-   unicode escapes.
-
-   @brief source The source pointer
-   @return The character that was escaped
- */
-wchar_t get_escape(const wchar_t **source) {
-  wchar_t value = 0;
-  wchar_t specifier = **source;
-  SMB_DP("      Escape specifier '%Lc'\n", specifier);
-  (*source)++;
-  switch (specifier) {
-  case L'a':
-    return L'\a';
-  case L'b':
-    return L'\b';
-  case L'e':
-    return EPSILON;
-  case L'f':
-    return L'\f';
-  case L'n':
-    return L'\n';
-  case L'r':
-    return L'\r';
-  case L't':
-    return L'\t';
-  case L'v':
-    return L'\v';
-  case L'\\':
-    return L'\\';
-  case L'0':
-    value += 64 * (**source);
-    (*source)++;
-    value += 8 * (**source);
-    (*source)++;
-    value += **source;
-    (*source)++;
-    SMB_DP("      Escaped octal: '%Lc'\n", value);
-    return value;
-  case L'x':
-    value += 16 * hexit_val(**source);
-    (*source)++;
-    value += hexit_val(**source);
-    (*source)++;
-    SMB_DP("      Escaped hex: '%Lc'\n", value);
-    return value;
-  case L'u':
-    value += 16 * 16 * 16 * hexit_val(**source);
-    (*source)++;
-    value += 16 * 16 * hexit_val(**source);
-    (*source)++;
-    value += 16 * hexit_val(**source);
-    (*source)++;
-    value += hexit_val(**source);
-    (*source)++;
-    SMB_DP("      Escaped unicode: '%Lc'\n", value);
-    return value;
-  default:
-    return specifier;
-  }
-}
-
-/**
    @brief Reads a transition from a line.
 
    This function reads a transition from a line.  The transition can have an
@@ -660,7 +596,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
       SMB_DP("SFIRSTCHAR\n");
       if (**source == L'\\') {
         (*source)++;
-        d.data_llint = get_escape(source); //advances after the escape
+        d.data_llint = get_escape(source, EPSILON); //advances after the escape
         SMB_DP("      Got c1 from escape.\n");
       } else {
         d.data_llint = **source;
@@ -681,7 +617,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
       SMB_DP("SSECONDCHAR\n");
       if (**source == L'\\') {
         (*source)++;
-        d.data_llint = get_escape(source);
+        d.data_llint = get_escape(source, EPSILON);
         (*source)--;
         SMB_DP("      Got c2 from escape.\n");
       } else {

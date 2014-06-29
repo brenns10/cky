@@ -66,12 +66,13 @@ src/gram.c: src/gram.h src/libstephen.h
 src/gram.h: src/libstephen.h
 src/main.c: src/gram.h
 src/fsm.h: src/libstephen.h
-src/fsm.c: src/fsm.h src/libstephen.h
-src/regex.c: src/regex.h src/fsm.h src/libstephen.h
+src/fsm.c: src/fsm.h src/libstephen.h src/str.h
+src/regex.c: src/regex.h src/fsm.h src/libstephen.h src/str.h
 src/regex.h: src/fsm.h
+src/str.c: src/str.h src/fsm.h
 
 # --- Objects
-OBJECTS = obj/gram.o obj/main.o obj/fsm.o obj/regex.o
+OBJECTS = obj/gram.o obj/main.o obj/fsm.o obj/regex.o obj/str.o
 
 obj/gram.o: src/gram.c
 	$(CC) $(CFLAGS) src/gram.c -o obj/gram.o
@@ -84,6 +85,9 @@ obj/fsm.o: src/fsm.c
 
 obj/regex.o: src/regex.c
 	$(CC) $(CFLAGS) src/regex.c -o obj/regex.o
+
+obj/str.o: src/str.c
+	$(CC) $(CFLAGS) src/str.c -o obj/str.o
 
 # --- Binaries
 bin/main: $(OBJECTS) obj/libstephen.a

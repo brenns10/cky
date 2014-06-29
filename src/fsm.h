@@ -242,6 +242,7 @@ bool fsm_trans_check(const fsm_trans *ft, wchar_t c);
 
 void fsm_init(fsm *f);
 fsm *fsm_create(void);
+fsm *fsm_create_single_char(wchar_t character);
 void fsm_destroy(fsm *f, bool free_transitions);
 void fsm_delete(fsm *f, bool free_transitions);
 fsm *fsm_copy(const fsm *f);
