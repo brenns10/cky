@@ -38,6 +38,7 @@
 *******************************************************************************/
 
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "regex.h"      // the functions we are defining
 #include "fsm.h"        // tools to implement regex
