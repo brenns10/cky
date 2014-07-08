@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <wchar.h>
 
+#include "libstephen.h"
 #include "gram.h"
 #include "fsm.h"
 #include "regex.h"
@@ -49,7 +50,23 @@ void simple_gram(void);
 void simple_fsm(void);
 void read_fsm(void);
 void read_combine_fsm(void);
-void regex(int argc, char **argv);
+void regex(void);
+
+void help(char *name)
+{
+  printf("Usage: %s [TESTS]\n", name);
+  puts("Runs tests on CKY parser and regex engine.");
+  puts("");
+  puts("Tests:");
+  puts("  -g, --simple-gram       create and print a grammar");
+  puts("  -f, --simple-fsm        programmatically create and run a certain FSM");
+  puts("  -r, --read-fsm          create an FSM by reading a string, and run it");
+  puts("  -c, --read-combine-fsm  read FSMs and combine them using various operators");
+  puts("  -e, --regex             input regex and test strings");
+  puts("");
+  puts("Misc:");
+  puts("  -h, --help              display this help message and exit");
+}
 
 /**
    @brief Main entry point of the program.
@@ -64,75 +81,89 @@ void regex(int argc, char **argv);
  */
 int main(int argc, char **argv)
 {
-  printf("Initial bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
+  smb_ad data;
+  bool executed = false;
 
-  regex(argc, argv);
+  arg_data_init(&data);
+  process_args(&data, argc - 1, argv + 1);
 
-  printf ("After regex(): %d\n",SMB_GET_MALLOC_COUNTER);
+  if (check_flag(&data, 'h') || check_long_flag(&data, "help")) {
+    help(argv[0]);
+    arg_data_destroy(&data);
+    exit(0);
+  }
 
-  //simple_gram();
+  if (check_flag(&data, 'g') || check_long_flag(&data, "simple-gram")) {
+    simple_gram();
+    executed = true;
+  }
+  if (check_flag(&data, 'f') || check_long_flag(&data, "simple-fsm")) {
+    simple_fsm();
+    executed = true;
+  }
+  if (check_flag(&data, 'r') || check_long_flag(&data, "read-fsm")) {
+    read_fsm();
+    executed = true;
+  }
+  if (check_flag(&data, 'c') || check_long_flag(&data, "read-combine-fsm")) {
+    read_combine_fsm();
+    executed = true;
+  }
+  if (check_flag(&data, 'e') || check_long_flag(&data, "regex")) {
+    regex();
+    executed = true;
+  }
 
-  printf("After simple_gram(): %d\n", SMB_GET_MALLOC_COUNTER);
+  if (!executed) {
+    help(argv[0]);
+    arg_data_destroy(&data);
+    exit(1);
+  }
 
-  //simple_fsm();
-
-  printf("After simple_fsm(): %d\n", SMB_GET_MALLOC_COUNTER);
-
-  //read_fsm();
-
-  printf("After read_fsm(): %d\n", SMB_GET_MALLOC_COUNTER);
-
-  //read_combine_fsm();
-
-  printf("After read_combine_fsm() [final]: %d\n", SMB_GET_MALLOC_COUNTER);
-
+  arg_data_destroy(&data);
+  printf("\nFinal bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
   return 0;
 }
 
 /**
    @brief A light test of my regular expression parser.
 
-   Runs a regular expression on a series of strings, and prints the results to
-   stdout.  `argv[1]` is used for the regular expression, and the following
-   elements of the array are the test strings.  Generally, argc and argv should
-   come from main().  It is expected that argv[0] contains the program name, and
-   is therefore skipped.
-
-   @param argc Number of items it the argv array.
-   @param argv An array of command line args to use.
+   Prompts for a regex, and then loops prompting for test strings.  Runs the
+   regex on each test string and reports to stdout whether they are accepted or
+   rejected.
  */
-void regex(int argc, char **argv)
+void regex(void)
 {
-  wchar_t *regex, *str;
-  size_t len;
+  wchar_t *str;
+  int alloc;
   fsm * compiled_fsm;
-  argc--;
-  argv++;
 
-  if (argc == 0) {
-    printf("Too few args.\n");
-    return;
+  printf("Input Regex: ");
+  str = smb_read_line(stdin, &alloc);
+  puts("Parsing...");
+  compiled_fsm = create_regex_fsm(str);
+  smb_free(wchar_t, str, alloc);
+  printf("Parsed!  Do you wish to see the FSM? [y/n]: ");
+
+  str = smb_read_line(stdin, &alloc);
+  if (str[0] == L'y' || str[0] == L'Y') {
+    puts("");
+    fsm_print(compiled_fsm, stdout);
+  } else { puts(""); }
+  smb_free(wchar_t, str, alloc);
+
+  puts("");
+
+  while (true) {
+    printf("Input Test String: ");
+    str = smb_read_line(stdin, &alloc);
+    if (wcscmp(str, L"exit") == 0) {
+      smb_free(wchar_t, str, alloc);
+      break;
+    }
+    printf(fsm_sim_nondet(compiled_fsm, str) ? "Accepted.\n\n" : "Rejected.\n\n");
+    smb_free(wchar_t, str, alloc);
   }
-
-  len = (mbstowcs(NULL, *argv, 0) + 1) * sizeof(wchar_t);
-  regex = (wchar_t *) malloc(len);
-  mbstowcs(regex, *argv, len);
-  printf("Regex is \"%Ls\".\n", regex);
-  compiled_fsm = create_regex_fsm(regex);
-
-  while (--argc) {
-    len = (mbstowcs(NULL, *(++argv), 0) + 1) * sizeof(wchar_t);
-    str = (wchar_t *) malloc(len);
-    mbstowcs(str, *argv, len);
-    printf("String \"%Ls\" %s.\n", str, 
-           fsm_sim_nondet(compiled_fsm, str) ? "accepted" : "rejected");
-    free(str);
-  }
-
-  //printf("Regex:\n");
-  //fsm_print(compiled_fsm, stdout);
-
-  free(regex);
   fsm_delete(compiled_fsm, true);
 }
 
@@ -146,7 +177,7 @@ void regex(int argc, char **argv)
  */
 void read_combine_fsm(void)
 {
-  const wchar_t *m1spec = 
+  const wchar_t *m1spec =
     L"start:0\n"
     L"accept:7\n"
     L"0-1:+s-s S-S\n"
@@ -157,7 +188,7 @@ void read_combine_fsm(void)
     L"5-6:+e-e\n"
     L"6-7:+n-n\n";
 
-  const wchar_t *m2spec = 
+  const wchar_t *m2spec =
     L"start:0\n"
     L"accept:7\n"
     L"0-1:+b-b B-B\n"
@@ -193,7 +224,7 @@ void read_combine_fsm(void)
 
   for (i = 0; i < sizeof(inputs)/sizeof(wchar_t *); i++) {
     printf("BEGIN TESTING: \"%Ls\".\n", inputs[i]);
-    
+
     printf("M1: %s\n", fsm_sim_nondet(m1, inputs[i]) ? "accept" : "reject");
     printf("M2: %s\n", fsm_sim_nondet(m2, inputs[i]) ? "accept" : "reject");
     printf("M1 U M2: %s\n", fsm_sim_nondet(m1Um2, inputs[i]) ? "accept" : "reject");
@@ -285,7 +316,7 @@ void simple_fsm(void)
    inputs.
  */
 void read_fsm(void) {
-  const wchar_t *input = 
+  const wchar_t *input =
     L"start:0\n"
     L"accept:3\n"
     L"0-0:+b-b\n"
@@ -300,7 +331,7 @@ void read_fsm(void) {
   if (f == NULL) {
     return;
   }
-  
+
   printf("Running on i1=\"%Ls\"\n", i1);
   if (fsm_sim_nondet(f, i1))
     printf("Accept.\n");
