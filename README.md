@@ -27,7 +27,9 @@ this project.
 
 Theoretical regular expressions are less feature rich than computer regular
 expressions.  My implementation will favor a balance between the two:
+
 - The syntax will follow computer regular expressions (not the formal syntax).
+
 - Not all common features of regular expressions will be allowed.  I currently
   plan to allow '.' as a universal character, '?' as an optional character, some
   character class shortcuts, and possibly explicit number selection via brackets
@@ -70,3 +72,25 @@ For now, I'm concerned with the regular expression side of things.
 
 - I've created a function that will take a file and a regular expression, and it
   will find all matches.
+
+## Future
+
+I plan on the following:
+
+- Cleaning up the code in fsm.c and regex.c.  It's a bit messy right now.  The
+  code 'just works'.
+
+- Unit testing.  I have a unit testing framework, but coming up with tests was
+  left behind in favor of practical demonstrations of functionality.  Now, I'm
+  assured of the functionality, and I desperately need tests.
+
+- Adding convenience functions that work for UTF-8 and UCS-4.  Most of my
+  parsing is done in UCS-4 for it's nifty indexing features.  So, when functions
+  call to have text searched, they first need to convert to UCS-4.  I can handle
+  that for them!
+
+- Multiple compile targets.  I plan on using these so I can make a grep-like
+  tool for searching files, other binaries for other ideas, and a test binary.
+
+- Further in the future, I plan on actually implementing a parser.  It will use
+  my regex engine as the lexical scanner.
