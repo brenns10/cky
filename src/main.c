@@ -53,6 +53,7 @@ void read_fsm(void);
 void read_combine_fsm(void);
 void regex(void);
 void search(void);
+void dot(void);
 
 void help(char *name)
 {
@@ -66,6 +67,7 @@ void help(char *name)
   puts("  -c, --read-combine-fsm  read FSMs and combine them using various operators");
   puts("  -e, --regex             input regex and test strings");
   puts("  -s, --search            regex search file");
+  puts("  -d, --dot               create graphviz dot from regex");
   puts("");
   puts("Misc:");
   puts("  -h, --help              display this help message and exit");
@@ -120,6 +122,11 @@ int main(int argc, char **argv)
     search();
     executed = true;
   }
+  if (check_flag(&data, 'd') || check_long_flag(&data, "dot")) {
+    dot();
+    arg_data_destroy(&data);
+    return 0; // exit silently
+  }
 
   if (!executed) {
     help(argv[0]);
@@ -130,6 +137,19 @@ int main(int argc, char **argv)
   arg_data_destroy(&data);
   printf("\nFinal bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
   return 0;
+}
+
+void dot(void)
+{
+  int alloc;
+  wchar_t *str;
+  fsm *compiled_fsm;
+
+  str = smb_read_linew(stdin, &alloc);
+  compiled_fsm = create_regex_fsm(str);
+  smb_free(wchar_t, str, alloc);
+  fsm_dot(compiled_fsm, stdout);
+  fsm_delete(compiled_fsm, true);
 }
 
 char *read_file(FILE *file, int *bytes)

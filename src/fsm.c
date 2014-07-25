@@ -754,13 +754,14 @@ fsm *fsm_read(const wchar_t *source)
    @return The filtered version.  It should be backslash escaped if different
    from the original character.
  */
-wchar_t fsm_print_filter(wchar_t input)
+bool fsm_print_filter(wchar_t *input)
 {
-  switch (input) {
+  switch (*input) {
   case EPSILON:
-    return L'e';
+    *input = L'e';
+    return true;
   default:
-    return input;
+    return false;
   }
 }
 
@@ -777,17 +778,12 @@ wchar_t fsm_print_filter(wchar_t input)
  */
 void fsm_print_pair(FILE *dest, wchar_t c1, wchar_t c2)
 {
-  wchar_t c1alt = fsm_print_filter(c1);
-  wchar_t c2alt = fsm_print_filter(c2);
-  if (c1alt != c1 && c2alt != c2) {
-    fprintf(dest, "\\%Lc-\\%Lc", c1alt, c2alt);
-  } else if (c1alt != c1 && c2alt == c2) {
-    fprintf(dest, "\\%Lc-%Lc", c1alt, c2);
-  } else if (c1alt == c1 && c2alt != c2) {
-    fprintf(dest, "%Lc-\\%Lc", c1, c2alt);
-  } else {
-    fprintf(dest, "%Lc-%Lc", c1, c2);
-  }
+  bool c1alt = fsm_print_filter(&c1);
+  bool c2alt = fsm_print_filter(&c2);
+
+  fprintf(dest, c1alt ? "\\%Lc" : "%Lc", c1);
+  fprintf(dest, "-");
+  fprintf(dest, c2alt ? "\\%Lc" : "%Lc", c2);
 }
 
 /**
@@ -824,6 +820,64 @@ void fsm_print(fsm *f, FILE *dest)
       fprintf(dest, "\n");
     }
   }
+}
+
+void fsm_dot_char(FILE * dest, wchar_t c)
+{
+  switch (c) {
+  case EPSILON:
+    fprintf(dest, "eps");
+    break;
+  case L'\"':
+    fprintf(dest, "\"");
+    break;
+  default:
+    fprintf(dest, "%Lc", c);
+    break;
+  }
+}
+
+void fsm_dot(fsm *f, FILE *dest)
+{
+  int i, j;
+  smb_al *list;
+  wchar_t *start, *end;
+  fsm_trans *ft;
+
+  // Dot prologue
+  fprintf(dest, "digraph regex {\n");
+  fprintf(dest, "  node [shape=box];\n");
+
+  // Start state is an oval
+  fprintf(dest, "  s%d [shape=oval];\n", f->start);
+  // Accepting states are octagons
+  for (i = 0; i < al_length(&f->accepting); i++) {
+    fprintf(dest, "  s%d [shape=octagon];\n", al_get(&f->accepting, i).data_llint);
+  }
+
+  for (i = 0; i < al_length(&f->transitions); i++) {
+    list = (smb_al *) al_get(&f->transitions, i).data_ptr;
+    for (j = 0; j < al_length(list); j++) {
+      ft = (fsm_trans *) al_get(list, j).data_ptr;
+      fprintf(dest, "  s%d -> s%d ", i, ft->dest);
+      fprintf(dest, "[label=\"");
+      start = ft->start;
+      end = ft->end;
+      while (*(start+1) != L'\0') {
+        fsm_dot_char(dest, *start);
+        fprintf(dest, "-");
+        fsm_dot_char(dest, *end);
+        fprintf(stdout, " ");
+        start++; end++;
+      }
+      fsm_dot_char(dest, *start);
+      fprintf(dest, "-");
+      fsm_dot_char(dest, *end);
+      fprintf(dest, "\"];\n");
+    }
+  }
+
+  fprintf(dest, "}\n");
 }
 
 /**
