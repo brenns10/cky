@@ -392,6 +392,13 @@ fsm *create_char_class(const wchar_t **regex)
     }
   }
 
+  if (state == RANGE) {
+    // The last hyphen was meant to be literal.  Yay!
+    d.data_llint = L'-';
+    ll_append(&start, d);
+    ll_append(&end, d);
+  }
+
   // Now, create an fsm and fsm_trans, and write the recorded pairs into the
   // allocated start and end buffers.
   f = fsm_create();
