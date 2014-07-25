@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wchar.h>
+#include <string.h>
 
 #include "libstephen.h"
 #include "gram.h"
@@ -51,6 +52,7 @@ void simple_fsm(void);
 void read_fsm(void);
 void read_combine_fsm(void);
 void regex(void);
+void search(void);
 
 void help(char *name)
 {
@@ -63,6 +65,7 @@ void help(char *name)
   puts("  -r, --read-fsm          create an FSM by reading a string, and run it");
   puts("  -c, --read-combine-fsm  read FSMs and combine them using various operators");
   puts("  -e, --regex             input regex and test strings");
+  puts("  -s, --search            regex search file");
   puts("");
   puts("Misc:");
   puts("  -h, --help              display this help message and exit");
@@ -113,6 +116,10 @@ int main(int argc, char **argv)
     regex();
     executed = true;
   }
+  if (check_flag(&data, 's') || check_long_flag(&data, "search")) {
+    search();
+    executed = true;
+  }
 
   if (!executed) {
     help(argv[0]);
@@ -123,6 +130,88 @@ int main(int argc, char **argv)
   arg_data_destroy(&data);
   printf("\nFinal bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
   return 0;
+}
+
+char *read_file(FILE *file, int *bytes)
+{
+  char *buffer;
+  // assume file is open
+  fseek(file, 0L, SEEK_END);
+  *bytes = (int) ftell(file) + 1; // extra for null terminator
+  fseek(file, 0L, SEEK_SET);
+  buffer = smb_new(char, *bytes);
+  if (buffer == NULL) {
+    PRINT_ERROR_LOC;
+    fprintf(stderr, "Error allocating memory for file.\n");
+    return NULL;
+  }
+  fread(buffer, sizeof(char), *bytes, file);
+  return buffer;
+}
+
+void search(void)
+{
+  char *filename;
+  FILE *file;
+  char *regex;
+  wchar_t *wregex;
+  fsm *regex_fsm;
+  char *input;
+  wchar_t *winput;
+  int alloc, len;
+  smb_al *results;
+  regex_hit *hit;
+  int i;
+
+  printf("Input Filename: ");
+  filename = smb_read_line(stdin, &alloc);
+  file = fopen(filename, "r");
+  smb_free(char, filename, alloc);
+  if (file == NULL) {
+    perror("Error opening file: ");
+    return;
+  }
+
+  printf("Input Regex: ");
+  regex = smb_read_line(stdin, &alloc);
+  len = strlen(regex) + 1;
+  wregex = smb_new(wchar_t, len);
+  if (utf8toucs4(wregex, regex, len) != 0) {
+    PRINT_ERROR_LOC;
+    fprintf(stderr, "Error converting to UCS 4.\n");
+    smb_free(char, regex, alloc);
+    smb_free(wchar_t, wregex, len);
+    return;
+  }
+  smb_free(char, regex, alloc);
+  regex_fsm = create_regex_fsm(wregex);
+  smb_free(wchar_t, wregex, len);
+
+  input = read_file(file, &alloc);
+  fclose(file);
+  len = strlen(input) + 1;
+  winput = smb_new(wchar_t, len);
+  if (utf8toucs4(winput, input, len) != 0) {
+    PRINT_ERROR_LOC;
+    fprintf(stderr, "Error converting to UCS 4.\n");
+    fsm_delete(regex_fsm, true);
+    smb_free(char, input, alloc);
+    smb_free(wchar_t, winput, len);
+    return;
+  }
+  smb_free(char, input, alloc);
+
+  results = fsm_search(regex_fsm, winput, false, false);
+  for (i = 0; i < al_length(results); i++) {
+    hit = (regex_hit *)al_get(results, i).data_ptr;
+    printf("=> Hit at index %d, length %d\n", hit->start, hit->length);
+    printf("   \"%.*ls\"\n", hit->length, winput + hit->start);
+    regex_hit_delete(hit);
+  }
+
+  smb_free(wchar_t, winput, len);
+  fsm_delete(regex_fsm, true);
+  al_delete(results);
 }
 
 /**
@@ -139,13 +228,13 @@ void regex(void)
   fsm * compiled_fsm;
 
   printf("Input Regex: ");
-  str = smb_read_line(stdin, &alloc);
+  str = smb_read_linew(stdin, &alloc);
   puts("Parsing...");
   compiled_fsm = create_regex_fsm(str);
   smb_free(wchar_t, str, alloc);
   printf("Parsed!  Do you wish to see the FSM? [y/n]: ");
 
-  str = smb_read_line(stdin, &alloc);
+  str = smb_read_linew(stdin, &alloc);
   if (str[0] == L'y' || str[0] == L'Y') {
     puts("");
     fsm_print(compiled_fsm, stdout);
@@ -156,7 +245,7 @@ void regex(void)
 
   while (true) {
     printf("Input Test String: ");
-    str = smb_read_line(stdin, &alloc);
+    str = smb_read_linew(stdin, &alloc);
     if (wcscmp(str, L"exit") == 0) {
       smb_free(wchar_t, str, alloc);
       break;

@@ -502,3 +502,115 @@ fsm *create_regex_fsm_recursive(const wchar_t *regex, const wchar_t **final)
 fsm *create_regex_fsm(const wchar_t *regex){
   return create_regex_fsm_recursive(regex, &regex);
 }
+
+void regex_hit_init(regex_hit *obj, int start, int length)
+{
+  // Initialization logic
+  obj->start = start;
+  obj->length = length;
+}
+
+regex_hit *regex_hit_create(int start, int length)
+{
+  // Allocate space
+  regex_hit *obj = (regex_hit *) malloc(sizeof(regex_hit));
+  CLEAR_ALL_ERRORS;
+
+  // Check for allocation error
+  if (!obj) {
+    RAISE(ALLOCATION_ERROR);
+    return NULL;
+  }
+
+  // Initialize
+  regex_hit_init(obj, start, length);
+
+  if (CHECK(ALLOCATION_ERROR)) {
+    free(obj);
+    return NULL;
+  }
+
+  SMB_INCREMENT_MALLOC_COUNTER(sizeof(regex_hit));
+  return obj;
+}
+
+void regex_hit_destroy(regex_hit *obj)
+{
+  // Cleanup logic (none)
+}
+
+void regex_hit_delete(regex_hit *obj) {
+  if (obj) {
+    regex_hit_destroy(obj);
+    free(obj);
+    SMB_DECREMENT_MALLOC_COUNTER(sizeof(regex_hit));
+  } else {
+    fprintf(stderr, "regex_hit_delete: called with null pointer.\n");
+  }
+}
+
+smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool overlap)
+{
+  fsm_sim *curr_sim;
+  int start = 0, length, last_length, res;
+  smb_al *results = al_create();
+  DATA d;
+
+  SMB_DP("STARTING FSM SEARCH\n");
+
+  while (srchText[start] != L'\0') {
+    // Start an FSM simulation at the current character.
+    curr_sim = fsm_sim_nondet_begin(regex_fsm, srchText + start);
+    length = 0;
+    last_length = -1;
+    res = -1;
+
+    SMB_DP("=> Begin simulation at index %d: '%lc'.\n", start, srchText[start]);
+
+    while (srchText[start + length] != L'\0' && res != FSM_SIM_REJECTED) {
+      // Step through the FSM simulation until accepting.
+      fsm_sim_nondet_step(curr_sim);
+      res = fsm_sim_nondet_state(curr_sim);
+      length++;
+      SMB_DP("   => On step (length %d), res=%d.\n", length, res);
+
+      // When we encounter a possible match, mark it to record.  We only have
+      // one match per search, and we want the largest match per search.
+      if (res == FSM_SIM_ACCEPTING || res == FSM_SIM_ACCEPTED) {
+        last_length = length;
+        SMB_DP("      Currently accepting!\n");
+      }
+      // If the search reports input exhausted, we leave the loop.
+      if (res == FSM_SIM_ACCEPTED || res == FSM_SIM_REJECTED) {
+        goto cleanup_simulation;
+      }
+    }
+
+  cleanup_simulation:
+    fsm_sim_delete(curr_sim, true);
+    if (last_length != -1) {
+      // If we encounter a match, record it.
+      SMB_DP("=> Found match of length %d.\n", last_length);
+      d.data_ptr = (void *) regex_hit_create(start, last_length);
+      al_append(results, d);
+      if (greedy) {
+        SMB_DP("=> Greedy return.\n");
+        return results;
+      }
+      if (overlap) {
+        start++;
+      } else {
+        start += last_length;
+      }
+    } else {
+      start++;
+    }
+  }
+  return results;
+}
+
+smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy, bool overlap)
+{
+  fsm *regex_fsm = create_regex_fsm(regex);
+  return fsm_search(regex_fsm, srchText, greedy, overlap);
+}

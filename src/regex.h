@@ -40,11 +40,25 @@
 #ifndef SMB_REGEX_H
 #define SMB_REGEX_H
 
+#include "libstephen.h"
 #include "fsm.h"
+
+typedef struct {
+  int start;
+  int length;
+} regex_hit;
+
+void regex_hit_init(regex_hit *obj, int start, int length);
+regex_hit *regex_hit_create(int start, int length);
+void regex_hit_destroy(regex_hit *obj);
+void regex_hit_delete(regex_hit *obj);
 
 void fsm_concat(fsm *first, const fsm *second);
 void fsm_union(fsm *first, const fsm *second);
 void fsm_kleene(fsm *f);
 fsm *create_regex_fsm(const wchar_t *regex);
+
+smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool overlap);
+smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy, bool overlap);
 
 #endif
