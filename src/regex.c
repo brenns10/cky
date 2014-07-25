@@ -488,9 +488,6 @@ fsm *create_regex_fsm_recursive(const wchar_t *regex, const wchar_t **final)
       fsm_concat(curr, new);
       fsm_delete(new, true);
       break;
-
-      // TODO: Add escape character support.
-      
     }
   }
   *final = regex;
