@@ -146,7 +146,7 @@ void dot(void)
   fsm *compiled_fsm;
 
   str = smb_read_linew(stdin, &alloc);
-  compiled_fsm = create_regex_fsm(str);
+  compiled_fsm = regex_parse(str);
   smb_free(wchar_t, str, alloc);
   fsm_dot(compiled_fsm, stdout);
   fsm_delete(compiled_fsm, true);
@@ -204,7 +204,7 @@ void search(void)
     return;
   }
   smb_free(char, regex, alloc);
-  regex_fsm = create_regex_fsm(wregex);
+  regex_fsm = regex_parse(wregex);
   smb_free(wchar_t, wregex, len);
 
   input = read_file(file, &alloc);
@@ -250,7 +250,7 @@ void regex(void)
   printf("Input Regex: ");
   str = smb_read_linew(stdin, &alloc);
   puts("Parsing...");
-  compiled_fsm = create_regex_fsm(str);
+  compiled_fsm = regex_parse(str);
   smb_free(wchar_t, str, alloc);
   printf("Parsed!  Do you wish to see the FSM? [y/n]: ");
 

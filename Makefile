@@ -88,6 +88,11 @@ src/str.c: src/str.h src/fsm.h
 src/fsm/datastructs.c: src/fsm.h src/libstephen.h
 src/fsm/io.c: src/fsm.h src/str.h src/libstephen.h
 src/fsm/simulation.c: src/fsm.h src/libstephen.h
+src/fsm/operations.c: src/fsm.h src/libstephen.h
+
+src/regex/datastructs.c: src/regex.h
+src/regex/parse.c: src/regex.h src/fsm.h src/libstephen.h src/str.h
+src/regex/search.c: src/regex.h src/fsm.h src/libstephen.h
 
 # --- Compile Rule
 obj/%.o: src/%.c

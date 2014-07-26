@@ -1,12 +1,12 @@
 /***************************************************************************//**
 
-  @file         regex.h
+  @file         datastructs.c
 
   @author       Stephen Brennan
 
-  @date         Created Sunday, 18 May 2014
+  @date         Created Saturday, 26 July 2014
 
-  @brief        Declarations for regular expression routines.
+  @brief        Regular expression data structure definitions.
 
   @copyright    Copyright (c) 2014, Stephen Brennan.
   All rights reserved.
@@ -37,48 +37,70 @@
 
 *******************************************************************************/
 
-#ifndef SMB_REGEX_H
-#define SMB_REGEX_H
-
-#include "libstephen.h"
-#include "fsm.h"
+#include "regex.h"   // functions we're implementing
 
 /**
-   @brief A struct to hold regular expression search hits.
+   @brief Initialize a regex_hit.
+   @param obj The (pre-allocated) regex_hit.
+   @param start The start location of the hit.
+   @param length The length of the hit.
  */
-typedef struct {
+void regex_hit_init(regex_hit *obj, int start, int length)
+{
+  // Initialization logic
+  obj->start = start;
+  obj->length = length;
+}
 
-  /**
-     @brief The location the hit starts at.  This is inclusive.
-   */
-  int start;
+/**
+   @brief Allocate a regex_hit.
+   @param start The start location of the hit.
+   @param length The end location of the hit.
+   @return Pointer to the regex_hit.  Must be freed with regex_hit_delete().
+ */
+regex_hit *regex_hit_create(int start, int length)
+{
+  // Allocate space
+  regex_hit *obj = (regex_hit *) malloc(sizeof(regex_hit));
+  CLEAR_ALL_ERRORS;
 
-  /**
-     @brief Number of characters in the hit.
-   */
-  int length;
+  // Check for allocation error
+  if (!obj) {
+    RAISE(ALLOCATION_ERROR);
+    return NULL;
+  }
 
-} regex_hit;
+  // Initialize
+  regex_hit_init(obj, start, length);
 
-// datastructs.c
-void regex_hit_init(regex_hit *obj, int start, int length);
-regex_hit *regex_hit_create(int start, int length);
-void regex_hit_destroy(regex_hit *obj);
-void regex_hit_delete(regex_hit *obj);
+  if (CHECK(ALLOCATION_ERROR)) {
+    free(obj);
+    return NULL;
+  }
 
-// parse.c
-void regex_parse_check_modifier(fsm *new, const wchar_t **regex);
-fsm *regex_parse_create_whitespace_fsm(int type);
-fsm *regex_parse_create_word_fsm(int type);
-fsm *regex_parse_create_digit_fsm(int type);
-fsm *regex_parse_outer_escape(const wchar_t **regex);
-fsm *regex_parse_char_class(const wchar_t **regex);
-fsm *regex_parse(const wchar_t *regex);
+  SMB_INCREMENT_MALLOC_COUNTER(sizeof(regex_hit));
+  return obj;
+}
 
-// search.c
-smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
-                   bool overlap);
-smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy,
-                     bool overlap);
+/**
+   @brief Clean up a regex_hit object.
+   @param obj The regex_hit object to clean up.
+ */
+void regex_hit_destroy(regex_hit *obj)
+{
+  // Cleanup logic (none)
+}
 
-#endif
+/**
+   @brief Clean up and free a regex_hit object.
+   @param obj The regex_hit to free.
+ */
+void regex_hit_delete(regex_hit *obj) {
+  if (obj) {
+    regex_hit_destroy(obj);
+    free(obj);
+    SMB_DECREMENT_MALLOC_COUNTER(sizeof(regex_hit));
+  } else {
+    fprintf(stderr, "regex_hit_delete: called with null pointer.\n");
+  }
+}

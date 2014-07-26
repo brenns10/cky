@@ -124,14 +124,14 @@
 
 /**
    @brief Contains information regarding a FSM transition.
-   
+
    The contained information includes the destination, the ranges of characters
    that are included in the transition, and the way to interpret these ranges.
 */
 typedef struct {
 
   /**
-     @brief Tells how to interpret the range.  
+     @brief Tells how to interpret the range.
 
      If it has value FSM_TRANS_POSITIVE, then everything within the range is
      accepted in the transition.  If it has value FSM_TRANS_NEGATIVE, then
@@ -237,7 +237,7 @@ void fsm_trans_destroy(fsm_trans *ft);
 void fsm_trans_delete(fsm_trans *ft);
 void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type,
                            int dest);
-fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type, 
+fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type,
                                    int dest);
 fsm_trans *fsm_trans_copy(const fsm_trans *ft);
 bool fsm_trans_check(const fsm_trans *ft, wchar_t c);
@@ -247,7 +247,6 @@ fsm *fsm_create(void);
 void fsm_destroy(fsm *f, bool free_transitions);
 void fsm_delete(fsm *f, bool free_transitions);
 fsm *fsm_create_single_char(wchar_t character);
-fsm *fsm_copy(const fsm *f);
 int fsm_add_state(fsm *f, bool accepting);
 void fsm_add_trans(fsm *f, int state, const fsm_trans *ft);
 fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end,
@@ -270,5 +269,12 @@ int fsm_sim_nondet_state(const fsm_sim *s);
 fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input);
 void fsm_sim_nondet_step(fsm_sim *s);
 bool fsm_sim_nondet(fsm *f, const wchar_t *input);
+
+// operations.c
+fsm *fsm_copy(const fsm *f);
+void fsm_copy_trans(fsm *dest, const fsm *src);
+void fsm_concat(fsm *first, const fsm *second);
+void fsm_union(fsm *first, const fsm *second);
+void fsm_kleene(fsm *f);
 
 #endif

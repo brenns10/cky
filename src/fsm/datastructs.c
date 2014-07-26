@@ -413,44 +413,6 @@ fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end,
   return new;
 }
 
-/**
-   @brief Allocate an entirely new copy of an existing FSM.  
-
-   The transitions are completely disjoint, so freeing them in the original will
-   not affect the copy.
-
-   @param f The FSM to copy
-   @return A copy of the FSM
- */
-fsm *fsm_copy(const fsm *f)
-{
-  int i, j;
-  smb_al *old, *newList;
-  fsm_trans *ft;
-  fsm *new = fsm_create();
-
-  // Copy basic members
-  new->start = f->start;
-  al_copy_all(&new->accepting, &f->accepting);
-
-  // Initialise the same number of states
-  for (i = 0; i < al_length(&f->transitions); i++) {
-    fsm_add_state(new, false);
-  }
-
-  // Copy all transitions.
-  for (i = 0; i < al_length(&f->transitions); i++) {
-    old = (smb_al *) al_get(&f->transitions, i).data_ptr;
-    for (j = 0; j < al_length(old); j++) {
-      ft = (fsm_trans *) al_get(old, j).data_ptr;
-      ft = fsm_trans_copy(ft);
-      fsm_add_trans(new, i, ft);
-    }
-  }
-
-  return new;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // fsm_sim Fundamental Functions
 ////////////////////////////////////////////////////////////////////////////////
