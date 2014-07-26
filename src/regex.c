@@ -697,5 +697,7 @@ smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy,
                      bool overlap)
 {
   fsm *regex_fsm = create_regex_fsm(regex);
-  return fsm_search(regex_fsm, srchText, greedy, overlap);
+  smb_al *return_value = fsm_search(regex_fsm, srchText, greedy, overlap);
+  fsm_delete(regex_fsm);
+  return return_value;
 }
