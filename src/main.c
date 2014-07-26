@@ -436,6 +436,7 @@ void simple_fsm(void)
   else
     printf("Reject.\n");
 
+  fsm_print(f, stdout);
   fsm_delete(f, true);
 }
 
@@ -446,39 +447,40 @@ void simple_fsm(void)
    inputs.
  */
 void read_fsm(void) {
-  const wchar_t *input =
+  int i;
+  const wchar_t *machine =
     L"start:0\n"
-    L"accept:3\n"
-    L"0-0:+b-b\n"
+    L"accept:0\n"
     L"0-1:+a-a\n"
-    L"1-2:+b-b\n"
-    L"2-3:+a-a\n";
-  const wchar_t *i1 = L"ababa";
-  const wchar_t *i2 = L"aabaa";
-  const wchar_t *i3 = L"aaaabbbba";
+    L"0-2:+b-b\n"
+    L"1-0:+a-a\n"
+    L"1-3:+b-b\n"
+    L"2-3:+a-a\n"
+    L"2-0:+b-b\n"
+    L"3-1:+b-b\n"
+    L"3-2:+a-a\n";
 
-  fsm *f = fsm_read(input);
+  const wchar_t *inputs[] = {
+    L"ababa",
+    L"aabaa",
+    L"aaaabbbba",
+    L"ab",
+    L"abab",
+    L"aabb"
+  };
+
+  fsm *f = fsm_read(machine);
   if (f == NULL) {
     return;
   }
 
-  printf("Running on i1=\"%Ls\"\n", i1);
-  if (fsm_sim_nondet(f, i1))
-    printf("Accept.\n");
-  else
-    printf("Reject.\n");
-
-  printf("Running on i2=\"%Ls\"\n", i2);
-  if (fsm_sim_nondet(f, i2))
-    printf("Accept.\n");
-  else
-    printf("Reject.\n");
-
-  printf("Running on i3=\"%Ls\"\n", i3);
-  if (fsm_sim_nondet(f, i3))
-    printf("Accept.\n");
-  else
-    printf("Reject.\n");
+  for (i = 0; i < sizeof(inputs)/sizeof(wchar_t*); i++) {
+    printf("Running on i%d=\"%Ls\"\n", i, inputs[i]);
+    if (fsm_sim_nondet(f, inputs[i]))
+      printf("Accept.\n");
+    else
+      printf("Reject.\n");
+  }
 
   fsm_print(f, stdout);
   fsm_delete(f, true);

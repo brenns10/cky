@@ -260,9 +260,8 @@ void fsm_sim_delete(fsm_sim *fs, bool free_curr);
 // io.c
 int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix);
 fsm_trans *fsm_read_trans(const wchar_t **source, int *start);
-bool fsm_print_filter(wchar_t *input);
-void fsm_print_pair(FILE *dest, wchar_t c1, wchar_t c2)
-void fsm_dot_char(FILE * dest, wchar_t c)
+void fsm_print_filter(FILE *dest, wchar_t *input);
+void fsm_dot_char(FILE * dest, wchar_t c);
 
 fsm *fsm_read(const wchar_t *source);
 void fsm_print(fsm *f, FILE *dest);

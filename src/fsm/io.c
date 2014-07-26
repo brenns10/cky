@@ -47,12 +47,12 @@
 #include "libstephen.h"
 
 /**
-   @brief Reading the 'source' state of the transition. 
+   @brief Reading the 'source' state of the transition.
    @see fsm_read_trans()
  */
 #define SFIRSTSTATE 0
 /**
-   @brief Reading the 'destination' state of the transition. 
+   @brief Reading the 'destination' state of the transition.
    @see fsm_read_trans()
  */
 #define SSECONDSTATE 1
@@ -343,7 +343,7 @@ fsm *fsm_read(const wchar_t *source)
       return NULL;
     }
     max = (n>ft->dest ? n : ft->dest) + 1;
-    SMB_DP("   Max observed state %d, current # states %d.\n", max, 
+    SMB_DP("   Max observed state %d, current # states %d.\n", max,
            al_length(&new->transitions));
     while (al_length(&new->transitions) < max) {
       fsm_add_state(new, false);
@@ -360,46 +360,29 @@ fsm *fsm_read(const wchar_t *source)
 }
 
 /**
-   @brief Return a 'filtered' character.
+   @brief Print a character, filtering if necessary.
 
-   This is to make printable versions of common non-printable characters.  It is
-   a subroutine of fsm_print_pair().  The only one that is filtered currently is
-   `EPSILON`, which is printed as `\e` instead.
+   This subroutine of fsm_print() prints characters in transitions.  It exists
+   to make non-printable characters printable by printing their escaped versions
+   instead.
 
-   @param input The character to filter 
-   @return The filtered version.  It should be backslash escaped if different
-   from the original character.
+   @param dest The file to print to.
+   @param input The character to filter.
  */
-bool fsm_print_filter(wchar_t *input)
+void fsm_print_char(FILE *dest, wchar_t input)
 {
-  switch (*input) {
+  switch (input) {
+
   case EPSILON:
-    *input = L'e';
-    return true;
+    // Print epsilon as \e
+    fprintf(dest, "\\e");
+    break;
+
   default:
-    return false;
+    // Print other characters as verbatim
+    fprintf(dest, "%Lc", input);
+    break;
   }
-}
-
-/**
-   @brief Print a range pair of characters.
-
-   This function is a subroutine of fsm_print().  It prints the range, but
-   filters the characters and prints none, one, or both as backslash escapes
-   instead of the real character, if necessary.
-
-   @param dest The file fsm_print() is printing to.
-   @param c1 The first character in the range.
-   @param c2 The second character in the range.
- */
-void fsm_print_pair(FILE *dest, wchar_t c1, wchar_t c2)
-{
-  bool c1alt = fsm_print_filter(&c1);
-  bool c2alt = fsm_print_filter(&c2);
-
-  fprintf(dest, c1alt ? "\\%Lc" : "%Lc", c1);
-  fprintf(dest, "-");
-  fprintf(dest, c2alt ? "\\%Lc" : "%Lc", c2);
 }
 
 /**
@@ -415,24 +398,37 @@ void fsm_print(fsm *f, FILE *dest)
   wchar_t *start, *end;
   fsm_trans *ft;
 
+  // Print the start state
   fprintf(dest, "start:%d\n", f->start);
+
+  // Print all the accepting states
   for (i = 0; i < al_length(&f->accepting); i++) {
-    fprintf(dest, "accepting:%Ld\n", al_get(&f->accepting, i).data_llint);
+    fprintf(dest, "accept:%Ld\n", al_get(&f->accepting, i).data_llint);
   }
 
+  // For each state's transition list
   for (i = 0; i < al_length(&f->transitions); i++) {
+
+    // For each transition in that list
     list = (smb_al *) al_get(&f->transitions, i).data_ptr;
     for (j = 0; j < al_length(list); j++) {
+
+      // Print the transition and whether it's positive or negative.
       ft = (fsm_trans *) al_get(list, j).data_ptr;
-      fprintf(dest, "%d-%d:%c", i, ft->dest, (ft->type == FSM_TRANS_POSITIVE ? '+' : '-'));
-      start = ft->start;
-      end = ft->end;
-      while (*(start+1) != L'\0') {
-        fsm_print_pair(dest, *start, *end);
-        fprintf(stdout, " ");
-        start++; end++;
+      fprintf(dest, "%d-%d:%c", i, ft->dest,
+              (ft->type == FSM_TRANS_POSITIVE ? '+' : '-'));
+
+      // For every range in the transition, print it followed by a space.
+      for (start = ft->start, end = ft->end; *start != L'\0'; start++, end++) {
+        fsm_print_char(dest, *start);
+        fprintf(dest, "-");
+        fsm_print_char(dest, *end);
+
+        // If this isn't the last range, print a space to separate
+        if (*(start+1) != L'\0') {
+          fprintf(stdout, " ");
+        }
       }
-      fsm_print_pair(dest, *start, *end);
       fprintf(dest, "\n");
     }
   }
@@ -451,13 +447,17 @@ void fsm_print(fsm *f, FILE *dest)
 void fsm_dot_char(FILE * dest, wchar_t c)
 {
   switch (c) {
+
   case EPSILON:
+    // Print epsilon as a string, not a non-existant character!
     fprintf(dest, "eps");
     break;
   case L'\"':
+    // Escape quotes.
     fprintf(dest, "\"");
     break;
   default:
+    // Print other characters vebatim.
     fprintf(dest, "%Lc", c);
     break;
   }
@@ -480,39 +480,53 @@ void fsm_dot(fsm *f, FILE *dest)
   wchar_t *start, *end;
   fsm_trans *ft;
 
-  // Dot prologue
+  // Declare a digraph, where the nodes are all boxes.
   fprintf(dest, "digraph regex {\n");
   fprintf(dest, "  node [shape=box];\n");
 
-  // Start state is an oval
+  // Declare start state as oval
   fprintf(dest, "  s%d [shape=oval];\n", f->start);
-  // Accepting states are octagons
+
+  // Declare accepting states as octagons
   for (i = 0; i < al_length(&f->accepting); i++) {
-    fprintf(dest, "  s%d [shape=octagon];\n", 
+    fprintf(dest, "  s%d [shape=octagon];\n",
             al_get(&f->accepting, i).data_llint);
   }
 
+  // For each state's transition list
   for (i = 0; i < al_length(&f->transitions); i++) {
+
+    // For each transition in that list
     list = (smb_al *) al_get(&f->transitions, i).data_ptr;
     for (j = 0; j < al_length(list); j++) {
+
+      // Declare an edge from source to destination.
       ft = (fsm_trans *) al_get(list, j).data_ptr;
       fprintf(dest, "  s%d -> s%d ", i, ft->dest);
-      fprintf(dest, "[label=\"");
-      start = ft->start;
-      end = ft->end;
-      while (*(start+1) != L'\0') {
+
+      // Begin writing the label for the transition
+      fprintf(dest, "[label=\"(%c) ",
+              (ft->type == FSM_TRANS_POSITIVE ? '+' : '-'));
+
+      // For every character range in the transition description.
+      for (start = ft->start, end = ft->end; *start != L'\0'; start++, end++) {
+
+        // Print the range into the label using the filter.
         fsm_dot_char(dest, *start);
         fprintf(dest, "-");
         fsm_dot_char(dest, *end);
-        fprintf(stdout, " ");
-        start++; end++;
+
+        // If this isn't the last range, print a space to separate.
+        if (*(start+1) != L'\0') {
+          fprintf(stdout, " ");
+        }
       }
-      fsm_dot_char(dest, *start);
-      fprintf(dest, "-");
-      fsm_dot_char(dest, *end);
+
+      // Finish up the label and transition declaration.
       fprintf(dest, "\"];\n");
     }
   }
 
+  // Finish up the entire digraph declaration.
   fprintf(dest, "}\n");
 }
