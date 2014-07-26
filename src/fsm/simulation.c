@@ -1,6 +1,6 @@
 /***************************************************************************//**
 
-  @file         simulation.c
+  @file         fsm/simulation.c
 
   @author       Stephen Brennan
 

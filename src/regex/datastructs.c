@@ -1,6 +1,6 @@
 /***************************************************************************//**
 
-  @file         datastructs.c
+  @file         regex/datastructs.c
 
   @author       Stephen Brennan
 

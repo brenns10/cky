@@ -1,6 +1,6 @@
 /***************************************************************************//**
 
-  @file         operations.c
+  @file         fsm/operations.c
 
   @author       Stephen Brennan
 

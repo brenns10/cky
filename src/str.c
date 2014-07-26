@@ -63,7 +63,7 @@ int hexit_val(wchar_t digit)
    @brief Get an escaped character from the string source.
 
    This function will advance the source pointer to after the escape sequence.
-   It can get escapes abfnrtv\xu, which includes hexadecimal and unicode
+   It can get escapes `abfnrtv\xu`, which includes hexadecimal and unicode
    escapes.
 
    @brief source The source pointer

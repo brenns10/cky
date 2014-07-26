@@ -1,6 +1,6 @@
 /***************************************************************************//**
 
-  @file         datastructs.c
+  @file         fsm/datastructs.c
 
   @author       Stephen Brennan
 

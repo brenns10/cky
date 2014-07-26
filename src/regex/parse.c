@@ -1,6 +1,6 @@
 /***************************************************************************//**
 
-  @file         parse.c
+  @file         regex/parse.c
 
   @author       Stephen Brennan
 
@@ -153,8 +153,8 @@ fsm *regex_parse_create_digit_fsm(int type)
 /**
    @brief Returns an FSM for an escape sequence, outside of a character class.
 
-   Basically, adds the \W, \w, \D, \d, \S, \s character classes to the already
-   existing character escape sequences covered by get_escape().
+   Basically, adds the `\W`, `\w`, `\D`, `\d`, `\S`, `\s` character classes to
+   the already existing character escape sequences covered by get_escape().
 
    Expects that `*regex` points to the backslash in the escape sequence.  Always
    returns such that `*regex` points to the LAST character in the escape
@@ -191,6 +191,16 @@ fsm *regex_parse_outer_escape(const wchar_t **regex)
 }
 
 /**
+   @brief State for parsing character classes when not part of a range.
+*/
+#define NORMAL 0
+
+/**
+   @brief State for parsing character classes when part of a range.
+*/
+#define RANGE 1
+
+/**
    @brief Create a FSM for a character class.
 
    Reads a character class (pointed by `*regex`), which it then converts to a
@@ -201,9 +211,6 @@ fsm *regex_parse_outer_escape(const wchar_t **regex)
  */
 fsm *regex_parse_char_class(const wchar_t **regex)
 {
-  #define NORMAL 0
-  #define RANGE 1
-
   smb_ll start, end;
   DATA d;
   int type = FSM_TRANS_POSITIVE, state = NORMAL, index = 0;

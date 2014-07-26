@@ -55,6 +55,9 @@ void regex(void);
 void search(void);
 void dot(void);
 
+/**
+   @brief Print the help message for the main program.
+ */
 void help(char *name)
 {
   printf("Usage: %s [TESTS]\n", name);
@@ -139,6 +142,9 @@ int main(int argc, char **argv)
   return 0;
 }
 
+/**
+   @brief Read a regex from stdin and print to stdout a dot representation.
+ */
 void dot(void)
 {
   int alloc;
@@ -152,6 +158,18 @@ void dot(void)
   fsm_delete(compiled_fsm, true);
 }
 
+/**
+   @brief Read a file completely into memory.
+
+   This function allocates space for a file's contents and reads it into memory.
+   The function also requires a parameter in which to store the number of chars
+   it has allocated in the buffer, so the memory can be accounted for when
+   freed.  This function is independent of encoding.
+
+   @param file The file to read into memory.
+   @param[out] bytes Pointer to variable to store number of chars allocated.
+   @return Pointer to the file contents in memory.
+ */
 char *read_file(FILE *file, int *bytes)
 {
   char *buffer;
@@ -169,6 +187,9 @@ char *read_file(FILE *file, int *bytes)
   return buffer;
 }
 
+/**
+   @brief Interactively search a file for a pattern.
+ */
 void search(void)
 {
   char *filename;

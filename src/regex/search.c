@@ -1,6 +1,6 @@
 /***************************************************************************//**
 
-  @file         search.c
+  @file         regex/search.c
 
   @author       Stephen Brennan
 
@@ -134,8 +134,11 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
 
 /**
    @brief Searches for a regular expression on a search text.
-   @see fsm_search() For details on the other parameters and return value.
+   @see fsm_search() For full details on the operation of the function.
    @param regex The regular expression to search for.
+   @param srchText The text to search in.
+   @param greedy Whether to return first result only.
+   @param overlap Whether to allow overlapping matches.
  */
 smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy,
                      bool overlap)
