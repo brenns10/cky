@@ -157,9 +157,6 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
   al_init(&first);
   al_init(&second);
 
-  // Input machine states
-
-
   // A 'finite state machine' to read finite state machine tranistions!
   while (**source != L'\n' && **source != L'\0') {
     SMB_DP("   => Current char: '%Lc'.  Current state: ", **source);

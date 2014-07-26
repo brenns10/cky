@@ -57,7 +57,7 @@
    @param state The state to calculate from
    @return A list of states in the epsilon closure
  */
-smb_al *epsilon_closure(fsm *f, int state)
+smb_al *fsm_sim_nondet_epsilon_closure(fsm *f, int state)
 {
   smb_al *closure = al_create();
   smb_al *trans_list;
@@ -100,7 +100,7 @@ smb_al *epsilon_closure(fsm *f, int state)
    @param first The target list (which will be added to)
    @param second The list which will be combined into first and freed.
  */
-void union_and_delete(smb_al *first, smb_al *second)
+void fsm_sim_nondet_union_and_delete(smb_al *first, smb_al *second)
 {
   int i;
   DATA d;
@@ -120,7 +120,7 @@ void union_and_delete(smb_al *first, smb_al *second)
    @retval true when the intersection is NOT empty
    @retval false when the intersection IS empty
  */
-bool non_empty_intersection(smb_al *first, smb_al *second)
+bool fsm_sim_nondet_non_empty_intersection(smb_al *first, smb_al *second)
 {
   int i;
   DATA d;
@@ -217,7 +217,7 @@ bool fsm_sim_det(fsm *f, const wchar_t *input)
  */
 fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input)
 {
-  smb_al *curr = epsilon_closure(f, f->start);
+  smb_al *curr = fsm_sim_nondet_epsilon_closure(f, f->start);
   fsm_sim *fs = fsm_sim_create(f, curr, input);
   return fs;
 }
@@ -241,7 +241,7 @@ int fsm_sim_nondet_state(const fsm_sim *s)
   if (al_length(s->curr) == 0) {
     return FSM_SIM_REJECTED;
   }
-  if (non_empty_intersection(&s->f->accepting, s->curr)) {
+  if (fsm_sim_nondet_non_empty_intersection(&s->f->accepting, s->curr)) {
     // If one of our current states is accepting...
     if (*s->input == L'\0') {
       // ... and input is exhausted, ACCEPT
@@ -311,7 +311,9 @@ void fsm_sim_nondet_step(fsm_sim *s)
   original = al_length(next);
   for (i = 0; i < original; i++) {
     state = (int) al_get(next, i).data_llint;
-    union_and_delete(next, epsilon_closure(s->f, state));
+    fsm_sim_nondet_union_and_delete(next,
+                                    fsm_sim_nondet_epsilon_closure(s->f,
+                                                                   state));
   }
 
   // Delete the old state, set the new one, and advance the input

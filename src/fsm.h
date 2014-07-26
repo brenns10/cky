@@ -258,15 +258,25 @@ void fsm_sim_destroy(fsm_sim *fs, bool free_curr);
 void fsm_sim_delete(fsm_sim *fs, bool free_curr);
 
 // io.c
+int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix);
+fsm_trans *fsm_read_trans(const wchar_t **source, int *start);
+bool fsm_print_filter(wchar_t *input);
+void fsm_print_pair(FILE *dest, wchar_t c1, wchar_t c2)
+void fsm_dot_char(FILE * dest, wchar_t c)
+
 fsm *fsm_read(const wchar_t *source);
 void fsm_print(fsm *f, FILE *dest);
 void fsm_dot(fsm *f, FILE *dest);
 
 // simulation.c
 void al_copy_all(smb_al *dest, const smb_al *from);
+smb_al *fsm_sim_nondet_epsilon_closure(fsm *f, int state);
+void fsm_sim_nondet_union_and_delete(smb_al *first, smb_al *second);
+bool fsm_sim_nondet_non_empty_intersection(smb_al *first, smb_al *second);
+
 bool fsm_sim_det(fsm *f, const wchar_t *input);
-int fsm_sim_nondet_state(const fsm_sim *s);
 fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input);
+int fsm_sim_nondet_state(const fsm_sim *s);
 void fsm_sim_nondet_step(fsm_sim *s);
 bool fsm_sim_nondet(fsm *f, const wchar_t *input);
 
