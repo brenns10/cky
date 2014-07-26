@@ -42,6 +42,7 @@
 
 #include <stdbool.h>
 #include <wchar.h>
+
 #include "libstephen.h"
 
 /**
@@ -229,33 +230,42 @@ typedef struct {
 
 } fsm_sim;
 
+// datastructs.c
 void fsm_trans_init(fsm_trans *ft, int n, int type, int dest);
 fsm_trans *fsm_trans_create(int n, int type, int dest);
 void fsm_trans_destroy(fsm_trans *ft);
 void fsm_trans_delete(fsm_trans *ft);
+void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type,
+                           int dest);
+fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type, 
+                                   int dest);
 fsm_trans *fsm_trans_copy(const fsm_trans *ft);
-
-void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type, int dest);
-fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type, int dest);
-
 bool fsm_trans_check(const fsm_trans *ft, wchar_t c);
 
 void fsm_init(fsm *f);
 fsm *fsm_create(void);
-fsm *fsm_create_single_char(wchar_t character);
 void fsm_destroy(fsm *f, bool free_transitions);
 void fsm_delete(fsm *f, bool free_transitions);
+fsm *fsm_create_single_char(wchar_t character);
 fsm *fsm_copy(const fsm *f);
-
 int fsm_add_state(fsm *f, bool accepting);
 void fsm_add_trans(fsm *f, int state, const fsm_trans *ft);
-fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end, int type);
-bool fsm_sim_det(fsm *f, const wchar_t *input);
+fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end,
+                          int type);
+
+void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input);
+fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input);
+void fsm_sim_destroy(fsm_sim *fs, bool free_curr);
+void fsm_sim_delete(fsm_sim *fs, bool free_curr);
+
+// io.c
 fsm *fsm_read(const wchar_t *source);
 void fsm_print(fsm *f, FILE *dest);
 void fsm_dot(fsm *f, FILE *dest);
 
-void fsm_sim_delete(fsm_sim *fs, bool free_curr);
+// simulation.c
+void al_copy_all(smb_al *dest, const smb_al *from);
+bool fsm_sim_det(fsm *f, const wchar_t *input);
 int fsm_sim_nondet_state(const fsm_sim *s);
 fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input);
 void fsm_sim_nondet_step(fsm_sim *s);

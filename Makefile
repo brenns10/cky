@@ -39,21 +39,32 @@
 CC=gcc
 FLAGS=
 SMB_CONF=$(shell if [ -f src/libstephen_conf.h ] ; then echo "-DSMB_CONF" ; fi)
-CFLAGS=$(FLAGS) -c -g --std=c99 $(SMB_CONF)
+INC=-Isrc/
+CFLAGS=$(FLAGS) -c -g --std=c99 $(SMB_CONF) $(INC)
 LFLAGS=$(FLAGS)
 
-# Sources, Headers, and Objects
-SOURCES=$(wildcard src/*.c)
-HEADERS=$(wildcard src/*.h) src/libstephen.h
+# Sources and Objects
+SOURCES=$(shell find src/ -type f -name "*.c")
+SOURCEDIRS=$(shell find src/ -type d)
 OBJECTS=$(patsubst src/%.c,obj/%.o,$(SOURCES)) obj/libstephen.a
+OBJECTDIRS=$(patsubst src/%,obj/%,$(SOURCEDIRS))
 
 # Main targets
-.PHONY: all clean libstephen_build
+.PHONY: all clean libstephen_build directories docs
 
-all: bin/main
+all: directories bin/main
 
 clean:
 	rm -rf bin/* obj/* src/libstephen.h src/*.gch && make -C libstephen clean
+
+docs: doc/
+	doxygen
+
+bin/main: bin/
+$(OBJECTS): $(OBJECTDIRS)
+
+$(OBJECTDIRS) bin/ doc/:
+	mkdir -p $@
 
 # Libstephen compile and header.
 src/libstephen.h: libstephen/src/libstephen.h
@@ -70,10 +81,13 @@ src/gram.c: src/gram.h src/libstephen.h
 src/gram.h: src/libstephen.h
 src/main.c: src/gram.h src/fsm.h src/regex.h
 src/fsm.h: src/libstephen.h
-src/fsm.c: src/fsm.h src/libstephen.h src/str.h
 src/regex.c: src/regex.h src/fsm.h src/str.h src/libstephen.h
 src/regex.h: src/libstephen.h src/fsm.h
 src/str.c: src/str.h src/fsm.h
+
+src/fsm/datastructs.c: src/fsm.h src/libstephen.h
+src/fsm/io.c: src/fsm.h src/str.h src/libstephen.h
+src/fsm/simulation.c: src/fsm.h src/libstephen.h
 
 # --- Compile Rule
 obj/%.o: src/%.c
