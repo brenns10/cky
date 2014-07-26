@@ -44,6 +44,10 @@
 #include "fsm.h"        // tools to implement regex
 #include "libstephen.h" // for smb_al
 
+////////////////////////////////////////////////////////////////////////////////
+// FSM Operations
+////////////////////////////////////////////////////////////////////////////////
+
 /**
    @brief Copy the transitions and states from src into dest.
 
@@ -191,6 +195,10 @@ void fsm_kleene(fsm *f)
   // Change the start state (officially)
   f->start = newStart;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// Regex Parsing Functions
+////////////////////////////////////////////////////////////////////////////////
 
 /**
    @brief Adjust the FSM according to its modifier, if any.
@@ -515,6 +523,16 @@ fsm *create_regex_fsm(const wchar_t *regex){
   return create_regex_fsm_recursive(regex, &regex);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// regex_hit data structure fuctions
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+   @brief Initialize a regex_hit.
+   @param obj The (pre-allocated) regex_hit.
+   @param start The start location of the hit.
+   @param length The length of the hit.
+ */
 void regex_hit_init(regex_hit *obj, int start, int length)
 {
   // Initialization logic
@@ -522,6 +540,12 @@ void regex_hit_init(regex_hit *obj, int start, int length)
   obj->length = length;
 }
 
+/**
+   @brief Allocate a regex_hit.
+   @param start The start location of the hit.
+   @param length The end location of the hit.
+   @return Pointer to the regex_hit.  Must be freed with regex_hit_delete().
+ */
 regex_hit *regex_hit_create(int start, int length)
 {
   // Allocate space
@@ -546,11 +570,19 @@ regex_hit *regex_hit_create(int start, int length)
   return obj;
 }
 
+/**
+   @brief Clean up a regex_hit object.
+   @param obj The regex_hit object to clean up.
+ */
 void regex_hit_destroy(regex_hit *obj)
 {
   // Cleanup logic (none)
 }
 
+/**
+   @brief Clean up and free a regex_hit object.
+   @param obj The regex_hit to free.
+ */
 void regex_hit_delete(regex_hit *obj) {
   if (obj) {
     regex_hit_destroy(obj);
@@ -561,6 +593,30 @@ void regex_hit_delete(regex_hit *obj) {
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Regex search functions
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+   @brief Perform a regex-style search with an FSM on a search text.
+
+   The "regex-style search" runs the FSM starting at each character in the text.
+   If the FSM ever enters an accepting state, then that is a potential match.
+   The last potential match (if any) for every character in the text makes up
+   the list of hits.
+
+   @param regex_fsm The FSM to search with.  Not necessarily generated from a
+   regular expression.
+   @param srchText The text to search the FSM on.
+   @param greedy When set to true, only returns one hit.  Otherwise, returns all
+   hits.
+   @param overlap When set to true, allows overlapping hits.  For instance, a
+   search for "\w+" on "blah" would return blah, lah, ah, and h.  Since this is
+   usually undesirable, the recommended value is false.  When false, the search
+   will skip to the end of each hit and resume searching there.
+   @return An array list (smb_al) of `regex_hit *` full of hits.  Each hit must
+   be individually freed when you're finished, as well as the array list itself.
+ */
 smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
                    bool overlap)
 {
@@ -571,8 +627,9 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
 
   SMB_DP("STARTING FSM SEARCH\n");
 
+  // OUTER WHILE: iterate over starting characters.
   while (srchText[start] != L'\0') {
-    // Start an FSM simulation at the current character.
+    // Simulate the FSM at each character.
     curr_sim = fsm_sim_nondet_begin(regex_fsm, srchText + start);
     length = 0;
     last_length = -1;
@@ -580,15 +637,17 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
 
     SMB_DP("=> Begin simulation at index %d: '%lc'.\n", start, srchText[start]);
 
+    // INNER WHILE: iterate over lengths.
     while (srchText[start + length] != L'\0' && res != FSM_SIM_REJECTED) {
-      // Step through the FSM simulation until accepting.
+      // Step through the FSM simulation until we hit the end of the string, are
+      // rejected, or are accepted.
       fsm_sim_nondet_step(curr_sim);
       res = fsm_sim_nondet_state(curr_sim);
       length++;
       SMB_DP("   => On step (length %d), res=%d.\n", length, res);
 
-      // When we encounter a possible match, mark it to record.  We only have
-      // one match per search, and we want the largest match per search.
+      // When we encounter a possible match, mark it.  We will only return the
+      // largest (last) match for each simulation.
       if (res == FSM_SIM_ACCEPTING || res == FSM_SIM_ACCEPTED) {
         last_length = length;
         SMB_DP("      Currently accepting!\n");
@@ -597,30 +656,43 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
       if (res == FSM_SIM_ACCEPTED || res == FSM_SIM_REJECTED) {
         break;
       }
-    }
+    } // END INNER WHILE
 
+    // Clean up the simulation.
     fsm_sim_delete(curr_sim, true);
+
     if (last_length != -1) {
-      // If we encounter a match, record it.
+      // If we encounter a match during this simulation, record it.
       SMB_DP("=> Found match of length %d.\n", last_length);
       d.data_ptr = (void *) regex_hit_create(start, last_length);
       al_append(results, d);
+
       if (greedy) {
         SMB_DP("=> Greedy return.\n");
-        return results;
+        return results; // return after first hit
       }
+
       if (overlap) {
+        // If we allow overlapping hits, we only need to move one character
+        // over.
         start++;
       } else {
+        // If we don't allow overlapping hits, the next search has to start
+        // after the end of this hit.
         start += last_length;
       }
     } else {
       start++;
     }
-  }
+  } // END OUTER WHILE
   return results;
 }
 
+/**
+   @brief Searches for a regular expression on a search text.
+   @see fsm_search() For details on the other parameters and return value.
+   @param regex The regular expression to search for.
+ */
 smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy,
                      bool overlap)
 {
