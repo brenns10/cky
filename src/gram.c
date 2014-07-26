@@ -37,9 +37,11 @@
 
 *******************************************************************************/
 
-#include "gram.h" // also includes libstephen.h
 #include <stdbool.h>
 #include <stdio.h>
+
+#include "gram.h"
+#include "libstephen.h"
 
 /**
    @brief Initialize a new CFG rule.

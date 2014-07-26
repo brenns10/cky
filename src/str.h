@@ -37,8 +37,8 @@
 
 *******************************************************************************/
 
-#ifndef SMB_FSM_H
-#define SMB_FSM_H
+#ifndef SMB_STR_H
+#define SMB_STR_H
 
 #include <wchar.h>
 

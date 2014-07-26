@@ -58,7 +58,9 @@ void fsm_union(fsm *first, const fsm *second);
 void fsm_kleene(fsm *f);
 fsm *create_regex_fsm(const wchar_t *regex);
 
-smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool overlap);
-smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy, bool overlap);
+smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
+                   bool overlap);
+smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy,
+                     bool overlap);
 
 #endif

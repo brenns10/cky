@@ -42,6 +42,7 @@
 
 #include "regex.h"      // the functions we are defining
 #include "fsm.h"        // tools to implement regex
+#include "str.h"        // for get_escape
 #include "libstephen.h" // for smb_al
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -698,6 +699,6 @@ smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy,
 {
   fsm *regex_fsm = create_regex_fsm(regex);
   smb_al *return_value = fsm_search(regex_fsm, srchText, greedy, overlap);
-  fsm_delete(regex_fsm);
+  fsm_delete(regex_fsm, true);
   return return_value;
 }

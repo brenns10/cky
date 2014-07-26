@@ -35,11 +35,17 @@
 #
 #-------------------------------------------------------------------------------
 
-# Variable declarations
+# Compiler Variable Declarations
 CC=gcc
 FLAGS=
-CFLAGS=$(FLAGS) -c -g $(shell if [ -f src/libstephen_conf.h ] ; then echo "-DSMB_CONF" ; fi)
+SMB_CONF=$(shell if [ -f src/libstephen_conf.h ] ; then echo "-DSMB_CONF" ; fi)
+CFLAGS=$(FLAGS) -c -g --std=c99 $(SMB_CONF)
 LFLAGS=$(FLAGS)
+
+# Sources, Headers, and Objects
+SOURCES=$(wildcard src/*.c)
+HEADERS=$(wildcard src/*.h) src/libstephen.h
+OBJECTS=$(patsubst src/%.c,obj/%.o,$(SOURCES)) obj/libstephen.a
 
 # Main targets
 .PHONY: all clean libstephen_build
@@ -49,46 +55,30 @@ all: bin/main
 clean:
 	rm -rf bin/* obj/* src/libstephen.h src/*.gch && make -C libstephen clean
 
-# Get libstephen.h from the latest version
+# Libstephen compile and header.
 src/libstephen.h: libstephen/src/libstephen.h
 	cp libstephen/src/libstephen.h src/libstephen.h
 
-# Need libstephen.a to build
 obj/libstephen.a: libstephen_build
 	cp libstephen/bin/libstephen.a obj/libstephen.a
 
-# Must compile libstephen to get static lib.
 libstephen_build:
 	make -C libstephen lib
 
-# --- Sources
+# Explicit dependencies in the sources.
 src/gram.c: src/gram.h src/libstephen.h
 src/gram.h: src/libstephen.h
-src/main.c: src/gram.h
+src/main.c: src/gram.h src/fsm.h src/regex.h
 src/fsm.h: src/libstephen.h
 src/fsm.c: src/fsm.h src/libstephen.h src/str.h
-src/regex.c: src/regex.h src/fsm.h src/libstephen.h src/str.h
-src/regex.h: src/fsm.h
+src/regex.c: src/regex.h src/fsm.h src/str.h src/libstephen.h
+src/regex.h: src/libstephen.h src/fsm.h
 src/str.c: src/str.h src/fsm.h
 
-# --- Objects
-OBJECTS = obj/gram.o obj/main.o obj/fsm.o obj/regex.o obj/str.o
+# --- Compile Rule
+obj/%.o: src/%.c
+	$(CC) $(CFLAGS) $< -o $@
 
-obj/gram.o: src/gram.c
-	$(CC) $(CFLAGS) src/gram.c -o obj/gram.o
-
-obj/main.o: src/main.c
-	$(CC) $(CFLAGS) src/main.c -o obj/main.o
-
-obj/fsm.o: src/fsm.c
-	$(CC) $(CFLAGS) src/fsm.c -o obj/fsm.o
-
-obj/regex.o: src/regex.c
-	$(CC) $(CFLAGS) src/regex.c -o obj/regex.o
-
-obj/str.o: src/str.c
-	$(CC) $(CFLAGS) src/str.c -o obj/str.o
-
-# --- Binaries
+# --- Link Rule
 bin/main: $(OBJECTS) obj/libstephen.a
-	$(CC) $(LFLAGS) $(OBJECTS) obj/libstephen.a -o bin/main
+	$(CC) $(LFLAGS) $(OBJECTS) -o bin/main

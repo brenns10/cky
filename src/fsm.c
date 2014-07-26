@@ -43,8 +43,8 @@
 #include <wctype.h>
 #include <stdbool.h>
 
-#include "libstephen.h" // already in fsm.h, but used here too
 #include "fsm.h"
+#include "libstephen.h"
 #include "str.h"
 
 /**
