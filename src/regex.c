@@ -95,8 +95,9 @@ void fsm_concat(fsm *first, const fsm *second)
   // start state.
   for (i = 0; i < al_length(&first->accepting); i++) {
     int start = (int)al_get(&first->accepting, i).data_llint;
-    // This could be outside the loop, but we need a new one for each instance :(
-    fsm_trans *ft = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE,
+    // This could be outside the loop, but we need a new one for each instance
+    fsm_trans *ft = fsm_trans_create_single(EPSILON, EPSILON,
+                                            FSM_TRANS_POSITIVE,
                                             second->start + offset);
     fsm_add_trans(first, start, ft);
   }
@@ -137,11 +138,13 @@ void fsm_union(fsm *first, const fsm *second)
   newStart = fsm_add_state(first, false);
 
   // Add epsilon-trans from new start to first start
-  fsTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE, first->start);
+  fsTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE,
+                                    first->start);
   fsm_add_trans(first, newStart, fsTrans);
 
   // Add epsilon-trans from new start to second start
-  ssTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE, second->start + offset);
+  ssTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE,
+                                    second->start + offset);
   fsm_add_trans(first, newStart, ssTrans);
 
   // Accept from either the first or the second
@@ -170,12 +173,14 @@ void fsm_kleene(fsm *f)
   DATA d;
 
   // Add epsilon-trans from new start to first start
-  newTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE, f->start);
+  newTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE,
+                                     f->start);
   fsm_add_trans(f, newStart, newTrans);
 
   // For each accepting state, add a epsilon-trans to the new start
   for (i = 0; i < al_length(&f->accepting); i++) {
-    newTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE, newStart);
+    newTrans = fsm_trans_create_single(EPSILON, EPSILON, FSM_TRANS_POSITIVE,
+                                       newStart);
     fsm_add_trans(f, (int) al_get(&f->accepting, i).data_llint, newTrans);
   }
 
@@ -298,7 +303,7 @@ fsm *digit_fsm(int type)
 
    Basically, adds the \W, \w, \D, \d, \S, \s character classes to the already
    existing character escape sequences covered by get_escape().
-   
+
    Expects that `*regex` points to the backslash in the escape sequence.  Always
    returns such that `*regex` points to the LAST character in the escape
    sequence.
@@ -364,7 +369,7 @@ fsm *create_char_class(const wchar_t **regex)
     type = FSM_TRANS_NEGATIVE;
     (*regex)++;
   }
-  
+
   // Loop through characters in the character class, recording each start-end
   // pair for the transition.
   for ( ; **regex != L']'; (*regex)++) {
@@ -556,7 +561,8 @@ void regex_hit_delete(regex_hit *obj) {
   }
 }
 
-smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool overlap)
+smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
+                   bool overlap)
 {
   fsm_sim *curr_sim;
   int start = 0, length, last_length, res;
@@ -615,7 +621,8 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool ov
   return results;
 }
 
-smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy, bool overlap)
+smb_al *regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy,
+                     bool overlap)
 {
   fsm *regex_fsm = create_regex_fsm(regex);
   return fsm_search(regex_fsm, srchText, greedy, overlap);
