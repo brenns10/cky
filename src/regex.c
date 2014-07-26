@@ -589,11 +589,10 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool ov
       }
       // If the search reports input exhausted, we leave the loop.
       if (res == FSM_SIM_ACCEPTED || res == FSM_SIM_REJECTED) {
-        goto cleanup_simulation;
+        break;
       }
     }
 
-  cleanup_simulation:
     fsm_sim_delete(curr_sim, true);
     if (last_length != -1) {
       // If we encounter a match, record it.
