@@ -43,9 +43,21 @@
 #include "libstephen.h"
 #include "fsm.h"
 
+/**
+   @brief A struct to hold regular expression search hits.
+ */
 typedef struct {
+
+  /**
+     @brief The location the hit starts at.  This is inclusive.
+   */
   int start;
+
+  /**
+     @brief Number of characters in the hit.
+   */
   int length;
+
 } regex_hit;
 
 void regex_hit_init(regex_hit *obj, int start, int length);
