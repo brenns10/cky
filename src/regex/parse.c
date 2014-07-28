@@ -82,6 +82,10 @@ void regex_parse_check_modifier(fsm *new, const wchar_t **regex)
     fsm_delete(f, true);
     (*regex)++;
     break;
+
+  /* case L'{': */
+  /*   // A  */
+  /*   (*regex)++; */
   }
 }
 
@@ -147,6 +151,35 @@ fsm *regex_parse_create_digit_fsm(int type)
   ft->end[0] = L'9';
   fsm_add_trans(f, src, ft);
   f->start = src;
+  return f;
+}
+
+/**
+   @brief Create the 'dot' FSM, i.e. the FSM that accepts 'almost' anything.
+
+   The dot should accept 'almost' anything.  The one thing that my dot character
+   will never accept is L'\0' (the null terminator).  The dot should not match
+   WEOF, but since wchar_t can't hold WEOF, I'm good there.  Generally, the dot
+   is not supposed to match L'\n' either, so I will also add that, but
+   optionally.
+ */
+fsm *regex_parse_create_dot_fsm(bool newline_accepted)
+{
+  fsm_trans *ft;
+  fsm *f = fsm_create();
+  int src = fsm_add_state(f, false);
+  int dest = fsm_add_state(f, true); // accepting
+  f->start = src;
+  if (!newline_accepted) {
+    ft = fsm_trans_create(1, FSM_TRANS_NEGATIVE, dest);
+  } else {
+    fsm_trans *ft = fsm_trans_create(0, FSM_TRANS_NEGATIVE, dest);
+  }
+  if (!newline_accepted) {
+    ft->start[0] = L'\n';
+    ft->end[0] = L'\n';
+  }
+  fsm_add_trans(f, src, ft);
   return f;
 }
 
@@ -347,6 +380,13 @@ fsm *regex_parse_recursive(const wchar_t *regex, const wchar_t **final)
 
     case L'\\':
       new = regex_parse_outer_escape(&regex);
+      regex_parse_check_modifier(new, &regex);
+      fsm_concat(curr, new);
+      fsm_delete(new, true);
+      break;
+
+    case L'.':
+      new = regex_parse_create_dot_fsm(false);
       regex_parse_check_modifier(new, &regex);
       fsm_concat(curr, new);
       fsm_delete(new, true);
