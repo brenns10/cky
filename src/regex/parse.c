@@ -247,7 +247,7 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   smb_ll start, end;
   smb_status status;
   DATA d;
-  int type = FSM_TRANS_POSITIVE, state = NORMAL, index = 0;
+  int type = FSM_TRANS_POSITIVE, state = NORMAL;
   smb_iter iter;
   fsm *f;
   int src, dest;
@@ -308,15 +308,12 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   iter = ll_get_iter(&start);
   while (iter.has_next(&iter)) {
     d = iter.next(&iter, &status);
-    ft->start[index] = (wchar_t) d.data_llint;
-    index++;
+    ft->start[iter.index] = (wchar_t) d.data_llint;
   }
-  index = 0;
   iter = ll_get_iter(&end);
   while (iter.has_next(&iter)) {
     d = iter.next(&iter, &status);
-    ft->end[index] = (wchar_t) d.data_llint;
-    index++;
+    ft->end[iter.index] = (wchar_t) d.data_llint;
   }
 
   fsm_add_trans(f, src, ft);

@@ -76,7 +76,8 @@ OBJECTS=$(patsubst src/%.c,obj/%.o,$(SOURCES)) obj/$(CFG)/libstephen.a
 all: bin/$(CFG)/main
 
 clean:
-	rm -rf bin/* obj/* src/libstephen.h src/*.gch && make -C libstephen clean
+	rm -rf bin/* obj/* src/libstephen.h src/*.gch
+	make -C libstephen CFG=$(CFG) clean
 
 docs:
 	doxygen
@@ -84,10 +85,10 @@ docs:
 # Libstephen compile and header.
 obj/$(CFG)/libstephen.a: libstephen_build
 	$(DIR_GUARD)
-	cp libstephen/bin/libstephen.a obj/$(CFG)/libstephen.a
+	cp libstephen/bin/$(CFG)/libstephen.a obj/$(CFG)/libstephen.a
 
 libstephen_build:
-	make -C libstephen lib
+	make -C libstephen CFG=$(CFG) lib
 
 # Explicit dependencies in the sources.
 src/gram.c: src/gram.h
