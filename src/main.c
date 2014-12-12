@@ -42,7 +42,9 @@
 #include <wchar.h>
 #include <string.h>
 
-#include "libstephen.h"
+#include "libstephen/base.h"
+#include "libstephen/ad.h"
+#include "libstephen/util.h"
 #include "gram.h"
 #include "fsm.h"
 #include "regex.h"
@@ -90,10 +92,11 @@ void help(char *name)
 int main(int argc, char **argv)
 {
   smb_ad data;
+  smb_status status;
   bool executed = false;
 
-  arg_data_init(&data);
-  process_args(&data, argc - 1, argv + 1);
+  arg_data_init(&data, &status);
+  process_args(&data, argc - 1, argv + 1, &status);
 
   if (check_flag(&data, 'h') || check_long_flag(&data, "help")) {
     help(argv[0]);
@@ -202,6 +205,7 @@ void search(void)
   int alloc, len;
   smb_al *results;
   regex_hit *hit;
+  smb_status status;
   int i;
 
   printf("Input Filename: ");
@@ -244,7 +248,7 @@ void search(void)
 
   results = fsm_search(regex_fsm, winput, false, false);
   for (i = 0; i < al_length(results); i++) {
-    hit = (regex_hit *)al_get(results, i).data_ptr;
+    hit = (regex_hit *)al_get(results, i, &status).data_ptr;
     printf("=> Hit at index %d, length %d\n", hit->start, hit->length);
     printf("   \"%.*ls\"\n", hit->length, winput + hit->start);
     regex_hit_delete(hit);

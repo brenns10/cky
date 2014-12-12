@@ -37,12 +37,12 @@
 
 *******************************************************************************/
 
-#include <stdbool.h>    // true, false
+#include <stdbool.h>       // true, false
 
-#include "regex.h"      // functions we're implementing
-#include "fsm.h"        // for fsm operations
-#include "libstephen.h" // for linked lists
-#include "str.h"        // for get_escape
+#include "regex.h"         // functions we're implementing
+#include "fsm.h"           // for fsm operations
+#include "libstephen/ll.h" // for linked lists
+#include "str.h"           // for get_escape
 
 /**
    @brief Adjust the FSM according to its modifier, if any.
@@ -245,15 +245,16 @@ fsm *regex_parse_outer_escape(const wchar_t **regex)
 fsm *regex_parse_char_class(const wchar_t **regex)
 {
   smb_ll start, end;
+  smb_status status;
   DATA d;
   int type = FSM_TRANS_POSITIVE, state = NORMAL, index = 0;
-  smb_ll_iter iter;
+  smb_iter iter;
   fsm *f;
   int src, dest;
   fsm_trans *ft;
 
-  ll_init(&start);
-  ll_init(&end);
+  ll_init(&start, &status);
+  ll_init(&end, &status);
 
   // Detect whether the character class is positive or negative
   (*regex)++;
@@ -279,11 +280,11 @@ fsm *regex_parse_char_class(const wchar_t **regex)
       }
       // Put it in the correct place
       if (state == NORMAL) {
-        ll_append(&start, d);
-        ll_append(&end, d);
+        ll_append(&start, d, &status);
+        ll_append(&end, d, &status);
       } else {
         // Modify the last transition if this is a range
-        ll_set(&end, ll_length(&end)-1, d);
+        ll_set(&end, ll_length(&end)-1, d, &status);
         state = NORMAL;
       }
     }
@@ -292,8 +293,8 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   if (state == RANGE) {
     // The last hyphen was meant to be literal.  Yay!
     d.data_llint = L'-';
-    ll_append(&start, d);
-    ll_append(&end, d);
+    ll_append(&start, d, &status);
+    ll_append(&end, d, &status);
   }
 
   // Now, create an fsm and fsm_trans, and write the recorded pairs into the
@@ -304,14 +305,16 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   f->start = src;
   ft = fsm_trans_create(ll_length(&start), type, dest);
 
-  for (iter = ll_get_iter(&start); ll_iter_valid(&iter); ll_iter_next(&iter)) {
-    d = ll_iter_curr(&iter);
+  iter = ll_get_iter(&start);
+  while (iter.has_next(&iter)) {
+    d = iter.next(&iter, &status);
     ft->start[index] = (wchar_t) d.data_llint;
     index++;
   }
   index = 0;
-  for (iter = ll_get_iter(&end); ll_iter_valid(&iter); ll_iter_next(&iter)) {
-    d = ll_iter_curr(&iter);
+  iter = ll_get_iter(&end);
+  while (iter.has_next(&iter)) {
+    d = iter.next(&iter, &status);
     ft->end[index] = (wchar_t) d.data_llint;
     index++;
   }

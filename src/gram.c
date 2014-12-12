@@ -41,7 +41,7 @@
 #include <stdio.h>
 
 #include "gram.h"
-#include "libstephen.h"
+#include "libstephen/al.h"
 
 /**
    @brief Initialize a new CFG rule.
@@ -58,7 +58,7 @@ void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
 {
   int i;
 
-  CLEAR_ALL_ERRORS;
+  //CLEAR_ALL_ERRORS;
 
   // Assign values
   pNewRule->lhs = lhs;
@@ -67,7 +67,7 @@ void cfg_rule_init(cfg_rule *pNewRule, int lhs, int rhs_len)
 
   // Check for another allocation error
   if (!pNewRule->rhs) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return;
   }
 
@@ -94,22 +94,22 @@ cfg_rule *cfg_rule_create(int lhs, int rhs_len)
   // Allocate the new rule
   cfg_rule *pNewRule = (cfg_rule *) malloc(sizeof(cfg_rule));
 
-  CLEAR_ALL_ERRORS;
+  //CLEAR_ALL_ERRORS;
 
   // Check for allocation error
   if (!pNewRule) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
 
   cfg_rule_init(pNewRule, lhs, rhs_len);
 
-  if (CHECK(ALLOCATION_ERROR)) {
-    free(pNewRule);
-    SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
-    return NULL;
-  }
+  //if (CHECK(ALLOCATION_ERROR)) {
+    //free(pNewRule);
+    //SMB_DECREMENT_MALLOC_COUNTER(sizeof(cfg_rule));
+    //return NULL;
+  //}
 
   return pNewRule;
 }
@@ -169,17 +169,17 @@ cnf_rule *cnf_rule_create(int lhs, int rhs_one, int rhs_two)
   // Allocate the new rule
   cnf_rule *pNewRule = (cnf_rule *) malloc(sizeof(cnf_rule));
 
-  CLEAR_ALL_ERRORS;
+  //CLEAR_ALL_ERRORS;
 
   // Check for allocation error
   if (!pNewRule) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(cnf_rule));
 
   cnf_rule_init(pNewRule, lhs, rhs_one, rhs_two);
-  
+
   return pNewRule;
 }
 
@@ -212,9 +212,10 @@ void cnf_rule_delete(cnf_rule *pRule)
  */
 void cfg_init(cfg *pGram)
 {
-  al_init(&pGram->symbols);
-  al_init(&pGram->terminals);
-  al_init(&pGram->rules);
+  smb_status status;
+  al_init(&pGram->symbols, &status);
+  al_init(&pGram->terminals, &status);
+  al_init(&pGram->rules, &status);
   pGram->start = CFG_SYMBOL_NONE;
 }
 
@@ -228,13 +229,13 @@ cfg *cfg_create(void)
 
   // Check for allocation error
   if (!pGram) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(cfg));
 
   cfg_init(pGram);
-  
+
   return pGram;
 }
 
@@ -249,16 +250,17 @@ void cfg_destroy(cfg *pGram, bool free_symbols)
 {
   int i;
   DATA d;
+  smb_status status;
 
   if (free_symbols) {
     for (i = 0; i < al_length(&pGram->symbols); i++) {
-      d = al_get(&pGram->symbols, i);
+      d = al_get(&pGram->symbols, i, &status);
       free(d.data_ptr);
     }
   }
 
   for (i = 0; i < al_length(&pGram->rules); i++) {
-    d = al_get(&pGram->rules, i);
+    d = al_get(&pGram->rules, i, &status);
     cfg_rule_delete((cfg_rule *)d.data_ptr);
   }
 
@@ -300,16 +302,17 @@ int cfg_add_symbol(cfg *pGram, char *symbol, bool terminal)
 {
   DATA d;
   int idx;
+  smb_status status;
   d.data_ptr = symbol;
   idx = al_index_of(&pGram->symbols, d);
   if (idx != -1) {
     return idx;
   } else {
-    al_append(&pGram->symbols, d);
+    al_append(&pGram->symbols, d, &status);
     idx = al_length(&pGram->symbols) - 1;
     if (terminal) {
       d.data_llint = idx;
-      al_append(&pGram->terminals, d);
+      al_append(&pGram->terminals, d, &status);
     }
     return idx;
   }
@@ -324,8 +327,9 @@ int cfg_add_symbol(cfg *pGram, char *symbol, bool terminal)
 void cfg_add_rule(cfg *pGram, cfg_rule *newRule)
 {
   DATA d;
+  smb_status status;
   d.data_ptr = newRule;
-  al_append(&pGram->rules, d);
+  al_append(&pGram->rules, d, &status);
 }
 
 /**
@@ -338,22 +342,24 @@ void cfg_print(cfg *pGram)
   int i, j;
   DATA d, e;
   cfg_rule *rule;
+  smb_status status;
   for (i = 0; i < al_length(&pGram->rules); i++) {
-    d = al_get(&pGram->rules, i);
+    d = al_get(&pGram->rules, i, &status);
     rule = d.data_ptr;
-    e = al_get(&pGram->symbols, rule->lhs);
+    e = al_get(&pGram->symbols, rule->lhs, &status);
     printf("%s --> ", (char *) e.data_ptr);
     for (j = 0; j < rule->rhs_len; j++) {
-      e = al_get(&pGram->symbols, rule->rhs[j]);
+      e = al_get(&pGram->symbols, rule->rhs[j], &status);
       printf("%s ", (char *)e.data_ptr);
     }
     printf("\n");
   }
   printf("Terminals: ");
   for (i = 0; i < al_length(&pGram->terminals); i++) {
-    printf("%s ", (char *) al_get(&pGram->symbols, 
-                                  (int) al_get(&pGram->terminals, i).data_llint
-                                  ).data_ptr);
+    printf("%s ", (char *) al_get(&pGram->symbols,
+                                  (int) al_get(&pGram->terminals, i,
+                                               &status).data_llint,
+                                  &status).data_ptr);
   }
   printf("\n");
 }
@@ -365,10 +371,11 @@ void cfg_print(cfg *pGram)
  */
 void cnf_init(cnf *pGram)
 {
-  al_init(&pGram->terminals);
-  al_init(&pGram->nonterminals);
-  al_init(&pGram->rules_one);
-  al_init(&pGram->rules_two);
+  smb_status status;
+  al_init(&pGram->terminals, &status);
+  al_init(&pGram->nonterminals, &status);
+  al_init(&pGram->rules_one, &status);
+  al_init(&pGram->rules_two, &status);
   pGram->start = CFG_SYMBOL_NONE;
 }
 
@@ -382,13 +389,13 @@ cnf *cnf_create(void)
 
   // Check for allocation error
   if (!pGram) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(cnf));
 
   cnf_init(pGram);
-  
+
   return pGram;
 }
 
@@ -403,24 +410,25 @@ void cnf_destroy(cnf *pGram, bool free_symbols)
 {
   int i;
   DATA d;
+  smb_status status;
 
   if (free_symbols) {
     for (i = 0; i < al_length(&pGram->terminals); i++) {
-      d = al_get(&pGram->terminals, i);
+      d = al_get(&pGram->terminals, i, &status);
       free(d.data_ptr);
     }
     for (i = 0; i < al_length(&pGram->nonterminals); i++) {
-      d = al_get(&pGram->nonterminals, i);
+      d = al_get(&pGram->nonterminals, i, &status);
       free(d.data_ptr);
     }
   }
 
   for (i = 0; i < al_length(&pGram->rules_one); i++) {
-    d = al_get(&pGram->rules_one, i);
+    d = al_get(&pGram->rules_one, i, &status);
     cnf_rule_delete((cnf_rule *)d.data_ptr);
   }
   for (i = 0; i < al_length(&pGram->rules_two); i++) {
-    d = al_get(&pGram->rules_two, i);
+    d = al_get(&pGram->rules_two, i, &status);
     cnf_rule_delete((cnf_rule *)d.data_ptr);
   }
 

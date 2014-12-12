@@ -40,7 +40,7 @@
 #ifndef SMB_REGEX_H
 #define SMB_REGEX_H
 
-#include "libstephen.h"
+#include "libstephen/al.h"
 #include "fsm.h"
 
 /**

@@ -44,7 +44,7 @@
 
 #include "fsm.h"
 #include "str.h"
-#include "libstephen.h"
+#include "libstephen/al.h"
 
 /**
    @brief Reading the 'source' state of the transition.
@@ -151,6 +151,7 @@ int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)
  */
 fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
 {
+  smb_status status;
   // state: parse state  s1, s2: from and to states for the trans.
   // type: the type of transition.  i: iteration var
   int state = SFIRSTSTATE, s1 = 0, s2 = 0, type = -1, i;
@@ -159,8 +160,8 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
   // d: utility var for assigning to arraylists
   DATA d;
 
-  al_init(&first);
-  al_init(&second);
+  al_init(&first, &status);
+  al_init(&second, &status);
 
   // This machine goes character by character over the transition.
   while (**source != L'\n' && **source != L'\0') {
@@ -254,7 +255,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
       }
 
       // Add this character to the list of first characters.
-      al_append(&first, d);
+      al_append(&first, d, &status);
       SMB_DP("      Next char '%Lc'\n", **source);
 
       // There should be a hyphen separating the first and second characters.
@@ -287,7 +288,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
       }
 
       // Add the second character, and we're "finished."
-      al_append(&second, d);
+      al_append(&second, d, &status);
       state = SFINISHED;
       break;
 
@@ -326,8 +327,8 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
   fsm_trans *t = fsm_trans_create(al_length(&first), type, s2);
   t->dest = s2;
   for (i = 0; i < al_length(&first); i++) {
-    t->start[i] = (wchar_t) al_get(&first, i).data_llint;
-    t->end[i] = (wchar_t) al_get(&second, i).data_llint;
+    t->start[i] = (wchar_t) al_get(&first, i, &status).data_llint;
+    t->end[i] = (wchar_t) al_get(&second, i, &status).data_llint;
   }
   *start = s1;
 
@@ -356,6 +357,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
  */
 fsm *fsm_read(const wchar_t *source)
 {
+  smb_status status;
   fsm *new = fsm_create();
   fsm_trans *ft;
   smb_al *list;
@@ -380,7 +382,7 @@ fsm *fsm_read(const wchar_t *source)
   // Read accepting states from the following lines.
   SMB_DP("=> Reading for accepting states.\n");
   while ((d.data_llint =fsm_read_get_int(&source, L"accept:")) != -1) {
-    al_append(&new->accepting, d);
+    al_append(&new->accepting, d, &status);
     SMB_DP("\n=> Reading for additional accepting states.\n");
   }
   SMB_DP("   No more accepting states.\n\n");
@@ -411,9 +413,9 @@ fsm *fsm_read(const wchar_t *source)
     }
 
     // Add the transition to the transition list.
-    list = (smb_al *)al_get(&new->transitions, n).data_ptr;
+    list = (smb_al *)al_get(&new->transitions, n, &status).data_ptr;
     d.data_ptr = (void *) ft;
-    al_append(list, d);
+    al_append(list, d, &status);
     SMB_DP("   *Added transition*\n\n");
   }
 
@@ -455,6 +457,7 @@ void fsm_print_char(FILE *dest, wchar_t input)
  */
 void fsm_print(fsm *f, FILE *dest)
 {
+  smb_status status;
   int i, j;
   smb_al *list;
   wchar_t *start, *end;
@@ -465,18 +468,18 @@ void fsm_print(fsm *f, FILE *dest)
 
   // Print all the accepting states
   for (i = 0; i < al_length(&f->accepting); i++) {
-    fprintf(dest, "accept:%Ld\n", al_get(&f->accepting, i).data_llint);
+    fprintf(dest, "accept:%Ld\n", al_get(&f->accepting, i, &status).data_llint);
   }
 
   // For each state's transition list
   for (i = 0; i < al_length(&f->transitions); i++) {
 
     // For each transition in that list
-    list = (smb_al *) al_get(&f->transitions, i).data_ptr;
+    list = (smb_al *) al_get(&f->transitions, i, &status).data_ptr;
     for (j = 0; j < al_length(list); j++) {
 
       // Print the transition and whether it's positive or negative.
-      ft = (fsm_trans *) al_get(list, j).data_ptr;
+      ft = (fsm_trans *) al_get(list, j, &status).data_ptr;
       fprintf(dest, "%d-%d:%c", i, ft->dest,
               (ft->type == FSM_TRANS_POSITIVE ? '+' : '-'));
 
@@ -537,6 +540,7 @@ void fsm_dot_char(FILE * dest, wchar_t c)
  */
 void fsm_dot(fsm *f, FILE *dest)
 {
+  smb_status status;
   int i, j;
   smb_al *list;
   wchar_t *start, *end;
@@ -552,18 +556,18 @@ void fsm_dot(fsm *f, FILE *dest)
   // Declare accepting states as octagons
   for (i = 0; i < al_length(&f->accepting); i++) {
     fprintf(dest, "  s%d [shape=octagon];\n",
-            al_get(&f->accepting, i).data_llint);
+            al_get(&f->accepting, i, &status).data_llint);
   }
 
   // For each state's transition list
   for (i = 0; i < al_length(&f->transitions); i++) {
 
     // For each transition in that list
-    list = (smb_al *) al_get(&f->transitions, i).data_ptr;
+    list = (smb_al *) al_get(&f->transitions, i, &status).data_ptr;
     for (j = 0; j < al_length(list); j++) {
 
       // Declare an edge from source to destination.
-      ft = (fsm_trans *) al_get(list, j).data_ptr;
+      ft = (fsm_trans *) al_get(list, j, &status).data_ptr;
       fprintf(dest, "  s%d -> s%d ", i, ft->dest);
 
       // Begin writing the label for the transition

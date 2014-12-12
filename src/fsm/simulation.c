@@ -41,7 +41,7 @@
 #include <stdbool.h>    // for bool
 
 #include "fsm.h"        // funtions we're defining
-#include "libstephen.h" // al_*, SMB_DP
+#include "libstephen/al.h" // al_*, SMB_DP
 
 ////////////////////////////////////////////////////////////////////////////////
 // Helper Functions
@@ -59,33 +59,34 @@
  */
 smb_al *fsm_sim_nondet_epsilon_closure(fsm *f, int state)
 {
-  smb_al *closure = al_create();
+  smb_status status;
+  smb_al *closure = al_create(&status);
   smb_al *trans_list;
-  smb_al *visit_queue = al_create();
+  smb_al *visit_queue = al_create(&status);
   fsm_trans *ft;
   DATA d;
   int i;
 
   d.data_llint = state;
-  al_push_back(visit_queue, d);
+  al_push_back(visit_queue, d, &status);
 
   // Breadth first search here: while queue is not empty.
   while (al_length(visit_queue) > 0) {
     // Get next state to expand, mark it as visited (in the closure)
-    d = al_pop_front(visit_queue);
-    al_append(closure, d);
-    trans_list = (smb_al *)al_get(&f->transitions, d.data_llint).data_ptr;
+    d = al_pop_front(visit_queue, &status);
+    al_append(closure, d, &status);
+    trans_list = (smb_al *)al_get(&f->transitions, d.data_llint, &status).data_ptr;
     // For every transition out of it
     for (i = 0; i < al_length(trans_list); i++) {
       // If epsilon transitions out of it, and we haven't visited or put it in
       // the queue yet, add it to the visit queue.
-      ft = (fsm_trans *) al_get(trans_list, i).data_ptr;
+      ft = (fsm_trans *) al_get(trans_list, i, &status).data_ptr;
       d.data_llint = ft->dest;
-      if (fsm_trans_check(ft, EPSILON) && 
+      if (fsm_trans_check(ft, EPSILON) &&
           al_index_of(visit_queue, d) == -1 &&
           al_index_of(closure, d) == -1){
         d.data_llint = ft->dest;
-        al_push_back(visit_queue, d);
+        al_push_back(visit_queue, d, &status);
       }
     }
   }
@@ -102,12 +103,13 @@ smb_al *fsm_sim_nondet_epsilon_closure(fsm *f, int state)
  */
 void fsm_sim_nondet_union_and_delete(smb_al *first, smb_al *second)
 {
+  smb_status status;
   int i;
   DATA d;
   for (i = 0; i < al_length(second); i++) {
-    d = al_get(second, i);
+    d = al_get(second, i, &status);
     if (al_index_of(first, d) == -1) {
-      al_append(first, d);
+      al_append(first, d, &status);
     }
   }
   al_delete(second);
@@ -122,10 +124,11 @@ void fsm_sim_nondet_union_and_delete(smb_al *first, smb_al *second)
  */
 bool fsm_sim_nondet_non_empty_intersection(smb_al *first, smb_al *second)
 {
+  smb_status status;
   int i;
   DATA d;
   for (i = 0; i < al_length(first); i++) {
-    d = al_get(first, i);
+    d = al_get(first, i, &status);
     if (al_index_of(second, d) != -1)
       return true;
   }
@@ -139,9 +142,10 @@ bool fsm_sim_nondet_non_empty_intersection(smb_al *first, smb_al *second)
  */
 void al_copy_all(smb_al *dest, const smb_al *from)
 {
+  smb_status status;
   int i;
   for (i = 0; i < al_length(from); i++) {
-    al_append(dest, al_get(from, i));
+    al_append(dest, al_get(from, i, &status), &status);
   }
 }
 
@@ -161,6 +165,7 @@ void al_copy_all(smb_al *dest, const smb_al *from)
  */
 bool fsm_sim_det(fsm *f, const wchar_t *input)
 {
+  smb_status status;
   DATA d;
   int i, next, state;
   smb_al *list;
@@ -171,11 +176,11 @@ bool fsm_sim_det(fsm *f, const wchar_t *input)
   while (*input != '\0') {
     SMB_DP("State: %d, Input %Lc\n", state, *input);
     // Get the list of transitions from this state
-    list = (smb_al *) al_get(&f->transitions, state).data_ptr;
+    list = (smb_al *) al_get(&f->transitions, state, &status).data_ptr;
     next = -1;
     // Look for transitions that match this character
     for (i = 0; i < al_length(list); i++) {
-      trans = (fsm_trans *) al_get(list, i).data_ptr;
+      trans = (fsm_trans *) al_get(list, i, &status).data_ptr;
       if (fsm_trans_check(trans, *input)) {
         if (next == -1) {
           next = trans->dest;
@@ -274,34 +279,35 @@ int fsm_sim_nondet_state(const fsm_sim *s)
  */
 void fsm_sim_nondet_step(fsm_sim *s)
 {
+  smb_status status;
   int i, j, state, original;
   DATA d;
   fsm_trans *t;
-  smb_al *next = al_create();
+  smb_al *next = al_create(&status);
   smb_al *trans;
 
   // For diagnostics, print out the entire current state set
   SMB_DP("Current state: ");
   for (i = 0; i < al_length(s->curr); i++) {
-    SMB_DP("%Ld ", al_get(s->curr, i).data_llint);
+    SMB_DP("%Ld ", al_get(s->curr, i, &status).data_llint);
   }
   SMB_DP("\n");
 
   // For each current state:
   for (i = 0; i < al_length(s->curr); i++) {
-    state = (int) al_get(s->curr, i).data_llint;
-    trans = (smb_al *) al_get(&s->f->transitions, state).data_ptr;
+    state = (int) al_get(s->curr, i, &status).data_llint;
+    trans = (smb_al *) al_get(&s->f->transitions, state, &status).data_ptr;
 
     // For each transition out:
     for (j = 0; j < al_length(trans); j++) {
-      t = (fsm_trans *)al_get(trans, j).data_ptr;
+      t = (fsm_trans *)al_get(trans, j, &status).data_ptr;
       d.data_llint = t->dest;
 
       // If the transition contains the current input, and it's not already in
       // the next state list, add it to the next state list.
       if (fsm_trans_check(t, *s->input) &&
           al_index_of(next, d) == -1) {
-        al_append(next, d);
+        al_append(next, d, &status);
       }
     }
   }
@@ -310,7 +316,7 @@ void fsm_sim_nondet_step(fsm_sim *s)
   // closures.
   original = al_length(next);
   for (i = 0; i < original; i++) {
-    state = (int) al_get(next, i).data_llint;
+    state = (int) al_get(next, i, &status).data_llint;
     fsm_sim_nondet_union_and_delete(next,
                                     fsm_sim_nondet_epsilon_closure(s->f,
                                                                    state));
@@ -324,7 +330,7 @@ void fsm_sim_nondet_step(fsm_sim *s)
   // For diagnostics, print the new state
   SMB_DP("New state: ");
   for (i = 0; i < al_length(s->curr); i++) {
-    SMB_DP("%Ld ", al_get(s->curr, i).data_llint);
+    SMB_DP("%Ld ", al_get(s->curr, i, &status).data_llint);
   }
   SMB_DP("\n");
 }

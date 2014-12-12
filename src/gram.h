@@ -41,7 +41,7 @@
 #define SMB_GRAM_H
 
 #include <stdbool.h>
-#include "libstephen.h"
+#include "libstephen/al.h"
 
 /**
    @brief A constant to indicate that there is no symbol in a grammar slot.

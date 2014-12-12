@@ -62,21 +62,21 @@ regex_hit *regex_hit_create(int start, int length)
 {
   // Allocate space
   regex_hit *obj = (regex_hit *) malloc(sizeof(regex_hit));
-  CLEAR_ALL_ERRORS;
+  //CLEAR_ALL_ERRORS;
 
   // Check for allocation error
   if (!obj) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
 
   // Initialize
   regex_hit_init(obj, start, length);
 
-  if (CHECK(ALLOCATION_ERROR)) {
-    free(obj);
-    return NULL;
-  }
+  //if (CHECK(ALLOCATION_ERROR)) {
+  //  free(obj);
+  //  return NULL;
+  //
 
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(regex_hit));
   return obj;

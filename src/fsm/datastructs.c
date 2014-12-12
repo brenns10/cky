@@ -41,7 +41,7 @@
 #include <stdio.h>      // fprintf, stderr, etc...
 
 #include "fsm.h"
-#include "libstephen.h"
+#include "libstephen/al.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // fsm_trans Fundamental Functions
@@ -70,7 +70,7 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
   // Allocate space for the start range, plus null terminator
   ft->start = (wchar_t *) malloc((n + 1) * sizeof(wchar_t));
   if (!ft->start) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     fprintf(stderr, "libstephen: fsm_trans_init(): Memory allocation "
             "failed.\n");
     return;
@@ -79,7 +79,7 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
   // Allocate space for the end range, plus null terminator
   ft->end = (wchar_t *) malloc((n + 1) * sizeof(wchar_t));
   if (!ft->end) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     fprintf(stderr, "libstephen: fsm_trans_init(): Memory allocation "
             "failed.\n");
     free(ft->start);
@@ -110,11 +110,11 @@ fsm_trans *fsm_trans_create(int n, int type, int dest)
 {
   // Allocate the space
   fsm_trans *ft = (fsm_trans *) malloc(sizeof(fsm_trans));
-  CLEAR_ALL_ERRORS;
+  //CLEAR_ALL_ERRORS;
 
   // Check for allocation error
   if (!ft) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
 
@@ -122,10 +122,10 @@ fsm_trans *fsm_trans_create(int n, int type, int dest)
   fsm_trans_init(ft, n, type, dest);
 
   // If the initialization failed, free and return
-  if (CHECK(ALLOCATION_ERROR)) {
-    free(ft);
-    return NULL;
-  }
+  //if (CHECK(ALLOCATION_ERROR)) {
+    //free(ft);
+    //return NULL;
+  //}
 
   // Otherwise, count the memory and return it.
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(fsm_trans));
@@ -262,16 +262,17 @@ fsm_trans *fsm_trans_copy(const fsm_trans *ft)
  */
 void fsm_init(fsm *f)
 {
-  CLEAR_ALL_ERRORS;
+  smb_status status;
+  //CLEAR_ALL_ERRORS;
   f->start = -1;
-  al_init(&f->transitions);
-  if (CHECK(ALLOCATION_ERROR))
-    return;
-  al_init(&f->accepting);
-  if (CHECK(ALLOCATION_ERROR)) {
-    al_destroy(&f->transitions);
-    return;
-  }
+  al_init(&f->transitions, &status);
+  //if (CHECK(ALLOCATION_ERROR))
+    //return;
+  al_init(&f->accepting, &status);
+  //if (CHECK(ALLOCATION_ERROR)) {
+    //al_destroy(&f->transitions);
+    //return;
+  //}
 }
 
 /**
@@ -280,17 +281,17 @@ void fsm_init(fsm *f)
 fsm *fsm_create(void)
 {
   fsm *f = (fsm *) malloc(sizeof(fsm));
-  CLEAR_ALL_ERRORS;
+  //CLEAR_ALL_ERRORS;
 
   if (!f) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
 
   fsm_init(f);
-  if (CHECK(ALLOCATION_ERROR)) {
-    free(f);
-  }
+  //if (CHECK(ALLOCATION_ERROR)) {
+    //free(f);
+  //}
 
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(fsm));
   return f;
@@ -305,13 +306,14 @@ fsm *fsm_create(void)
 void fsm_destroy(fsm *f, bool free_transitions)
 {
   int i, j;
+  smb_status status;
   smb_al *list;
 
   for (i = 0; i < al_length(&f->transitions); i++) {
-    list = (smb_al *) al_get(&f->transitions, i).data_ptr;
+    list = (smb_al *) al_get(&f->transitions, i, &status).data_ptr;
     if (free_transitions) {
       for (j = 0; j < al_length(list); j++) {
-        fsm_trans_delete((fsm_trans *) al_get(list, j).data_ptr);
+        fsm_trans_delete((fsm_trans *) al_get(list, j, &status).data_ptr);
       }
     }
     al_delete(list);
@@ -361,14 +363,15 @@ fsm *fsm_create_single_char(wchar_t character)
  */
 int fsm_add_state(fsm *f, bool accepting)
 {
+  smb_status status;
   DATA d;
   int index;
-  d.data_ptr = (void *) al_create();
-  al_append(&f->transitions, d);
+  d.data_ptr = (void *) al_create(&status);
+  al_append(&f->transitions, d, &status);
   index = al_length(&f->transitions) - 1;
   if (accepting) {
     d.data_llint = index;
-    al_append(&f->accepting, d);
+    al_append(&f->accepting, d, &status);
   }
   return index;
 }
@@ -382,10 +385,11 @@ int fsm_add_state(fsm *f, bool accepting)
  */
 void fsm_add_trans(fsm *f, int state, const fsm_trans *ft)
 {
-  smb_al *list = (smb_al *) al_get(&f->transitions, state).data_ptr;
+  smb_status status;
+  smb_al *list = (smb_al *) al_get(&f->transitions, state, &status).data_ptr;
   DATA d;
   d.data_ptr = (void *) ft;
-  al_append(list, d);
+  al_append(list, d, &status);
 }
 
 /**
@@ -443,7 +447,7 @@ fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input)
   fsm_sim *fs = (fsm_sim *) malloc(sizeof(fsm_sim));
 
   if (!fs) {
-    RAISE(ALLOCATION_ERROR);
+    //RAISE(ALLOCATION_ERROR);
     return NULL;
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(fsm_sim));

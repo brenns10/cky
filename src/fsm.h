@@ -43,7 +43,7 @@
 #include <stdbool.h>
 #include <wchar.h>
 
-#include "libstephen.h"
+#include "libstephen/al.h"
 
 /**
    @brief A value for fsm_trans.type indicating that the ranges are positive.
