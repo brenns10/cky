@@ -68,7 +68,7 @@ endif
 SOURCES=$(shell find src/ -type f -name "*.c")
 SOURCEDIRS=$(shell find src/ -type d)
 
-OBJECTS=$(patsubst src/%.c,obj/%.o,$(SOURCES)) obj/$(CFG)/libstephen.a
+OBJECTS=$(patsubst src/%.c,obj/$(CFG)/%.o,$(SOURCES)) obj/$(CFG)/libstephen.a
 
 # Main targets
 .PHONY: all clean libstephen_build docs
@@ -109,7 +109,7 @@ src/regex/parse.c: src/regex.h src/fsm.h src/str.h
 src/regex/search.c: src/regex.h src/fsm.h
 
 # --- Compile Rule
-obj/%.o: src/%.c
+obj/$(CFG)/%.o: src/%.c
 	$(DIR_GUARD)
 	$(CC) $(CFLAGS) $< -o $@
 
