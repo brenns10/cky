@@ -62,7 +62,7 @@
    @param type The type of transition (positive or negative)
    @param dest The destination of the transition
  */
-void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
+void fsm_trans_init(fsm_trans *ft, int n, int type, int dest, smb_status *st)
 {
   int i;
   ft->type = type;
@@ -70,7 +70,7 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
   // Allocate space for the start range, plus null terminator
   ft->start = (wchar_t *) malloc((n + 1) * sizeof(wchar_t));
   if (!ft->start) {
-    //RAISE(ALLOCATION_ERROR);
+    *st = SMB_ALLOCATION_ERROR;
     fprintf(stderr, "libstephen: fsm_trans_init(): Memory allocation "
             "failed.\n");
     return;
@@ -79,7 +79,7 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
   // Allocate space for the end range, plus null terminator
   ft->end = (wchar_t *) malloc((n + 1) * sizeof(wchar_t));
   if (!ft->end) {
-    //RAISE(ALLOCATION_ERROR);
+    *st = SMB_ALLOCATION_ERROR;
     fprintf(stderr, "libstephen: fsm_trans_init(): Memory allocation "
             "failed.\n");
     free(ft->start);
@@ -106,26 +106,25 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
    @param type The type of transition
    @param dest The destination of the transition
  */
-fsm_trans *fsm_trans_create(int n, int type, int dest)
+fsm_trans *fsm_trans_create(int n, int type, int dest, smb_status *st)
 {
   // Allocate the space
   fsm_trans *ft = (fsm_trans *) malloc(sizeof(fsm_trans));
-  //CLEAR_ALL_ERRORS;
 
   // Check for allocation error
   if (!ft) {
-    //RAISE(ALLOCATION_ERROR);
+    *st = SMB_ALLOCATION_ERROR;
     return NULL;
   }
 
   // Run initialization
-  fsm_trans_init(ft, n, type, dest);
+  fsm_trans_init(ft, n, type, dest, st);
 
   // If the initialization failed, free and return
-  //if (CHECK(ALLOCATION_ERROR)) {
-    //free(ft);
-    //return NULL;
-  //}
+  if (*st == SMB_ALLOCATION_ERROR) {
+    free(ft);
+    return NULL;
+  }
 
   // Otherwise, count the memory and return it.
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(fsm_trans));
@@ -181,11 +180,9 @@ void fsm_trans_delete(fsm_trans *ft)
    @param dest The destination of the transition
  */
 void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type,
-                           int dest)
+                           int dest, smb_status *st)
 {
-  fsm_trans_init(ft, 1, type, dest);
-  if (end < start)
-    fprintf(stderr, "Error: initialization of invalid range in FSM.\n");
+  fsm_trans_init(ft, 1, type, dest, st);
   ft->start[0] = start;
   ft->end[0] = end;
 }
@@ -198,12 +195,10 @@ void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type,
    @param type The type of the object
    @param dest The destination of the transition
  */
-fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type, 
-                                   int dest)
+fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type,
+                                   int dest, smb_status *st)
 {
-  fsm_trans *ft = fsm_trans_create(1, type, dest);
-  if (end < start)
-    fprintf(stderr, "Error: initialization of invalid range in FSM.\n");
+  fsm_trans *ft = fsm_trans_create(1, type, dest, st);
   ft->start[0] = start;
   ft->end[0] = end;
   return ft;
@@ -240,10 +235,10 @@ bool fsm_trans_check(const fsm_trans *ft, wchar_t c)
    @param ft The transition to copy
    @return The copy of ft
  */
-fsm_trans *fsm_trans_copy(const fsm_trans *ft)
+fsm_trans *fsm_trans_copy(const fsm_trans *ft, smb_status *st)
 {
   int i, rangeSize = wcslen(ft->start);
-  fsm_trans *new = fsm_trans_create(rangeSize, ft->type, ft->dest);
+  fsm_trans *new = fsm_trans_create(rangeSize, ft->type, ft->dest, st);
   for (i = 0; i < rangeSize; i++) {
     new->start[i] = ft->start[i];
     new->end[i] = ft->end[i];
@@ -260,38 +255,35 @@ fsm_trans *fsm_trans_copy(const fsm_trans *ft)
 
    @param f The FSM to Initialize
  */
-void fsm_init(fsm *f)
+void fsm_init(fsm *f, smb_status *st)
 {
-  smb_status status;
-  //CLEAR_ALL_ERRORS;
   f->start = -1;
-  al_init(&f->transitions, &status);
-  //if (CHECK(ALLOCATION_ERROR))
-    //return;
-  al_init(&f->accepting, &status);
-  //if (CHECK(ALLOCATION_ERROR)) {
-    //al_destroy(&f->transitions);
-    //return;
-  //}
+  al_init(&f->transitions, st);
+  if (*st == SMB_ALLOCATION_ERROR)
+    return;
+  al_init(&f->accepting, st);
+  if (*st == SMB_ALLOCATION_ERROR) {
+    al_destroy(&f->transitions);
+    return;
+  }
 }
 
 /**
    @brief Allocate and initialize an FSM.
  */
-fsm *fsm_create(void)
+fsm *fsm_create(smb_status *st)
 {
   fsm *f = (fsm *) malloc(sizeof(fsm));
-  //CLEAR_ALL_ERRORS;
 
   if (!f) {
-    //RAISE(ALLOCATION_ERROR);
+    *st == SMB_ALLOCATION_ERROR;
     return NULL;
   }
 
-  fsm_init(f);
-  //if (CHECK(ALLOCATION_ERROR)) {
-    //free(f);
-  //}
+  fsm_init(f, st);
+  if (*st == SMB_ALLOCATION_ERROR) {
+    free(f);
+  }
 
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(fsm));
   return f;
@@ -345,12 +337,12 @@ void fsm_delete(fsm *f, bool free_transitions)
    @param character The character to make a transition for.
    @returns FSM for the character.
  */
-fsm *fsm_create_single_char(wchar_t character)
+fsm *fsm_create_single_char(wchar_t character, smb_status *st)
 {
-  fsm *f = fsm_create();
-  int s0 = fsm_add_state(f, false);
-  int s1 = fsm_add_state(f, true);
-  fsm_add_single(f, s0, s1, character, character, FSM_TRANS_POSITIVE);
+  fsm *f = fsm_create(st);
+  int s0 = fsm_add_state(f, false, st);
+  int s1 = fsm_add_state(f, true, st);
+  fsm_add_single(f, s0, s1, character, character, FSM_TRANS_POSITIVE, st);
   f->start= s0;
   return f;
 }
@@ -361,17 +353,16 @@ fsm *fsm_create_single_char(wchar_t character)
    @param accepting Whether to add the state to the accepting list
    @return The index of the state
  */
-int fsm_add_state(fsm *f, bool accepting)
+int fsm_add_state(fsm *f, bool accepting, smb_status *st)
 {
-  smb_status status;
   DATA d;
   int index;
-  d.data_ptr = (void *) al_create(&status);
-  al_append(&f->transitions, d, &status);
+  d.data_ptr = (void *) al_create(st);
+  al_append(&f->transitions, d, st);
   index = al_length(&f->transitions) - 1;
   if (accepting) {
     d.data_llint = index;
-    al_append(&f->accepting, d, &status);
+    al_append(&f->accepting, d, st);
   }
   return index;
 }
@@ -383,13 +374,12 @@ int fsm_add_state(fsm *f, bool accepting)
    @param state The state the transition is from
    @param ft The transition to add
  */
-void fsm_add_trans(fsm *f, int state, const fsm_trans *ft)
+void fsm_add_trans(fsm *f, int state, const fsm_trans *ft, smb_status *st)
 {
-  smb_status status;
-  smb_al *list = (smb_al *) al_get(&f->transitions, state, &status).data_ptr;
+  smb_al *list = (smb_al *) al_get(&f->transitions, state, st).data_ptr;
   DATA d;
   d.data_ptr = (void *) ft;
-  al_append(list, d, &status);
+  al_append(list, d, st);
 }
 
 /**
@@ -410,10 +400,10 @@ void fsm_add_trans(fsm *f, int state, const fsm_trans *ft)
    @return Pointer to the fsm_trans created by the function.
  */
 fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end,
-                          int type)
+                          int type, smb_status *st)
 {
-  fsm_trans *new = fsm_trans_create_single(start, end, type, to);
-  fsm_add_trans(f, from, new);
+  fsm_trans *new = fsm_trans_create_single(start, end, type, to, st);
+  fsm_add_trans(f, from, new, st);
   return new;
 }
 
@@ -424,11 +414,12 @@ fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end,
 /**
    @brief Initialize an fsm_sim struct
    @param fs The struct to init
-   @param f The FSM to simulate 
+   @param f The FSM to simulate
    @param curr The current state of the simulation
    @param input The input string
  */
-void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input)
+void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input,
+                  smb_status *st)
 {
   fs->f = f;
   fs->curr = curr;
@@ -437,22 +428,23 @@ void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input)
 
 /**
    @brief Allocate and initialize an fsm_sim struct
-   @param f The FSM to simulate 
+   @param f The FSM to simulate
    @param curr The current state of the simulation
    @param input The input string
    @return The allocated simulation
  */
-fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input)
+fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input,
+                        smb_status *st)
 {
   fsm_sim *fs = (fsm_sim *) malloc(sizeof(fsm_sim));
 
   if (!fs) {
-    //RAISE(ALLOCATION_ERROR);
+    *st = SMB_ALLOCATION_ERROR;
     return NULL;
   }
   SMB_INCREMENT_MALLOC_COUNTER(sizeof(fsm_sim));
 
-  fsm_sim_init(fs, f, curr, input);
+  fsm_sim_init(fs, f, curr, input, st);
   return fs;
 }
 
