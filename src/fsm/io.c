@@ -151,7 +151,7 @@ int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)
  */
 fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
 {
-  smb_status status;
+  smb_status status = SMB_SUCCESS;
   // state: parse state  s1, s2: from and to states for the trans.
   // type: the type of transition.  i: iteration var
   int state = SFIRSTSTATE, s1 = 0, s2 = 0, type = -1, i;
@@ -160,8 +160,8 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
   // d: utility var for assigning to arraylists
   DATA d;
 
-  al_init(&first, &status);
-  al_init(&second, &status);
+  al_init(&first);
+  al_init(&second);
 
   // This machine goes character by character over the transition.
   while (**source != L'\n' && **source != L'\0') {
@@ -255,7 +255,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
       }
 
       // Add this character to the list of first characters.
-      al_append(&first, d, &status);
+      al_append(&first, d);
       SMB_DP("      Next char '%Lc'\n", **source);
 
       // There should be a hyphen separating the first and second characters.
@@ -288,7 +288,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start)
       }
 
       // Add the second character, and we're "finished."
-      al_append(&second, d, &status);
+      al_append(&second, d);
       state = SFINISHED;
       break;
 
@@ -382,7 +382,7 @@ fsm *fsm_read(const wchar_t *source)
   // Read accepting states from the following lines.
   SMB_DP("=> Reading for accepting states.\n");
   while ((d.data_llint =fsm_read_get_int(&source, L"accept:")) != -1) {
-    al_append(&new->accepting, d, &status);
+    al_append(&new->accepting, d);
     SMB_DP("\n=> Reading for additional accepting states.\n");
   }
   SMB_DP("   No more accepting states.\n\n");
@@ -415,7 +415,7 @@ fsm *fsm_read(const wchar_t *source)
     // Add the transition to the transition list.
     list = (smb_al *)al_get(&new->transitions, n, &status).data_ptr;
     d.data_ptr = (void *) ft;
-    al_append(list, d, &status);
+    al_append(list, d);
     SMB_DP("   *Added transition*\n\n");
   }
 

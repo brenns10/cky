@@ -212,10 +212,9 @@ void cnf_rule_delete(cnf_rule *pRule)
  */
 void cfg_init(cfg *pGram)
 {
-  smb_status status;
-  al_init(&pGram->symbols, &status);
-  al_init(&pGram->terminals, &status);
-  al_init(&pGram->rules, &status);
+  al_init(&pGram->symbols);
+  al_init(&pGram->terminals);
+  al_init(&pGram->rules);
   pGram->start = CFG_SYMBOL_NONE;
 }
 
@@ -302,17 +301,16 @@ int cfg_add_symbol(cfg *pGram, char *symbol, bool terminal)
 {
   DATA d;
   int idx;
-  smb_status status;
   d.data_ptr = symbol;
   idx = al_index_of(&pGram->symbols, d);
   if (idx != -1) {
     return idx;
   } else {
-    al_append(&pGram->symbols, d, &status);
+    al_append(&pGram->symbols, d);
     idx = al_length(&pGram->symbols) - 1;
     if (terminal) {
       d.data_llint = idx;
-      al_append(&pGram->terminals, d, &status);
+      al_append(&pGram->terminals, d);
     }
     return idx;
   }
@@ -327,9 +325,8 @@ int cfg_add_symbol(cfg *pGram, char *symbol, bool terminal)
 void cfg_add_rule(cfg *pGram, cfg_rule *newRule)
 {
   DATA d;
-  smb_status status;
   d.data_ptr = newRule;
-  al_append(&pGram->rules, d, &status);
+  al_append(&pGram->rules, d);
 }
 
 /**
@@ -371,11 +368,10 @@ void cfg_print(cfg *pGram)
  */
 void cnf_init(cnf *pGram)
 {
-  smb_status status;
-  al_init(&pGram->terminals, &status);
-  al_init(&pGram->nonterminals, &status);
-  al_init(&pGram->rules_one, &status);
-  al_init(&pGram->rules_two, &status);
+  al_init(&pGram->terminals);
+  al_init(&pGram->nonterminals);
+  al_init(&pGram->rules_one);
+  al_init(&pGram->rules_two);
   pGram->start = CFG_SYMBOL_NONE;
 }
 

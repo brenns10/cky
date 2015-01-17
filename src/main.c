@@ -92,11 +92,10 @@ void help(char *name)
 int main(int argc, char **argv)
 {
   smb_ad data;
-  smb_status status;
   bool executed = false;
 
-  arg_data_init(&data, &status);
-  process_args(&data, argc - 1, argv + 1, &status);
+  arg_data_init(&data);
+  process_args(&data, argc - 1, argv + 1);
 
   if (check_flag(&data, 'h') || check_long_flag(&data, "help")) {
     help(argv[0]);

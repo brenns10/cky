@@ -66,8 +66,7 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
 {
   fsm_sim *curr_sim;
   int start = 0, length, last_length, res;
-  smb_status status;
-  smb_al *results = al_create(&status);
+  smb_al *results = al_create();
   DATA d;
 
   SMB_DP("STARTING FSM SEARCH\n");
@@ -110,7 +109,7 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
       // If we encounter a match during this simulation, record it.
       SMB_DP("=> Found match of length %d.\n", last_length);
       d.data_ptr = (void *) regex_hit_create(start, last_length);
-      al_append(results, d, &status);
+      al_append(results, d);
 
       if (greedy) {
         SMB_DP("=> Greedy return.\n");

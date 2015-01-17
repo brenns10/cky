@@ -143,11 +143,11 @@ void fsm_concat(fsm *first, const fsm *second)
 
   // Replace the accepting states of the first with the second.
   al_destroy(&first->accepting);
-  al_init(&first->accepting, &status);
+  al_init(&first->accepting);
   for (i = 0; i < al_length(&second->accepting); i++) {
     d = al_get(&second->accepting, i, &status);
     d.data_llint += offset;
-    al_append(&first->accepting, d, &status);
+    al_append(&first->accepting, d);
   }
 }
 
@@ -189,7 +189,7 @@ void fsm_union(fsm *first, const fsm *second)
   for (i = 0; i < al_length(&second->accepting); i++) {
     d = al_get(&second->accepting, i, &status);
     d.data_llint += offset;
-    al_append(&first->accepting, d, &status);
+    al_append(&first->accepting, d);
   }
 
   // Change the start state
@@ -226,7 +226,7 @@ void fsm_kleene(fsm *f)
 
   // Make the new start accepting
   d.data_llint = newStart;
-  al_append(&f->accepting, d, &status);
+  al_append(&f->accepting, d);
 
   // Change the start state (officially)
   f->start = newStart;

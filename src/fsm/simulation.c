@@ -68,13 +68,13 @@ smb_al *fsm_sim_nondet_epsilon_closure(fsm *f, int state)
   int i;
 
   d.data_llint = state;
-  al_push_back(visit_queue, d, &status);
+  al_push_back(visit_queue, d);
 
   // Breadth first search here: while queue is not empty.
   while (al_length(visit_queue) > 0) {
     // Get next state to expand, mark it as visited (in the closure)
     d = al_pop_front(visit_queue, &status);
-    al_append(closure, d, &status);
+    al_append(closure, d);
     trans_list = (smb_al *)al_get(&f->transitions, d.data_llint, &status).data_ptr;
     // For every transition out of it
     for (i = 0; i < al_length(trans_list); i++) {
@@ -86,7 +86,7 @@ smb_al *fsm_sim_nondet_epsilon_closure(fsm *f, int state)
           al_index_of(visit_queue, d) == -1 &&
           al_index_of(closure, d) == -1){
         d.data_llint = ft->dest;
-        al_push_back(visit_queue, d, &status);
+        al_push_back(visit_queue, d);
       }
     }
   }
@@ -109,7 +109,7 @@ void fsm_sim_nondet_union_and_delete(smb_al *first, smb_al *second)
   for (i = 0; i < al_length(second); i++) {
     d = al_get(second, i, &status);
     if (al_index_of(first, d) == -1) {
-      al_append(first, d, &status);
+      al_append(first, d);
     }
   }
   al_delete(second);
@@ -145,7 +145,7 @@ void al_copy_all(smb_al *dest, const smb_al *from)
   smb_status status;
   int i;
   for (i = 0; i < al_length(from); i++) {
-    al_append(dest, al_get(from, i, &status), &status);
+    al_append(dest, al_get(from, i, &status));
   }
 }
 
@@ -307,7 +307,7 @@ void fsm_sim_nondet_step(fsm_sim *s)
       // the next state list, add it to the next state list.
       if (fsm_trans_check(t, *s->input) &&
           al_index_of(next, d) == -1) {
-        al_append(next, d, &status);
+        al_append(next, d);
       }
     }
   }

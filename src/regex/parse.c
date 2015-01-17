@@ -38,6 +38,7 @@
 *******************************************************************************/
 
 #include <stdbool.h>       // true, false
+#include <assert.h>        // assert()
 
 #include "regex.h"         // functions we're implementing
 #include "fsm.h"           // for fsm operations
@@ -245,7 +246,7 @@ fsm *regex_parse_outer_escape(const wchar_t **regex)
 fsm *regex_parse_char_class(const wchar_t **regex)
 {
   smb_ll start, end;
-  smb_status status;
+  smb_status status = SMB_SUCCESS;
   DATA d;
   int type = FSM_TRANS_POSITIVE, state = NORMAL;
   smb_iter iter;
@@ -253,8 +254,8 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   int src, dest;
   fsm_trans *ft;
 
-  ll_init(&start, &status);
-  ll_init(&end, &status);
+  ll_init(&start);
+  ll_init(&end);
 
   // Detect whether the character class is positive or negative
   (*regex)++;
@@ -280,8 +281,8 @@ fsm *regex_parse_char_class(const wchar_t **regex)
       }
       // Put it in the correct place
       if (state == NORMAL) {
-        ll_append(&start, d, &status);
-        ll_append(&end, d, &status);
+        ll_append(&start, d);
+        ll_append(&end, d);
       } else {
         // Modify the last transition if this is a range
         ll_set(&end, ll_length(&end)-1, d, &status);
@@ -293,8 +294,8 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   if (state == RANGE) {
     // The last hyphen was meant to be literal.  Yay!
     d.data_llint = L'-';
-    ll_append(&start, d, &status);
-    ll_append(&end, d, &status);
+    ll_append(&start, d);
+    ll_append(&end, d);
   }
 
   // Now, create an fsm and fsm_trans, and write the recorded pairs into the
@@ -308,11 +309,13 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   iter = ll_get_iter(&start);
   while (iter.has_next(&iter)) {
     d = iter.next(&iter, &status);
+    assert(status == SMB_SUCCESS);
     ft->start[iter.index] = (wchar_t) d.data_llint;
   }
   iter = ll_get_iter(&end);
   while (iter.has_next(&iter)) {
     d = iter.next(&iter, &status);
+    assert(status == SMB_SUCCESS);
     ft->end[iter.index] = (wchar_t) d.data_llint;
   }
 
