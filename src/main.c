@@ -148,11 +148,11 @@ int main(int argc, char **argv)
  */
 void dot(void)
 {
-  int alloc;
+  smb_status status = SMB_SUCCESS;
   wchar_t *str;
   fsm *compiled_fsm;
 
-  str = smb_read_linew(stdin, &alloc);
+  str = smb_read_linew(stdin, &status);
   compiled_fsm = regex_parse(str);
   smb_free(str);
   fsm_dot(compiled_fsm, stdout);
@@ -200,14 +200,14 @@ void search(void)
   fsm *regex_fsm;
   char *input;
   wchar_t *winput;
-  int alloc, len;
+  int len;
   smb_al *results;
   regex_hit *hit;
-  smb_status status;
+  smb_status status = SMB_SUCCESS;
   int i;
 
   printf("Input Filename: ");
-  filename = smb_read_line(stdin, &alloc);
+  filename = smb_read_line(stdin, &status);
   file = fopen(filename, "r");
   smb_free(filename);
   if (file == NULL) {
@@ -216,7 +216,7 @@ void search(void)
   }
 
   printf("Input Regex: ");
-  regex = smb_read_line(stdin, &alloc);
+  regex = smb_read_line(stdin, &status);
   len = strlen(regex) + 1;
   wregex = smb_new(wchar_t, len);
   if (utf8toucs4(wregex, regex, len) != 0) {
@@ -230,7 +230,7 @@ void search(void)
   regex_fsm = regex_parse(wregex);
   smb_free(wregex);
 
-  input = read_file(file, &alloc);
+  input = read_file(file, &status);
   fclose(file);
   len = strlen(input) + 1;
   winput = smb_new(wchar_t, len);
@@ -267,17 +267,17 @@ void search(void)
 void regex(void)
 {
   wchar_t *str;
-  int alloc;
+  smb_status status = SMB_SUCCESS;
   fsm * compiled_fsm;
 
   printf("Input Regex: ");
-  str = smb_read_linew(stdin, &alloc);
+  str = smb_read_linew(stdin, &status);
   puts("Parsing...");
   compiled_fsm = regex_parse(str);
   smb_free(str);
   printf("Parsed!  Do you wish to see the FSM? [y/n]: ");
 
-  str = smb_read_linew(stdin, &alloc);
+  str = smb_read_linew(stdin, &status);
   if (str[0] == L'y' || str[0] == L'Y') {
     puts("");
     fsm_print(compiled_fsm, stdout);
@@ -288,7 +288,7 @@ void regex(void)
 
   while (true) {
     printf("Input Test String: ");
-    str = smb_read_linew(stdin, &alloc);
+    str = smb_read_linew(stdin, &status);
     if (wcscmp(str, L"exit") == 0) {
       smb_free(str);
       break;
