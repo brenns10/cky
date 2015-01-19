@@ -368,7 +368,7 @@ fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end,
 /**
    @brief Initialize an fsm_sim struct
    @param fs The struct to init
-   @param f The FSM to simulate 
+   @param f The FSM to simulate
    @param curr The current state of the simulation
    @param input The input string
  */
@@ -381,7 +381,7 @@ void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input)
 
 /**
    @brief Allocate and initialize an fsm_sim struct
-   @param f The FSM to simulate 
+   @param f The FSM to simulate
    @param curr The current state of the simulation
    @param input The input string
    @return The allocated simulation
