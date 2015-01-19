@@ -68,10 +68,8 @@ void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)
   int i;
   ft->type = type;
 
-  // Allocate space for the start range, plus null terminator
+  // Allocate space for the range plus null terminator
   ft->start = smb_new(wchar_t, n + 1);
-
-  // Allocate space for the end range, plus null terminator
   ft->end = smb_new(wchar_t, n + 1);
 
   for (i = 0; i < n; i++) {
