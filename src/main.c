@@ -48,6 +48,7 @@
 #include "gram.h"
 #include "fsm.h"
 #include "regex.h"
+#include "test/tests.h"
 
 void simple_gram(void);
 void simple_fsm(void);
@@ -56,6 +57,7 @@ void read_combine_fsm(void);
 void regex(void);
 void search(void);
 void dot(void);
+void test(void);
 
 /**
    @brief Print the help message for the main program.
@@ -73,6 +75,7 @@ void help(char *name)
   puts("  -e, --regex             input regex and test strings");
   puts("  -s, --search            regex search file");
   puts("  -d, --dot               create graphviz dot from regex");
+  puts("  -t, --test              run tests");
   puts("");
   puts("Misc:");
   puts("  -h, --help              display this help message and exit");
@@ -131,6 +134,10 @@ int main(int argc, char **argv)
     dot();
     arg_data_destroy(&data);
     return 0; // exit silently
+  }
+  if (check_flag(&data, 't') || check_long_flag(&data, "test")) {
+    test();
+    executed = true;
   }
 
   if (!executed) {
@@ -522,4 +529,9 @@ void simple_gram(void)
 
   cfg_print(gram);
   cfg_delete(gram, false);
+}
+
+void test(void)
+{
+  fsm_test();
 }
