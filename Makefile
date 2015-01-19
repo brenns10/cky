@@ -71,15 +71,30 @@ SOURCEDIRS=$(shell find src/ -type d)
 OBJECTS=$(patsubst src/%.c,obj/$(CFG)/%.o,$(SOURCES)) obj/$(CFG)/libstephen.a
 
 # Main targets
-.PHONY: all clean libstephen_build docs
+.PHONY: all clean clean_all clean_docs clean_cov libstephen_build docs gcov
 
 all: bin/$(CFG)/main
 
+gcov:
+	lcov --capture --directory . --output-file coverage.info
+	genhtml coverage.info --output-directory cov/
+	rm coverage.info
+
 clean:
-	rm -rf bin/* obj/* src/libstephen.h src/*.gch
+	rm -rf bin/$(CFG)/* obj/$(CFG)/* src/libstephen.h src/*.gch
 	make -C libstephen CFG=$(CFG) clean
 
-docs:
+clean_all: clean clean_docs clean_cov
+	rm -rf bin/* obj/*
+	make -C libstephen CFG=$(CFG) clean_all
+
+clean_docs:
+	rm -rf doc/*
+
+clean_cov:
+	rm -rf cov/*
+
+docs: src/*
 	doxygen
 
 # Libstephen compile and header.
