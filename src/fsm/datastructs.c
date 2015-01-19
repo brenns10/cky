@@ -37,7 +37,7 @@
 
 *******************************************************************************/
 
-#include <stdlib.h>     // malloc, free
+#include <stdlib.h>     // free
 #include <stdio.h>      // fprintf, stderr, etc...
 #include <assert.h>     // assert()
 
@@ -107,9 +107,8 @@ void fsm_trans_destroy(fsm_trans *ft)
 {
   if (ft && ft->start && ft->end) {
     int len = wcslen(ft->start); // assume len(start) == len(end)
-    free(ft->start);
-    free(ft->end);
-    SMB_DECREMENT_MALLOC_COUNTER(2 * (len+1) * sizeof(wchar_t));
+    smb_free(ft->start);
+    smb_free(ft->end);
   } else {
     fprintf(stderr, "libstephen: fsm_trans_destroy() called with null "
             "pointers.\n");
@@ -125,8 +124,7 @@ void fsm_trans_delete(fsm_trans *ft)
 {
   if (ft) {
     fsm_trans_destroy(ft);
-    free(ft);
-    SMB_DECREMENT_MALLOC_COUNTER(sizeof(fsm_trans));
+    smb_free(ft);
   } else {
     fprintf(stderr, "libstephen: fsm_trans_delete() called with null "
             "pointer.\n");
@@ -280,8 +278,7 @@ void fsm_destroy(fsm *f, bool free_transitions)
 void fsm_delete(fsm *f, bool free_transitions)
 {
   fsm_destroy(f, free_transitions);
-  free(f);
-  SMB_DECREMENT_MALLOC_COUNTER(sizeof(fsm));
+  smb_free(f);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -418,6 +415,5 @@ void fsm_sim_destroy(fsm_sim *fs, bool free_curr)
 void fsm_sim_delete(fsm_sim *fs, bool free_curr)
 {
   fsm_sim_destroy(fs, free_curr);
-  free(fs);
-  SMB_DECREMENT_MALLOC_COUNTER(sizeof(fsm_sim));
+  smb_free(fs);
 }

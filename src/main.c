@@ -140,7 +140,6 @@ int main(int argc, char **argv)
   }
 
   arg_data_destroy(&data);
-  printf("\nFinal bytes allocated: %d\n", SMB_GET_MALLOC_COUNTER);
   return 0;
 }
 
@@ -155,7 +154,7 @@ void dot(void)
 
   str = smb_read_linew(stdin, &alloc);
   compiled_fsm = regex_parse(str);
-  smb_free(wchar_t, str, alloc);
+  smb_free(str);
   fsm_dot(compiled_fsm, stdout);
   fsm_delete(compiled_fsm, true);
 }
@@ -210,7 +209,7 @@ void search(void)
   printf("Input Filename: ");
   filename = smb_read_line(stdin, &alloc);
   file = fopen(filename, "r");
-  smb_free(char, filename, alloc);
+  smb_free(filename);
   if (file == NULL) {
     perror("Error opening file: ");
     return;
@@ -223,13 +222,13 @@ void search(void)
   if (utf8toucs4(wregex, regex, len) != 0) {
     PRINT_ERROR_LOC;
     fprintf(stderr, "Error converting to UCS 4.\n");
-    smb_free(char, regex, alloc);
-    smb_free(wchar_t, wregex, len);
+    smb_free(regex);
+    smb_free(wregex);
     return;
   }
-  smb_free(char, regex, alloc);
+  smb_free(regex);
   regex_fsm = regex_parse(wregex);
-  smb_free(wchar_t, wregex, len);
+  smb_free(wregex);
 
   input = read_file(file, &alloc);
   fclose(file);
@@ -239,11 +238,11 @@ void search(void)
     PRINT_ERROR_LOC;
     fprintf(stderr, "Error converting to UCS 4.\n");
     fsm_delete(regex_fsm, true);
-    smb_free(char, input, alloc);
-    smb_free(wchar_t, winput, len);
+    smb_free(input);
+    smb_free(winput);
     return;
   }
-  smb_free(char, input, alloc);
+  smb_free(input);
 
   results = fsm_search(regex_fsm, winput, false, false);
   for (i = 0; i < al_length(results); i++) {
@@ -253,7 +252,7 @@ void search(void)
     regex_hit_delete(hit);
   }
 
-  smb_free(wchar_t, winput, len);
+  smb_free(winput);
   fsm_delete(regex_fsm, true);
   al_delete(results);
 }
@@ -275,7 +274,7 @@ void regex(void)
   str = smb_read_linew(stdin, &alloc);
   puts("Parsing...");
   compiled_fsm = regex_parse(str);
-  smb_free(wchar_t, str, alloc);
+  smb_free(str);
   printf("Parsed!  Do you wish to see the FSM? [y/n]: ");
 
   str = smb_read_linew(stdin, &alloc);
@@ -283,7 +282,7 @@ void regex(void)
     puts("");
     fsm_print(compiled_fsm, stdout);
   } else { puts(""); }
-  smb_free(wchar_t, str, alloc);
+  smb_free(str);
 
   puts("");
 
@@ -291,11 +290,11 @@ void regex(void)
     printf("Input Test String: ");
     str = smb_read_linew(stdin, &alloc);
     if (wcscmp(str, L"exit") == 0) {
-      smb_free(wchar_t, str, alloc);
+      smb_free(str);
       break;
     }
     printf(fsm_sim_nondet(compiled_fsm, str) ? "Accepted.\n\n" : "Rejected.\n\n");
-    smb_free(wchar_t, str, alloc);
+    smb_free(str);
   }
   fsm_delete(compiled_fsm, true);
 }
