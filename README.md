@@ -4,7 +4,7 @@
 
 - Author: Stephen Brennan
 - License: Revised BSD
-- Library Dependencies: [libstephen](https://bitbucket.org/brenns10/libstephen)
+- Library Dependencies: [libstephen](https://github.com/brenns10/libstephen)
 
 ## Rationale
 
