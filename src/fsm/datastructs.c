@@ -38,7 +38,6 @@
 *******************************************************************************/
 
 #include <stdlib.h>     // free
-#include <stdio.h>      // fprintf, stderr, etc...
 #include <assert.h>     // assert()
 
 #include "fsm.h"
@@ -103,14 +102,9 @@ fsm_trans *fsm_trans_create(int n, int type, int dest)
  */
 void fsm_trans_destroy(fsm_trans *ft)
 {
-  if (ft && ft->start && ft->end) {
-    int len = wcslen(ft->start); // assume len(start) == len(end)
-    smb_free(ft->start);
-    smb_free(ft->end);
-  } else {
-    fprintf(stderr, "libstephen: fsm_trans_destroy() called with null "
-            "pointers.\n");
-  }
+  int len = wcslen(ft->start); // assume len(start) == len(end)
+  smb_free(ft->start);
+  smb_free(ft->end);
 }
 
 /**
@@ -120,13 +114,8 @@ void fsm_trans_destroy(fsm_trans *ft)
  */
 void fsm_trans_delete(fsm_trans *ft)
 {
-  if (ft) {
-    fsm_trans_destroy(ft);
-    smb_free(ft);
-  } else {
-    fprintf(stderr, "libstephen: fsm_trans_delete() called with null "
-            "pointer.\n");
-  }
+  fsm_trans_destroy(ft);
+  smb_free(ft);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -146,8 +135,6 @@ void fsm_trans_init_single(fsm_trans *ft, wchar_t start, wchar_t end, int type,
                            int dest)
 {
   fsm_trans_init(ft, 1, type, dest);
-  if (end < start)
-    fprintf(stderr, "Error: initialization of invalid range in FSM.\n");
   ft->start[0] = start;
   ft->end[0] = end;
 }
@@ -164,8 +151,6 @@ fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type,
                                    int dest)
 {
   fsm_trans *ft = fsm_trans_create(1, type, dest);
-  if (end < start)
-    fprintf(stderr, "Error: initialization of invalid range in FSM.\n");
   ft->start[0] = start;
   ft->end[0] = end;
   return ft;
