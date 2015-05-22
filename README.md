@@ -1,4 +1,4 @@
-# cky
+# cky ![Build Status](https://travis-ci.org/brenns10/cky.svg?branch=master)
 
 ## About
 
