@@ -94,7 +94,7 @@ clean_docs:
 clean_cov:
 	rm -rf cov/*
 
-docs: src/*
+docs: $(SOURCES)
 	doxygen
 
 # Libstephen compile and header.
