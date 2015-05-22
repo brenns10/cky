@@ -10,6 +10,8 @@
 
 *******************************************************************************/
 
+#include <stdbool.h>
+
 #include "libstephen/ut.h"
 #include "fsm.h"
 
@@ -151,6 +153,20 @@ int test_simple_machine(void)
   return 0;
 }
 
+/**
+   @brief Test of the fsm_create_single_char() function.
+ */
+int test_create_single_char(void)
+{
+  fsm *f = fsm_create_single_char(L'a');
+  TEST_ASSERT(fsm_sim_det(f, L"a"));
+  TEST_ASSERT(!fsm_sim_det(f, L"fail"));
+  TEST_ASSERT(!fsm_sim_det(f, L""));
+  TEST_ASSERT(!fsm_sim_det(f, L"b"));
+  fsm_delete(f, true);
+  return 0;
+}
+
 void fsm_test(void)
 {
   smb_ut_group *group = su_create_test_group("fsm");
@@ -169,6 +185,9 @@ void fsm_test(void)
 
   smb_ut_test *simple_machine = su_create_test("simple_machine", test_simple_machine);
   su_add_test(group, simple_machine);
+
+  smb_ut_test *create_single_char = su_create_test("create_single_char", test_create_single_char);
+  su_add_test(group, create_single_char);
 
   su_run_group(group);
   su_delete_group(group);
