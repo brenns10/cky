@@ -5,7 +5,7 @@ make clean_cov
 # Compile the coverage version again.
 make CFG=coverage
 # Run the tests of the coverage build.
-bin/coverage/main -t
+valgrind bin/coverage/main -t
 # Create the HTML coverage site.
 make gcov
 # Open it!
