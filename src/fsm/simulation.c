@@ -83,8 +83,8 @@ smb_al *fsm_sim_nondet_epsilon_closure(fsm *f, int state)
       ft = (fsm_trans *) al_get(trans_list, i, &status).data_ptr;
       d.data_llint = ft->dest;
       if (fsm_trans_check(ft, EPSILON) &&
-          al_index_of(visit_queue, d) == -1 &&
-          al_index_of(closure, d) == -1){
+          al_index_of(visit_queue, d, &data_compare_int) == -1 &&
+          al_index_of(closure, d, &data_compare_int) == -1){
         d.data_llint = ft->dest;
         al_push_back(visit_queue, d);
       }
@@ -108,7 +108,7 @@ void fsm_sim_nondet_union_and_delete(smb_al *first, smb_al *second)
   DATA d;
   for (i = 0; i < al_length(second); i++) {
     d = al_get(second, i, &status);
-    if (al_index_of(first, d) == -1) {
+    if (al_index_of(first, d, &data_compare_int) == -1) {
       al_append(first, d);
     }
   }
@@ -129,7 +129,7 @@ bool fsm_sim_nondet_non_empty_intersection(smb_al *first, smb_al *second)
   DATA d;
   for (i = 0; i < al_length(first); i++) {
     d = al_get(first, i, &status);
-    if (al_index_of(second, d) != -1)
+    if (al_index_of(second, d, &data_compare_int) != -1)
       return true;
   }
   return false;
@@ -204,7 +204,7 @@ bool fsm_sim_det(fsm *f, const wchar_t *input)
 
   // If the state is in the accepting states, we accept, else reject
   d.data_llint = state;
-  return al_index_of(&f->accepting, d) != -1;
+  return al_index_of(&f->accepting, d, &data_compare_int) != -1;
 }
 
 /**
@@ -306,7 +306,7 @@ void fsm_sim_nondet_step(fsm_sim *s)
       // If the transition contains the current input, and it's not already in
       // the next state list, add it to the next state list.
       if (fsm_trans_check(t, *s->input) &&
-          al_index_of(next, d) == -1) {
+          al_index_of(next, d, &data_compare_int) == -1) {
         al_append(next, d);
       }
     }

@@ -248,7 +248,7 @@ int cfg_add_symbol(cfg *pGram, char *symbol, bool terminal)
   DATA d;
   int idx;
   d.data_ptr = symbol;
-  idx = al_index_of(&pGram->symbols, d);
+  idx = al_index_of(&pGram->symbols, d, &data_compare_string);
   if (idx != -1) {
     return idx;
   } else {
