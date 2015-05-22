@@ -6,5 +6,8 @@ cov/*
 *~
 src/libstephen.h
 src/*.gch
+GTAGS
+GRTAGS
+GPATH
 syntax: regexp
 (.*/)?\#[^/]*\#$
