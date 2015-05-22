@@ -534,4 +534,5 @@ void simple_gram(void)
 void test(void)
 {
   fsm_test();
+  fsm_sim_test();
 }
