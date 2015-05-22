@@ -13,7 +13,7 @@ COMMIT=$(git rev-parse HEAD)
 
 # Generate coverage information.
 make CFG=coverage
-bin/coverage/test
+bin/coverage/main -t
 make gcov
 
 # Generate documentation.
