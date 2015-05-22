@@ -318,6 +318,41 @@ static int test_union(void)
   return 0;
 }
 
+/**
+   @brief Test the fsm_kleene() function.
+ */
+static int test_kleene(void)
+{
+  // Create FSM "src" that accepts "foo".
+  fsm *src = fsm_create();
+  int s00 = fsm_add_state(src, false);
+  int s01 = fsm_add_state(src, false);
+  int s02 = fsm_add_state(src, false);
+  int s03 = fsm_add_state(src, true);
+  src->start = s00;
+  fsm_add_single(src, s00, s01, L'f', L'f', FSM_TRANS_POSITIVE);
+  fsm_add_single(src, s01, s02, L'o', L'o', FSM_TRANS_POSITIVE);
+  fsm_add_single(src, s02, s03, L'o', L'o', FSM_TRANS_POSITIVE);
+
+  // Test the original FSM.
+  TEST_ASSERT(!fsm_sim_det(src, L""));
+  TEST_ASSERT(fsm_sim_det(src, L"foo"));
+  TEST_ASSERT(!fsm_sim_det(src, L"foofoo"));
+
+  // Now modify it to accept "(foo)*"
+  fsm_kleene(src);
+
+  // Test that it now accepts 0 or more instances.
+  TEST_ASSERT(fsm_sim_nondet(src, L""));
+  TEST_ASSERT(fsm_sim_nondet(src, L"foo"));
+  TEST_ASSERT(fsm_sim_nondet(src, L"foofoo"));
+  TEST_ASSERT(!fsm_sim_nondet(src, L"foobarfoo"));
+
+  // Delete and return
+  fsm_delete(src, true);
+  return 0;
+}
+
 void fsm_test(void)
 {
   smb_ut_group *group = su_create_test_group("fsm");
@@ -348,6 +383,9 @@ void fsm_test(void)
 
   smb_ut_test *union_ = su_create_test("union", test_union);
   su_add_test(group, union_);
+
+  smb_ut_test *kleene = su_create_test("kleene", test_kleene);
+  su_add_test(group, kleene);
 
   su_run_group(group);
   su_delete_group(group);
