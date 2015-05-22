@@ -215,6 +215,60 @@ static int test_copy(void)
   return 0;
 }
 
+/**
+   @brief Test the fsm_concat() function.
+
+   While confusingly named, this function tests the fsm_copy_trans() function,
+   whose job is to copy the transitions and states from one FSM into another.
+
+ */
+static int test_concat(void)
+{
+  fsm *src = fsm_create();
+  int s00 = fsm_add_state(src, false);
+  int s01 = fsm_add_state(src, false);
+  int s02 = fsm_add_state(src, false);
+  int s03 = fsm_add_state(src, true);
+  fsm *dst = fsm_create();
+  int s10 = fsm_add_state(dst, false);
+  int s11 = fsm_add_state(dst, false);
+  int s12 = fsm_add_state(dst, false);
+  int s13 = fsm_add_state(dst, true);
+
+  // src accepts "bar"
+  src->start = s00;
+  fsm_add_single(src, s00, s01, L'b', L'b', FSM_TRANS_POSITIVE);
+  fsm_add_single(src, s01, s02, L'a', L'a', FSM_TRANS_POSITIVE);
+  fsm_add_single(src, s02, s03, L'r', L'r', FSM_TRANS_POSITIVE);
+
+  // dst accepts "foo"
+  dst->start = s10;
+  fsm_add_single(dst, s10, s11, L'f', L'f', FSM_TRANS_POSITIVE);
+  fsm_add_single(dst, s11, s12, L'o', L'o', FSM_TRANS_POSITIVE);
+  fsm_add_single(dst, s12, s13, L'o', L'o', FSM_TRANS_POSITIVE);
+
+  // They should work as advertised.
+  TEST_ASSERT(fsm_sim_det(src, L"bar"));
+  TEST_ASSERT(!fsm_sim_det(src, L"foo"));
+  TEST_ASSERT(!fsm_sim_det(dst, L"bar"));
+  TEST_ASSERT(fsm_sim_det(dst, L"foo"));
+
+  // concatenate them, and you have foobar!
+  fsm_concat(dst, src);
+  fsm_delete(src, true);
+
+  // Check that this is true.  We must use nondet because concat uses epsilon
+  // transitions, making the resulting FSM non-deterministic.
+  TEST_ASSERT(fsm_sim_nondet(dst, L"foobar"));
+  TEST_ASSERT(!fsm_sim_nondet(dst, L"bar"));
+  TEST_ASSERT(!fsm_sim_nondet(dst, L"foo"));
+  TEST_ASSERT(!fsm_sim_nondet(dst, L""));
+  TEST_ASSERT(!fsm_sim_nondet(dst, L"foobarr"));
+
+  fsm_delete(dst, true);
+  return 0;
+}
+
 void fsm_test(void)
 {
   smb_ut_group *group = su_create_test_group("fsm");
@@ -239,6 +293,9 @@ void fsm_test(void)
 
   smb_ut_test *copy = su_create_test("copy", test_copy);
   su_add_test(group, copy);
+
+  smb_ut_test *concat = su_create_test("concat", test_concat);
+  su_add_test(group, concat);
 
   su_run_group(group);
   su_delete_group(group);
