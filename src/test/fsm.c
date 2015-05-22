@@ -122,7 +122,7 @@ int test_shortcut(void)
 /**
    @brief Test the copy method works.  Valgrind will help here.
  */
-int test_copy(void)
+int test_trans_copy(void)
 {
   fsm_trans *a = fsm_trans_create_single(L'a', L'b', FSM_TRANS_POSITIVE, 10);
   fsm_trans *c = fsm_trans_copy(a);
@@ -167,6 +167,54 @@ int test_create_single_char(void)
   return 0;
 }
 
+/**
+   @brief Test of the fsm_copy() function.
+
+   When I copy a FSM, the old one should be unmodified, and the new one should
+   accept and reject the same things.  After deleting the original, the new one
+   should continue to work properly.
+ */
+static int test_copy(void)
+{
+  fsm *orig = fsm_create();
+  fsm *copy;
+  int start;
+  int next;
+  int end;
+
+  // Create a FSM to accept "ab".
+  start = fsm_add_state(orig, false);
+  next = fsm_add_state(orig, false);
+  end = fsm_add_state(orig, true);
+  fsm_add_single(orig, start, next, L'a', L'a', FSM_TRANS_POSITIVE);
+  fsm_add_single(orig, next, end, L'b', L'b', FSM_TRANS_POSITIVE);
+  orig->start = start;
+
+  // Ensure this works correctly.
+  TEST_ASSERT(fsm_sim_det(orig, L"ab"));
+  TEST_ASSERT(!fsm_sim_det(orig, L"ba"));
+
+  // Create a copy of the original.
+  copy = fsm_copy(orig);
+
+  // The original should still work
+  TEST_ASSERT(fsm_sim_det(orig, L"ab"));
+  TEST_ASSERT(!fsm_sim_det(orig, L"ba"));
+
+  // The copy should also work.
+  TEST_ASSERT(fsm_sim_det(copy, L"ab"));
+  TEST_ASSERT(!fsm_sim_det(copy, L"ba"));
+
+  // After freeing the original, the new one should (still) work.
+  fsm_delete(orig, true);
+  TEST_ASSERT(fsm_sim_det(copy, L"ab"));
+  TEST_ASSERT(!fsm_sim_det(copy, L"ba"));
+
+  // Cleanup the copy and exit.
+  fsm_delete(copy, true);
+  return 0;
+}
+
 void fsm_test(void)
 {
   smb_ut_group *group = su_create_test_group("fsm");
@@ -180,14 +228,17 @@ void fsm_test(void)
   smb_ut_test *shortcut = su_create_test("shortcut", test_shortcut);
   su_add_test(group, shortcut);
 
-  smb_ut_test *copy = su_create_test("copy", test_copy);
-  su_add_test(group, copy);
+  smb_ut_test *trans_copy = su_create_test("trans_copy", test_trans_copy);
+  su_add_test(group, trans_copy);
 
   smb_ut_test *simple_machine = su_create_test("simple_machine", test_simple_machine);
   su_add_test(group, simple_machine);
 
   smb_ut_test *create_single_char = su_create_test("create_single_char", test_create_single_char);
   su_add_test(group, create_single_char);
+
+  smb_ut_test *copy = su_create_test("copy", test_copy);
+  su_add_test(group, copy);
 
   su_run_group(group);
   su_delete_group(group);
