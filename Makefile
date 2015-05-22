@@ -75,6 +75,9 @@ OBJECTS=$(patsubst src/%.c,obj/$(CFG)/%.o,$(SOURCES)) obj/$(CFG)/libstephen.a
 
 all: bin/$(CFG)/main
 
+test: bin/$(CFG)/main
+	valgrind bin/$(CFG)/main -t
+
 gcov:
 	lcov --capture --directory . --output-file coverage.info
 	genhtml coverage.info --output-directory cov/
