@@ -1,0 +1,674 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - src/fsm/io.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/fsm</a> - io.c<span style="font-size: 80%;"> (source / <a href="io.c.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">175</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2015-05-23 01:36:22</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /***************************************************************************//**</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            :   @file         fsm/io.c
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            :   @author       Stephen Brennan
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span>            :   @date         Created Saturday, 26 July 2014
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            :   @brief        IO Functions for FSMs.
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            :   @copyright    Copyright (c) 2014, Stephen Brennan.
+<span class="lineNum">      12 </span>            :   All rights reserved.
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            :   @copyright
+<span class="lineNum">      15 </span>            :   Redistribution and use in source and binary forms, with or without
+<span class="lineNum">      16 </span>            :   modification, are permitted provided that the following conditions are met:
+<span class="lineNum">      17 </span>            :     * Redistributions of source code must retain the above copyright notice,
+<span class="lineNum">      18 </span>            :       this list of conditions and the following disclaimer.
+<span class="lineNum">      19 </span>            :     * Redistributions in binary form must reproduce the above copyright notice,
+<span class="lineNum">      20 </span>            :       this list of conditions and the following disclaimer in the documentation
+<span class="lineNum">      21 </span>            :       and/or other materials provided with the distribution.
+<span class="lineNum">      22 </span>            :     * Neither the name of Stephen Brennan nor the names of his contributors may
+<span class="lineNum">      23 </span>            :       be used to endorse or promote products derived from this software without
+<span class="lineNum">      24 </span>            :       specific prior written permission.
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :   @copyright
+<span class="lineNum">      27 </span>            :   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;
+<span class="lineNum">      28 </span>            :   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+<span class="lineNum">      29 </span>            :   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+<span class="lineNum">      30 </span>            :   DISCLAIMED. IN NO EVENT SHALL STEPHEN BRENNAN BE LIABLE FOR ANY DIRECT,
+<span class="lineNum">      31 </span>            :   INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+<span class="lineNum">      32 </span>            :   BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<span class="lineNum">      33 </span>            :   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+<span class="lineNum">      34 </span>            :   OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+<span class="lineNum">      35 </span>            :   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+<span class="lineNum">      36 </span>            :   EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            : *******************************************************************************/
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            : #include &lt;stdio.h&gt;
+<span class="lineNum">      41 </span>            : #include &lt;wchar.h&gt;
+<span class="lineNum">      42 </span>            : #include &lt;wctype.h&gt;
+<span class="lineNum">      43 </span>            : #include &lt;stdbool.h&gt;
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : #include &quot;fsm.h&quot;
+<span class="lineNum">      46 </span>            : #include &quot;str.h&quot;
+<span class="lineNum">      47 </span>            : #include &quot;libstephen/al.h&quot;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            : /**
+<span class="lineNum">      50 </span>            :    @brief Reading the 'source' state of the transition.
+<span class="lineNum">      51 </span>            :    @see fsm_read_trans()
+<span class="lineNum">      52 </span>            :  */
+<span class="lineNum">      53 </span>            : #define SFIRSTSTATE 0
+<span class="lineNum">      54 </span>            : /**
+<span class="lineNum">      55 </span>            :    @brief Reading the 'destination' state of the transition.
+<span class="lineNum">      56 </span>            :    @see fsm_read_trans()
+<span class="lineNum">      57 </span>            :  */
+<span class="lineNum">      58 </span>            : #define SSECONDSTATE 1
+<span class="lineNum">      59 </span>            : /**
+<span class="lineNum">      60 </span>            :    @brief Reading the first character in a range.
+<span class="lineNum">      61 </span>            :    @see fsm_read_trans()
+<span class="lineNum">      62 </span>            :  */
+<span class="lineNum">      63 </span>            : #define SFIRSTCHAR 2
+<span class="lineNum">      64 </span>            : /**
+<span class="lineNum">      65 </span>            :    @brief Reading the second character in a range.
+<span class="lineNum">      66 </span>            :    @see fsm_read_trans()
+<span class="lineNum">      67 </span>            :  */
+<span class="lineNum">      68 </span>            : #define SSECONDCHAR 3
+<span class="lineNum">      69 </span>            : /**
+<span class="lineNum">      70 </span>            :    @brief Finished reading the transition.
+<span class="lineNum">      71 </span>            :    @see fsm_read_trans()
+<span class="lineNum">      72 </span>            :  */
+<span class="lineNum">      73 </span>            : #define SFINISHED 4
+<span class="lineNum">      74 </span>            : /**
+<span class="lineNum">      75 </span>            :    @brief Reading the type of the transition (positive or negative).
+<span class="lineNum">      76 </span>            :    @see fsm_read_trans()
+<span class="lineNum">      77 </span>            : */
+<span class="lineNum">      78 </span>            : #define SREADTYPE 5
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            : /**
+<span class="lineNum">      81 </span>            :    @brief Get an integer value from a key-value line.
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :    The line is in the form &quot;key: value &quot;, where whitespace is not allowed in the
+<span class="lineNum">      84 </span>            :    key section, but is allowed for the value section.  The value must be a
+<span class="lineNum">      85 </span>            :    positive decimal integer.  On error, returns -1.
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :    @param start Pointer to the string pointer.  This function advances the
+<span class="lineNum">      88 </span>            :    pointer to the start of the next line.
+<span class="lineNum">      89 </span>            :    @param prefix The &quot;key:&quot; prefix the line should match.
+<a name="90"><span class="lineNum">      90 </span>            :    @returns The integer value</a>
+<span class="lineNum">      91 </span>            :  */
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 : int fsm_read_get_int(const wchar_t **start, const wchar_t *prefix)</span>
+<span class="lineNum">      93 </span>            : {
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :   int prefix_len = wcslen(prefix);</span>
+<span class="lineNum">      95 </span><span class="lineNoCov">          0 :   int value = 0;</span>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :   // Check that the line starts with the given prefix.
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :   if (wcsncmp(*start, prefix, prefix_len) != 0) {</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     return -1;</span>
+<span class="lineNum">     100 </span>            :   }
+<span class="lineNum">     101 </span>            :   SMB_DP(&quot;   Good prefix (\&quot;%Ls\&quot;).\n&quot;, prefix);
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :   (*start) += prefix_len; // advance pointer to end of prefix</span>
+<span class="lineNum">     104 </span>            : 
+<span class="lineNum">     105 </span>            :   // Advance through any whitespace
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :   while (**start != L'\n' &amp;&amp; iswspace(**start)) {</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     (*start)++;</span>
+<span class="lineNum">     108 </span>            :   }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :   // Since this is a 'get int' function, we expect an int.
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :   if (!iswdigit(**start)) {</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     fprintf(stderr, &quot;Error: digit expected after prefix.\n&quot;);</span>
+<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     return -1;</span>
+<span class="lineNum">     114 </span>            :   }
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :   // Read each digit one at a time, adding to total amount.
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :   while (iswdigit(**start)) {</span>
+<span class="lineNum">     118 </span>            :     SMB_DP(&quot;   Read digit: '%Lc'\n&quot;, **start);
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :     value = 10 * value + **start - L'0';</span>
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :     (*start)++;</span>
+<span class="lineNum">     121 </span>            :   }
+<span class="lineNum">     122 </span>            :   SMB_DP(&quot;   Value: %d\n&quot;, value);
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :   // Advance to end of line
+<span class="lineNum">     125 </span><span class="lineNoCov">          0 :   while (**start != L'\n') {</span>
+<span class="lineNum">     126 </span><span class="lineNoCov">          0 :     (*start)++;</span>
+<span class="lineNum">     127 </span>            :   }
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            :   // Leave pointer pointing at next line
+<span class="lineNum">     130 </span><span class="lineNoCov">          0 :   (*start)++;</span>
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :   return value;</span>
+<span class="lineNum">     132 </span>            : }
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            : /**
+<span class="lineNum">     135 </span>            :    @brief Reads a transition from a line.
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :    This function reads a transition from a line.  The transition can have an
+<span class="lineNum">     138 </span>            :    arbitrary number of ranges, each separated by a space.  The line should be of
+<span class="lineNum">     139 </span>            :    the form: `X-Y:[+|-]A-B[[A-B]...]`, where `X` and `Y` are state numbers, `A`
+<span class="lineNum">     140 </span>            :    and `B` are characters forming a range, and the `+` or `-` determine whether
+<span class="lineNum">     141 </span>            :    the transition is positive (only those in the range) or negative (everything
+<span class="lineNum">     142 </span>            :    not in that range).  Note that there is only one `+` or `-`; it applies for
+<span class="lineNum">     143 </span>            :    all ranges in the transition.
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :    @see SFIRSTSTATE etc. for more info on the meaning of the states.
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :    @param source The source pointer.  It is advanced to the beginning of the
+<span class="lineNum">     148 </span>            :    next line.
+<span class="lineNum">     149 </span>            :    @param[out] start Where to put the start state of the transition.
+<a name="150"><span class="lineNum">     150 </span>            :    @return The transition.</a>
+<span class="lineNum">     151 </span>            :  */
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 : fsm_trans *fsm_read_trans(const wchar_t **source, int *start)</span>
+<span class="lineNum">     153 </span>            : {
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     155 </span>            :   // state: parse state  s1, s2: from and to states for the trans.
+<span class="lineNum">     156 </span>            :   // type: the type of transition.  i: iteration var
+<span class="lineNum">     157 </span><span class="lineNoCov">          0 :   int state = SFIRSTSTATE, s1 = 0, s2 = 0, type = -1, i;</span>
+<span class="lineNum">     158 </span>            :   // first, second: array lists for first, second values in ranges
+<span class="lineNum">     159 </span>            :   smb_al first, second;
+<span class="lineNum">     160 </span>            :   // d: utility var for assigning to arraylists
+<span class="lineNum">     161 </span>            :   DATA d;
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :   al_init(&amp;first);</span>
+<span class="lineNum">     164 </span><span class="lineNoCov">          0 :   al_init(&amp;second);</span>
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :   // This machine goes character by character over the transition.
+<span class="lineNum">     167 </span><span class="lineNoCov">          0 :   while (**source != L'\n' &amp;&amp; **source != L'\0') {</span>
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :     // Depending on the current state of the parser:
+<span class="lineNum">     170 </span>            :     SMB_DP(&quot;   =&gt; Current char: '%Lc'.  Current state: &quot;, **source);
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :     switch (state) {</span>
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :     case SFIRSTSTATE:
+<span class="lineNum">     174 </span>            :       // This is the parser state that reads the first state of the transition.
+<span class="lineNum">     175 </span>            :       // Transitions are integers, so we read digits.
+<span class="lineNum">     176 </span>            :       SMB_DP(&quot;SFIRSTSTATE\n&quot;);
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :       if (**source == L'-') {</span>
+<span class="lineNum">     179 </span>            :         // A hyphen means we now need to read the next state.
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         state = SSECONDSTATE;</span>
+<span class="lineNum">     181 </span>            :         SMB_DP(&quot;      Read '-', go to SSECONDSTATE\n&quot;);
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :       } else if (iswdigit(**source)) {</span>
+<span class="lineNum">     183 </span>            :         // Read the digit, since it is part of the state.
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         s1 = s1 * 10 + **source - L'0';</span>
+<span class="lineNum">     185 </span>            :         SMB_DP(&quot;      Read '%Lc', new s1 is %d.\n&quot;, **source, s1);
+<span class="lineNum">     186 </span>            :       } else {
+<span class="lineNum">     187 </span>            :         // Otherwise, we have an error!
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 :         fprintf(stderr, &quot;Error: expected digit, found %Lc.\n&quot;, **source);</span>
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :         al_destroy(&amp;first);</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :         al_destroy(&amp;second);</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :         return NULL;</span>
+<span class="lineNum">     192 </span>            :       }
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :     case SSECONDSTATE:
+<span class="lineNum">     196 </span>            :       // This is the parser state that reads the second state in the transition.
+<span class="lineNum">     197 </span>            :       SMB_DP(&quot;SSECONDSTATE\n&quot;);
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span><span class="lineNoCov">          0 :       if (**source == L':') {</span>
+<span class="lineNum">     200 </span>            :         // A colon means that the state has finished being read.
+<span class="lineNum">     201 </span>            :         SMB_DP(&quot;      Read ':', go to SREADTYPE.\n&quot;);
+<span class="lineNum">     202 </span><span class="lineNoCov">          0 :         state = SREADTYPE;</span>
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :       } else if (iswdigit(**source)) {</span>
+<span class="lineNum">     204 </span>            :         // Digits are part of the state, and are read.
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :         s2 = s2 * 10 + **source - L'0';</span>
+<span class="lineNum">     206 </span>            :         SMB_DP(&quot;      Read '%Lc', new s2 is %d.\n&quot;, **source, s2);
+<span class="lineNum">     207 </span>            :       } else {
+<span class="lineNum">     208 </span>            :         // Anything else is an error.
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :         fprintf(stderr, &quot;Error: expected digit, found %Lc.\n&quot;, **source);</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :         al_destroy(&amp;first);</span>
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :         al_destroy(&amp;second);</span>
+<span class="lineNum">     212 </span><span class="lineNoCov">          0 :         return NULL;</span>
+<span class="lineNum">     213 </span>            :       }
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :     case SREADTYPE:
+<span class="lineNum">     217 </span>            :       // This is the parser state that determines the type of transition
+<span class="lineNum">     218 </span>            :       // (positive/negative).
+<span class="lineNum">     219 </span>            :       SMB_DP(&quot;SREADTYPE\n&quot;);
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :       if (**source == L'-') {</span>
+<span class="lineNum">     222 </span>            :         // Minus sign: negative
+<span class="lineNum">     223 </span><span class="lineNoCov">          0 :         type = FSM_TRANS_NEGATIVE;</span>
+<span class="lineNum">     224 </span>            :         SMB_DP(&quot;      Negative transition\n&quot;);
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :       } else if (**source == L'+') {</span>
+<span class="lineNum">     226 </span>            :         // Plus sign: positive
+<span class="lineNum">     227 </span><span class="lineNoCov">          0 :         type = FSM_TRANS_POSITIVE;</span>
+<span class="lineNum">     228 </span>            :         SMB_DP(&quot;      Positive transition\n&quot;);
+<span class="lineNum">     229 </span>            :       } else {
+<span class="lineNum">     230 </span>            :         // Anything else: error
+<span class="lineNum">     231 </span><span class="lineNoCov">          0 :         fprintf(stderr, &quot;Error: bad transition type specifier: '%Lc'.\n&quot;,</span>
+<span class="lineNum">     232 </span><span class="lineNoCov">          0 :                 **source);</span>
+<span class="lineNum">     233 </span><span class="lineNoCov">          0 :         al_destroy(&amp;first);</span>
+<span class="lineNum">     234 </span><span class="lineNoCov">          0 :         al_destroy(&amp;second);</span>
+<span class="lineNum">     235 </span><span class="lineNoCov">          0 :         return NULL;</span>
+<span class="lineNum">     236 </span>            :       }
+<span class="lineNum">     237 </span>            :       // After reading the type, always enter SFIRSTCHAR
+<span class="lineNum">     238 </span><span class="lineNoCov">          0 :       state = SFIRSTCHAR;</span>
+<span class="lineNum">     239 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :     case SFIRSTCHAR:
+<span class="lineNum">     242 </span>            :       // The parser state that reads the first character in a transition range.
+<span class="lineNum">     243 </span>            :       SMB_DP(&quot;SFIRSTCHAR\n&quot;);
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span><span class="lineNoCov">          0 :       if (**source == L'\\') {</span>
+<span class="lineNum">     246 </span>            :         // If it's escaped, read the escape.
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :         (*source)++;</span>
+<span class="lineNum">     248 </span><span class="lineNoCov">          0 :         d.data_llint = get_escape(source, EPSILON); //advances after the escape</span>
+<span class="lineNum">     249 </span>            :         SMB_DP(&quot;      Got c1 from escape.\n&quot;);
+<span class="lineNum">     250 </span>            :       } else {
+<span class="lineNum">     251 </span>            :         // Otherwise, use the character we find.
+<span class="lineNum">     252 </span><span class="lineNoCov">          0 :         d.data_llint = **source;</span>
+<span class="lineNum">     253 </span>            :         SMB_DP(&quot;      Got c1: '%Lc'\n&quot;, (wchar_t) d.data_llint);
+<span class="lineNum">     254 </span><span class="lineNoCov">          0 :         (*source)++; // advance to hyphen, then again to next char</span>
+<span class="lineNum">     255 </span>            :       }
+<span class="lineNum">     256 </span>            : 
+<span class="lineNum">     257 </span>            :       // Add this character to the list of first characters.
+<span class="lineNum">     258 </span><span class="lineNoCov">          0 :       al_append(&amp;first, d);</span>
+<span class="lineNum">     259 </span>            :       SMB_DP(&quot;      Next char '%Lc'\n&quot;, **source);
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :       // There should be a hyphen separating the first and second characters.
+<span class="lineNum">     262 </span><span class="lineNoCov">          0 :       if (**source != L'-') {</span>
+<span class="lineNum">     263 </span><span class="lineNoCov">          0 :         fprintf(stderr, &quot;Error: bad char separator: '%Lc'.\n&quot;, **source);</span>
+<span class="lineNum">     264 </span><span class="lineNoCov">          0 :         al_destroy(&amp;first);</span>
+<span class="lineNum">     265 </span><span class="lineNoCov">          0 :         al_destroy(&amp;second);</span>
+<span class="lineNum">     266 </span><span class="lineNoCov">          0 :         return NULL;</span>
+<span class="lineNum">     267 </span>            :       }
+<span class="lineNum">     268 </span>            : 
+<span class="lineNum">     269 </span>            :       // Enter SSECONDCHAR after reading the first character.
+<span class="lineNum">     270 </span><span class="lineNoCov">          0 :       state = SSECONDCHAR;</span>
+<span class="lineNum">     271 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     272 </span>            : 
+<span class="lineNum">     273 </span>            :     case SSECONDCHAR:
+<span class="lineNum">     274 </span>            :       // This is the parser state that reads the second character in a
+<span class="lineNum">     275 </span>            :       // transition range.
+<span class="lineNum">     276 </span>            :       SMB_DP(&quot;SSECONDCHAR\n&quot;);
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span><span class="lineNoCov">          0 :       if (**source == L'\\') {</span>
+<span class="lineNum">     279 </span>            :         // If escaped, read escape
+<span class="lineNum">     280 </span><span class="lineNoCov">          0 :         (*source)++;</span>
+<span class="lineNum">     281 </span><span class="lineNoCov">          0 :         d.data_llint = get_escape(source, EPSILON);</span>
+<span class="lineNum">     282 </span><span class="lineNoCov">          0 :         (*source)--;</span>
+<span class="lineNum">     283 </span>            :         SMB_DP(&quot;      Got c2 from escape.\n&quot;);
+<span class="lineNum">     284 </span>            :       } else {
+<span class="lineNum">     285 </span>            :         // Otherwise, read character
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :         d.data_llint = **source;</span>
+<span class="lineNum">     287 </span>            :         SMB_DP(&quot;      Got c2: '%Lc'\n&quot;, (wchar_t) d.data_llint);
+<span class="lineNum">     288 </span>            :       }
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :       // Add the second character, and we're &quot;finished.&quot;
+<span class="lineNum">     291 </span><span class="lineNoCov">          0 :       al_append(&amp;second, d);</span>
+<span class="lineNum">     292 </span><span class="lineNoCov">          0 :       state = SFINISHED;</span>
+<span class="lineNum">     293 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span>            :     case SFINISHED:
+<span class="lineNum">     296 </span>            :       // This is the state for when the machine is &quot;finished&quot; reading a
+<span class="lineNum">     297 </span>            :       // transition.  It can add another transition if it finds a space.
+<span class="lineNum">     298 </span>            :       SMB_DP(&quot;SFINISHED\n&quot;);
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span><span class="lineNoCov">          0 :       if (**source == L' ') {</span>
+<span class="lineNum">     301 </span>            :         SMB_DP(&quot;      Read a space.  Bracing for new range.\n&quot;);
+<span class="lineNum">     302 </span><span class="lineNoCov">          0 :         state = SFIRSTCHAR;</span>
+<span class="lineNum">     303 </span>            :       } else {
+<span class="lineNum">     304 </span>            :         SMB_DP(&quot;      Finished.  Hang tight everyone.\n&quot;);
+<span class="lineNum">     305 </span>            :       }
+<span class="lineNum">     306 </span><span class="lineNoCov">          0 :       break;</span>
+<span class="lineNum">     307 </span>            :     }
+<span class="lineNum">     308 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     309 </span>            :   }
+<span class="lineNum">     310 </span>            :   SMB_DP(&quot;   TRANSITION LOOP COMPLETE\n&quot;);
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span>            :   // Filter out issues when the machine ends prematurely.  If we end on
+<span class="lineNum">     313 </span>            :   // SFIRSTCHAR, there must have been a trailing space, which is ok.
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :   if (state != SFINISHED &amp;&amp; state != SFIRSTCHAR) {</span>
+<span class="lineNum">     315 </span><span class="lineNoCov">          0 :     fprintf(stderr, &quot;Error: premature line end.\n&quot;);</span>
+<span class="lineNum">     316 </span><span class="lineNoCov">          0 :     al_destroy(&amp;first);</span>
+<span class="lineNum">     317 </span><span class="lineNoCov">          0 :     al_destroy(&amp;second);</span>
+<span class="lineNum">     318 </span><span class="lineNoCov">          0 :     return NULL;</span>
+<span class="lineNum">     319 </span>            :   }
+<span class="lineNum">     320 </span>            : 
+<span class="lineNum">     321 </span>            :   // If there's a newline, advance.  If not, leave the pointer pointing at '\0'
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 :   if (**source == '\n') {</span>
+<span class="lineNum">     323 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     324 </span>            :   }
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span>            :   // Create and write final output
+<span class="lineNum">     327 </span><span class="lineNoCov">          0 :   fsm_trans *t = fsm_trans_create(al_length(&amp;first), type, s2);</span>
+<span class="lineNum">     328 </span><span class="lineNoCov">          0 :   t-&gt;dest = s2;</span>
+<span class="lineNum">     329 </span><span class="lineNoCov">          0 :   for (i = 0; i &lt; al_length(&amp;first); i++) {</span>
+<span class="lineNum">     330 </span><span class="lineNoCov">          0 :     t-&gt;start[i] = (wchar_t) al_get(&amp;first, i, &amp;status).data_llint;</span>
+<span class="lineNum">     331 </span><span class="lineNoCov">          0 :     t-&gt;end[i] = (wchar_t) al_get(&amp;second, i, &amp;status).data_llint;</span>
+<span class="lineNum">     332 </span>            :   }
+<span class="lineNum">     333 </span><span class="lineNoCov">          0 :   *start = s1;</span>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span>            :   // Clean up &amp; return
+<span class="lineNum">     336 </span><span class="lineNoCov">          0 :   al_destroy(&amp;first);</span>
+<span class="lineNum">     337 </span><span class="lineNoCov">          0 :   al_destroy(&amp;second);</span>
+<span class="lineNum">     338 </span><span class="lineNoCov">          0 :   return t;</span>
+<span class="lineNum">     339 </span>            : }
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            : /**
+<span class="lineNum">     342 </span>            :    @brief Read a FSM from a string!  The format is as follows:
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span>            :    @code
+<span class="lineNum">     345 </span>            :    START LINE (start: n)
+<span class="lineNum">     346 </span>            :    ACCEPTING LINES ... (&gt;=1) (accept: n)
+<span class="lineNum">     347 </span>            :    TRANSITION LINES (X-Y:[+|-]A-B[[A-B]...])
+<span class="lineNum">     348 </span>            :    @endcode
+<span class="lineNum">     349 </span>            :    @see fsm_read_get_int() for info on START LINE and ACCEPTING LINES
+<span class="lineNum">     350 </span>            :    @see fsm_read_trans() for info on the TRANSITION LINES
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            :    Note that this function produces heavy output on stdout if compiled with
+<span class="lineNum">     353 </span>            :    SMD_ENABLE_DIAGNOSTIC_PRINTING.
+<span class="lineNum">     354 </span>            : 
+<span class="lineNum">     355 </span>            :    @param source The string source
+<a name="356"><span class="lineNum">     356 </span>            :    @return A FSM from the string if possible, NULL on error.</a>
+<span class="lineNum">     357 </span>            :  */
+<span class="lineNum">     358 </span><span class="lineNoCov">          0 : fsm *fsm_read(const wchar_t *source)</span>
+<span class="lineNum">     359 </span>            : {
+<span class="lineNum">     360 </span>            :   smb_status status;
+<span class="lineNum">     361 </span><span class="lineNoCov">          0 :   fsm *new = fsm_create();</span>
+<span class="lineNum">     362 </span>            :   fsm_trans *ft;
+<span class="lineNum">     363 </span>            :   smb_al *list;
+<span class="lineNum">     364 </span>            :   int n, max;
+<span class="lineNum">     365 </span>            :   DATA d;
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span>            :   SMB_DP(&quot;BEGIN READING A FSM\n&quot;);
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            :   // Read the start state value from the first line.
+<span class="lineNum">     370 </span>            :   SMB_DP(&quot;=&gt; Read first line (start state spec).\n&quot;);
+<span class="lineNum">     371 </span><span class="lineNoCov">          0 :   n = fsm_read_get_int(&amp;source, L&quot;start:&quot;);</span>
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :   if (n == -1) {</span>
+<span class="lineNum">     373 </span><span class="lineNoCov">          0 :     fprintf(stderr, &quot;Error: FSM spec didn't contain \&quot;start:\&quot; at expected &quot;</span>
+<span class="lineNum">     374 </span>            :             &quot;location.\n&quot;);
+<span class="lineNum">     375 </span><span class="lineNoCov">          0 :     fsm_destroy(new, true);</span>
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :     return NULL;</span>
+<span class="lineNum">     377 </span>            :   } else {
+<span class="lineNum">     378 </span>            :     SMB_DP(&quot;   *Start state is %d*\n\n&quot;, n);
+<span class="lineNum">     379 </span><span class="lineNoCov">          0 :     new-&gt;start = n;</span>
+<span class="lineNum">     380 </span>            :   }
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span>            :   // Read accepting states from the following lines.
+<span class="lineNum">     383 </span>            :   SMB_DP(&quot;=&gt; Reading for accepting states.\n&quot;);
+<span class="lineNum">     384 </span><span class="lineNoCov">          0 :   while ((d.data_llint =fsm_read_get_int(&amp;source, L&quot;accept:&quot;)) != -1) {</span>
+<span class="lineNum">     385 </span><span class="lineNoCov">          0 :     al_append(&amp;new-&gt;accepting, d);</span>
+<span class="lineNum">     386 </span>            :     SMB_DP(&quot;\n=&gt; Reading for additional accepting states.\n&quot;);
+<span class="lineNum">     387 </span>            :   }
+<span class="lineNum">     388 </span>            :   SMB_DP(&quot;   No more accepting states.\n\n&quot;);
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            :   // Read transitions from the following lines.
+<span class="lineNum">     391 </span>            :   SMB_DP(&quot;Reading transitions.\n&quot;);
+<span class="lineNum">     392 </span><span class="lineNoCov">          0 :   while (*source != L'\0') {</span>
+<span class="lineNum">     393 </span>            : 
+<span class="lineNum">     394 </span>            :     // Read a transition from the line.
+<span class="lineNum">     395 </span>            :     SMB_DP(&quot;=&gt; READING A TRANSITION\n&quot;);
+<span class="lineNum">     396 </span><span class="lineNoCov">          0 :     ft = fsm_read_trans(&amp;source, &amp;n);</span>
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            :     // Check for bad transitions.
+<span class="lineNum">     399 </span><span class="lineNoCov">          0 :     if (ft == NULL) {</span>
+<span class="lineNum">     400 </span><span class="lineNoCov">          0 :       fsm_destroy(new, true);</span>
+<span class="lineNum">     401 </span><span class="lineNoCov">          0 :       fprintf(stderr, &quot;Error: got bad transition.\n&quot;);</span>
+<span class="lineNum">     402 </span><span class="lineNoCov">          0 :       return NULL;</span>
+<span class="lineNum">     403 </span>            :     }
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            :     // If either state mentioned in the transition is bigger than the number of
+<span class="lineNum">     406 </span>            :     // states we currently have in the machine, add the missing states.
+<span class="lineNum">     407 </span><span class="lineNoCov">          0 :     max = (n&gt;ft-&gt;dest ? n : ft-&gt;dest) + 1;</span>
+<span class="lineNum">     408 </span>            :     SMB_DP(&quot;   Max observed state %d, current # states %d.\n&quot;, max,
+<span class="lineNum">     409 </span>            :            al_length(&amp;new-&gt;transitions));
+<span class="lineNum">     410 </span><span class="lineNoCov">          0 :     while (al_length(&amp;new-&gt;transitions) &lt; max) {</span>
+<span class="lineNum">     411 </span><span class="lineNoCov">          0 :       fsm_add_state(new, false);</span>
+<span class="lineNum">     412 </span>            :       SMB_DP(&quot;   Added a state (now have %d).\n&quot;, al_length(&amp;new-&gt;transitions));
+<span class="lineNum">     413 </span>            :     }
+<span class="lineNum">     414 </span>            : 
+<span class="lineNum">     415 </span>            :     // Add the transition to the transition list.
+<span class="lineNum">     416 </span><span class="lineNoCov">          0 :     list = (smb_al *)al_get(&amp;new-&gt;transitions, n, &amp;status).data_ptr;</span>
+<span class="lineNum">     417 </span><span class="lineNoCov">          0 :     d.data_ptr = (void *) ft;</span>
+<span class="lineNum">     418 </span><span class="lineNoCov">          0 :     al_append(list, d);</span>
+<span class="lineNum">     419 </span>            :     SMB_DP(&quot;   *Added transition*\n\n&quot;);
+<span class="lineNum">     420 </span>            :   }
+<span class="lineNum">     421 </span>            : 
+<span class="lineNum">     422 </span>            :   SMB_DP(&quot;FSM CREATION COMPLETE!\n&quot;);
+<span class="lineNum">     423 </span><span class="lineNoCov">          0 :   return new;</span>
+<span class="lineNum">     424 </span>            : }
+<span class="lineNum">     425 </span>            : 
+<span class="lineNum">     426 </span>            : /**
+<span class="lineNum">     427 </span>            :    @brief Print a character, filtering if necessary.
+<span class="lineNum">     428 </span>            : 
+<span class="lineNum">     429 </span>            :    This subroutine of fsm_print() prints characters in transitions.  It exists
+<span class="lineNum">     430 </span>            :    to make non-printable characters printable by printing their escaped versions
+<span class="lineNum">     431 </span>            :    instead.
+<span class="lineNum">     432 </span>            : 
+<span class="lineNum">     433 </span>            :    @param dest The file to print to.
+<a name="434"><span class="lineNum">     434 </span>            :    @param input The character to filter.</a>
+<span class="lineNum">     435 </span>            :  */
+<span class="lineNum">     436 </span><span class="lineNoCov">          0 : void fsm_print_char(FILE *dest, wchar_t input)</span>
+<span class="lineNum">     437 </span>            : {
+<span class="lineNum">     438 </span><span class="lineNoCov">          0 :   switch (input) {</span>
+<span class="lineNum">     439 </span>            : 
+<span class="lineNum">     440 </span>            :   case EPSILON:
+<span class="lineNum">     441 </span>            :     // Print epsilon as \e
+<span class="lineNum">     442 </span><span class="lineNoCov">          0 :     fprintf(dest, &quot;\\e&quot;);</span>
+<span class="lineNum">     443 </span><span class="lineNoCov">          0 :     break;</span>
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span>            :   default:
+<span class="lineNum">     446 </span>            :     // Print other characters as verbatim
+<span class="lineNum">     447 </span><span class="lineNoCov">          0 :     fprintf(dest, &quot;%Lc&quot;, input);</span>
+<span class="lineNum">     448 </span><span class="lineNoCov">          0 :     break;</span>
+<span class="lineNum">     449 </span>            :   }
+<span class="lineNum">     450 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            : /**
+<span class="lineNum">     453 </span>            :    @brief Print a string representation of the FSM to a file (or stdout).
+<span class="lineNum">     454 </span>            : 
+<span class="lineNum">     455 </span>            :    @param f The FSM to print
+<a name="456"><span class="lineNum">     456 </span>            :    @param dest The file to print to</a>
+<span class="lineNum">     457 </span>            :  */
+<span class="lineNum">     458 </span><span class="lineNoCov">          0 : void fsm_print(fsm *f, FILE *dest)</span>
+<span class="lineNum">     459 </span>            : {
+<span class="lineNum">     460 </span>            :   smb_status status;
+<span class="lineNum">     461 </span>            :   int i, j;
+<span class="lineNum">     462 </span>            :   smb_al *list;
+<span class="lineNum">     463 </span>            :   wchar_t *start, *end;
+<span class="lineNum">     464 </span>            :   fsm_trans *ft;
+<span class="lineNum">     465 </span>            : 
+<span class="lineNum">     466 </span>            :   // Print the start state
+<span class="lineNum">     467 </span><span class="lineNoCov">          0 :   fprintf(dest, &quot;start:%d\n&quot;, f-&gt;start);</span>
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span>            :   // Print all the accepting states
+<span class="lineNum">     470 </span><span class="lineNoCov">          0 :   for (i = 0; i &lt; al_length(&amp;f-&gt;accepting); i++) {</span>
+<span class="lineNum">     471 </span><span class="lineNoCov">          0 :     fprintf(dest, &quot;accept:%Ld\n&quot;, al_get(&amp;f-&gt;accepting, i, &amp;status).data_llint);</span>
+<span class="lineNum">     472 </span>            :   }
+<span class="lineNum">     473 </span>            : 
+<span class="lineNum">     474 </span>            :   // For each state's transition list
+<span class="lineNum">     475 </span><span class="lineNoCov">          0 :   for (i = 0; i &lt; al_length(&amp;f-&gt;transitions); i++) {</span>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            :     // For each transition in that list
+<span class="lineNum">     478 </span><span class="lineNoCov">          0 :     list = (smb_al *) al_get(&amp;f-&gt;transitions, i, &amp;status).data_ptr;</span>
+<span class="lineNum">     479 </span><span class="lineNoCov">          0 :     for (j = 0; j &lt; al_length(list); j++) {</span>
+<span class="lineNum">     480 </span>            : 
+<span class="lineNum">     481 </span>            :       // Print the transition and whether it's positive or negative.
+<span class="lineNum">     482 </span><span class="lineNoCov">          0 :       ft = (fsm_trans *) al_get(list, j, &amp;status).data_ptr;</span>
+<span class="lineNum">     483 </span><span class="lineNoCov">          0 :       fprintf(dest, &quot;%d-%d:%c&quot;, i, ft-&gt;dest,</span>
+<span class="lineNum">     484 </span><span class="lineNoCov">          0 :               (ft-&gt;type == FSM_TRANS_POSITIVE ? '+' : '-'));</span>
+<span class="lineNum">     485 </span>            : 
+<span class="lineNum">     486 </span>            :       // For every range in the transition, print it followed by a space.
+<span class="lineNum">     487 </span><span class="lineNoCov">          0 :       for (start = ft-&gt;start, end = ft-&gt;end; *start != L'\0'; start++, end++) {</span>
+<span class="lineNum">     488 </span><span class="lineNoCov">          0 :         fsm_print_char(dest, *start);</span>
+<span class="lineNum">     489 </span><span class="lineNoCov">          0 :         fprintf(dest, &quot;-&quot;);</span>
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 :         fsm_print_char(dest, *end);</span>
+<span class="lineNum">     491 </span>            : 
+<span class="lineNum">     492 </span>            :         // If this isn't the last range, print a space to separate
+<span class="lineNum">     493 </span><span class="lineNoCov">          0 :         if (*(start+1) != L'\0') {</span>
+<span class="lineNum">     494 </span><span class="lineNoCov">          0 :           fprintf(stdout, &quot; &quot;);</span>
+<span class="lineNum">     495 </span>            :         }
+<span class="lineNum">     496 </span>            :       }
+<span class="lineNum">     497 </span><span class="lineNoCov">          0 :       fprintf(dest, &quot;\n&quot;);</span>
+<span class="lineNum">     498 </span>            :     }
+<span class="lineNum">     499 </span>            :   }
+<span class="lineNum">     500 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     501 </span>            : 
+<span class="lineNum">     502 </span>            : /**
+<span class="lineNum">     503 </span>            :    @brief Prints a character in an FSM specification to dot format.
+<span class="lineNum">     504 </span>            : 
+<span class="lineNum">     505 </span>            :    This function allows for printing out some characters differently than
+<span class="lineNum">     506 </span>            :    others.  In dot format, quotes should be escaped.  Also, epsilon transitions
+<span class="lineNum">     507 </span>            :    should be labelled something readable.
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span>            :    @brief dest Destination file.
+<a name="510"><span class="lineNum">     510 </span>            :    @brief c The character to print</a>
+<span class="lineNum">     511 </span>            :  */
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 : void fsm_dot_char(FILE * dest, wchar_t c)</span>
+<span class="lineNum">     513 </span>            : {
+<span class="lineNum">     514 </span><span class="lineNoCov">          0 :   switch (c) {</span>
+<span class="lineNum">     515 </span>            : 
+<span class="lineNum">     516 </span>            :   case EPSILON:
+<span class="lineNum">     517 </span>            :     // Print epsilon as a string, not a non-existant character!
+<span class="lineNum">     518 </span><span class="lineNoCov">          0 :     fprintf(dest, &quot;eps&quot;);</span>
+<span class="lineNum">     519 </span><span class="lineNoCov">          0 :     break;</span>
+<span class="lineNum">     520 </span>            :   case L'\&quot;':
+<span class="lineNum">     521 </span>            :     // Escape quotes.
+<span class="lineNum">     522 </span><span class="lineNoCov">          0 :     fprintf(dest, &quot;\&quot;&quot;);</span>
+<span class="lineNum">     523 </span><span class="lineNoCov">          0 :     break;</span>
+<span class="lineNum">     524 </span>            :   default:
+<span class="lineNum">     525 </span>            :     // Print other characters vebatim.
+<span class="lineNum">     526 </span><span class="lineNoCov">          0 :     fprintf(dest, &quot;%Lc&quot;, c);</span>
+<span class="lineNum">     527 </span><span class="lineNoCov">          0 :     break;</span>
+<span class="lineNum">     528 </span>            :   }
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 : }</span>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            : /**
+<span class="lineNum">     532 </span>            :    @brief Print an FSM to graphviz dot format.
+<span class="lineNum">     533 </span>            : 
+<span class="lineNum">     534 </span>            :    Graphviz is a neat CLI tool to create diagrams of graphs.  The dot format is
+<span class="lineNum">     535 </span>            :    an input language for graphs.  This function takes a FSM and prints it to a
+<span class="lineNum">     536 </span>            :    file as a dot file, so that it can then be converted to a image by graphviz.
+<span class="lineNum">     537 </span>            : 
+<span class="lineNum">     538 </span>            :    @param f The machine to print.
+<a name="539"><span class="lineNum">     539 </span>            :    @param dest The destination file.</a>
+<span class="lineNum">     540 </span>            :  */
+<span class="lineNum">     541 </span><span class="lineNoCov">          0 : void fsm_dot(fsm *f, FILE *dest)</span>
+<span class="lineNum">     542 </span>            : {
+<span class="lineNum">     543 </span>            :   smb_status status;
+<span class="lineNum">     544 </span>            :   int i, j;
+<span class="lineNum">     545 </span>            :   smb_al *list;
+<span class="lineNum">     546 </span>            :   wchar_t *start, *end;
+<span class="lineNum">     547 </span>            :   fsm_trans *ft;
+<span class="lineNum">     548 </span>            : 
+<span class="lineNum">     549 </span>            :   // Declare a digraph, where the nodes are all boxes.
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :   fprintf(dest, &quot;digraph regex {\n&quot;);</span>
+<span class="lineNum">     551 </span><span class="lineNoCov">          0 :   fprintf(dest, &quot;  node [shape=box];\n&quot;);</span>
+<span class="lineNum">     552 </span>            : 
+<span class="lineNum">     553 </span>            :   // Declare start state as oval
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 :   fprintf(dest, &quot;  s%d [shape=oval];\n&quot;, f-&gt;start);</span>
+<span class="lineNum">     555 </span>            : 
+<span class="lineNum">     556 </span>            :   // Declare accepting states as octagons
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :   for (i = 0; i &lt; al_length(&amp;f-&gt;accepting); i++) {</span>
+<span class="lineNum">     558 </span><span class="lineNoCov">          0 :     fprintf(dest, &quot;  s%d [shape=octagon];\n&quot;,</span>
+<span class="lineNum">     559 </span><span class="lineNoCov">          0 :             al_get(&amp;f-&gt;accepting, i, &amp;status).data_llint);</span>
+<span class="lineNum">     560 </span>            :   }
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span>            :   // For each state's transition list
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :   for (i = 0; i &lt; al_length(&amp;f-&gt;transitions); i++) {</span>
+<span class="lineNum">     564 </span>            : 
+<span class="lineNum">     565 </span>            :     // For each transition in that list
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :     list = (smb_al *) al_get(&amp;f-&gt;transitions, i, &amp;status).data_ptr;</span>
+<span class="lineNum">     567 </span><span class="lineNoCov">          0 :     for (j = 0; j &lt; al_length(list); j++) {</span>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span>            :       // Declare an edge from source to destination.
+<span class="lineNum">     570 </span><span class="lineNoCov">          0 :       ft = (fsm_trans *) al_get(list, j, &amp;status).data_ptr;</span>
+<span class="lineNum">     571 </span><span class="lineNoCov">          0 :       fprintf(dest, &quot;  s%d -&gt; s%d &quot;, i, ft-&gt;dest);</span>
+<span class="lineNum">     572 </span>            : 
+<span class="lineNum">     573 </span>            :       // Begin writing the label for the transition
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :       fprintf(dest, &quot;[label=\&quot;(%c) &quot;,</span>
+<span class="lineNum">     575 </span><span class="lineNoCov">          0 :               (ft-&gt;type == FSM_TRANS_POSITIVE ? '+' : '-'));</span>
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span>            :       // For every character range in the transition description.
+<span class="lineNum">     578 </span><span class="lineNoCov">          0 :       for (start = ft-&gt;start, end = ft-&gt;end; *start != L'\0'; start++, end++) {</span>
+<span class="lineNum">     579 </span>            : 
+<span class="lineNum">     580 </span>            :         // Print the range into the label using the filter.
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 :         fsm_dot_char(dest, *start);</span>
+<span class="lineNum">     582 </span><span class="lineNoCov">          0 :         fprintf(dest, &quot;-&quot;);</span>
+<span class="lineNum">     583 </span><span class="lineNoCov">          0 :         fsm_dot_char(dest, *end);</span>
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span>            :         // If this isn't the last range, print a space to separate.
+<span class="lineNum">     586 </span><span class="lineNoCov">          0 :         if (*(start+1) != L'\0') {</span>
+<span class="lineNum">     587 </span><span class="lineNoCov">          0 :           fprintf(stdout, &quot; &quot;);</span>
+<span class="lineNum">     588 </span>            :         }
+<span class="lineNum">     589 </span>            :       }
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span>            :       // Finish up the label and transition declaration.
+<span class="lineNum">     592 </span><span class="lineNoCov">          0 :       fprintf(dest, &quot;\&quot;];\n&quot;);</span>
+<span class="lineNum">     593 </span>            :     }
+<span class="lineNum">     594 </span>            :   }
+<span class="lineNum">     595 </span>            : 
+<span class="lineNum">     596 </span>            :   // Finish up the entire digraph declaration.
+<span class="lineNum">     597 </span><span class="lineNoCov">          0 :   fprintf(dest, &quot;}\n&quot;);</span>
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,566 @@
+\hypertarget{fsm_2datastructs_8c}{\section{src/fsm/datastructs.c \-File \-Reference}
+\label{fsm_2datastructs_8c}\index{src/fsm/datastructs.\-c@{src/fsm/datastructs.\-c}}
+}
+
+
+\-Data structure function declarations for \-F\-S\-Ms.  
+
+
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$assert.\-h$>$}\*
+{\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{fsm_2datastructs_8c_a1ee5d4d7276a5ca86ba5f9f2947a2a57}{fsm\-\_\-trans\-\_\-init} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft, int n, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Initialize an already-\/allocated \-F\-S\-M transition unit. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_2datastructs_8c_a96f9a93d3836ac3b7e60e5d07c8fd953}{fsm\-\_\-trans\-\_\-create} (int n, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_add52631c23fe8ff670dcd27799c26a26}{fsm\-\_\-trans\-\_\-destroy} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Clean up the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \-Do not free it. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_aa952e837db3b8257cb84c4e5805d3855}{fsm\-\_\-trans\-\_\-delete} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Free the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_a8c0c15842d240af95c7f15219b0db6d2}{fsm\-\_\-trans\-\_\-init\-\_\-single} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft, wchar\-\_\-t start, wchar\-\_\-t end, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_2datastructs_8c_aae38451b4efa993bd9388e19bc1c293a}{fsm\-\_\-trans\-\_\-create\-\_\-single} (wchar\-\_\-t start, wchar\-\_\-t end, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. \end{DoxyCompactList}\item 
+bool \hyperlink{fsm_2datastructs_8c_a1e398044606cf5c1efc9ae5b06215f01}{fsm\-\_\-trans\-\_\-check} (const \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft, wchar\-\_\-t c)
+\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_2datastructs_8c_a252a17a203f6510ff008ab9748054326}{fsm\-\_\-trans\-\_\-copy} (const \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Allocate an entirely new copy of an existing \-F\-S\-M transition. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_afacfbf350f8cfbaa5982803593273551}{fsm\-\_\-init} (\hyperlink{structfsm}{fsm} $\ast$f)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \-F\-S\-M. \end{DoxyCompactList}\item 
+\hypertarget{fsm_2datastructs_8c_a81bb701b090eeab2a57dd58311b04ddf}{\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{fsm_2datastructs_8c_a81bb701b090eeab2a57dd58311b04ddf}{fsm\-\_\-create} (void)}\label{fsm_2datastructs_8c_a81bb701b090eeab2a57dd58311b04ddf}
+
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize an \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_a773aee7a4ae4d14a9fb24a4de77f916c}{fsm\-\_\-destroy} (\hyperlink{structfsm}{fsm} $\ast$f, bool free\-\_\-transitions)
+\begin{DoxyCompactList}\small\item\em \-Clean up a \-F\-S\-M, but do not free it. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_aaeae4a8cee76a6876cb4e9c13f753cc3}{fsm\-\_\-delete} (\hyperlink{structfsm}{fsm} $\ast$f, bool free\-\_\-transitions)
+\begin{DoxyCompactList}\small\item\em \-Clean up and free an \-F\-S\-M. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{fsm_2datastructs_8c_ad52421861ddd12fdaadda4681781ce02}{fsm\-\_\-create\-\_\-single\-\_\-char} (wchar\-\_\-t character)
+\begin{DoxyCompactList}\small\item\em \-Creates a \-F\-S\-M for a single character. \end{DoxyCompactList}\item 
+int \hyperlink{fsm_2datastructs_8c_aa1917d964efee7185d38a3d03949022c}{fsm\-\_\-add\-\_\-state} (\hyperlink{structfsm}{fsm} $\ast$f, bool accepting)
+\begin{DoxyCompactList}\small\item\em \-Add a state to the \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_ab76ad642dc83c77ae9f458faa8444bf9}{fsm\-\_\-add\-\_\-trans} (\hyperlink{structfsm}{fsm} $\ast$f, int state, const \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Add a transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_2datastructs_8c_a91daa87b98f7318c8609b56a09093a01}{fsm\-\_\-add\-\_\-single} (\hyperlink{structfsm}{fsm} $\ast$f, int from, int to, wchar\-\_\-t start, wchar\-\_\-t end, int type)
+\begin{DoxyCompactList}\small\item\em \-Add a single range transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{fsm\-\_\-sim\-\_\-init} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, \hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_2datastructs_8c_a7af8fcfc37e238c0d85d48649c2d209b}{fsm\-\_\-sim\-\_\-create} (\hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_a74507e3eeaafc4250ec923acf9578871}{fsm\-\_\-sim\-\_\-destroy} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, bool free\-\_\-curr)
+\begin{DoxyCompactList}\small\item\em \-Clean up any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-sim\-\_\-delete} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, bool free\-\_\-curr)
+\begin{DoxyCompactList}\small\item\em \-Clean up and any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}, and free it. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Data structure function declarations for \-F\-S\-Ms. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Saturday, 26 \-July 2014
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2014, \-Stephen \-Brennan. \-All rights reserved.
+
+\-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\-: \-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. \-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. \-Neither the name of \-Stephen \-Brennan nor the names of his contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+\-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E \-I\-S \-P\-R\-O\-V\-I\-D\-E\-D \-B\-Y \-T\-H\-E \-C\-O\-P\-Y\-R\-I\-G\-H\-T \-H\-O\-L\-D\-E\-R\-S \-A\-N\-D \-C\-O\-N\-T\-R\-I\-B\-U\-T\-O\-R\-S \char`\"{}\-A\-S I\-S\char`\"{} \-A\-N\-D \-A\-N\-Y \-E\-X\-P\-R\-E\-S\-S \-O\-R \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S, \-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-T\-H\-E \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S \-O\-F \-M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y \-A\-N\-D \-F\-I\-T\-N\-E\-S\-S \-F\-O\-R \-A \-P\-A\-R\-T\-I\-C\-U\-L\-A\-R \-P\-U\-R\-P\-O\-S\-E \-A\-R\-E \-D\-I\-S\-C\-L\-A\-I\-M\-E\-D. \-I\-N \-N\-O \-E\-V\-E\-N\-T \-S\-H\-A\-L\-L \-S\-T\-E\-P\-H\-E\-N \-B\-R\-E\-N\-N\-A\-N \-B\-E \-L\-I\-A\-B\-L\-E \-F\-O\-R \-A\-N\-Y \-D\-I\-R\-E\-C\-T, \-I\-N\-D\-I\-R\-E\-C\-T, \-I\-N\-C\-I\-D\-E\-N\-T\-A\-L, \-S\-P\-E\-C\-I\-A\-L, \-E\-X\-E\-M\-P\-L\-A\-R\-Y, \-O\-R \-C\-O\-N\-S\-E\-Q\-U\-E\-N\-T\-I\-A\-L \-D\-A\-M\-A\-G\-E\-S (\-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-P\-R\-O\-C\-U\-R\-E\-M\-E\-N\-T \-O\-F \-S\-U\-B\-S\-T\-I\-T\-U\-T\-E \-G\-O\-O\-D\-S \-O\-R \-S\-E\-R\-V\-I\-C\-E\-S; \-L\-O\-S\-S \-O\-F \-U\-S\-E, \-D\-A\-T\-A, \-O\-R \-P\-R\-O\-F\-I\-T\-S; \-O\-R \-B\-U\-S\-I\-N\-E\-S\-S \-I\-N\-T\-E\-R\-R\-U\-P\-T\-I\-O\-N) \-H\-O\-W\-E\-V\-E\-R \-C\-A\-U\-S\-E\-D \-A\-N\-D \-O\-N \-A\-N\-Y \-T\-H\-E\-O\-R\-Y \-O\-F \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-W\-H\-E\-T\-H\-E\-R \-I\-N \-C\-O\-N\-T\-R\-A\-C\-T, \-S\-T\-R\-I\-C\-T \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-O\-R \-T\-O\-R\-T (\-I\-N\-C\-L\-U\-D\-I\-N\-G \-N\-E\-G\-L\-I\-G\-E\-N\-C\-E \-O\-R \-O\-T\-H\-E\-R\-W\-I\-S\-E) \-A\-R\-I\-S\-I\-N\-G \-I\-N \-A\-N\-Y \-W\-A\-Y \-O\-U\-T \-O\-F \-T\-H\-E \-U\-S\-E \-O\-F \-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E, \-E\-V\-E\-N \-I\-F \-A\-D\-V\-I\-S\-E\-D \-O\-F \-T\-H\-E \-P\-O\-S\-S\-I\-B\-I\-L\-I\-T\-Y \-O\-F \-S\-U\-C\-H \-D\-A\-M\-A\-G\-E. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{fsm_2datastructs_8c_source}{datastructs.\-c}.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{fsm_2datastructs_8c_a91daa87b98f7318c8609b56a09093a01}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-add\-\_\-single@{fsm\-\_\-add\-\_\-single}}
+\index{fsm\-\_\-add\-\_\-single@{fsm\-\_\-add\-\_\-single}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-add\-\_\-single}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-add\-\_\-single} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{int}]{from, }
+\item[{int}]{to, }
+\item[{wchar\-\_\-t}]{start, }
+\item[{wchar\-\_\-t}]{end, }
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a91daa87b98f7318c8609b56a09093a01}
+
+
+\-Add a single range transition to the \-F\-S\-M. 
+
+\-This function simplifies the allocation and addition of the more common single range transitions. \-It returns the \hyperlink{structfsm__trans}{fsm\-\_\-trans} pointer if the programmer wishes to do manual memory management. \-However, the return value can be ignored, and false passed to \hyperlink{fsm_2datastructs_8c_aaeae4a8cee76a6876cb4e9c13f753cc3}{fsm\-\_\-delete()} in order to have the transition freed automatically.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to add to \\
+\hline
+{\em from} & \-The state the transition is from \\
+\hline
+{\em to} & \-The state the transition is to \\
+\hline
+{\em start} & \-The character at the start of the range \\
+\hline
+{\em end} & \-The character at the end of the range \\
+\hline
+{\em type} & \-The type of range (positive or negative) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Pointer to the \hyperlink{structfsm__trans}{fsm\-\_\-trans} created by the function. 
+\end{DoxyReturn}
+
+
+\-Definition at line 341 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_aa1917d964efee7185d38a3d03949022c}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-add\-\_\-state@{fsm\-\_\-add\-\_\-state}}
+\index{fsm\-\_\-add\-\_\-state@{fsm\-\_\-add\-\_\-state}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-add\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-add\-\_\-state} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{bool}]{accepting}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_aa1917d964efee7185d38a3d03949022c}
+
+
+\-Add a state to the \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to add to \\
+\hline
+{\em accepting} & \-Whether to add the state to the accepting list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The index of the state 
+\end{DoxyReturn}
+
+
+\-Definition at line 292 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_ab76ad642dc83c77ae9f458faa8444bf9}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-add\-\_\-trans@{fsm\-\_\-add\-\_\-trans}}
+\index{fsm\-\_\-add\-\_\-trans@{fsm\-\_\-add\-\_\-trans}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-add\-\_\-trans}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-add\-\_\-trans} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{int}]{state, }
+\item[{const {\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_ab76ad642dc83c77ae9f458faa8444bf9}
+
+
+\-Add a transition to the \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to add the transition to \\
+\hline
+{\em state} & \-The state the transition is from \\
+\hline
+{\em ft} & \-The transition to add \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 313 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_ad52421861ddd12fdaadda4681781ce02}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-create\-\_\-single\-\_\-char@{fsm\-\_\-create\-\_\-single\-\_\-char}}
+\index{fsm\-\_\-create\-\_\-single\-\_\-char@{fsm\-\_\-create\-\_\-single\-\_\-char}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-create\-\_\-single\-\_\-char}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf fsm\-\_\-create\-\_\-single\-\_\-char} (
+\begin{DoxyParamCaption}
+\item[{wchar\-\_\-t}]{character}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_ad52421861ddd12fdaadda4681781ce02}
+
+
+\-Creates a \-F\-S\-M for a single character. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em character} & \-The character to make a transition for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-F\-S\-M for the character. 
+\end{DoxyReturn}
+
+
+\-Definition at line 276 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_aaeae4a8cee76a6876cb4e9c13f753cc3}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-delete@{fsm\-\_\-delete}}
+\index{fsm\-\_\-delete@{fsm\-\_\-delete}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{bool}]{free\-\_\-transitions}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_aaeae4a8cee76a6876cb4e9c13f753cc3}
+
+
+\-Clean up and free an \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to free \\
+\hline
+{\em free\-\_\-transitions} & \-Do we free the transitions too? \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 261 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a773aee7a4ae4d14a9fb24a4de77f916c}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-destroy@{fsm\-\_\-destroy}}
+\index{fsm\-\_\-destroy@{fsm\-\_\-destroy}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{bool}]{free\-\_\-transitions}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a773aee7a4ae4d14a9fb24a4de77f916c}
+
+
+\-Clean up a \-F\-S\-M, but do not free it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to clean up \\
+\hline
+{\em free\-\_\-transitions} & \-Do we free the transitions too? \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 233 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_afacfbf350f8cfbaa5982803593273551}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-init@{fsm\-\_\-init}}
+\index{fsm\-\_\-init@{fsm\-\_\-init}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_afacfbf350f8cfbaa5982803593273551}
+
+
+\-Initialize a \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to \-Initialize \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 210 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a7af8fcfc37e238c0d85d48649c2d209b}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}}
+\index{fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-sim}$\ast$ {\bf fsm\-\_\-sim\-\_\-create} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{smb\-\_\-al $\ast$}]{curr, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a7af8fcfc37e238c0d85d48649c2d209b}
+
+
+\-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em curr} & \-The current state of the simulation \\
+\hline
+{\em input} & \-The input string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The allocated simulation 
+\end{DoxyReturn}
+
+
+\-Definition at line 374 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}}
+\index{fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
+\item[{bool}]{free\-\_\-curr}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}
+
+
+\-Clean up and any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}, and free it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em fs} & \-The simulation \\
+\hline
+{\em free\-\_\-curr} & \-Do we free the state list (generally, true) \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 398 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a74507e3eeaafc4250ec923acf9578871}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}}
+\index{fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
+\item[{bool}]{free\-\_\-curr}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a74507e3eeaafc4250ec923acf9578871}
+
+
+\-Clean up any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em fs} & \-The simulation \\
+\hline
+{\em free\-\_\-curr} & \-Do we free the state list (generally, true) \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 386 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}}
+\index{fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{smb\-\_\-al $\ast$}]{curr, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_ab8bd310bf9223a7ef2fafa5c5ce6ed38}
+
+
+\-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em fs} & \-The struct to init \\
+\hline
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em curr} & \-The current state of the simulation \\
+\hline
+{\em input} & \-The input string \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 360 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a1e398044606cf5c1efc9ae5b06215f01}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-check@{fsm\-\_\-trans\-\_\-check}}
+\index{fsm\-\_\-trans\-\_\-check@{fsm\-\_\-trans\-\_\-check}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-check}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-trans\-\_\-check} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm\-\_\-trans} $\ast$}]{ft, }
+\item[{wchar\-\_\-t}]{c}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a1e398044606cf5c1efc9ae5b06215f01}
+\-Check whether the character is accepted by the transition.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The transition to check \\
+\hline
+{\em c} & \-The character to check \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 165 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a252a17a203f6510ff008ab9748054326}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-copy@{fsm\-\_\-trans\-\_\-copy}}
+\index{fsm\-\_\-trans\-\_\-copy@{fsm\-\_\-trans\-\_\-copy}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-copy}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-trans\-\_\-copy} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a252a17a203f6510ff008ab9748054326}
+
+
+\-Allocate an entirely new copy of an existing \-F\-S\-M transition. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The transition to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The copy of ft 
+\end{DoxyReturn}
+
+
+\-Definition at line 190 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a96f9a93d3836ac3b7e60e5d07c8fd953}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-create@{fsm\-\_\-trans\-\_\-create}}
+\index{fsm\-\_\-trans\-\_\-create@{fsm\-\_\-trans\-\_\-create}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-trans\-\_\-create} (
+\begin{DoxyParamCaption}
+\item[{int}]{n, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a96f9a93d3836ac3b7e60e5d07c8fd953}
+
+
+\-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em n} & \-The number of ranges \\
+\hline
+{\em type} & \-The type of transition \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 91 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_aae38451b4efa993bd9388e19bc1c293a}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-create\-\_\-single@{fsm\-\_\-trans\-\_\-create\-\_\-single}}
+\index{fsm\-\_\-trans\-\_\-create\-\_\-single@{fsm\-\_\-trans\-\_\-create\-\_\-single}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-create\-\_\-single}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-trans\-\_\-create\-\_\-single} (
+\begin{DoxyParamCaption}
+\item[{wchar\-\_\-t}]{start, }
+\item[{wchar\-\_\-t}]{end, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_aae38451b4efa993bd9388e19bc1c293a}
+
+
+\-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em start} & \-The beginning of the range \\
+\hline
+{\em end} & \-The end of the range \\
+\hline
+{\em type} & \-The type of the object \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 150 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_aa952e837db3b8257cb84c4e5805d3855}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-delete@{fsm\-\_\-trans\-\_\-delete}}
+\index{fsm\-\_\-trans\-\_\-delete@{fsm\-\_\-trans\-\_\-delete}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_aa952e837db3b8257cb84c4e5805d3855}
+
+
+\-Free the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The object to free \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 115 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_add52631c23fe8ff670dcd27799c26a26}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-destroy@{fsm\-\_\-trans\-\_\-destroy}}
+\index{fsm\-\_\-trans\-\_\-destroy@{fsm\-\_\-trans\-\_\-destroy}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_add52631c23fe8ff670dcd27799c26a26}
+
+
+\-Clean up the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \-Do not free it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The object to clean up \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 103 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a1ee5d4d7276a5ca86ba5f9f2947a2a57}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-init@{fsm\-\_\-trans\-\_\-init}}
+\index{fsm\-\_\-trans\-\_\-init@{fsm\-\_\-trans\-\_\-init}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft, }
+\item[{int}]{n, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a1ee5d4d7276a5ca86ba5f9f2947a2a57}
+
+
+\-Initialize an already-\/allocated \-F\-S\-M transition unit. 
+
+\-An \-F\-S\-M transition unit defines what characters can and can't be accepted for a transition, similar to a regular expression's character class. \-It can either be a positive transition (any character between start and end), or a negative transition (any character not between start and end). \-It can have more than one transition criteria (i.\-e character range), but they all have to be either positive or negative.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The pre-\/allocated transition \\
+\hline
+{\em n} & \-The number of transition criteria \\
+\hline
+{\em type} & \-The type of transition (positive or negative) \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 65 of file datastructs.\-c.
+
+\hypertarget{fsm_2datastructs_8c_a8c0c15842d240af95c7f15219b0db6d2}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-init\-\_\-single@{fsm\-\_\-trans\-\_\-init\-\_\-single}}
+\index{fsm\-\_\-trans\-\_\-init\-\_\-single@{fsm\-\_\-trans\-\_\-init\-\_\-single}!fsm/datastructs.c@{fsm/datastructs.\-c}}
+\subsubsection[{fsm\-\_\-trans\-\_\-init\-\_\-single}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-init\-\_\-single} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft, }
+\item[{wchar\-\_\-t}]{start, }
+\item[{wchar\-\_\-t}]{end, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_2datastructs_8c_a8c0c15842d240af95c7f15219b0db6d2}
+
+
+\-Initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The object to initialize \\
+\hline
+{\em start} & \-The beginning of the range \\
+\hline
+{\em end} & \-The end of the range \\
+\hline
+{\em type} & \-The type of the object \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 134 of file datastructs.\-c.
+

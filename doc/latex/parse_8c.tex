@@ -1,0 +1,235 @@
+\hypertarget{parse_8c}{\section{src/regex/parse.c \-File \-Reference}
+\label{parse_8c}\index{src/regex/parse.\-c@{src/regex/parse.\-c}}
+}
+
+
+\-Regular expression parsing functions.  
+
+
+{\ttfamily \#include $<$stdbool.\-h$>$}\*
+{\ttfamily \#include $<$assert.\-h$>$}\*
+{\ttfamily \#include \char`\"{}regex.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/ll.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}str.\-h\char`\"{}}\*
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{parse_8c_a1291f416b069313021b519eea62d5bf1}{\#define \hyperlink{parse_8c_a1291f416b069313021b519eea62d5bf1}{\-N\-O\-R\-M\-A\-L}~0}\label{parse_8c_a1291f416b069313021b519eea62d5bf1}
+
+\begin{DoxyCompactList}\small\item\em \-State for parsing character classes when not part of a range. \end{DoxyCompactList}\item 
+\hypertarget{parse_8c_ac04dd0afaf7ea3eb2ade2544d2d5f907}{\#define \hyperlink{parse_8c_ac04dd0afaf7ea3eb2ade2544d2d5f907}{\-R\-A\-N\-G\-E}~1}\label{parse_8c_ac04dd0afaf7ea3eb2ade2544d2d5f907}
+
+\begin{DoxyCompactList}\small\item\em \-State for parsing character classes when part of a range. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{parse_8c_ac6a448a418b078c44fb0d0d302431eba}{regex\-\_\-parse\-\_\-check\-\_\-modifier} (\hyperlink{structfsm}{fsm} $\ast$new, const wchar\-\_\-t $\ast$$\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Adjust the \-F\-S\-M according to its modifier, if any. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_a2c49189ca53918ba1e644d5c3d0a4fc1}{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm} (int type)
+\begin{DoxyCompactList}\small\item\em \-Return a \-F\-S\-M that accepts any whitespace. \end{DoxyCompactList}\item 
+\hypertarget{parse_8c_a2e56e4221f6f7b0abb6dda80395dba08}{\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_a2e56e4221f6f7b0abb6dda80395dba08}{regex\-\_\-parse\-\_\-create\-\_\-word\-\_\-fsm} (int type)}\label{parse_8c_a2e56e4221f6f7b0abb6dda80395dba08}
+
+\begin{DoxyCompactList}\small\item\em \-Return a \-F\-S\-M for word characters (letters, numbers, and underscore). \end{DoxyCompactList}\item 
+\hypertarget{parse_8c_a9d29a86b2059e1fb7aa3b05662eb1f88}{\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_a9d29a86b2059e1fb7aa3b05662eb1f88}{regex\-\_\-parse\-\_\-create\-\_\-digit\-\_\-fsm} (int type)}\label{parse_8c_a9d29a86b2059e1fb7aa3b05662eb1f88}
+
+\begin{DoxyCompactList}\small\item\em \-Return a \-F\-S\-M for digits. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_ac8e9765e663b11f7f6f0d7ab60295b3e}{regex\-\_\-parse\-\_\-create\-\_\-dot\-\_\-fsm} (bool newline\-\_\-accepted)
+\begin{DoxyCompactList}\small\item\em \-Create the 'dot' \-F\-S\-M, i.\-e. the \-F\-S\-M that accepts 'almost' anything. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_a2b81fd55b1de3e8405c4e5d17dd7b63d}{regex\-\_\-parse\-\_\-outer\-\_\-escape} (const wchar\-\_\-t $\ast$$\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Returns an \-F\-S\-M for an escape sequence, outside of a character class. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_a292a18ffe8a3ffa53aae02a662c04415}{regex\-\_\-parse\-\_\-char\-\_\-class} (const wchar\-\_\-t $\ast$$\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Create a \-F\-S\-M for a character class. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_a4f016183fc8f0da8ac87bd6f6047708c}{regex\-\_\-parse\-\_\-recursive} (const wchar\-\_\-t $\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex}, const wchar\-\_\-t $\ast$$\ast$final)
+\begin{DoxyCompactList}\small\item\em \-The workhorse recursive helper to \hyperlink{parse_8c_a58c440b23a9f0be68aea919a81a5ca00}{regex\-\_\-parse()}. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{parse_8c_a58c440b23a9f0be68aea919a81a5ca00}{regex\-\_\-parse} (const wchar\-\_\-t $\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Construct a \-F\-S\-M to accept the given regex. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Regular expression parsing functions. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Saturday, 26 \-July 2014
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2014, \-Stephen \-Brennan. \-All rights reserved.
+
+\-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\-: \-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. \-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. \-Neither the name of \-Stephen \-Brennan nor the names of his contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+\-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E \-I\-S \-P\-R\-O\-V\-I\-D\-E\-D \-B\-Y \-T\-H\-E \-C\-O\-P\-Y\-R\-I\-G\-H\-T \-H\-O\-L\-D\-E\-R\-S \-A\-N\-D \-C\-O\-N\-T\-R\-I\-B\-U\-T\-O\-R\-S \char`\"{}\-A\-S I\-S\char`\"{} \-A\-N\-D \-A\-N\-Y \-E\-X\-P\-R\-E\-S\-S \-O\-R \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S, \-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-T\-H\-E \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S \-O\-F \-M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y \-A\-N\-D \-F\-I\-T\-N\-E\-S\-S \-F\-O\-R \-A \-P\-A\-R\-T\-I\-C\-U\-L\-A\-R \-P\-U\-R\-P\-O\-S\-E \-A\-R\-E \-D\-I\-S\-C\-L\-A\-I\-M\-E\-D. \-I\-N \-N\-O \-E\-V\-E\-N\-T \-S\-H\-A\-L\-L \-S\-T\-E\-P\-H\-E\-N \-B\-R\-E\-N\-N\-A\-N \-B\-E \-L\-I\-A\-B\-L\-E \-F\-O\-R \-A\-N\-Y \-D\-I\-R\-E\-C\-T, \-I\-N\-D\-I\-R\-E\-C\-T, \-I\-N\-C\-I\-D\-E\-N\-T\-A\-L, \-S\-P\-E\-C\-I\-A\-L, \-E\-X\-E\-M\-P\-L\-A\-R\-Y, \-O\-R \-C\-O\-N\-S\-E\-Q\-U\-E\-N\-T\-I\-A\-L \-D\-A\-M\-A\-G\-E\-S (\-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-P\-R\-O\-C\-U\-R\-E\-M\-E\-N\-T \-O\-F \-S\-U\-B\-S\-T\-I\-T\-U\-T\-E \-G\-O\-O\-D\-S \-O\-R \-S\-E\-R\-V\-I\-C\-E\-S; \-L\-O\-S\-S \-O\-F \-U\-S\-E, \-D\-A\-T\-A, \-O\-R \-P\-R\-O\-F\-I\-T\-S; \-O\-R \-B\-U\-S\-I\-N\-E\-S\-S \-I\-N\-T\-E\-R\-R\-U\-P\-T\-I\-O\-N) \-H\-O\-W\-E\-V\-E\-R \-C\-A\-U\-S\-E\-D \-A\-N\-D \-O\-N \-A\-N\-Y \-T\-H\-E\-O\-R\-Y \-O\-F \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-W\-H\-E\-T\-H\-E\-R \-I\-N \-C\-O\-N\-T\-R\-A\-C\-T, \-S\-T\-R\-I\-C\-T \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-O\-R \-T\-O\-R\-T (\-I\-N\-C\-L\-U\-D\-I\-N\-G \-N\-E\-G\-L\-I\-G\-E\-N\-C\-E \-O\-R \-O\-T\-H\-E\-R\-W\-I\-S\-E) \-A\-R\-I\-S\-I\-N\-G \-I\-N \-A\-N\-Y \-W\-A\-Y \-O\-U\-T \-O\-F \-T\-H\-E \-U\-S\-E \-O\-F \-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E, \-E\-V\-E\-N \-I\-F \-A\-D\-V\-I\-S\-E\-D \-O\-F \-T\-H\-E \-P\-O\-S\-S\-I\-B\-I\-L\-I\-T\-Y \-O\-F \-S\-U\-C\-H \-D\-A\-M\-A\-G\-E. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{parse_8c_source}{parse.\-c}.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{parse_8c_a58c440b23a9f0be68aea919a81a5ca00}{\index{parse.\-c@{parse.\-c}!regex\-\_\-parse@{regex\-\_\-parse}}
+\index{regex\-\_\-parse@{regex\-\_\-parse}!parse.c@{parse.\-c}}
+\subsubsection[{regex\-\_\-parse}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{parse_8c_a58c440b23a9f0be68aea919a81a5ca00}
+
+
+\-Construct a \-F\-S\-M to accept the given regex. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-Regular expression string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A \-F\-S\-M that can be used to decide the language of the regex. 
+\end{DoxyReturn}
+
+
+\-Definition at line 416 of file parse.\-c.
+
+\hypertarget{parse_8c_a292a18ffe8a3ffa53aae02a662c04415}{\index{parse.\-c@{parse.\-c}!regex\-\_\-parse\-\_\-char\-\_\-class@{regex\-\_\-parse\-\_\-char\-\_\-class}}
+\index{regex\-\_\-parse\-\_\-char\-\_\-class@{regex\-\_\-parse\-\_\-char\-\_\-class}!parse.c@{parse.\-c}}
+\subsubsection[{regex\-\_\-parse\-\_\-char\-\_\-class}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-char\-\_\-class} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{parse_8c_a292a18ffe8a3ffa53aae02a662c04415}
+
+
+\-Create a \-F\-S\-M for a character class. 
+
+\-Reads a character class (pointed by `$\ast$regex`), which it then converts to a single transition \-F\-S\-M.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-Pointer to pointer to location in string! \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-F\-S\-M for character class. 
+\end{DoxyReturn}
+
+
+\-Definition at line 246 of file parse.\-c.
+
+\hypertarget{parse_8c_ac6a448a418b078c44fb0d0d302431eba}{\index{parse.\-c@{parse.\-c}!regex\-\_\-parse\-\_\-check\-\_\-modifier@{regex\-\_\-parse\-\_\-check\-\_\-modifier}}
+\index{regex\-\_\-parse\-\_\-check\-\_\-modifier@{regex\-\_\-parse\-\_\-check\-\_\-modifier}!parse.c@{parse.\-c}}
+\subsubsection[{regex\-\_\-parse\-\_\-check\-\_\-modifier}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf regex\-\_\-parse\-\_\-check\-\_\-modifier} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{new, }
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{parse_8c_ac6a448a418b078c44fb0d0d302431eba}
+
+
+\-Adjust the \-F\-S\-M according to its modifier, if any. 
+
+\-When a character, character class, or parenthesized regex is read in, it could be followed by the modifiers `$\ast$`, `+`, or `?`. \-This function adjusts the \-F\-S\-M for those modifiers, and adjusts the location pointer if one was present.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em new} & \-The newly read in \-F\-S\-M. \\
+\hline
+{\em regex} & \-The pointer to the pointer to the location in the regex. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 59 of file parse.\-c.
+
+\hypertarget{parse_8c_ac8e9765e663b11f7f6f0d7ab60295b3e}{\index{parse.\-c@{parse.\-c}!regex\-\_\-parse\-\_\-create\-\_\-dot\-\_\-fsm@{regex\-\_\-parse\-\_\-create\-\_\-dot\-\_\-fsm}}
+\index{regex\-\_\-parse\-\_\-create\-\_\-dot\-\_\-fsm@{regex\-\_\-parse\-\_\-create\-\_\-dot\-\_\-fsm}!parse.c@{parse.\-c}}
+\subsubsection[{regex\-\_\-parse\-\_\-create\-\_\-dot\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-create\-\_\-dot\-\_\-fsm} (
+\begin{DoxyParamCaption}
+\item[{bool}]{newline\-\_\-accepted}
+\end{DoxyParamCaption}
+)}}\label{parse_8c_ac8e9765e663b11f7f6f0d7ab60295b3e}
+
+
+\-Create the 'dot' \-F\-S\-M, i.\-e. the \-F\-S\-M that accepts 'almost' anything. 
+
+\-The dot should accept 'almost' anything. \-The one thing that my dot character will never accept is \-L'$\backslash$0' (the null terminator). \-The dot should not match \-W\-E\-O\-F, but since wchar\-\_\-t can't hold \-W\-E\-O\-F, \-I'm good there. \-Generally, the dot is not supposed to match \-L'\par
+' either, so \-I will also add that, but optionally. 
+
+\-Definition at line 167 of file parse.\-c.
+
+\hypertarget{parse_8c_a2c49189ca53918ba1e644d5c3d0a4fc1}{\index{parse.\-c@{parse.\-c}!regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm@{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm}}
+\index{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm@{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm}!parse.c@{parse.\-c}}
+\subsubsection[{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm} (
+\begin{DoxyParamCaption}
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}}\label{parse_8c_a2c49189ca53918ba1e644d5c3d0a4fc1}
+
+
+\-Return a \-F\-S\-M that accepts any whitespace. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em type} & \-Positive or negative. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 97 of file parse.\-c.
+
+\hypertarget{parse_8c_a2b81fd55b1de3e8405c4e5d17dd7b63d}{\index{parse.\-c@{parse.\-c}!regex\-\_\-parse\-\_\-outer\-\_\-escape@{regex\-\_\-parse\-\_\-outer\-\_\-escape}}
+\index{regex\-\_\-parse\-\_\-outer\-\_\-escape@{regex\-\_\-parse\-\_\-outer\-\_\-escape}!parse.c@{parse.\-c}}
+\subsubsection[{regex\-\_\-parse\-\_\-outer\-\_\-escape}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-outer\-\_\-escape} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{parse_8c_a2b81fd55b1de3e8405c4e5d17dd7b63d}
+
+
+\-Returns an \-F\-S\-M for an escape sequence, outside of a character class. 
+
+\-Basically, adds the ``, ``, ``, ``, ``, `` character classes to the already existing character escape sequences covered by \hyperlink{str_8c_a2812a14f008e19005dec1ae9f31d0a93}{get\-\_\-escape()}.
+
+\-Expects that `$\ast$regex` points to the backslash in the escape sequence. \-Always returns such that `$\ast$regex` points to the \-L\-A\-S\-T character in the escape sequence.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-Pointer to the pointer to the backslash escape. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-F\-S\-M to accept the backslash escape sequence. 
+\end{DoxyReturn}
+
+
+\-Definition at line 200 of file parse.\-c.
+
+\hypertarget{parse_8c_a4f016183fc8f0da8ac87bd6f6047708c}{\index{parse.\-c@{parse.\-c}!regex\-\_\-parse\-\_\-recursive@{regex\-\_\-parse\-\_\-recursive}}
+\index{regex\-\_\-parse\-\_\-recursive@{regex\-\_\-parse\-\_\-recursive}!parse.c@{parse.\-c}}
+\subsubsection[{regex\-\_\-parse\-\_\-recursive}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-recursive} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{regex, }
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{final}
+\end{DoxyParamCaption}
+)}}\label{parse_8c_a4f016183fc8f0da8ac87bd6f6047708c}
+
+
+\-The workhorse recursive helper to \hyperlink{parse_8c_a58c440b23a9f0be68aea919a81a5ca00}{regex\-\_\-parse()}. 
+
+\-Crawls through a regex, holding a \-F\-S\-M of the expression so far. \-Single characters are concatenated as simple 0 -\/$>$ 1 machines. \-Parenthesis initiate a recursive call. \-Pipes union the current regex with everything after.
+
+\-Needs to be called with a non-\/\-N\-U\-L\-L value for both, which is why there is a top level function.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-Local pointer to the location in the regular expression. \\
+\hline
+{\em final} & \-Pointer to the parent's location. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An \-F\-S\-M for the regular expression. 
+\end{DoxyReturn}
+
+
+\-Definition at line 343 of file parse.\-c.
+

@@ -1,0 +1,73 @@
+\hypertarget{structcfg}{\section{cfg \-Struct \-Reference}
+\label{structcfg}\index{cfg@{cfg}}
+}
+
+
+\-A struct to represent a context-\/free grammar.  
+
+
+
+
+{\ttfamily \#include $<$gram.\-h$>$}
+
+\subsection*{\-Data \-Fields}
+\begin{DoxyCompactItemize}
+\item 
+smb\-\_\-al \hyperlink{structcfg_af90e802d07cdf4a88bde8043b57ec666}{symbols}
+\begin{DoxyCompactList}\small\item\em \-A list of symbols in the grammar. \end{DoxyCompactList}\item 
+smb\-\_\-al \hyperlink{structcfg_ae85a135e82c4af0e75739a21b3ec03b4}{terminals}
+\begin{DoxyCompactList}\small\item\em \-A list of symbols that are terminal ones. \end{DoxyCompactList}\item 
+\hypertarget{structcfg_a85034aa36a9d4ff1044b8a4fb14cccb9}{smb\-\_\-al \hyperlink{structcfg_a85034aa36a9d4ff1044b8a4fb14cccb9}{rules}}\label{structcfg_a85034aa36a9d4ff1044b8a4fb14cccb9}
+
+\begin{DoxyCompactList}\small\item\em \-A list of rules in the grammar. \end{DoxyCompactList}\item 
+\hypertarget{structcfg_a37722a150250e2a5a98e5e0d11e53449}{int \hyperlink{structcfg_a37722a150250e2a5a98e5e0d11e53449}{start}}\label{structcfg_a37722a150250e2a5a98e5e0d11e53449}
+
+\begin{DoxyCompactList}\small\item\em \-The start symbol of the grammar. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A struct to represent a context-\/free grammar. 
+
+\-The grammar is represented as a list of symbols, a list of terminal symbols, a list of rules, and a start symbol. \-When referred to within the structure, symbols are indexes within the variable \hyperlink{structcfg_af90e802d07cdf4a88bde8043b57ec666}{cfg.\-symbols}.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{structcfg__rule}{cfg\-\_\-rule} 
+
+\hyperlink{gram_8h_ac3f72e0dc5203203c2b726e3b1e6a0ec}{cfg\-\_\-init} 
+
+\hyperlink{gram_8h_a3bbb21266337299e9acb6241b547f121}{cfg\-\_\-create} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 122 of file gram.\-h.
+
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{structcfg_af90e802d07cdf4a88bde8043b57ec666}{\index{cfg@{cfg}!symbols@{symbols}}
+\index{symbols@{symbols}!cfg@{cfg}}
+\subsubsection[{symbols}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al {\bf symbols}}}\label{structcfg_af90e802d07cdf4a88bde8043b57ec666}
+
+
+\-A list of symbols in the grammar. 
+
+\-The symbols are identified by an index in the list. \-The list itself contains the string representation of the symbol. 
+
+\-Definition at line 130 of file gram.\-h.
+
+\hypertarget{structcfg_ae85a135e82c4af0e75739a21b3ec03b4}{\index{cfg@{cfg}!terminals@{terminals}}
+\index{terminals@{terminals}!cfg@{cfg}}
+\subsubsection[{terminals}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al {\bf terminals}}}\label{structcfg_ae85a135e82c4af0e75739a21b3ec03b4}
+
+
+\-A list of symbols that are terminal ones. 
+
+\-The list contains integers, which refer to the index within \hyperlink{structcfg_af90e802d07cdf4a88bde8043b57ec666}{cfg.\-symbols}. 
+
+\-Definition at line 137 of file gram.\-h.
+
+
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{gram_8h}{gram.\-h}\end{DoxyCompactItemize}

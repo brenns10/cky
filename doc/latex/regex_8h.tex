@@ -1,0 +1,347 @@
+\hypertarget{regex_8h}{\section{src/regex.h \-File \-Reference}
+\label{regex_8h}\index{src/regex.\-h@{src/regex.\-h}}
+}
+
+
+\-Declarations for regular expression routines.  
+
+
+{\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structregex__hit}{regex\-\_\-hit}
+\begin{DoxyCompactList}\small\item\em \-A struct to hold regular expression search hits. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{regex_8h_a620b076c4e97fc7c6e95600bd9f6fc39}{regex\-\_\-hit\-\_\-init} (\hyperlink{structregex__hit}{regex\-\_\-hit} $\ast$obj, int start, int length)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \hyperlink{structregex__hit}{regex\-\_\-hit}. \end{DoxyCompactList}\item 
+\hyperlink{structregex__hit}{regex\-\_\-hit} $\ast$ \hyperlink{regex_8h_af780fe7ad3fe1abdc77113d94cd85aa2}{regex\-\_\-hit\-\_\-create} (int start, int length)
+\begin{DoxyCompactList}\small\item\em \-Allocate a \hyperlink{structregex__hit}{regex\-\_\-hit}. \end{DoxyCompactList}\item 
+void \hyperlink{regex_8h_a38c12ce2ebc264d6b371e83396d45b02}{regex\-\_\-hit\-\_\-destroy} (\hyperlink{structregex__hit}{regex\-\_\-hit} $\ast$obj)
+\begin{DoxyCompactList}\small\item\em \-Clean up a \hyperlink{structregex__hit}{regex\-\_\-hit} object. \end{DoxyCompactList}\item 
+void \hyperlink{regex_8h_abc7bd85bcf94515c25ecc6fd3c4508f4}{regex\-\_\-hit\-\_\-delete} (\hyperlink{structregex__hit}{regex\-\_\-hit} $\ast$obj)
+\begin{DoxyCompactList}\small\item\em \-Clean up and free a \hyperlink{structregex__hit}{regex\-\_\-hit} object. \end{DoxyCompactList}\item 
+void \hyperlink{regex_8h_ac6a448a418b078c44fb0d0d302431eba}{regex\-\_\-parse\-\_\-check\-\_\-modifier} (\hyperlink{structfsm}{fsm} $\ast$new, const wchar\-\_\-t $\ast$$\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Adjust the \-F\-S\-M according to its modifier, if any. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{regex_8h_a2c49189ca53918ba1e644d5c3d0a4fc1}{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm} (int type)
+\begin{DoxyCompactList}\small\item\em \-Return a \-F\-S\-M that accepts any whitespace. \end{DoxyCompactList}\item 
+\hypertarget{regex_8h_a2e56e4221f6f7b0abb6dda80395dba08}{\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{regex_8h_a2e56e4221f6f7b0abb6dda80395dba08}{regex\-\_\-parse\-\_\-create\-\_\-word\-\_\-fsm} (int type)}\label{regex_8h_a2e56e4221f6f7b0abb6dda80395dba08}
+
+\begin{DoxyCompactList}\small\item\em \-Return a \-F\-S\-M for word characters (letters, numbers, and underscore). \end{DoxyCompactList}\item 
+\hypertarget{regex_8h_a9d29a86b2059e1fb7aa3b05662eb1f88}{\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{regex_8h_a9d29a86b2059e1fb7aa3b05662eb1f88}{regex\-\_\-parse\-\_\-create\-\_\-digit\-\_\-fsm} (int type)}\label{regex_8h_a9d29a86b2059e1fb7aa3b05662eb1f88}
+
+\begin{DoxyCompactList}\small\item\em \-Return a \-F\-S\-M for digits. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{regex_8h_a2b81fd55b1de3e8405c4e5d17dd7b63d}{regex\-\_\-parse\-\_\-outer\-\_\-escape} (const wchar\-\_\-t $\ast$$\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Returns an \-F\-S\-M for an escape sequence, outside of a character class. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{regex_8h_a292a18ffe8a3ffa53aae02a662c04415}{regex\-\_\-parse\-\_\-char\-\_\-class} (const wchar\-\_\-t $\ast$$\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Create a \-F\-S\-M for a character class. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{regex_8h_a58c440b23a9f0be68aea919a81a5ca00}{regex\-\_\-parse} (const wchar\-\_\-t $\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex})
+\begin{DoxyCompactList}\small\item\em \-Construct a \-F\-S\-M to accept the given regex. \end{DoxyCompactList}\item 
+smb\-\_\-al $\ast$ \hyperlink{regex_8h_a20107415f6769b987e6d7beee78ed478}{fsm\-\_\-search} (\hyperlink{structfsm}{fsm} $\ast$regex\-\_\-fsm, const wchar\-\_\-t $\ast$srch\-Text, bool greedy, bool overlap)
+\begin{DoxyCompactList}\small\item\em \-Perform a regex-\/style search with an \-F\-S\-M on a search text. \end{DoxyCompactList}\item 
+smb\-\_\-al $\ast$ \hyperlink{regex_8h_ac5ffd8988768ff06b05465eda3025753}{regex\-\_\-search} (const wchar\-\_\-t $\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex}, const wchar\-\_\-t $\ast$srch\-Text, bool greedy, bool overlap)
+\begin{DoxyCompactList}\small\item\em \-Searches for a regular expression on a search text. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Declarations for regular expression routines. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Sunday, 18 \-May 2014
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2014, \-Stephen \-Brennan. \-All rights reserved.
+
+\-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\-: \-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. \-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. \-Neither the name of \-Stephen \-Brennan nor the names of his contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+\-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E \-I\-S \-P\-R\-O\-V\-I\-D\-E\-D \-B\-Y \-T\-H\-E \-C\-O\-P\-Y\-R\-I\-G\-H\-T \-H\-O\-L\-D\-E\-R\-S \-A\-N\-D \-C\-O\-N\-T\-R\-I\-B\-U\-T\-O\-R\-S \char`\"{}\-A\-S I\-S\char`\"{} \-A\-N\-D \-A\-N\-Y \-E\-X\-P\-R\-E\-S\-S \-O\-R \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S, \-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-T\-H\-E \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S \-O\-F \-M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y \-A\-N\-D \-F\-I\-T\-N\-E\-S\-S \-F\-O\-R \-A \-P\-A\-R\-T\-I\-C\-U\-L\-A\-R \-P\-U\-R\-P\-O\-S\-E \-A\-R\-E \-D\-I\-S\-C\-L\-A\-I\-M\-E\-D. \-I\-N \-N\-O \-E\-V\-E\-N\-T \-S\-H\-A\-L\-L \-S\-T\-E\-P\-H\-E\-N \-B\-R\-E\-N\-N\-A\-N \-B\-E \-L\-I\-A\-B\-L\-E \-F\-O\-R \-A\-N\-Y \-D\-I\-R\-E\-C\-T, \-I\-N\-D\-I\-R\-E\-C\-T, \-I\-N\-C\-I\-D\-E\-N\-T\-A\-L, \-S\-P\-E\-C\-I\-A\-L, \-E\-X\-E\-M\-P\-L\-A\-R\-Y, \-O\-R \-C\-O\-N\-S\-E\-Q\-U\-E\-N\-T\-I\-A\-L \-D\-A\-M\-A\-G\-E\-S (\-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-P\-R\-O\-C\-U\-R\-E\-M\-E\-N\-T \-O\-F \-S\-U\-B\-S\-T\-I\-T\-U\-T\-E \-G\-O\-O\-D\-S \-O\-R \-S\-E\-R\-V\-I\-C\-E\-S; \-L\-O\-S\-S \-O\-F \-U\-S\-E, \-D\-A\-T\-A, \-O\-R \-P\-R\-O\-F\-I\-T\-S; \-O\-R \-B\-U\-S\-I\-N\-E\-S\-S \-I\-N\-T\-E\-R\-R\-U\-P\-T\-I\-O\-N) \-H\-O\-W\-E\-V\-E\-R \-C\-A\-U\-S\-E\-D \-A\-N\-D \-O\-N \-A\-N\-Y \-T\-H\-E\-O\-R\-Y \-O\-F \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-W\-H\-E\-T\-H\-E\-R \-I\-N \-C\-O\-N\-T\-R\-A\-C\-T, \-S\-T\-R\-I\-C\-T \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-O\-R \-T\-O\-R\-T (\-I\-N\-C\-L\-U\-D\-I\-N\-G \-N\-E\-G\-L\-I\-G\-E\-N\-C\-E \-O\-R \-O\-T\-H\-E\-R\-W\-I\-S\-E) \-A\-R\-I\-S\-I\-N\-G \-I\-N \-A\-N\-Y \-W\-A\-Y \-O\-U\-T \-O\-F \-T\-H\-E \-U\-S\-E \-O\-F \-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E, \-E\-V\-E\-N \-I\-F \-A\-D\-V\-I\-S\-E\-D \-O\-F \-T\-H\-E \-P\-O\-S\-S\-I\-B\-I\-L\-I\-T\-Y \-O\-F \-S\-U\-C\-H \-D\-A\-M\-A\-G\-E. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{regex_8h_source}{regex.\-h}.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{regex_8h_a20107415f6769b987e6d7beee78ed478}{\index{regex.\-h@{regex.\-h}!fsm\-\_\-search@{fsm\-\_\-search}}
+\index{fsm\-\_\-search@{fsm\-\_\-search}!regex.h@{regex.\-h}}
+\subsubsection[{fsm\-\_\-search}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al$\ast$ {\bf fsm\-\_\-search} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{regex\-\_\-fsm, }
+\item[{const wchar\-\_\-t $\ast$}]{srch\-Text, }
+\item[{bool}]{greedy, }
+\item[{bool}]{overlap}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_a20107415f6769b987e6d7beee78ed478}
+
+
+\-Perform a regex-\/style search with an \-F\-S\-M on a search text. 
+
+\-The \char`\"{}regex-\/style search\char`\"{} runs the \-F\-S\-M starting at each character in the text. \-If the \-F\-S\-M ever enters an accepting state, then that is a potential match. \-The last potential match (if any) for every character in the text makes up the list of hits.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex\-\_\-fsm} & \-The \-F\-S\-M to search with. \-Not necessarily generated from a regular expression. \\
+\hline
+{\em srch\-Text} & \-The text to search the \-F\-S\-M on. \\
+\hline
+{\em greedy} & \-When set to true, only returns one hit. \-Otherwise, returns all hits. \\
+\hline
+{\em overlap} & \-When set to true, allows overlapping hits. \-For instance, a search for \char`\"{}$\backslash$w+\char`\"{} on \char`\"{}blah\char`\"{} would return blah, lah, ah, and h. \-Since this is usually undesirable, the recommended value is false. \-When false, the search will skip to the end of each hit and resume searching there. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-An array list (smb\-\_\-al) of `regex\-\_\-hit $\ast$` full of hits. \-Each hit must be individually freed when you're finished, as well as the array list itself. 
+\end{DoxyReturn}
+
+
+\-Definition at line 64 of file search.\-c.
+
+\hypertarget{regex_8h_af780fe7ad3fe1abdc77113d94cd85aa2}{\index{regex.\-h@{regex.\-h}!regex\-\_\-hit\-\_\-create@{regex\-\_\-hit\-\_\-create}}
+\index{regex\-\_\-hit\-\_\-create@{regex\-\_\-hit\-\_\-create}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-hit\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf regex\-\_\-hit}$\ast$ {\bf regex\-\_\-hit\-\_\-create} (
+\begin{DoxyParamCaption}
+\item[{int}]{start, }
+\item[{int}]{length}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_af780fe7ad3fe1abdc77113d94cd85aa2}
+
+
+\-Allocate a \hyperlink{structregex__hit}{regex\-\_\-hit}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em start} & \-The start location of the hit. \\
+\hline
+{\em length} & \-The end location of the hit. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Pointer to the \hyperlink{structregex__hit}{regex\-\_\-hit}. \-Must be freed with \hyperlink{regex_2datastructs_8c_abc7bd85bcf94515c25ecc6fd3c4508f4}{regex\-\_\-hit\-\_\-delete()}. 
+\end{DoxyReturn}
+
+
+\-Definition at line 62 of file datastructs.\-c.
+
+\hypertarget{regex_8h_abc7bd85bcf94515c25ecc6fd3c4508f4}{\index{regex.\-h@{regex.\-h}!regex\-\_\-hit\-\_\-delete@{regex\-\_\-hit\-\_\-delete}}
+\index{regex\-\_\-hit\-\_\-delete@{regex\-\_\-hit\-\_\-delete}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-hit\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf regex\-\_\-hit\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf regex\-\_\-hit} $\ast$}]{obj}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_abc7bd85bcf94515c25ecc6fd3c4508f4}
+
+
+\-Clean up and free a \hyperlink{structregex__hit}{regex\-\_\-hit} object. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em obj} & \-The \hyperlink{structregex__hit}{regex\-\_\-hit} to free. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 82 of file datastructs.\-c.
+
+\hypertarget{regex_8h_a38c12ce2ebc264d6b371e83396d45b02}{\index{regex.\-h@{regex.\-h}!regex\-\_\-hit\-\_\-destroy@{regex\-\_\-hit\-\_\-destroy}}
+\index{regex\-\_\-hit\-\_\-destroy@{regex\-\_\-hit\-\_\-destroy}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-hit\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf regex\-\_\-hit\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf regex\-\_\-hit} $\ast$}]{obj}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_a38c12ce2ebc264d6b371e83396d45b02}
+
+
+\-Clean up a \hyperlink{structregex__hit}{regex\-\_\-hit} object. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em obj} & \-The \hyperlink{structregex__hit}{regex\-\_\-hit} object to clean up. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 73 of file datastructs.\-c.
+
+\hypertarget{regex_8h_a620b076c4e97fc7c6e95600bd9f6fc39}{\index{regex.\-h@{regex.\-h}!regex\-\_\-hit\-\_\-init@{regex\-\_\-hit\-\_\-init}}
+\index{regex\-\_\-hit\-\_\-init@{regex\-\_\-hit\-\_\-init}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-hit\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf regex\-\_\-hit\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf regex\-\_\-hit} $\ast$}]{obj, }
+\item[{int}]{start, }
+\item[{int}]{length}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_a620b076c4e97fc7c6e95600bd9f6fc39}
+
+
+\-Initialize a \hyperlink{structregex__hit}{regex\-\_\-hit}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em obj} & \-The (pre-\/allocated) \hyperlink{structregex__hit}{regex\-\_\-hit}. \\
+\hline
+{\em start} & \-The start location of the hit. \\
+\hline
+{\em length} & \-The length of the hit. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 49 of file datastructs.\-c.
+
+\hypertarget{regex_8h_a58c440b23a9f0be68aea919a81a5ca00}{\index{regex.\-h@{regex.\-h}!regex\-\_\-parse@{regex\-\_\-parse}}
+\index{regex\-\_\-parse@{regex\-\_\-parse}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-parse}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_a58c440b23a9f0be68aea919a81a5ca00}
+
+
+\-Construct a \-F\-S\-M to accept the given regex. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-Regular expression string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A \-F\-S\-M that can be used to decide the language of the regex. 
+\end{DoxyReturn}
+
+
+\-Definition at line 416 of file parse.\-c.
+
+\hypertarget{regex_8h_a292a18ffe8a3ffa53aae02a662c04415}{\index{regex.\-h@{regex.\-h}!regex\-\_\-parse\-\_\-char\-\_\-class@{regex\-\_\-parse\-\_\-char\-\_\-class}}
+\index{regex\-\_\-parse\-\_\-char\-\_\-class@{regex\-\_\-parse\-\_\-char\-\_\-class}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-parse\-\_\-char\-\_\-class}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-char\-\_\-class} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_a292a18ffe8a3ffa53aae02a662c04415}
+
+
+\-Create a \-F\-S\-M for a character class. 
+
+\-Reads a character class (pointed by `$\ast$regex`), which it then converts to a single transition \-F\-S\-M.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-Pointer to pointer to location in string! \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-F\-S\-M for character class. 
+\end{DoxyReturn}
+
+
+\-Definition at line 246 of file parse.\-c.
+
+\hypertarget{regex_8h_ac6a448a418b078c44fb0d0d302431eba}{\index{regex.\-h@{regex.\-h}!regex\-\_\-parse\-\_\-check\-\_\-modifier@{regex\-\_\-parse\-\_\-check\-\_\-modifier}}
+\index{regex\-\_\-parse\-\_\-check\-\_\-modifier@{regex\-\_\-parse\-\_\-check\-\_\-modifier}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-parse\-\_\-check\-\_\-modifier}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf regex\-\_\-parse\-\_\-check\-\_\-modifier} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{new, }
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_ac6a448a418b078c44fb0d0d302431eba}
+
+
+\-Adjust the \-F\-S\-M according to its modifier, if any. 
+
+\-When a character, character class, or parenthesized regex is read in, it could be followed by the modifiers `$\ast$`, `+`, or `?`. \-This function adjusts the \-F\-S\-M for those modifiers, and adjusts the location pointer if one was present.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em new} & \-The newly read in \-F\-S\-M. \\
+\hline
+{\em regex} & \-The pointer to the pointer to the location in the regex. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 59 of file parse.\-c.
+
+\hypertarget{regex_8h_a2c49189ca53918ba1e644d5c3d0a4fc1}{\index{regex.\-h@{regex.\-h}!regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm@{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm}}
+\index{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm@{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-create\-\_\-whitespace\-\_\-fsm} (
+\begin{DoxyParamCaption}
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_a2c49189ca53918ba1e644d5c3d0a4fc1}
+
+
+\-Return a \-F\-S\-M that accepts any whitespace. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em type} & \-Positive or negative. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 97 of file parse.\-c.
+
+\hypertarget{regex_8h_a2b81fd55b1de3e8405c4e5d17dd7b63d}{\index{regex.\-h@{regex.\-h}!regex\-\_\-parse\-\_\-outer\-\_\-escape@{regex\-\_\-parse\-\_\-outer\-\_\-escape}}
+\index{regex\-\_\-parse\-\_\-outer\-\_\-escape@{regex\-\_\-parse\-\_\-outer\-\_\-escape}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-parse\-\_\-outer\-\_\-escape}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf regex\-\_\-parse\-\_\-outer\-\_\-escape} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{regex}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_a2b81fd55b1de3e8405c4e5d17dd7b63d}
+
+
+\-Returns an \-F\-S\-M for an escape sequence, outside of a character class. 
+
+\-Basically, adds the ``, ``, ``, ``, ``, `` character classes to the already existing character escape sequences covered by \hyperlink{str_8c_a2812a14f008e19005dec1ae9f31d0a93}{get\-\_\-escape()}.
+
+\-Expects that `$\ast$regex` points to the backslash in the escape sequence. \-Always returns such that `$\ast$regex` points to the \-L\-A\-S\-T character in the escape sequence.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-Pointer to the pointer to the backslash escape. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-F\-S\-M to accept the backslash escape sequence. 
+\end{DoxyReturn}
+
+
+\-Definition at line 200 of file parse.\-c.
+
+\hypertarget{regex_8h_ac5ffd8988768ff06b05465eda3025753}{\index{regex.\-h@{regex.\-h}!regex\-\_\-search@{regex\-\_\-search}}
+\index{regex\-\_\-search@{regex\-\_\-search}!regex.h@{regex.\-h}}
+\subsubsection[{regex\-\_\-search}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al$\ast$ {\bf regex\-\_\-search} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{regex, }
+\item[{const wchar\-\_\-t $\ast$}]{srch\-Text, }
+\item[{bool}]{greedy, }
+\item[{bool}]{overlap}
+\end{DoxyParamCaption}
+)}}\label{regex_8h_ac5ffd8988768ff06b05465eda3025753}
+
+
+\-Searches for a regular expression on a search text. 
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{search_8c_a20107415f6769b987e6d7beee78ed478}{fsm\-\_\-search()} \-For full details on the operation of the function. 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{\-Parameters}
+{\em regex} & \-The regular expression to search for. \\
+\hline
+{\em srch\-Text} & \-The text to search in. \\
+\hline
+{\em greedy} & \-Whether to return first result only. \\
+\hline
+{\em overlap} & \-Whether to allow overlapping matches. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 143 of file search.\-c.
+

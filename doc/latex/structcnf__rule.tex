@@ -1,0 +1,47 @@
+\hypertarget{structcnf__rule}{\section{cnf\-\_\-rule \-Struct \-Reference}
+\label{structcnf__rule}\index{cnf\-\_\-rule@{cnf\-\_\-rule}}
+}
+
+
+\-A struct to represent a rule in a \-C\-N\-F \-C\-F\-G.  
+
+
+
+
+{\ttfamily \#include $<$gram.\-h$>$}
+
+\subsection*{\-Data \-Fields}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{structcnf__rule_ad79dfb552ae253049535ec9313589411}{int \hyperlink{structcnf__rule_ad79dfb552ae253049535ec9313589411}{lhs}}\label{structcnf__rule_ad79dfb552ae253049535ec9313589411}
+
+\begin{DoxyCompactList}\small\item\em \-The symbol on the left-\/hand side of the rule. \end{DoxyCompactList}\item 
+\hypertarget{structcnf__rule_ab118ace8dd815d94943b47babf4eb145}{int \hyperlink{structcnf__rule_ab118ace8dd815d94943b47babf4eb145}{rhs\-\_\-one}}\label{structcnf__rule_ab118ace8dd815d94943b47babf4eb145}
+
+\begin{DoxyCompactList}\small\item\em \-The first symbol on the right hand side of the rule. \end{DoxyCompactList}\item 
+\hypertarget{structcnf__rule_ac5c0566f94de7cc364b2a1bd7120eb66}{int \hyperlink{structcnf__rule_ac5c0566f94de7cc364b2a1bd7120eb66}{rhs\-\_\-two}}\label{structcnf__rule_ac5c0566f94de7cc364b2a1bd7120eb66}
+
+\begin{DoxyCompactList}\small\item\em \-The second (optional) symbol on the right hand side of the rule. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A struct to represent a rule in a \-C\-N\-F \-C\-F\-G. 
+
+\-C\-N\-F grammars are context-\/free grammars that are restricted in their form. \-The rules may have the form `\-A -\/$>$ b`, where `b` is a terminal symbol, or they may be of the form `\-A -\/$>$ \-B \-C`, where `\-B` and `\-C` are non-\/terminal symbols.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{structcnf}{cnf} 
+
+\hyperlink{gram_8h_a8273268c6def6207571b2e197ad77825}{cnf\-\_\-rule\-\_\-init} 
+
+\hyperlink{gram_8h_af35cacdaab51e6aa556d85147def56f4}{cnf\-\_\-rule\-\_\-create} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 92 of file gram.\-h.
+
+
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{gram_8h}{gram.\-h}\end{DoxyCompactItemize}

@@ -1,0 +1,79 @@
+\hypertarget{fsm_8c}{\section{src/test/fsm.c \-File \-Reference}
+\label{fsm_8c}\index{src/test/fsm.\-c@{src/test/fsm.\-c}}
+}
+
+
+\-Test fsm functions.  
+
+
+{\ttfamily \#include $<$stdbool.\-h$>$}\*
+{\ttfamily \#include \char`\"{}libstephen/ut.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{fsm_8c_aaffeb79fc5ca05457883fd03d3f54b1a}{fsm\-\_\-test\-\_\-memory} (void)
+\begin{DoxyCompactList}\small\item\em \-Test for memory leaks. \end{DoxyCompactList}\item 
+int \hyperlink{fsm_8c_af0375db19fe3eb1a5f774e548b04ebb4}{fsm\-\_\-test\-\_\-check} (void)
+\begin{DoxyCompactList}\small\item\em \-Test \hyperlink{structfsm__trans}{fsm\-\_\-trans} checking. \end{DoxyCompactList}\item 
+\hypertarget{fsm_8c_a0467d7bd02e250e5ddc6d385181becbb}{int \hyperlink{fsm_8c_a0467d7bd02e250e5ddc6d385181becbb}{test\-\_\-shortcut} (void)}\label{fsm_8c_a0467d7bd02e250e5ddc6d385181becbb}
+
+\begin{DoxyCompactList}\small\item\em \-Test the shortcut methods for creating \char`\"{}single\char`\"{} \-F\-S\-M transitions. \end{DoxyCompactList}\item 
+\hypertarget{fsm_8c_ae2c08b6b5aba62ffd9d29b7636beaad5}{int \hyperlink{fsm_8c_ae2c08b6b5aba62ffd9d29b7636beaad5}{test\-\_\-trans\-\_\-copy} (void)}\label{fsm_8c_ae2c08b6b5aba62ffd9d29b7636beaad5}
+
+\begin{DoxyCompactList}\small\item\em \-Test the copy method works. \-Valgrind will help here. \end{DoxyCompactList}\item 
+\hypertarget{fsm_8c_ada4e498597c6d626b05cc9d834279be6}{int \hyperlink{fsm_8c_ada4e498597c6d626b05cc9d834279be6}{test\-\_\-simple\-\_\-machine} (void)}\label{fsm_8c_ada4e498597c6d626b05cc9d834279be6}
+
+\begin{DoxyCompactList}\small\item\em \-Test that simple deterministic \-F\-S\-Ms work. \end{DoxyCompactList}\item 
+\hypertarget{fsm_8c_a349a98515ded28ed635c75681d2d5581}{int \hyperlink{fsm_8c_a349a98515ded28ed635c75681d2d5581}{test\-\_\-create\-\_\-single\-\_\-char} (void)}\label{fsm_8c_a349a98515ded28ed635c75681d2d5581}
+
+\begin{DoxyCompactList}\small\item\em \-Test of the \hyperlink{fsm_2datastructs_8c_ad52421861ddd12fdaadda4681781ce02}{fsm\-\_\-create\-\_\-single\-\_\-char()} function. \end{DoxyCompactList}\item 
+\hypertarget{fsm_8c_aa0815eac3133a1830f96131a2775a23c}{void {\bfseries fsm\-\_\-test} (void)}\label{fsm_8c_aa0815eac3133a1830f96131a2775a23c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Test fsm functions. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Sunday, 18 \-January 2015 
+\end{DoxyDate}
+
+
+\-Definition in file \hyperlink{fsm_8c_source}{fsm.\-c}.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{fsm_8c_af0375db19fe3eb1a5f774e548b04ebb4}{\index{fsm.\-c@{fsm.\-c}!fsm\-\_\-test\-\_\-check@{fsm\-\_\-test\-\_\-check}}
+\index{fsm\-\_\-test\-\_\-check@{fsm\-\_\-test\-\_\-check}!fsm.c@{fsm.\-c}}
+\subsubsection[{fsm\-\_\-test\-\_\-check}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-test\-\_\-check} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{fsm_8c_af0375db19fe3eb1a5f774e548b04ebb4}
+
+
+\-Test \hyperlink{structfsm__trans}{fsm\-\_\-trans} checking. 
+
+\-Makes sure that testing transitions works correctly. 
+
+\-Definition at line 51 of file fsm.\-c.
+
+\hypertarget{fsm_8c_aaffeb79fc5ca05457883fd03d3f54b1a}{\index{fsm.\-c@{fsm.\-c}!fsm\-\_\-test\-\_\-memory@{fsm\-\_\-test\-\_\-memory}}
+\index{fsm\-\_\-test\-\_\-memory@{fsm\-\_\-test\-\_\-memory}!fsm.c@{fsm.\-c}}
+\subsubsection[{fsm\-\_\-test\-\_\-memory}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-test\-\_\-memory} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{fsm_8c_aaffeb79fc5ca05457883fd03d3f54b1a}
+
+
+\-Test for memory leaks. 
+
+\-This will always pass, but \-Valgrind may catch memory leaks if errors exist. \-This is why you should always run tests with \-Valgrind!! 
+
+\-Definition at line 25 of file fsm.\-c.
+

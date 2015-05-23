@@ -1,0 +1,188 @@
+\hypertarget{main_8c}{\section{src/main.c \-File \-Reference}
+\label{main_8c}\index{src/main.\-c@{src/main.\-c}}
+}
+
+
+\-C\-K\-Y parser project main program.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\*
+{\ttfamily \#include $<$wchar.\-h$>$}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+{\ttfamily \#include \char`\"{}libstephen/base.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/ad.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/util.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}gram.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}regex.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}test/tests.\-h\char`\"{}}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{main_8c_ae6944b49c049abac30afba21d5cafeee}{void \hyperlink{main_8c_ae6944b49c049abac30afba21d5cafeee}{simple\-\_\-gram} (void)}\label{main_8c_ae6944b49c049abac30afba21d5cafeee}
+
+\begin{DoxyCompactList}\small\item\em \-Tests creating a grammar, and printing it out. \end{DoxyCompactList}\item 
+void \hyperlink{main_8c_a199259c75545a52be8cb131a39a38f86}{simple\-\_\-fsm} (void)
+\begin{DoxyCompactList}\small\item\em \-A function that tests the basic construction of a simple \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{main_8c_a9593258c0b2d36eca2d557cbc581b265}{read\-\_\-fsm} (void)
+\begin{DoxyCompactList}\small\item\em \-This function tests reading in a \-F\-S\-M and running it. \end{DoxyCompactList}\item 
+void \hyperlink{main_8c_acde7c3820e7b6ebb1227caa0ea50b133}{read\-\_\-combine\-\_\-fsm} (void)
+\begin{DoxyCompactList}\small\item\em \-A function to test reading and combining \-F\-S\-Ms. \end{DoxyCompactList}\item 
+void \hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex} (void)
+\begin{DoxyCompactList}\small\item\em \-A light test of my regular expression parser. \end{DoxyCompactList}\item 
+\hypertarget{main_8c_a8c16096db9937d634d96eb8f6b79c024}{void \hyperlink{main_8c_a8c16096db9937d634d96eb8f6b79c024}{search} (void)}\label{main_8c_a8c16096db9937d634d96eb8f6b79c024}
+
+\begin{DoxyCompactList}\small\item\em \-Interactively search a file for a pattern. \end{DoxyCompactList}\item 
+\hypertarget{main_8c_aa9a86d612578e54e79a11bc53bfb0b5c}{void \hyperlink{main_8c_aa9a86d612578e54e79a11bc53bfb0b5c}{dot} (void)}\label{main_8c_aa9a86d612578e54e79a11bc53bfb0b5c}
+
+\begin{DoxyCompactList}\small\item\em \-Read a regex from stdin and print to stdout a dot representation. \end{DoxyCompactList}\item 
+\hypertarget{main_8c_a708a4c1a4d0c4acc4c447310dd4db27f}{void {\bfseries test} (void)}\label{main_8c_a708a4c1a4d0c4acc4c447310dd4db27f}
+
+\item 
+\hypertarget{main_8c_afef748afdbb301df2ae02ec95034b9e3}{void \hyperlink{main_8c_afef748afdbb301df2ae02ec95034b9e3}{help} (char $\ast$name)}\label{main_8c_afef748afdbb301df2ae02ec95034b9e3}
+
+\begin{DoxyCompactList}\small\item\em \-Print the help message for the main program. \end{DoxyCompactList}\item 
+int \hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
+\begin{DoxyCompactList}\small\item\em \-Main entry point of the program. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file} (\-F\-I\-L\-E $\ast$file, int $\ast$bytes)
+\begin{DoxyCompactList}\small\item\em \-Read a file completely into memory. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-C\-K\-Y parser project main program. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Tuesday, 13 \-May 2014
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2014, \-Stephen \-Brennan. \-All rights reserved.
+
+\-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\-: \-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. \-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. \-Neither the name of \-Stephen \-Brennan nor the names of his contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+\-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E \-I\-S \-P\-R\-O\-V\-I\-D\-E\-D \-B\-Y \-T\-H\-E \-C\-O\-P\-Y\-R\-I\-G\-H\-T \-H\-O\-L\-D\-E\-R\-S \-A\-N\-D \-C\-O\-N\-T\-R\-I\-B\-U\-T\-O\-R\-S \char`\"{}\-A\-S I\-S\char`\"{} \-A\-N\-D \-A\-N\-Y \-E\-X\-P\-R\-E\-S\-S \-O\-R \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S, \-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-T\-H\-E \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S \-O\-F \-M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y \-A\-N\-D \-F\-I\-T\-N\-E\-S\-S \-F\-O\-R \-A \-P\-A\-R\-T\-I\-C\-U\-L\-A\-R \-P\-U\-R\-P\-O\-S\-E \-A\-R\-E \-D\-I\-S\-C\-L\-A\-I\-M\-E\-D. \-I\-N \-N\-O \-E\-V\-E\-N\-T \-S\-H\-A\-L\-L \-S\-T\-E\-P\-H\-E\-N \-B\-R\-E\-N\-N\-A\-N \-B\-E \-L\-I\-A\-B\-L\-E \-F\-O\-R \-A\-N\-Y \-D\-I\-R\-E\-C\-T, \-I\-N\-D\-I\-R\-E\-C\-T, \-I\-N\-C\-I\-D\-E\-N\-T\-A\-L, \-S\-P\-E\-C\-I\-A\-L, \-E\-X\-E\-M\-P\-L\-A\-R\-Y, \-O\-R \-C\-O\-N\-S\-E\-Q\-U\-E\-N\-T\-I\-A\-L \-D\-A\-M\-A\-G\-E\-S (\-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-P\-R\-O\-C\-U\-R\-E\-M\-E\-N\-T \-O\-F \-S\-U\-B\-S\-T\-I\-T\-U\-T\-E \-G\-O\-O\-D\-S \-O\-R \-S\-E\-R\-V\-I\-C\-E\-S; \-L\-O\-S\-S \-O\-F \-U\-S\-E, \-D\-A\-T\-A, \-O\-R \-P\-R\-O\-F\-I\-T\-S; \-O\-R \-B\-U\-S\-I\-N\-E\-S\-S \-I\-N\-T\-E\-R\-R\-U\-P\-T\-I\-O\-N) \-H\-O\-W\-E\-V\-E\-R \-C\-A\-U\-S\-E\-D \-A\-N\-D \-O\-N \-A\-N\-Y \-T\-H\-E\-O\-R\-Y \-O\-F \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-W\-H\-E\-T\-H\-E\-R \-I\-N \-C\-O\-N\-T\-R\-A\-C\-T, \-S\-T\-R\-I\-C\-T \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-O\-R \-T\-O\-R\-T (\-I\-N\-C\-L\-U\-D\-I\-N\-G \-N\-E\-G\-L\-I\-G\-E\-N\-C\-E \-O\-R \-O\-T\-H\-E\-R\-W\-I\-S\-E) \-A\-R\-I\-S\-I\-N\-G \-I\-N \-A\-N\-Y \-W\-A\-Y \-O\-U\-T \-O\-F \-T\-H\-E \-U\-S\-E \-O\-F \-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E, \-E\-V\-E\-N \-I\-F \-A\-D\-V\-I\-S\-E\-D \-O\-F \-T\-H\-E \-P\-O\-S\-S\-I\-B\-I\-L\-I\-T\-Y \-O\-F \-S\-U\-C\-H \-D\-A\-M\-A\-G\-E. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{main_8c_source}{main.\-c}.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{\index{main.\-c@{main.\-c}!main@{main}}
+\index{main@{main}!main.c@{main.\-c}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf main} (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$$\ast$}]{argv}
+\end{DoxyParamCaption}
+)}}\label{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}
+
+
+\-Main entry point of the program. 
+
+\-Currently, the program has no set interface or function. \-I modify it to test out certain features \-I have just developed. \-As time goes on, \-I'll add some sort of real test code.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em argc} & \-Number of command line arguments \\
+\hline
+{\em argv} & \-Array of command line arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The program's exit code. 
+\end{DoxyReturn}
+
+
+\-Definition at line 95 of file main.\-c.
+
+\hypertarget{main_8c_acde7c3820e7b6ebb1227caa0ea50b133}{\index{main.\-c@{main.\-c}!read\-\_\-combine\-\_\-fsm@{read\-\_\-combine\-\_\-fsm}}
+\index{read\-\_\-combine\-\_\-fsm@{read\-\_\-combine\-\_\-fsm}!main.c@{main.\-c}}
+\subsubsection[{read\-\_\-combine\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf read\-\_\-combine\-\_\-fsm} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{main_8c_acde7c3820e7b6ebb1227caa0ea50b133}
+
+
+\-A function to test reading and combining \-F\-S\-Ms. 
+
+\-Reads in two \-F\-S\-Ms\-: one to accept \char`\"{}\-Stephen\char`\"{} or \char`\"{}stephen\char`\"{}. \-Another to accept \char`\"{}\-Brennan\char`\"{} or \char`\"{}brennan\char`\"{}. \-Then it creates the union, concatenation, and the \-Kleene star of each. \-Then it runs all the machines (nondeterministically) on some test strings, and prints out the resulting \-F\-S\-Ms. 
+
+\-Definition at line 317 of file main.\-c.
+
+\hypertarget{main_8c_a8e150082e585faad4c237eefa1ae290e}{\index{main.\-c@{main.\-c}!read\-\_\-file@{read\-\_\-file}}
+\index{read\-\_\-file@{read\-\_\-file}!main.c@{main.\-c}}
+\subsubsection[{read\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf read\-\_\-file} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{file, }
+\item[{int $\ast$}]{bytes}
+\end{DoxyParamCaption}
+)}}\label{main_8c_a8e150082e585faad4c237eefa1ae290e}
+
+
+\-Read a file completely into memory. 
+
+\-This function allocates space for a file's contents and reads it into memory. \-The function also requires a parameter in which to store the number of chars it has allocated in the buffer, so the memory can be accounted for when freed. \-This function is independent of encoding.
+
+
+\begin{DoxyParams}[1]{\-Parameters}
+ & {\em file} & \-The file to read into memory. \\
+\hline
+\mbox{\tt out}  & {\em bytes} & \-Pointer to variable to store number of chars allocated. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Pointer to the file contents in memory. 
+\end{DoxyReturn}
+
+
+\-Definition at line 181 of file main.\-c.
+
+\hypertarget{main_8c_a9593258c0b2d36eca2d557cbc581b265}{\index{main.\-c@{main.\-c}!read\-\_\-fsm@{read\-\_\-fsm}}
+\index{read\-\_\-fsm@{read\-\_\-fsm}!main.c@{main.\-c}}
+\subsubsection[{read\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf read\-\_\-fsm} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{main_8c_a9593258c0b2d36eca2d557cbc581b265}
+
+
+\-This function tests reading in a \-F\-S\-M and running it. 
+
+\-It reads in the even a's and b's machine, and it simulates it on similar inputs. 
+
+\-Definition at line 458 of file main.\-c.
+
+\hypertarget{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{\index{main.\-c@{main.\-c}!regex@{regex}}
+\index{regex@{regex}!main.c@{main.\-c}}
+\subsubsection[{regex}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf regex} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{main_8c_a43a8f57687aa2fc48598046c021ed7e9}
+
+
+\-A light test of my regular expression parser. 
+
+\-Prompts for a regex, and then loops prompting for test strings. \-Runs the regex on each test string and reports to stdout whether they are accepted or rejected. 
+
+\-Definition at line 274 of file main.\-c.
+
+\hypertarget{main_8c_a199259c75545a52be8cb131a39a38f86}{\index{main.\-c@{main.\-c}!simple\-\_\-fsm@{simple\-\_\-fsm}}
+\index{simple\-\_\-fsm@{simple\-\_\-fsm}!main.c@{main.\-c}}
+\subsubsection[{simple\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf simple\-\_\-fsm} (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{main_8c_a199259c75545a52be8cb131a39a38f86}
+
+
+\-A function that tests the basic construction of a simple \-F\-S\-M. 
+
+\-Using the actual creation functions, creates a \-F\-S\-M to accept a string with an even number of a's and b's. \-Currently, the function simulates it nondeterministically, even though the machine is deterministic. 
+
+\-Definition at line 397 of file main.\-c.
+

@@ -1,0 +1,80 @@
+\hypertarget{structcnf}{\section{cnf \-Struct \-Reference}
+\label{structcnf}\index{cnf@{cnf}}
+}
+
+
+\-A structure to store a \-C\-N\-F context-\/free grammar.  
+
+
+
+
+{\ttfamily \#include $<$gram.\-h$>$}
+
+\subsection*{\-Data \-Fields}
+\begin{DoxyCompactItemize}
+\item 
+smb\-\_\-al \hyperlink{structcnf_ae85a135e82c4af0e75739a21b3ec03b4}{terminals}
+\begin{DoxyCompactList}\small\item\em \-The terminal symbols of the grammar. \end{DoxyCompactList}\item 
+smb\-\_\-al \hyperlink{structcnf_a48ad19ba58732910c48d1e821a3ea428}{nonterminals}
+\begin{DoxyCompactList}\small\item\em \-The nonterminal symbols of the grammar. \end{DoxyCompactList}\item 
+\hypertarget{structcnf_a829100f9c15a2838a1fc4e259667d06a}{smb\-\_\-al \hyperlink{structcnf_a829100f9c15a2838a1fc4e259667d06a}{rules\-\_\-one}}\label{structcnf_a829100f9c15a2838a1fc4e259667d06a}
+
+\begin{DoxyCompactList}\small\item\em \-The rules that have one symbol in the \-R\-H\-S. \end{DoxyCompactList}\item 
+\hypertarget{structcnf_a950455ed240737b1e4f06faffccd5175}{smb\-\_\-al \hyperlink{structcnf_a950455ed240737b1e4f06faffccd5175}{rules\-\_\-two}}\label{structcnf_a950455ed240737b1e4f06faffccd5175}
+
+\begin{DoxyCompactList}\small\item\em \-The rules that have two symbols in the \-R\-H\-S. \end{DoxyCompactList}\item 
+\hypertarget{structcnf_a37722a150250e2a5a98e5e0d11e53449}{int \hyperlink{structcnf_a37722a150250e2a5a98e5e0d11e53449}{start}}\label{structcnf_a37722a150250e2a5a98e5e0d11e53449}
+
+\begin{DoxyCompactList}\small\item\em \-The start symbol. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A structure to store a \-C\-N\-F context-\/free grammar. 
+
+\-C\-N\-F \-C\-F\-G's are stored differently than your average \-C\-F\-G. \-The \hyperlink{structcfg_af90e802d07cdf4a88bde8043b57ec666}{cfg.\-symbols} variable is replaced by two variables, \hyperlink{structcnf_ae85a135e82c4af0e75739a21b3ec03b4}{cnf.\-terminals} and \hyperlink{structcnf_a48ad19ba58732910c48d1e821a3ea428}{cnf.\-nonterminals}. \-The indexes overlap, but that's ok, because you can always tell whether a symbol in a rule is terminal or nonterminal, based on the type of rule.
+
+\-The second list of symbols removes the need for the sparse list of terminals that cfg has.
+
+\-For efficiency, rules are stored in two lists. \-One contains the \-A-\/$>$a rules, and the other stores the \-A-\/$>$\-B\-C rules.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{structcnf__rule}{cnf\-\_\-rule} 
+
+\hyperlink{gram_8h_a6498d2481623fd5851966f63bb2d8008}{cnf\-\_\-init} 
+
+\hyperlink{gram_8h_a3a4d3ef76c22529d33625b34667dce89}{cnf\-\_\-create} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 169 of file gram.\-h.
+
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{structcnf_a48ad19ba58732910c48d1e821a3ea428}{\index{cnf@{cnf}!nonterminals@{nonterminals}}
+\index{nonterminals@{nonterminals}!cnf@{cnf}}
+\subsubsection[{nonterminals}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al {\bf nonterminals}}}\label{structcnf_a48ad19ba58732910c48d1e821a3ea428}
+
+
+\-The nonterminal symbols of the grammar. 
+
+\-Nonterminal symbols are stored as a list of char$\ast$ strings, and referred to by their index. 
+
+\-Definition at line 185 of file gram.\-h.
+
+\hypertarget{structcnf_ae85a135e82c4af0e75739a21b3ec03b4}{\index{cnf@{cnf}!terminals@{terminals}}
+\index{terminals@{terminals}!cnf@{cnf}}
+\subsubsection[{terminals}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al {\bf terminals}}}\label{structcnf_ae85a135e82c4af0e75739a21b3ec03b4}
+
+
+\-The terminal symbols of the grammar. 
+
+\-Terminal symbols are stored as a list of char$\ast$ strings, and referred to by their index. 
+
+\-Definition at line 177 of file gram.\-h.
+
+
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{gram_8h}{gram.\-h}\end{DoxyCompactItemize}

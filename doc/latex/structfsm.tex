@@ -1,0 +1,65 @@
+\hypertarget{structfsm}{\section{fsm \-Struct \-Reference}
+\label{structfsm}\index{fsm@{fsm}}
+}
+
+
+\-A structure representing an \-F\-S\-M.  
+
+
+
+
+{\ttfamily \#include $<$fsm.\-h$>$}
+
+\subsection*{\-Data \-Fields}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{structfsm_a37722a150250e2a5a98e5e0d11e53449}{int \hyperlink{structfsm_a37722a150250e2a5a98e5e0d11e53449}{start}}\label{structfsm_a37722a150250e2a5a98e5e0d11e53449}
+
+\begin{DoxyCompactList}\small\item\em \-The index of the start states. \end{DoxyCompactList}\item 
+smb\-\_\-al \hyperlink{structfsm_a22fef7588d41534fabaa8def82aabb2e}{transitions}
+\begin{DoxyCompactList}\small\item\em \-The transitions in the machine. \end{DoxyCompactList}\item 
+smb\-\_\-al \hyperlink{structfsm_a1b0a524350f2fa9bf19b3e3b35c20ff5}{accepting}
+\begin{DoxyCompactList}\small\item\em \-The accepting states for this machine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-A structure representing an \-F\-S\-M. 
+
+\-The machine represented may be deterministic or nondeterministic. \-There is not an implemented function to distinguish between the two, but it is possible.
+
+\-In this representation of the \-F\-S\-M, states are represented only by indices. \-They have no associated string value. 
+
+\-Definition at line 180 of file fsm.\-h.
+
+
+
+\subsection{\-Field \-Documentation}
+\hypertarget{structfsm_a1b0a524350f2fa9bf19b3e3b35c20ff5}{\index{fsm@{fsm}!accepting@{accepting}}
+\index{accepting@{accepting}!fsm@{fsm}}
+\subsubsection[{accepting}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al {\bf accepting}}}\label{structfsm_a1b0a524350f2fa9bf19b3e3b35c20ff5}
+
+
+\-The accepting states for this machine. 
+
+\-These accepting states are stored as integer values in the list. 
+
+\-Definition at line 204 of file fsm.\-h.
+
+\hypertarget{structfsm_a22fef7588d41534fabaa8def82aabb2e}{\index{fsm@{fsm}!transitions@{transitions}}
+\index{transitions@{transitions}!fsm@{fsm}}
+\subsubsection[{transitions}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al {\bf transitions}}}\label{structfsm_a22fef7588d41534fabaa8def82aabb2e}
+
+
+\-The transitions in the machine. 
+
+\-The transitions are stored as an array list (`smb\-\_\-al`) of array lists (`smb\-\_\-al $\ast$`). \-The outer list is indexed by state number. \-The inner list is a list of all transitions (`fsm\-\_\-trans $\ast$`) out of that particular state.
+
+\-The length of the outer list is the same as the number of states in the \-F\-S\-M. 
+
+\-Definition at line 197 of file fsm.\-h.
+
+
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{fsm_8h}{fsm.\-h}\end{DoxyCompactItemize}

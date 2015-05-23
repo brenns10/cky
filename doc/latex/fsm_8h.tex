@@ -1,0 +1,1322 @@
+\hypertarget{fsm_8h}{\section{src/fsm.h \-File \-Reference}
+\label{fsm_8h}\index{src/fsm.\-h@{src/fsm.\-h}}
+}
+
+
+\-Finite state machine definitions.  
+
+
+{\ttfamily \#include $<$stdbool.\-h$>$}\*
+{\ttfamily \#include $<$wchar.\-h$>$}\*
+{\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structfsm__trans}{fsm\-\_\-trans}
+\begin{DoxyCompactList}\small\item\em \-Contains information regarding a \-F\-S\-M transition. \end{DoxyCompactList}\item 
+struct \hyperlink{structfsm}{fsm}
+\begin{DoxyCompactList}\small\item\em \-A structure representing an \-F\-S\-M. \end{DoxyCompactList}\item 
+struct \hyperlink{structfsm__sim}{fsm\-\_\-sim}
+\begin{DoxyCompactList}\small\item\em \-Holds state for a nondeterministic finite state machine simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{fsm_8h_a792cb9bba1114fc1a5d50457e54b5478}{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E}~0
+\begin{DoxyCompactList}\small\item\em \-A value for \hyperlink{structfsm__trans_ac765329451135abec74c45e1897abf26}{fsm\-\_\-trans.\-type} indicating that the ranges are positive. \end{DoxyCompactList}\item 
+\#define \hyperlink{fsm_8h_a65d49ee6a31fba2735a0fa4e7235ae7f}{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E}~1
+\begin{DoxyCompactList}\small\item\em \-A value for \hyperlink{structfsm__trans_ac765329451135abec74c45e1897abf26}{fsm\-\_\-trans.\-type} indicating that the ranges are negative. \end{DoxyCompactList}\item 
+\#define \hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~0
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\#define \hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~1
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\#define \hyperlink{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}~2
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\#define \hyperlink{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}~3
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\#define \hyperlink{fsm_8h_a002b2f4894492820fe708b1b7e7c5e70}{\-E\-P\-S\-I\-L\-O\-N}~((wchar\-\_\-t)-\/2)
+\begin{DoxyCompactList}\small\item\em \-A value of type `wchar\-\_\-t` that is used to represent the empty string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{fsm_8h_a1ee5d4d7276a5ca86ba5f9f2947a2a57}{fsm\-\_\-trans\-\_\-init} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft, int n, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Initialize an already-\/allocated \-F\-S\-M transition unit. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_8h_a96f9a93d3836ac3b7e60e5d07c8fd953}{fsm\-\_\-trans\-\_\-create} (int n, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_add52631c23fe8ff670dcd27799c26a26}{fsm\-\_\-trans\-\_\-destroy} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Clean up the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \-Do not free it. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_aa952e837db3b8257cb84c4e5805d3855}{fsm\-\_\-trans\-\_\-delete} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Free the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a8c0c15842d240af95c7f15219b0db6d2}{fsm\-\_\-trans\-\_\-init\-\_\-single} (\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft, wchar\-\_\-t start, wchar\-\_\-t end, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_8h_aae38451b4efa993bd9388e19bc1c293a}{fsm\-\_\-trans\-\_\-create\-\_\-single} (wchar\-\_\-t start, wchar\-\_\-t end, int type, int dest)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_8h_a252a17a203f6510ff008ab9748054326}{fsm\-\_\-trans\-\_\-copy} (const \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Allocate an entirely new copy of an existing \-F\-S\-M transition. \end{DoxyCompactList}\item 
+bool \hyperlink{fsm_8h_a1e398044606cf5c1efc9ae5b06215f01}{fsm\-\_\-trans\-\_\-check} (const \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft, wchar\-\_\-t c)
+\item 
+void \hyperlink{fsm_8h_afacfbf350f8cfbaa5982803593273551}{fsm\-\_\-init} (\hyperlink{structfsm}{fsm} $\ast$f)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \-F\-S\-M. \end{DoxyCompactList}\item 
+\hypertarget{fsm_8h_a81bb701b090eeab2a57dd58311b04ddf}{\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{fsm_8h_a81bb701b090eeab2a57dd58311b04ddf}{fsm\-\_\-create} (void)}\label{fsm_8h_a81bb701b090eeab2a57dd58311b04ddf}
+
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize an \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a773aee7a4ae4d14a9fb24a4de77f916c}{fsm\-\_\-destroy} (\hyperlink{structfsm}{fsm} $\ast$f, bool free\-\_\-transitions)
+\begin{DoxyCompactList}\small\item\em \-Clean up a \-F\-S\-M, but do not free it. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_aaeae4a8cee76a6876cb4e9c13f753cc3}{fsm\-\_\-delete} (\hyperlink{structfsm}{fsm} $\ast$f, bool free\-\_\-transitions)
+\begin{DoxyCompactList}\small\item\em \-Clean up and free an \-F\-S\-M. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{fsm_8h_ad52421861ddd12fdaadda4681781ce02}{fsm\-\_\-create\-\_\-single\-\_\-char} (wchar\-\_\-t character)
+\begin{DoxyCompactList}\small\item\em \-Creates a \-F\-S\-M for a single character. \end{DoxyCompactList}\item 
+int \hyperlink{fsm_8h_aa1917d964efee7185d38a3d03949022c}{fsm\-\_\-add\-\_\-state} (\hyperlink{structfsm}{fsm} $\ast$f, bool accepting)
+\begin{DoxyCompactList}\small\item\em \-Add a state to the \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_ab76ad642dc83c77ae9f458faa8444bf9}{fsm\-\_\-add\-\_\-trans} (\hyperlink{structfsm}{fsm} $\ast$f, int state, const \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ft)
+\begin{DoxyCompactList}\small\item\em \-Add a transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_8h_a91daa87b98f7318c8609b56a09093a01}{fsm\-\_\-add\-\_\-single} (\hyperlink{structfsm}{fsm} $\ast$f, int from, int to, wchar\-\_\-t start, wchar\-\_\-t end, int type)
+\begin{DoxyCompactList}\small\item\em \-Add a single range transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{fsm\-\_\-sim\-\_\-init} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, \hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_8h_a7af8fcfc37e238c0d85d48649c2d209b}{fsm\-\_\-sim\-\_\-create} (\hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a74507e3eeaafc4250ec923acf9578871}{fsm\-\_\-sim\-\_\-destroy} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, bool free\-\_\-curr)
+\begin{DoxyCompactList}\small\item\em \-Clean up any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-sim\-\_\-delete} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, bool free\-\_\-curr)
+\begin{DoxyCompactList}\small\item\em \-Clean up and any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}, and free it. \end{DoxyCompactList}\item 
+int \hyperlink{fsm_8h_aa5163a797ac0db5b1651c7df6d2e12d1}{fsm\-\_\-read\-\_\-get\-\_\-int} (const wchar\-\_\-t $\ast$$\ast$start, const wchar\-\_\-t $\ast$prefix)
+\begin{DoxyCompactList}\small\item\em \-Get an integer value from a key-\/value line. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_8h_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans} (const wchar\-\_\-t $\ast$$\ast$source, int $\ast$start)
+\begin{DoxyCompactList}\small\item\em \-Reads a transition from a line. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}{fsm\-\_\-print\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t input)
+\begin{DoxyCompactList}\small\item\em \-Print a character, filtering if necessary. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_ac7cf43e628d0aefef49a3d290b065e9c}{fsm\-\_\-dot\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t c)
+\begin{DoxyCompactList}\small\item\em \-Prints a character in an \-F\-S\-M specification to dot format. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{fsm_8h_a7c706a1cfd1264318819507f4abcf91c}{fsm\-\_\-read} (const wchar\-\_\-t $\ast$source)
+\begin{DoxyCompactList}\small\item\em \-Read a \-F\-S\-M from a string! \-The format is as follows\-: \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print} (\hyperlink{structfsm}{fsm} $\ast$f, \-F\-I\-L\-E $\ast$dest)
+\begin{DoxyCompactList}\small\item\em \-Print a string representation of the \-F\-S\-M to a file (or stdout). \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperlink{structfsm}{fsm} $\ast$f, \-F\-I\-L\-E $\ast$dest)
+\begin{DoxyCompactList}\small\item\em \-Print an \-F\-S\-M to graphviz dot format. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a6691ba1de6653c52bce26ebd2a40cdeb}{al\-\_\-copy\-\_\-all} (smb\-\_\-al $\ast$dest, const smb\-\_\-al $\ast$from)
+\begin{DoxyCompactList}\small\item\em \-Copy all the values from one array list into another. \end{DoxyCompactList}\item 
+smb\-\_\-al $\ast$ \hyperlink{fsm_8h_a3c4e01d2648b8c33db093e54ab47eb94}{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure} (\hyperlink{structfsm}{fsm} $\ast$f, int state)
+\begin{DoxyCompactList}\small\item\em \-Return the epsilon closure of the state on this \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a3fb61b8dae910aa4b46cec1b08e5455e}{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete} (smb\-\_\-al $\ast$first, smb\-\_\-al $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-Combine the two lists (with no duplicates), and free the second. \end{DoxyCompactList}\item 
+bool \hyperlink{fsm_8h_a9196a9811703b9beb4065428de78c60c}{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection} (smb\-\_\-al $\ast$first, smb\-\_\-al $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-Test if the intersection between the two lists is non-\/empty. \end{DoxyCompactList}\item 
+bool \hyperlink{fsm_8h_a31bc1652fab6793018512508db1cf74a}{fsm\-\_\-sim\-\_\-det} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Run the finite state machine as a deterministic one. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_8h_a4f3c4fb388e554216d0e0d1f2deef77b}{fsm\-\_\-sim\-\_\-nondet\-\_\-begin} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Begin a non-\/deterministic simulation of this finite state machine. \end{DoxyCompactList}\item 
+int \hyperlink{fsm_8h_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state} (const \hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s)
+\begin{DoxyCompactList}\small\item\em \-Check the state of the simulation. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a13abb199061ecaa47d343b25c90de327}{fsm\-\_\-sim\-\_\-nondet\-\_\-step} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s)
+\begin{DoxyCompactList}\small\item\em \-Perform a single step in the non-\/deterministic simulation. \end{DoxyCompactList}\item 
+bool \hyperlink{fsm_8h_ab39350b6a48388414f90cb3d248be612}{fsm\-\_\-sim\-\_\-nondet} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Simulate the \-F\-S\-M as a non-\/deterministic state machine. \end{DoxyCompactList}\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{fsm_8h_ab816304e4ee51e61a06602a3ab7bb197}{fsm\-\_\-copy} (const \hyperlink{structfsm}{fsm} $\ast$f)
+\begin{DoxyCompactList}\small\item\em \-Allocate an entirely new copy of an existing \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_aad1e2f74f24efba7b1388bbf7e287cff}{fsm\-\_\-copy\-\_\-trans} (\hyperlink{structfsm}{fsm} $\ast$dest, const \hyperlink{structfsm}{fsm} $\ast$src)
+\begin{DoxyCompactList}\small\item\em \-Copy the transitions and states from src into dest. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_aa9a8e9bf4de56221564455887ac69adb}{fsm\-\_\-concat} (\hyperlink{structfsm}{fsm} $\ast$first, const \hyperlink{structfsm}{fsm} $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-Concatenate two \-F\-S\-Ms into the first \-F\-S\-M object. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a1fe9ede8ddc9e41fcf053d2a789086c9}{fsm\-\_\-union} (\hyperlink{structfsm}{fsm} $\ast$first, const \hyperlink{structfsm}{fsm} $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-Construct the union of the two \-F\-S\-Ms into the first one. \end{DoxyCompactList}\item 
+void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyperlink{structfsm}{fsm} $\ast$f)
+\begin{DoxyCompactList}\small\item\em \-Modify an \-F\-S\-M to accept 0 or more occurrences of it. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Finite state machine definitions. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Wednesday, 14 \-May 2014
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2014, \-Stephen \-Brennan. \-All rights reserved.
+
+\-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\-: \-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. \-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. \-Neither the name of \-Stephen \-Brennan nor the names of his contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+\-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E \-I\-S \-P\-R\-O\-V\-I\-D\-E\-D \-B\-Y \-T\-H\-E \-C\-O\-P\-Y\-R\-I\-G\-H\-T \-H\-O\-L\-D\-E\-R\-S \-A\-N\-D \-C\-O\-N\-T\-R\-I\-B\-U\-T\-O\-R\-S \char`\"{}\-A\-S I\-S\char`\"{} \-A\-N\-D \-A\-N\-Y \-E\-X\-P\-R\-E\-S\-S \-O\-R \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S, \-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-T\-H\-E \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S \-O\-F \-M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y \-A\-N\-D \-F\-I\-T\-N\-E\-S\-S \-F\-O\-R \-A \-P\-A\-R\-T\-I\-C\-U\-L\-A\-R \-P\-U\-R\-P\-O\-S\-E \-A\-R\-E \-D\-I\-S\-C\-L\-A\-I\-M\-E\-D. \-I\-N \-N\-O \-E\-V\-E\-N\-T \-S\-H\-A\-L\-L \-S\-T\-E\-P\-H\-E\-N \-B\-R\-E\-N\-N\-A\-N \-B\-E \-L\-I\-A\-B\-L\-E \-F\-O\-R \-A\-N\-Y \-D\-I\-R\-E\-C\-T, \-I\-N\-D\-I\-R\-E\-C\-T, \-I\-N\-C\-I\-D\-E\-N\-T\-A\-L, \-S\-P\-E\-C\-I\-A\-L, \-E\-X\-E\-M\-P\-L\-A\-R\-Y, \-O\-R \-C\-O\-N\-S\-E\-Q\-U\-E\-N\-T\-I\-A\-L \-D\-A\-M\-A\-G\-E\-S (\-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-P\-R\-O\-C\-U\-R\-E\-M\-E\-N\-T \-O\-F \-S\-U\-B\-S\-T\-I\-T\-U\-T\-E \-G\-O\-O\-D\-S \-O\-R \-S\-E\-R\-V\-I\-C\-E\-S; \-L\-O\-S\-S \-O\-F \-U\-S\-E, \-D\-A\-T\-A, \-O\-R \-P\-R\-O\-F\-I\-T\-S; \-O\-R \-B\-U\-S\-I\-N\-E\-S\-S \-I\-N\-T\-E\-R\-R\-U\-P\-T\-I\-O\-N) \-H\-O\-W\-E\-V\-E\-R \-C\-A\-U\-S\-E\-D \-A\-N\-D \-O\-N \-A\-N\-Y \-T\-H\-E\-O\-R\-Y \-O\-F \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-W\-H\-E\-T\-H\-E\-R \-I\-N \-C\-O\-N\-T\-R\-A\-C\-T, \-S\-T\-R\-I\-C\-T \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-O\-R \-T\-O\-R\-T (\-I\-N\-C\-L\-U\-D\-I\-N\-G \-N\-E\-G\-L\-I\-G\-E\-N\-C\-E \-O\-R \-O\-T\-H\-E\-R\-W\-I\-S\-E) \-A\-R\-I\-S\-I\-N\-G \-I\-N \-A\-N\-Y \-W\-A\-Y \-O\-U\-T \-O\-F \-T\-H\-E \-U\-S\-E \-O\-F \-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E, \-E\-V\-E\-N \-I\-F \-A\-D\-V\-I\-S\-E\-D \-O\-F \-T\-H\-E \-P\-O\-S\-S\-I\-B\-I\-L\-I\-T\-Y \-O\-F \-S\-U\-C\-H \-D\-A\-M\-A\-G\-E. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{fsm_8h_source}{fsm.\-h}.
+
+
+
+\subsection{\-Define \-Documentation}
+\hypertarget{fsm_8h_a002b2f4894492820fe708b1b7e7c5e70}{\index{fsm.\-h@{fsm.\-h}!\-E\-P\-S\-I\-L\-O\-N@{\-E\-P\-S\-I\-L\-O\-N}}
+\index{\-E\-P\-S\-I\-L\-O\-N@{\-E\-P\-S\-I\-L\-O\-N}!fsm.h@{fsm.\-h}}
+\subsubsection[{\-E\-P\-S\-I\-L\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-E\-P\-S\-I\-L\-O\-N}~((wchar\-\_\-t)-\/2)}}\label{fsm_8h_a002b2f4894492820fe708b1b7e7c5e70}
+
+
+\-A value of type `wchar\-\_\-t` that is used to represent the empty string. 
+
+\begin{DoxyRefDesc}{\-Todo}
+\item[\hyperlink{todo__todo000001}{\-Todo}]\-Research a better value for \-E\-P\-S\-I\-L\-O\-N. \end{DoxyRefDesc}
+
+
+\-Definition at line 123 of file fsm.\-h.
+
+\hypertarget{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\index{fsm.\-h@{fsm.\-h}!\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}}
+\index{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}!fsm.h@{fsm.\-h}}
+\subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}~3}}\label{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}
+
+
+\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+
+\-This return value indicates that the simulation is complete, and that there is at least one possible run of the \-N\-D\-F\-S\-M that accepts the input.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+
+\hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 117 of file fsm.\-h.
+
+\hypertarget{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\index{fsm.\-h@{fsm.\-h}!\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}}
+\index{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}!fsm.h@{fsm.\-h}}
+\subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~0}}\label{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}
+
+
+\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+
+\-This return value indicates that there is a part of the simulation that is currently in an accepting state, but that not all input has been exhausted yet.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+
+\hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D} 
+
+\hyperlink{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 80 of file fsm.\-h.
+
+\hypertarget{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\index{fsm.\-h@{fsm.\-h}!\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}}
+\index{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}!fsm.h@{fsm.\-h}}
+\subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~1}}\label{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}
+
+
+\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+
+\-This return value indicates that there no part of the simulation that is currently in an accepting state, but that not all input has been exhausted yet.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+
+\hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D} 
+
+\hyperlink{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 93 of file fsm.\-h.
+
+\hypertarget{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\index{fsm.\-h@{fsm.\-h}!\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}}
+\index{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D@{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}!fsm.h@{fsm.\-h}}
+\subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}~2}}\label{fsm_8h_a444d48979225db63614a9783b4b9ad30}
+
+
+\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+
+\-This return value indicates that the simulation is complete, and that all possible runs of the \-N\-D\-F\-S\-M have rejected the input.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+
+\hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 105 of file fsm.\-h.
+
+\hypertarget{fsm_8h_a65d49ee6a31fba2735a0fa4e7235ae7f}{\index{fsm.\-h@{fsm.\-h}!\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E@{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E}}
+\index{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E@{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E}!fsm.h@{fsm.\-h}}
+\subsubsection[{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E}~1}}\label{fsm_8h_a65d49ee6a31fba2735a0fa4e7235ae7f}
+
+
+\-A value for \hyperlink{structfsm__trans_ac765329451135abec74c45e1897abf26}{fsm\-\_\-trans.\-type} indicating that the ranges are negative. 
+
+\-That is, the characters within the ranges not considered valid (but everything else is).
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{structfsm__trans_ac765329451135abec74c45e1897abf26}{fsm\-\_\-trans.\-type} 
+
+\hyperlink{fsm_8h_a792cb9bba1114fc1a5d50457e54b5478}{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 66 of file fsm.\-h.
+
+\hypertarget{fsm_8h_a792cb9bba1114fc1a5d50457e54b5478}{\index{fsm.\-h@{fsm.\-h}!\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E@{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E}}
+\index{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E@{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E}!fsm.h@{fsm.\-h}}
+\subsubsection[{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-P\-O\-S\-I\-T\-I\-V\-E}~0}}\label{fsm_8h_a792cb9bba1114fc1a5d50457e54b5478}
+
+
+\-A value for \hyperlink{structfsm__trans_ac765329451135abec74c45e1897abf26}{fsm\-\_\-trans.\-type} indicating that the ranges are positive. 
+
+\-That is, the characters within the ranges are considered valid.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{structfsm__trans_ac765329451135abec74c45e1897abf26}{fsm\-\_\-trans.\-type} 
+
+\hyperlink{fsm_8h_a65d49ee6a31fba2735a0fa4e7235ae7f}{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 56 of file fsm.\-h.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{fsm_8h_a6691ba1de6653c52bce26ebd2a40cdeb}{\index{fsm.\-h@{fsm.\-h}!al\-\_\-copy\-\_\-all@{al\-\_\-copy\-\_\-all}}
+\index{al\-\_\-copy\-\_\-all@{al\-\_\-copy\-\_\-all}!fsm.h@{fsm.\-h}}
+\subsubsection[{al\-\_\-copy\-\_\-all}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf al\-\_\-copy\-\_\-all} (
+\begin{DoxyParamCaption}
+\item[{smb\-\_\-al $\ast$}]{dest, }
+\item[{const smb\-\_\-al $\ast$}]{from}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a6691ba1de6653c52bce26ebd2a40cdeb}
+
+
+\-Copy all the values from one array list into another. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em dest} & \-The destination array list \\
+\hline
+{\em from} & \-The source array list \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 143 of file simulation.\-c.
+
+\hypertarget{fsm_8h_a91daa87b98f7318c8609b56a09093a01}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-add\-\_\-single@{fsm\-\_\-add\-\_\-single}}
+\index{fsm\-\_\-add\-\_\-single@{fsm\-\_\-add\-\_\-single}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-add\-\_\-single}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-add\-\_\-single} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{int}]{from, }
+\item[{int}]{to, }
+\item[{wchar\-\_\-t}]{start, }
+\item[{wchar\-\_\-t}]{end, }
+\item[{int}]{type}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a91daa87b98f7318c8609b56a09093a01}
+
+
+\-Add a single range transition to the \-F\-S\-M. 
+
+\-This function simplifies the allocation and addition of the more common single range transitions. \-It returns the \hyperlink{structfsm__trans}{fsm\-\_\-trans} pointer if the programmer wishes to do manual memory management. \-However, the return value can be ignored, and false passed to \hyperlink{fsm_2datastructs_8c_aaeae4a8cee76a6876cb4e9c13f753cc3}{fsm\-\_\-delete()} in order to have the transition freed automatically.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to add to \\
+\hline
+{\em from} & \-The state the transition is from \\
+\hline
+{\em to} & \-The state the transition is to \\
+\hline
+{\em start} & \-The character at the start of the range \\
+\hline
+{\em end} & \-The character at the end of the range \\
+\hline
+{\em type} & \-The type of range (positive or negative) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Pointer to the \hyperlink{structfsm__trans}{fsm\-\_\-trans} created by the function. 
+\end{DoxyReturn}
+
+
+\-Definition at line 341 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_aa1917d964efee7185d38a3d03949022c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-add\-\_\-state@{fsm\-\_\-add\-\_\-state}}
+\index{fsm\-\_\-add\-\_\-state@{fsm\-\_\-add\-\_\-state}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-add\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-add\-\_\-state} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{bool}]{accepting}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_aa1917d964efee7185d38a3d03949022c}
+
+
+\-Add a state to the \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to add to \\
+\hline
+{\em accepting} & \-Whether to add the state to the accepting list \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The index of the state 
+\end{DoxyReturn}
+
+
+\-Definition at line 292 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_ab76ad642dc83c77ae9f458faa8444bf9}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-add\-\_\-trans@{fsm\-\_\-add\-\_\-trans}}
+\index{fsm\-\_\-add\-\_\-trans@{fsm\-\_\-add\-\_\-trans}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-add\-\_\-trans}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-add\-\_\-trans} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{int}]{state, }
+\item[{const {\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_ab76ad642dc83c77ae9f458faa8444bf9}
+
+
+\-Add a transition to the \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to add the transition to \\
+\hline
+{\em state} & \-The state the transition is from \\
+\hline
+{\em ft} & \-The transition to add \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 313 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_aa9a8e9bf4de56221564455887ac69adb}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-concat@{fsm\-\_\-concat}}
+\index{fsm\-\_\-concat@{fsm\-\_\-concat}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-concat}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-concat} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{first, }
+\item[{const {\bf fsm} $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_aa9a8e9bf4de56221564455887ac69adb}
+
+
+\-Concatenate two \-F\-S\-Ms into the first \-F\-S\-M object. 
+
+\-This function concatenates two \-F\-S\-Ms. \-This means it constructs a machine that will accept a string where the first part is accepted by the first machine, and the second part is accepted by the second machine. \-It is done by hooking up the accepting states of the first machine to the start state of the second (via epsilon transition). \-Then, only the second machines's accepting states are used for the final product.
+
+\-Note that the concatenation is done in-\/place into the first \-F\-S\-M. \-If you don't wish for that to happen, use \hyperlink{operations_8c_ab816304e4ee51e61a06602a3ab7bb197}{fsm\-\_\-copy()} to copy the first one, and then use \hyperlink{operations_8c_aa9a8e9bf4de56221564455887ac69adb}{fsm\-\_\-concat()} to concatenate into the copy.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & \-The first \-F\-S\-M. \-Is modified to contain the concatenation. \\
+\hline
+{\em second} & \-The second \-F\-S\-M. \-It is not modified. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 126 of file operations.\-c.
+
+\hypertarget{fsm_8h_ab816304e4ee51e61a06602a3ab7bb197}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-copy@{fsm\-\_\-copy}}
+\index{fsm\-\_\-copy@{fsm\-\_\-copy}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-copy}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf fsm\-\_\-copy} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm} $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_ab816304e4ee51e61a06602a3ab7bb197}
+
+
+\-Allocate an entirely new copy of an existing \-F\-S\-M. 
+
+\-The transitions are completely disjoint, so freeing them in the original will not affect the copy.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A copy of the \-F\-S\-M 
+\end{DoxyReturn}
+
+
+\-Definition at line 52 of file operations.\-c.
+
+\hypertarget{fsm_8h_aad1e2f74f24efba7b1388bbf7e287cff}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-copy\-\_\-trans@{fsm\-\_\-copy\-\_\-trans}}
+\index{fsm\-\_\-copy\-\_\-trans@{fsm\-\_\-copy\-\_\-trans}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-copy\-\_\-trans}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-copy\-\_\-trans} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{dest, }
+\item[{const {\bf fsm} $\ast$}]{src}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_aad1e2f74f24efba7b1388bbf7e287cff}
+
+
+\-Copy the transitions and states from src into dest. 
+
+\-All the states are added, and the transitions are modified with the offset determined from the initial number of states in the destination. 
+
+\-Definition at line 88 of file operations.\-c.
+
+\hypertarget{fsm_8h_ad52421861ddd12fdaadda4681781ce02}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-create\-\_\-single\-\_\-char@{fsm\-\_\-create\-\_\-single\-\_\-char}}
+\index{fsm\-\_\-create\-\_\-single\-\_\-char@{fsm\-\_\-create\-\_\-single\-\_\-char}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-create\-\_\-single\-\_\-char}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf fsm\-\_\-create\-\_\-single\-\_\-char} (
+\begin{DoxyParamCaption}
+\item[{wchar\-\_\-t}]{character}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_ad52421861ddd12fdaadda4681781ce02}
+
+
+\-Creates a \-F\-S\-M for a single character. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em character} & \-The character to make a transition for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-F\-S\-M for the character. 
+\end{DoxyReturn}
+
+
+\-Definition at line 276 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_aaeae4a8cee76a6876cb4e9c13f753cc3}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-delete@{fsm\-\_\-delete}}
+\index{fsm\-\_\-delete@{fsm\-\_\-delete}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{bool}]{free\-\_\-transitions}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_aaeae4a8cee76a6876cb4e9c13f753cc3}
+
+
+\-Clean up and free an \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to free \\
+\hline
+{\em free\-\_\-transitions} & \-Do we free the transitions too? \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 261 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a773aee7a4ae4d14a9fb24a4de77f916c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-destroy@{fsm\-\_\-destroy}}
+\index{fsm\-\_\-destroy@{fsm\-\_\-destroy}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{bool}]{free\-\_\-transitions}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a773aee7a4ae4d14a9fb24a4de77f916c}
+
+
+\-Clean up a \-F\-S\-M, but do not free it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to clean up \\
+\hline
+{\em free\-\_\-transitions} & \-Do we free the transitions too? \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 233 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a068179080f09c38af390ad19772f7aba}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-dot@{fsm\-\_\-dot}}
+\index{fsm\-\_\-dot@{fsm\-\_\-dot}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-dot}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-dot} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{\-F\-I\-L\-E $\ast$}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a068179080f09c38af390ad19772f7aba}
+
+
+\-Print an \-F\-S\-M to graphviz dot format. 
+
+\-Graphviz is a neat \-C\-L\-I tool to create diagrams of graphs. \-The dot format is an input language for graphs. \-This function takes a \-F\-S\-M and prints it to a file as a dot file, so that it can then be converted to a image by graphviz.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The machine to print. \\
+\hline
+{\em dest} & \-The destination file. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 541 of file io.\-c.
+
+\hypertarget{fsm_8h_ac7cf43e628d0aefef49a3d290b065e9c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}}
+\index{fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-dot\-\_\-char}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-dot\-\_\-char} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{dest, }
+\item[{wchar\-\_\-t}]{c}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_ac7cf43e628d0aefef49a3d290b065e9c}
+
+
+\-Prints a character in an \-F\-S\-M specification to dot format. 
+
+\-This function allows for printing out some characters differently than others. \-In dot format, quotes should be escaped. \-Also, epsilon transitions should be labelled something readable.
+
+dest \-Destination file. c \-The character to print 
+
+\-Definition at line 512 of file io.\-c.
+
+\hypertarget{fsm_8h_afacfbf350f8cfbaa5982803593273551}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-init@{fsm\-\_\-init}}
+\index{fsm\-\_\-init@{fsm\-\_\-init}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_afacfbf350f8cfbaa5982803593273551}
+
+
+\-Initialize a \-F\-S\-M. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to \-Initialize \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 210 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-kleene@{fsm\-\_\-kleene}}
+\index{fsm\-\_\-kleene@{fsm\-\_\-kleene}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-kleene}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-kleene} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}
+
+
+\-Modify an \-F\-S\-M to accept 0 or more occurrences of it. 
+
+\-This modifies the existing \-F\-S\-M to accept \-L$\ast$, where \-L is the language accepted by the machine.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to perform \-Kleene star on \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 207 of file operations.\-c.
+
+\hypertarget{fsm_8h_a3ba204b76773dffba8aca574d7e63434}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-print@{fsm\-\_\-print}}
+\index{fsm\-\_\-print@{fsm\-\_\-print}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-print}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-print} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{\-F\-I\-L\-E $\ast$}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a3ba204b76773dffba8aca574d7e63434}
+
+
+\-Print a string representation of the \-F\-S\-M to a file (or stdout). 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to print \\
+\hline
+{\em dest} & \-The file to print to \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 458 of file io.\-c.
+
+\hypertarget{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-print\-\_\-char@{fsm\-\_\-print\-\_\-char}}
+\index{fsm\-\_\-print\-\_\-char@{fsm\-\_\-print\-\_\-char}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-print\-\_\-char}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-print\-\_\-char} (
+\begin{DoxyParamCaption}
+\item[{\-F\-I\-L\-E $\ast$}]{dest, }
+\item[{wchar\-\_\-t}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}
+
+
+\-Print a character, filtering if necessary. 
+
+\-This subroutine of \hyperlink{io_8c_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print()} prints characters in transitions. \-It exists to make non-\/printable characters printable by printing their escaped versions instead.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em dest} & \-The file to print to. \\
+\hline
+{\em input} & \-The character to filter. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 436 of file io.\-c.
+
+\hypertarget{fsm_8h_a7c706a1cfd1264318819507f4abcf91c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-read@{fsm\-\_\-read}}
+\index{fsm\-\_\-read@{fsm\-\_\-read}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf fsm\-\_\-read} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{source}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a7c706a1cfd1264318819507f4abcf91c}
+
+
+\-Read a \-F\-S\-M from a string! \-The format is as follows\-: 
+
+
+\begin{DoxyCode}
+   START LINE (start: n)
+   ACCEPTING LINES ... (>=1) (accept: n)
+   TRANSITION LINES (X-Y:[+|-]A-B[[A-B]...])
+\end{DoxyCode}
+ \begin{DoxySeeAlso}{\-See also}
+\hyperlink{io_8c_aa5163a797ac0db5b1651c7df6d2e12d1}{fsm\-\_\-read\-\_\-get\-\_\-int()} for info on \-S\-T\-A\-R\-T \-L\-I\-N\-E and \-A\-C\-C\-E\-P\-T\-I\-N\-G \-L\-I\-N\-E\-S 
+
+\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} for info on the \-T\-R\-A\-N\-S\-I\-T\-I\-O\-N \-L\-I\-N\-E\-S
+\end{DoxySeeAlso}
+\-Note that this function produces heavy output on stdout if compiled with \-S\-M\-D\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-I\-A\-G\-N\-O\-S\-T\-I\-C\-\_\-\-P\-R\-I\-N\-T\-I\-N\-G.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em source} & \-The string source \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A \-F\-S\-M from the string if possible, \-N\-U\-L\-L on error. 
+\end{DoxyReturn}
+
+
+\-Definition at line 358 of file io.\-c.
+
+\hypertarget{fsm_8h_aa5163a797ac0db5b1651c7df6d2e12d1}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-read\-\_\-get\-\_\-int@{fsm\-\_\-read\-\_\-get\-\_\-int}}
+\index{fsm\-\_\-read\-\_\-get\-\_\-int@{fsm\-\_\-read\-\_\-get\-\_\-int}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-read\-\_\-get\-\_\-int}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-read\-\_\-get\-\_\-int} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{start, }
+\item[{const wchar\-\_\-t $\ast$}]{prefix}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_aa5163a797ac0db5b1651c7df6d2e12d1}
+
+
+\-Get an integer value from a key-\/value line. 
+
+\-The line is in the form \char`\"{}key\-: value \char`\"{}, where whitespace is not allowed in the key section, but is allowed for the value section. \-The value must be a positive decimal integer. \-On error, returns -\/1.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em start} & \-Pointer to the string pointer. \-This function advances the pointer to the start of the next line. \\
+\hline
+{\em prefix} & \-The \char`\"{}key\-:\char`\"{} prefix the line should match. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The integer value 
+\end{DoxyReturn}
+
+
+\-Definition at line 92 of file io.\-c.
+
+\hypertarget{fsm_8h_a9ce28a628461e29ee525cd6a2105b9f7}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-read\-\_\-trans@{fsm\-\_\-read\-\_\-trans}}
+\index{fsm\-\_\-read\-\_\-trans@{fsm\-\_\-read\-\_\-trans}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-read\-\_\-trans}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-read\-\_\-trans} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{source, }
+\item[{int $\ast$}]{start}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a9ce28a628461e29ee525cd6a2105b9f7}
+
+
+\-Reads a transition from a line. 
+
+\-This function reads a transition from a line. \-The transition can have an arbitrary number of ranges, each separated by a space. \-The line should be of the form\-: `\-X-\/\-Y\-:\mbox{[}+$|$-\/\mbox{]}\-A-\/\-B\mbox{[}\mbox{[}\-A-\/\-B\mbox{]}...\mbox{]}`, where `\-X` and `\-Y` are state numbers, `\-A` and `\-B` are characters forming a range, and the `+` or `-\/` determine whether the transition is positive (only those in the range) or negative (everything not in that range). \-Note that there is only one `+` or `-\/`; it applies for all ranges in the transition.
+
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{io_8c_a5cbd48786a015f5151cdd2943e9a5377}{\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E} etc. for more info on the meaning of the states.
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}[1]{\-Parameters}
+ & {\em source} & \-The source pointer. \-It is advanced to the beginning of the next line. \\
+\hline
+\mbox{\tt out}  & {\em start} & \-Where to put the start state of the transition. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The transition. 
+\end{DoxyReturn}
+
+
+\-Definition at line 152 of file io.\-c.
+
+\hypertarget{fsm_8h_a7af8fcfc37e238c0d85d48649c2d209b}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}}
+\index{fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-sim}$\ast$ {\bf fsm\-\_\-sim\-\_\-create} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{smb\-\_\-al $\ast$}]{curr, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a7af8fcfc37e238c0d85d48649c2d209b}
+
+
+\-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em curr} & \-The current state of the simulation \\
+\hline
+{\em input} & \-The input string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The allocated simulation 
+\end{DoxyReturn}
+
+
+\-Definition at line 374 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a2525328d01dee0d928da0ae8c498f984}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}}
+\index{fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
+\item[{bool}]{free\-\_\-curr}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a2525328d01dee0d928da0ae8c498f984}
+
+
+\-Clean up and any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}, and free it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em fs} & \-The simulation \\
+\hline
+{\em free\-\_\-curr} & \-Do we free the state list (generally, true) \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 398 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a74507e3eeaafc4250ec923acf9578871}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}}
+\index{fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
+\item[{bool}]{free\-\_\-curr}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a74507e3eeaafc4250ec923acf9578871}
+
+
+\-Clean up any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em fs} & \-The simulation \\
+\hline
+{\em free\-\_\-curr} & \-Do we free the state list (generally, true) \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 386 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a31bc1652fab6793018512508db1cf74a}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-det@{fsm\-\_\-sim\-\_\-det}}
+\index{fsm\-\_\-sim\-\_\-det@{fsm\-\_\-sim\-\_\-det}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-det}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-sim\-\_\-det} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a31bc1652fab6793018512508db1cf74a}
+
+
+\-Run the finite state machine as a deterministic one. 
+
+\-Simulates a \-D\-F\-S\-M. \-Any possible input at any given state should have exactly one transition. \-Zero transitions are allowed (and interpreted as an immediate reject).
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em input} & \-The string of input \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 166 of file simulation.\-c.
+
+\hypertarget{fsm_8h_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}}
+\index{fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{smb\-\_\-al $\ast$}]{curr, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_ab8bd310bf9223a7ef2fafa5c5ce6ed38}
+
+
+\-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em fs} & \-The struct to init \\
+\hline
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em curr} & \-The current state of the simulation \\
+\hline
+{\em input} & \-The input string \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 360 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_ab39350b6a48388414f90cb3d248be612}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet@{fsm\-\_\-sim\-\_\-nondet}}
+\index{fsm\-\_\-sim\-\_\-nondet@{fsm\-\_\-sim\-\_\-nondet}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-sim\-\_\-nondet} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_ab39350b6a48388414f90cb3d248be612}
+
+
+\-Simulate the \-F\-S\-M as a non-\/deterministic state machine. 
+
+\-This function is a convenience function that executes the \-N\-D\-F\-S\-M to completion. \-The other functions, begin, step, and delete, can be used to perform a more customizable simulation.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em input} & \-The input string to run with \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em true} & if the machine accepts \\
+\hline
+{\em false} & if the machine rejects \\
+\hline
+\end{DoxyRetVals}
+
+
+\-Definition at line 350 of file simulation.\-c.
+
+\hypertarget{fsm_8h_a4f3c4fb388e554216d0e0d1f2deef77b}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-begin@{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-begin@{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-sim}$\ast$ {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-begin} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a4f3c4fb388e554216d0e0d1f2deef77b}
+
+
+\-Begin a non-\/deterministic simulation of this finite state machine. 
+
+\-This simulation is designed to be run in steps. \-First, call this function. \-Then, loop through many calls to \hyperlink{simulation_8c_a13abb199061ecaa47d343b25c90de327}{fsm\-\_\-sim\-\_\-nondet\-\_\-step()}. \-When \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} returns a value indicating that the simulation is complete, you will have your answer. \-Note that you should also call \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} after a call to this function, because the input may be empty.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em input} & \-The input to run on \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 223 of file simulation.\-c.
+
+\hypertarget{fsm_8h_a3c4e01d2648b8c33db093e54ab47eb94}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure@{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure@{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al$\ast$ {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{int}]{state}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a3c4e01d2648b8c33db093e54ab47eb94}
+
+
+\-Return the epsilon closure of the state on this \-F\-S\-M. 
+
+\-The epsilon closure is the set of all states that can be reached from this state without consuming any input.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M \\
+\hline
+{\em state} & \-The state to calculate from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A list of states in the epsilon closure 
+\end{DoxyReturn}
+
+
+\-Definition at line 60 of file simulation.\-c.
+
+\hypertarget{fsm_8h_a9196a9811703b9beb4065428de78c60c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection@{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection@{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection} (
+\begin{DoxyParamCaption}
+\item[{smb\-\_\-al $\ast$}]{first, }
+\item[{smb\-\_\-al $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a9196a9811703b9beb4065428de78c60c}
+
+
+\-Test if the intersection between the two lists is non-\/empty. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & \-The first list \\
+\hline
+{\em second} & \-The second list \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em true} & when the intersection is \-N\-O\-T empty \\
+\hline
+{\em false} & when the intersection \-I\-S empty \\
+\hline
+\end{DoxyRetVals}
+
+
+\-Definition at line 125 of file simulation.\-c.
+
+\hypertarget{fsm_8h_ad0d37b7f22a38182969c80aa7a17f302}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-state@{fsm\-\_\-sim\-\_\-nondet\-\_\-state}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-state@{fsm\-\_\-sim\-\_\-nondet\-\_\-state}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-state} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm\-\_\-sim} $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_ad0d37b7f22a38182969c80aa7a17f302}
+
+
+\-Check the state of the simulation. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em s} & \-The simulation to check. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} & when the simulation has not ended, but is accepting \\
+\hline
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} & when the simulation has not ended, and is not accepting \\
+\hline
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D} & when the simulation has ended and rejected \\
+\hline
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D} & when the simulation has ended and accepted \\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D} 
+
+\hyperlink{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 243 of file simulation.\-c.
+
+\hypertarget{fsm_8h_a13abb199061ecaa47d343b25c90de327}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-step@{fsm\-\_\-sim\-\_\-nondet\-\_\-step}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-step@{fsm\-\_\-sim\-\_\-nondet\-\_\-step}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-step}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-step} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a13abb199061ecaa47d343b25c90de327}
+
+
+\-Perform a single step in the non-\/deterministic simulation. 
+
+\-This function performs a single iteration of the simulation algorithm. \-It takes the current states, finds next states with the input character, and then adds in the epsilon closures of all the states. \-You should use \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} to determine the state of the simulation after a step.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em s} & \-The simulation state struct \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 280 of file simulation.\-c.
+
+\hypertarget{fsm_8h_a3fb61b8dae910aa4b46cec1b08e5455e}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete@{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete@{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{smb\-\_\-al $\ast$}]{first, }
+\item[{smb\-\_\-al $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a3fb61b8dae910aa4b46cec1b08e5455e}
+
+
+\-Combine the two lists (with no duplicates), and free the second. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & \-The target list (which will be added to) \\
+\hline
+{\em second} & \-The list which will be combined into first and freed. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 104 of file simulation.\-c.
+
+\hypertarget{fsm_8h_a1e398044606cf5c1efc9ae5b06215f01}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-check@{fsm\-\_\-trans\-\_\-check}}
+\index{fsm\-\_\-trans\-\_\-check@{fsm\-\_\-trans\-\_\-check}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-check}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-trans\-\_\-check} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm\-\_\-trans} $\ast$}]{ft, }
+\item[{wchar\-\_\-t}]{c}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a1e398044606cf5c1efc9ae5b06215f01}
+\-Check whether the character is accepted by the transition.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The transition to check \\
+\hline
+{\em c} & \-The character to check \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 165 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a252a17a203f6510ff008ab9748054326}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-copy@{fsm\-\_\-trans\-\_\-copy}}
+\index{fsm\-\_\-trans\-\_\-copy@{fsm\-\_\-trans\-\_\-copy}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-copy}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-trans\-\_\-copy} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a252a17a203f6510ff008ab9748054326}
+
+
+\-Allocate an entirely new copy of an existing \-F\-S\-M transition. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The transition to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The copy of ft 
+\end{DoxyReturn}
+
+
+\-Definition at line 190 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a96f9a93d3836ac3b7e60e5d07c8fd953}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-create@{fsm\-\_\-trans\-\_\-create}}
+\index{fsm\-\_\-trans\-\_\-create@{fsm\-\_\-trans\-\_\-create}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-trans\-\_\-create} (
+\begin{DoxyParamCaption}
+\item[{int}]{n, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a96f9a93d3836ac3b7e60e5d07c8fd953}
+
+
+\-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em n} & \-The number of ranges \\
+\hline
+{\em type} & \-The type of transition \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 91 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_aae38451b4efa993bd9388e19bc1c293a}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-create\-\_\-single@{fsm\-\_\-trans\-\_\-create\-\_\-single}}
+\index{fsm\-\_\-trans\-\_\-create\-\_\-single@{fsm\-\_\-trans\-\_\-create\-\_\-single}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-create\-\_\-single}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-trans\-\_\-create\-\_\-single} (
+\begin{DoxyParamCaption}
+\item[{wchar\-\_\-t}]{start, }
+\item[{wchar\-\_\-t}]{end, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_aae38451b4efa993bd9388e19bc1c293a}
+
+
+\-Allocate and initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em start} & \-The beginning of the range \\
+\hline
+{\em end} & \-The end of the range \\
+\hline
+{\em type} & \-The type of the object \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 150 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_aa952e837db3b8257cb84c4e5805d3855}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-delete@{fsm\-\_\-trans\-\_\-delete}}
+\index{fsm\-\_\-trans\-\_\-delete@{fsm\-\_\-trans\-\_\-delete}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_aa952e837db3b8257cb84c4e5805d3855}
+
+
+\-Free the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The object to free \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 115 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_add52631c23fe8ff670dcd27799c26a26}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-destroy@{fsm\-\_\-trans\-\_\-destroy}}
+\index{fsm\-\_\-trans\-\_\-destroy@{fsm\-\_\-trans\-\_\-destroy}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_add52631c23fe8ff670dcd27799c26a26}
+
+
+\-Clean up the \hyperlink{structfsm__trans}{fsm\-\_\-trans} object. \-Do not free it. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The object to clean up \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 103 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a1ee5d4d7276a5ca86ba5f9f2947a2a57}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-init@{fsm\-\_\-trans\-\_\-init}}
+\index{fsm\-\_\-trans\-\_\-init@{fsm\-\_\-trans\-\_\-init}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft, }
+\item[{int}]{n, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a1ee5d4d7276a5ca86ba5f9f2947a2a57}
+
+
+\-Initialize an already-\/allocated \-F\-S\-M transition unit. 
+
+\-An \-F\-S\-M transition unit defines what characters can and can't be accepted for a transition, similar to a regular expression's character class. \-It can either be a positive transition (any character between start and end), or a negative transition (any character not between start and end). \-It can have more than one transition criteria (i.\-e character range), but they all have to be either positive or negative.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The pre-\/allocated transition \\
+\hline
+{\em n} & \-The number of transition criteria \\
+\hline
+{\em type} & \-The type of transition (positive or negative) \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 65 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a8c0c15842d240af95c7f15219b0db6d2}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-trans\-\_\-init\-\_\-single@{fsm\-\_\-trans\-\_\-init\-\_\-single}}
+\index{fsm\-\_\-trans\-\_\-init\-\_\-single@{fsm\-\_\-trans\-\_\-init\-\_\-single}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-trans\-\_\-init\-\_\-single}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-trans\-\_\-init\-\_\-single} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-trans} $\ast$}]{ft, }
+\item[{wchar\-\_\-t}]{start, }
+\item[{wchar\-\_\-t}]{end, }
+\item[{int}]{type, }
+\item[{int}]{dest}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a8c0c15842d240af95c7f15219b0db6d2}
+
+
+\-Initialize a \hyperlink{structfsm__trans}{fsm\-\_\-trans} object with a single range. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em ft} & \-The object to initialize \\
+\hline
+{\em start} & \-The beginning of the range \\
+\hline
+{\em end} & \-The end of the range \\
+\hline
+{\em type} & \-The type of the object \\
+\hline
+{\em dest} & \-The destination of the transition \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 134 of file datastructs.\-c.
+
+\hypertarget{fsm_8h_a1fe9ede8ddc9e41fcf053d2a789086c9}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-union@{fsm\-\_\-union}}
+\index{fsm\-\_\-union@{fsm\-\_\-union}!fsm.h@{fsm.\-h}}
+\subsubsection[{fsm\-\_\-union}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-union} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{first, }
+\item[{const {\bf fsm} $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{fsm_8h_a1fe9ede8ddc9e41fcf053d2a789086c9}
+
+
+\-Construct the union of the two \-F\-S\-Ms into the first one. 
+
+\-This function creates an \-F\-S\-M that will accept any string accepted by the first \-O\-R the second one. \-The \-F\-S\-M is constructed in place of the first machine, modifying the parameter. \-If this is not what you want, make a copy of the first one, and pass the copy instead.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & \-The first \-F\-S\-M to union. \-Will be modified with the result. \\
+\hline
+{\em second} & \-The second \-F\-S\-M to union \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 165 of file operations.\-c.
+

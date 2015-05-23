@@ -1,0 +1,491 @@
+\hypertarget{gram_8h}{\section{src/gram.h \-File \-Reference}
+\label{gram_8h}\index{src/gram.\-h@{src/gram.\-h}}
+}
+
+
+\-Context-\/free grammar data structures.  
+
+
+{\ttfamily \#include $<$stdbool.\-h$>$}\*
+{\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
+\subsection*{\-Data \-Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcfg__rule}{cfg\-\_\-rule}
+\begin{DoxyCompactList}\small\item\em \-A struct to represent a rule in a context-\/free grammar. \end{DoxyCompactList}\item 
+struct \hyperlink{structcnf__rule}{cnf\-\_\-rule}
+\begin{DoxyCompactList}\small\item\em \-A struct to represent a rule in a \-C\-N\-F \-C\-F\-G. \end{DoxyCompactList}\item 
+struct \hyperlink{structcfg}{cfg}
+\begin{DoxyCompactList}\small\item\em \-A struct to represent a context-\/free grammar. \end{DoxyCompactList}\item 
+struct \hyperlink{structcnf}{cnf}
+\begin{DoxyCompactList}\small\item\em \-A structure to store a \-C\-N\-F context-\/free grammar. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{gram_8h_aaa9a8f27075b946e217ae3fca40248f7}{\#define \hyperlink{gram_8h_aaa9a8f27075b946e217ae3fca40248f7}{\-C\-F\-G\-\_\-\-S\-Y\-M\-B\-O\-L\-\_\-\-N\-O\-N\-E}~-\/1}\label{gram_8h_aaa9a8f27075b946e217ae3fca40248f7}
+
+\begin{DoxyCompactList}\small\item\em \-A constant to indicate that there is no symbol in a grammar slot. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{gram_8h_a956bd96a97a392e63afe06eb92c110df}{cfg\-\_\-rule\-\_\-init} (\hyperlink{structcfg__rule}{cfg\-\_\-rule} $\ast$p\-New\-Rule, int lhs, int rhs\-\_\-len)
+\begin{DoxyCompactList}\small\item\em \-Initialize a new \-C\-F\-G rule. \end{DoxyCompactList}\item 
+\hyperlink{structcfg__rule}{cfg\-\_\-rule} $\ast$ \hyperlink{gram_8h_a5ec2c946aabf126e8d76e22894a3e63d}{cfg\-\_\-rule\-\_\-create} (int lhs, int rhs\-\_\-len)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a new \-C\-F\-G rule. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a8412c1780580039ecf9eea268342ce78}{cfg\-\_\-rule\-\_\-destroy} (\hyperlink{structcfg__rule}{cfg\-\_\-rule} $\ast$p\-Rule)
+\begin{DoxyCompactList}\small\item\em \-Clean up the fields of the \-C\-F\-G rule, but don't free. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a027e6334bb8a80c17986b4ebbe1f95fc}{cfg\-\_\-rule\-\_\-delete} (\hyperlink{structcfg__rule}{cfg\-\_\-rule} $\ast$p\-Rule)
+\begin{DoxyCompactList}\small\item\em \-Cleanup and free the \-C\-F\-G rule. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a8273268c6def6207571b2e197ad77825}{cnf\-\_\-rule\-\_\-init} (\hyperlink{structcnf__rule}{cnf\-\_\-rule} $\ast$p\-New\-Rule, int lhs, int rhs\-\_\-one, int rhs\-\_\-two)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \-C\-N\-F rule. \end{DoxyCompactList}\item 
+\hyperlink{structcnf__rule}{cnf\-\_\-rule} $\ast$ \hyperlink{gram_8h_af35cacdaab51e6aa556d85147def56f4}{cnf\-\_\-rule\-\_\-create} (int lhs, int rhs\-\_\-one, int rhs\-\_\-two)
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a \-C\-N\-F rule. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a0cd6b60cabb944241186963bb5e65536}{cnf\-\_\-rule\-\_\-destroy} (\hyperlink{structcnf__rule}{cnf\-\_\-rule} $\ast$p\-Rule)
+\begin{DoxyCompactList}\small\item\em \-Clean up the fields of a \-C\-N\-F rule. \-Nothing is actually done here. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_aa87d48bbb9cef2e465526313ba61fcb5}{cnf\-\_\-rule\-\_\-delete} (\hyperlink{structcnf__rule}{cnf\-\_\-rule} $\ast$p\-Rule)
+\begin{DoxyCompactList}\small\item\em \-Free a \-C\-N\-F rule. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_ac3f72e0dc5203203c2b726e3b1e6a0ec}{cfg\-\_\-init} (\hyperlink{structcfg}{cfg} $\ast$p\-Gram)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \-C\-F\-G. \end{DoxyCompactList}\item 
+\hypertarget{gram_8h_a3bbb21266337299e9acb6241b547f121}{\hyperlink{structcfg}{cfg} $\ast$ \hyperlink{gram_8h_a3bbb21266337299e9acb6241b547f121}{cfg\-\_\-create} (void)}\label{gram_8h_a3bbb21266337299e9acb6241b547f121}
+
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a \-C\-F\-G. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a81bf2abe3515e947e700c639a73bb9e1}{cfg\-\_\-destroy} (\hyperlink{structcfg}{cfg} $\ast$p\-Gram, bool free\-\_\-symbols)
+\begin{DoxyCompactList}\small\item\em \-Clean up the fields of a \-C\-F\-G. \-Do not free. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_ab25c222dd3e8b3bef52406e63d644a69}{cfg\-\_\-delete} (\hyperlink{structcfg}{cfg} $\ast$p\-Gram, bool free\-\_\-symbols)
+\begin{DoxyCompactList}\small\item\em \-Clean up and free a \-C\-F\-G. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a6498d2481623fd5851966f63bb2d8008}{cnf\-\_\-init} (\hyperlink{structcnf}{cnf} $\ast$p\-Gram)
+\begin{DoxyCompactList}\small\item\em \-Initialize a \-C\-N\-F grammar. \end{DoxyCompactList}\item 
+\hypertarget{gram_8h_a3a4d3ef76c22529d33625b34667dce89}{\hyperlink{structcnf}{cnf} $\ast$ \hyperlink{gram_8h_a3a4d3ef76c22529d33625b34667dce89}{cnf\-\_\-create} (void)}\label{gram_8h_a3a4d3ef76c22529d33625b34667dce89}
+
+\begin{DoxyCompactList}\small\item\em \-Allocate and initialize a \-C\-N\-F grammar. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a3f724816388a9b3aa32eba999fa8a133}{cnf\-\_\-destroy} (\hyperlink{structcnf}{cnf} $\ast$p\-Gram, bool free\-\_\-symbols)
+\begin{DoxyCompactList}\small\item\em \-Clean up the fields of a \-C\-N\-F grammar. \-Do not free. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a1903534154b501fa7c03066b603169ec}{cnf\-\_\-delete} (\hyperlink{structcnf}{cnf} $\ast$p\-Gram, bool free\-\_\-symbols)
+\begin{DoxyCompactList}\small\item\em \-Clean up and free a \-C\-N\-F grammar. \end{DoxyCompactList}\item 
+int \hyperlink{gram_8h_acbd525a22eee91f62e4cd298f2ef9812}{cfg\-\_\-add\-\_\-symbol} (\hyperlink{structcfg}{cfg} $\ast$p\-Gram, char $\ast$symbol, bool terminal)
+\begin{DoxyCompactList}\small\item\em \-Add a string symbol to the grammar. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a657852cde038965b93378f9af3fa8ffe}{cfg\-\_\-add\-\_\-rule} (\hyperlink{structcfg}{cfg} $\ast$p\-Gram, \hyperlink{structcfg__rule}{cfg\-\_\-rule} $\ast$new\-Rule)
+\begin{DoxyCompactList}\small\item\em \-Add a rule to the grammar. \end{DoxyCompactList}\item 
+void \hyperlink{gram_8h_a25ea2b2f8f221d1f3dd487e056695c7c}{cfg\-\_\-print} (\hyperlink{structcfg}{cfg} $\ast$p\-Gram)
+\begin{DoxyCompactList}\small\item\em \-Print the grammar to stdout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Context-\/free grammar data structures. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Monday, 12 \-May 2014
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2014, \-Stephen \-Brennan. \-All rights reserved.
+
+\-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\-: \-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. \-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. \-Neither the name of \-Stephen \-Brennan nor the names of his contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+\-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E \-I\-S \-P\-R\-O\-V\-I\-D\-E\-D \-B\-Y \-T\-H\-E \-C\-O\-P\-Y\-R\-I\-G\-H\-T \-H\-O\-L\-D\-E\-R\-S \-A\-N\-D \-C\-O\-N\-T\-R\-I\-B\-U\-T\-O\-R\-S \char`\"{}\-A\-S I\-S\char`\"{} \-A\-N\-D \-A\-N\-Y \-E\-X\-P\-R\-E\-S\-S \-O\-R \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S, \-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-T\-H\-E \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S \-O\-F \-M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y \-A\-N\-D \-F\-I\-T\-N\-E\-S\-S \-F\-O\-R \-A \-P\-A\-R\-T\-I\-C\-U\-L\-A\-R \-P\-U\-R\-P\-O\-S\-E \-A\-R\-E \-D\-I\-S\-C\-L\-A\-I\-M\-E\-D. \-I\-N \-N\-O \-E\-V\-E\-N\-T \-S\-H\-A\-L\-L \-S\-T\-E\-P\-H\-E\-N \-B\-R\-E\-N\-N\-A\-N \-B\-E \-L\-I\-A\-B\-L\-E \-F\-O\-R \-A\-N\-Y \-D\-I\-R\-E\-C\-T, \-I\-N\-D\-I\-R\-E\-C\-T, \-I\-N\-C\-I\-D\-E\-N\-T\-A\-L, \-S\-P\-E\-C\-I\-A\-L, \-E\-X\-E\-M\-P\-L\-A\-R\-Y, \-O\-R \-C\-O\-N\-S\-E\-Q\-U\-E\-N\-T\-I\-A\-L \-D\-A\-M\-A\-G\-E\-S (\-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-P\-R\-O\-C\-U\-R\-E\-M\-E\-N\-T \-O\-F \-S\-U\-B\-S\-T\-I\-T\-U\-T\-E \-G\-O\-O\-D\-S \-O\-R \-S\-E\-R\-V\-I\-C\-E\-S; \-L\-O\-S\-S \-O\-F \-U\-S\-E, \-D\-A\-T\-A, \-O\-R \-P\-R\-O\-F\-I\-T\-S; \-O\-R \-B\-U\-S\-I\-N\-E\-S\-S \-I\-N\-T\-E\-R\-R\-U\-P\-T\-I\-O\-N) \-H\-O\-W\-E\-V\-E\-R \-C\-A\-U\-S\-E\-D \-A\-N\-D \-O\-N \-A\-N\-Y \-T\-H\-E\-O\-R\-Y \-O\-F \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-W\-H\-E\-T\-H\-E\-R \-I\-N \-C\-O\-N\-T\-R\-A\-C\-T, \-S\-T\-R\-I\-C\-T \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-O\-R \-T\-O\-R\-T (\-I\-N\-C\-L\-U\-D\-I\-N\-G \-N\-E\-G\-L\-I\-G\-E\-N\-C\-E \-O\-R \-O\-T\-H\-E\-R\-W\-I\-S\-E) \-A\-R\-I\-S\-I\-N\-G \-I\-N \-A\-N\-Y \-W\-A\-Y \-O\-U\-T \-O\-F \-T\-H\-E \-U\-S\-E \-O\-F \-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E, \-E\-V\-E\-N \-I\-F \-A\-D\-V\-I\-S\-E\-D \-O\-F \-T\-H\-E \-P\-O\-S\-S\-I\-B\-I\-L\-I\-T\-Y \-O\-F \-S\-U\-C\-H \-D\-A\-M\-A\-G\-E. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{gram_8h_source}{gram.\-h}.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{gram_8h_a657852cde038965b93378f9af3fa8ffe}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-add\-\_\-rule@{cfg\-\_\-add\-\_\-rule}}
+\index{cfg\-\_\-add\-\_\-rule@{cfg\-\_\-add\-\_\-rule}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-add\-\_\-rule}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-add\-\_\-rule} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg} $\ast$}]{p\-Gram, }
+\item[{{\bf cfg\-\_\-rule} $\ast$}]{new\-Rule}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a657852cde038965b93378f9af3fa8ffe}
+
+
+\-Add a rule to the grammar. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to add to \\
+\hline
+{\em new\-Rule} & \-The rule to add \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 271 of file gram.\-c.
+
+\hypertarget{gram_8h_acbd525a22eee91f62e4cd298f2ef9812}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-add\-\_\-symbol@{cfg\-\_\-add\-\_\-symbol}}
+\index{cfg\-\_\-add\-\_\-symbol@{cfg\-\_\-add\-\_\-symbol}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-add\-\_\-symbol}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf cfg\-\_\-add\-\_\-symbol} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg} $\ast$}]{p\-Gram, }
+\item[{char $\ast$}]{symbol, }
+\item[{bool}]{terminal}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_acbd525a22eee91f62e4cd298f2ef9812}
+
+
+\-Add a string symbol to the grammar. 
+
+\-This function can be called safely if the symbol already exists in the grammar. \-In that case, it simply returns the symbol's index. \-However, note that if the symbol exists in the grammar, this function will $\ast$$\ast$not$\ast$$\ast$ update its terminal status. \-That is, if it is in the terminal list and terminal was false, this function won't delete it from the list, and the same if it's not in the list and terminal was true.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to add to \\
+\hline
+{\em symbol} & \-The symbol to add \\
+\hline
+{\em terminal} & \-Whether or not to add the symbol to the list of terminals \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The index of the new symbol. 
+\end{DoxyReturn}
+
+
+\-Definition at line 246 of file gram.\-c.
+
+\hypertarget{gram_8h_ab25c222dd3e8b3bef52406e63d644a69}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-delete@{cfg\-\_\-delete}}
+\index{cfg\-\_\-delete@{cfg\-\_\-delete}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg} $\ast$}]{p\-Gram, }
+\item[{bool}]{free\-\_\-symbols}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_ab25c222dd3e8b3bef52406e63d644a69}
+
+
+\-Clean up and free a \-C\-F\-G. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to free \\
+\hline
+{\em free\-\_\-symbols} & \-Do we free the symbols? \-If so, the allocation counter is not decremented. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 225 of file gram.\-c.
+
+\hypertarget{gram_8h_a81bf2abe3515e947e700c639a73bb9e1}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-destroy@{cfg\-\_\-destroy}}
+\index{cfg\-\_\-destroy@{cfg\-\_\-destroy}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg} $\ast$}]{p\-Gram, }
+\item[{bool}]{free\-\_\-symbols}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a81bf2abe3515e947e700c639a73bb9e1}
+
+
+\-Clean up the fields of a \-C\-F\-G. \-Do not free. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to clean up \\
+\hline
+{\em free\-\_\-symbols} & \-Do we free the symbols? \-If so, the allocation counter is not decremented. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 195 of file gram.\-c.
+
+\hypertarget{gram_8h_ac3f72e0dc5203203c2b726e3b1e6a0ec}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-init@{cfg\-\_\-init}}
+\index{cfg\-\_\-init@{cfg\-\_\-init}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg} $\ast$}]{p\-Gram}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_ac3f72e0dc5203203c2b726e3b1e6a0ec}
+
+
+\-Initialize a \-C\-F\-G. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to initialize \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 170 of file gram.\-c.
+
+\hypertarget{gram_8h_a25ea2b2f8f221d1f3dd487e056695c7c}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-print@{cfg\-\_\-print}}
+\index{cfg\-\_\-print@{cfg\-\_\-print}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-print}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-print} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg} $\ast$}]{p\-Gram}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a25ea2b2f8f221d1f3dd487e056695c7c}
+
+
+\-Print the grammar to stdout. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to print to stdout. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 283 of file gram.\-c.
+
+\hypertarget{gram_8h_a5ec2c946aabf126e8d76e22894a3e63d}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-rule\-\_\-create@{cfg\-\_\-rule\-\_\-create}}
+\index{cfg\-\_\-rule\-\_\-create@{cfg\-\_\-rule\-\_\-create}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-rule\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf cfg\-\_\-rule}$\ast$ {\bf cfg\-\_\-rule\-\_\-create} (
+\begin{DoxyParamCaption}
+\item[{int}]{lhs, }
+\item[{int}]{rhs\-\_\-len}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a5ec2c946aabf126e8d76e22894a3e63d}
+
+
+\-Allocate and initialize a new \-C\-F\-G rule. 
+
+\-Creates a \-C\-F\-G rule, and allocates the space for the right hand side. \-However, does not allow the caller to specify the actual right hand side values. \-This must be done post-\/call.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em lhs} & \-The index of the lhs symbol \\
+\hline
+{\em rhs\-\_\-len} & \-The number of symbols in the rhs \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 82 of file gram.\-c.
+
+\hypertarget{gram_8h_a027e6334bb8a80c17986b4ebbe1f95fc}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-rule\-\_\-delete@{cfg\-\_\-rule\-\_\-delete}}
+\index{cfg\-\_\-rule\-\_\-delete@{cfg\-\_\-rule\-\_\-delete}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-rule\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-rule\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg\-\_\-rule} $\ast$}]{p\-Rule}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a027e6334bb8a80c17986b4ebbe1f95fc}
+
+
+\-Cleanup and free the \-C\-F\-G rule. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Rule} & \-The rule to delete. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 104 of file gram.\-c.
+
+\hypertarget{gram_8h_a8412c1780580039ecf9eea268342ce78}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-rule\-\_\-destroy@{cfg\-\_\-rule\-\_\-destroy}}
+\index{cfg\-\_\-rule\-\_\-destroy@{cfg\-\_\-rule\-\_\-destroy}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-rule\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-rule\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg\-\_\-rule} $\ast$}]{p\-Rule}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a8412c1780580039ecf9eea268342ce78}
+
+
+\-Clean up the fields of the \-C\-F\-G rule, but don't free. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Rule} & \-The rule to clean up \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 94 of file gram.\-c.
+
+\hypertarget{gram_8h_a956bd96a97a392e63afe06eb92c110df}{\index{gram.\-h@{gram.\-h}!cfg\-\_\-rule\-\_\-init@{cfg\-\_\-rule\-\_\-init}}
+\index{cfg\-\_\-rule\-\_\-init@{cfg\-\_\-rule\-\_\-init}!gram.h@{gram.\-h}}
+\subsubsection[{cfg\-\_\-rule\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cfg\-\_\-rule\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf cfg\-\_\-rule} $\ast$}]{p\-New\-Rule, }
+\item[{int}]{lhs, }
+\item[{int}]{rhs\-\_\-len}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a956bd96a97a392e63afe06eb92c110df}
+
+
+\-Initialize a new \-C\-F\-G rule. 
+
+\-Creates a \-C\-F\-G rule, and allocates the space for the right hand side. \-However, does not allow the caller to specify the actual right hand side values. \-This must be done post-\/call.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-New\-Rule} & \-The memory to initialize \\
+\hline
+{\em lhs} & \-The index of the lhs symbol \\
+\hline
+{\em rhs\-\_\-len} & \-The number of symbols in the rhs \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 57 of file gram.\-c.
+
+\hypertarget{gram_8h_a1903534154b501fa7c03066b603169ec}{\index{gram.\-h@{gram.\-h}!cnf\-\_\-delete@{cnf\-\_\-delete}}
+\index{cnf\-\_\-delete@{cnf\-\_\-delete}!gram.h@{gram.\-h}}
+\subsubsection[{cnf\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cnf\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf cnf} $\ast$}]{p\-Gram, }
+\item[{bool}]{free\-\_\-symbols}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a1903534154b501fa7c03066b603169ec}
+
+
+\-Clean up and free a \-C\-N\-F grammar. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to free \\
+\hline
+{\em free\-\_\-symbols} & \-Do we free the symbols? \-If so, the allocation counter is not decremented. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 380 of file gram.\-c.
+
+\hypertarget{gram_8h_a3f724816388a9b3aa32eba999fa8a133}{\index{gram.\-h@{gram.\-h}!cnf\-\_\-destroy@{cnf\-\_\-destroy}}
+\index{cnf\-\_\-destroy@{cnf\-\_\-destroy}!gram.h@{gram.\-h}}
+\subsubsection[{cnf\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cnf\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf cnf} $\ast$}]{p\-Gram, }
+\item[{bool}]{free\-\_\-symbols}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a3f724816388a9b3aa32eba999fa8a133}
+
+
+\-Clean up the fields of a \-C\-N\-F grammar. \-Do not free. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to clean up \\
+\hline
+{\em free\-\_\-symbols} & \-Do we free the symbols? \-If so, the allocation counter is not decremented. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 341 of file gram.\-c.
+
+\hypertarget{gram_8h_a6498d2481623fd5851966f63bb2d8008}{\index{gram.\-h@{gram.\-h}!cnf\-\_\-init@{cnf\-\_\-init}}
+\index{cnf\-\_\-init@{cnf\-\_\-init}!gram.h@{gram.\-h}}
+\subsubsection[{cnf\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cnf\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf cnf} $\ast$}]{p\-Gram}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a6498d2481623fd5851966f63bb2d8008}
+
+
+\-Initialize a \-C\-N\-F grammar. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Gram} & \-The grammar to initialize \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 315 of file gram.\-c.
+
+\hypertarget{gram_8h_af35cacdaab51e6aa556d85147def56f4}{\index{gram.\-h@{gram.\-h}!cnf\-\_\-rule\-\_\-create@{cnf\-\_\-rule\-\_\-create}}
+\index{cnf\-\_\-rule\-\_\-create@{cnf\-\_\-rule\-\_\-create}!gram.h@{gram.\-h}}
+\subsubsection[{cnf\-\_\-rule\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf cnf\-\_\-rule}$\ast$ {\bf cnf\-\_\-rule\-\_\-create} (
+\begin{DoxyParamCaption}
+\item[{int}]{lhs, }
+\item[{int}]{rhs\-\_\-one, }
+\item[{int}]{rhs\-\_\-two}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_af35cacdaab51e6aa556d85147def56f4}
+
+
+\-Allocate and initialize a \-C\-N\-F rule. 
+
+\-Allocates a \-C\-N\-F rule and initializes the space.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em lhs} & \-The left hand side of the rule \\
+\hline
+{\em rhs\-\_\-one} & \-The first item in the rhs \\
+\hline
+{\em rhs\-\_\-two} & \-The second item in the rhs \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 137 of file gram.\-c.
+
+\hypertarget{gram_8h_aa87d48bbb9cef2e465526313ba61fcb5}{\index{gram.\-h@{gram.\-h}!cnf\-\_\-rule\-\_\-delete@{cnf\-\_\-rule\-\_\-delete}}
+\index{cnf\-\_\-rule\-\_\-delete@{cnf\-\_\-rule\-\_\-delete}!gram.h@{gram.\-h}}
+\subsubsection[{cnf\-\_\-rule\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cnf\-\_\-rule\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{{\bf cnf\-\_\-rule} $\ast$}]{p\-Rule}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_aa87d48bbb9cef2e465526313ba61fcb5}
+
+
+\-Free a \-C\-N\-F rule. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Rule} & \-The rule to delete \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 159 of file gram.\-c.
+
+\hypertarget{gram_8h_a0cd6b60cabb944241186963bb5e65536}{\index{gram.\-h@{gram.\-h}!cnf\-\_\-rule\-\_\-destroy@{cnf\-\_\-rule\-\_\-destroy}}
+\index{cnf\-\_\-rule\-\_\-destroy@{cnf\-\_\-rule\-\_\-destroy}!gram.h@{gram.\-h}}
+\subsubsection[{cnf\-\_\-rule\-\_\-destroy}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cnf\-\_\-rule\-\_\-destroy} (
+\begin{DoxyParamCaption}
+\item[{{\bf cnf\-\_\-rule} $\ast$}]{p\-Rule}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a0cd6b60cabb944241186963bb5e65536}
+
+
+\-Clean up the fields of a \-C\-N\-F rule. \-Nothing is actually done here. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-Rule} & \-The rule to clean up \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 149 of file gram.\-c.
+
+\hypertarget{gram_8h_a8273268c6def6207571b2e197ad77825}{\index{gram.\-h@{gram.\-h}!cnf\-\_\-rule\-\_\-init@{cnf\-\_\-rule\-\_\-init}}
+\index{cnf\-\_\-rule\-\_\-init@{cnf\-\_\-rule\-\_\-init}!gram.h@{gram.\-h}}
+\subsubsection[{cnf\-\_\-rule\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf cnf\-\_\-rule\-\_\-init} (
+\begin{DoxyParamCaption}
+\item[{{\bf cnf\-\_\-rule} $\ast$}]{p\-New\-Rule, }
+\item[{int}]{lhs, }
+\item[{int}]{rhs\-\_\-one, }
+\item[{int}]{rhs\-\_\-two}
+\end{DoxyParamCaption}
+)}}\label{gram_8h_a8273268c6def6207571b2e197ad77825}
+
+
+\-Initialize a \-C\-N\-F rule. 
+
+\-Initializes the fields of a \-C\-N\-F rule. \-You could just fill them yourself, but this conforms to the patterns set in libstephen.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p\-New\-Rule} & \-The pre-\/allocated rule memory \\
+\hline
+{\em lhs} & \-The left hand side of the rule \\
+\hline
+{\em rhs\-\_\-one} & \-The first item in the rhs \\
+\hline
+{\em rhs\-\_\-two} & \-The second item in the rhs \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 121 of file gram.\-c.
+

@@ -1,0 +1,304 @@
+\hypertarget{simulation_8c}{\section{src/fsm/simulation.c \-File \-Reference}
+\label{simulation_8c}\index{src/fsm/simulation.\-c@{src/fsm/simulation.\-c}}
+}
+
+
+\-Simulation functions for \-F\-S\-Ms.  
+
+
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+{\ttfamily \#include $<$stdbool.\-h$>$}\*
+{\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+smb\-\_\-al $\ast$ \hyperlink{simulation_8c_a3c4e01d2648b8c33db093e54ab47eb94}{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure} (\hyperlink{structfsm}{fsm} $\ast$f, int state)
+\begin{DoxyCompactList}\small\item\em \-Return the epsilon closure of the state on this \-F\-S\-M. \end{DoxyCompactList}\item 
+void \hyperlink{simulation_8c_a3fb61b8dae910aa4b46cec1b08e5455e}{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete} (smb\-\_\-al $\ast$first, smb\-\_\-al $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-Combine the two lists (with no duplicates), and free the second. \end{DoxyCompactList}\item 
+bool \hyperlink{simulation_8c_a9196a9811703b9beb4065428de78c60c}{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection} (smb\-\_\-al $\ast$first, smb\-\_\-al $\ast$second)
+\begin{DoxyCompactList}\small\item\em \-Test if the intersection between the two lists is non-\/empty. \end{DoxyCompactList}\item 
+void \hyperlink{simulation_8c_a6691ba1de6653c52bce26ebd2a40cdeb}{al\-\_\-copy\-\_\-all} (smb\-\_\-al $\ast$dest, const smb\-\_\-al $\ast$from)
+\begin{DoxyCompactList}\small\item\em \-Copy all the values from one array list into another. \end{DoxyCompactList}\item 
+bool \hyperlink{simulation_8c_a31bc1652fab6793018512508db1cf74a}{fsm\-\_\-sim\-\_\-det} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Run the finite state machine as a deterministic one. \end{DoxyCompactList}\item 
+\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{simulation_8c_a4f3c4fb388e554216d0e0d1f2deef77b}{fsm\-\_\-sim\-\_\-nondet\-\_\-begin} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Begin a non-\/deterministic simulation of this finite state machine. \end{DoxyCompactList}\item 
+int \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state} (const \hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s)
+\begin{DoxyCompactList}\small\item\em \-Check the state of the simulation. \end{DoxyCompactList}\item 
+void \hyperlink{simulation_8c_a13abb199061ecaa47d343b25c90de327}{fsm\-\_\-sim\-\_\-nondet\-\_\-step} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s)
+\begin{DoxyCompactList}\small\item\em \-Perform a single step in the non-\/deterministic simulation. \end{DoxyCompactList}\item 
+bool \hyperlink{simulation_8c_ab39350b6a48388414f90cb3d248be612}{fsm\-\_\-sim\-\_\-nondet} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
+\begin{DoxyCompactList}\small\item\em \-Simulate the \-F\-S\-M as a non-\/deterministic state machine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Simulation functions for \-F\-S\-Ms. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Saturday, 26 \-July 2014
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2014, \-Stephen \-Brennan. \-All rights reserved.
+
+\-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\-: \-Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. \-Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. \-Neither the name of \-Stephen \-Brennan nor the names of his contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+\-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E \-I\-S \-P\-R\-O\-V\-I\-D\-E\-D \-B\-Y \-T\-H\-E \-C\-O\-P\-Y\-R\-I\-G\-H\-T \-H\-O\-L\-D\-E\-R\-S \-A\-N\-D \-C\-O\-N\-T\-R\-I\-B\-U\-T\-O\-R\-S \char`\"{}\-A\-S I\-S\char`\"{} \-A\-N\-D \-A\-N\-Y \-E\-X\-P\-R\-E\-S\-S \-O\-R \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S, \-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-T\-H\-E \-I\-M\-P\-L\-I\-E\-D \-W\-A\-R\-R\-A\-N\-T\-I\-E\-S \-O\-F \-M\-E\-R\-C\-H\-A\-N\-T\-A\-B\-I\-L\-I\-T\-Y \-A\-N\-D \-F\-I\-T\-N\-E\-S\-S \-F\-O\-R \-A \-P\-A\-R\-T\-I\-C\-U\-L\-A\-R \-P\-U\-R\-P\-O\-S\-E \-A\-R\-E \-D\-I\-S\-C\-L\-A\-I\-M\-E\-D. \-I\-N \-N\-O \-E\-V\-E\-N\-T \-S\-H\-A\-L\-L \-S\-T\-E\-P\-H\-E\-N \-B\-R\-E\-N\-N\-A\-N \-B\-E \-L\-I\-A\-B\-L\-E \-F\-O\-R \-A\-N\-Y \-D\-I\-R\-E\-C\-T, \-I\-N\-D\-I\-R\-E\-C\-T, \-I\-N\-C\-I\-D\-E\-N\-T\-A\-L, \-S\-P\-E\-C\-I\-A\-L, \-E\-X\-E\-M\-P\-L\-A\-R\-Y, \-O\-R \-C\-O\-N\-S\-E\-Q\-U\-E\-N\-T\-I\-A\-L \-D\-A\-M\-A\-G\-E\-S (\-I\-N\-C\-L\-U\-D\-I\-N\-G, \-B\-U\-T \-N\-O\-T \-L\-I\-M\-I\-T\-E\-D \-T\-O, \-P\-R\-O\-C\-U\-R\-E\-M\-E\-N\-T \-O\-F \-S\-U\-B\-S\-T\-I\-T\-U\-T\-E \-G\-O\-O\-D\-S \-O\-R \-S\-E\-R\-V\-I\-C\-E\-S; \-L\-O\-S\-S \-O\-F \-U\-S\-E, \-D\-A\-T\-A, \-O\-R \-P\-R\-O\-F\-I\-T\-S; \-O\-R \-B\-U\-S\-I\-N\-E\-S\-S \-I\-N\-T\-E\-R\-R\-U\-P\-T\-I\-O\-N) \-H\-O\-W\-E\-V\-E\-R \-C\-A\-U\-S\-E\-D \-A\-N\-D \-O\-N \-A\-N\-Y \-T\-H\-E\-O\-R\-Y \-O\-F \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-W\-H\-E\-T\-H\-E\-R \-I\-N \-C\-O\-N\-T\-R\-A\-C\-T, \-S\-T\-R\-I\-C\-T \-L\-I\-A\-B\-I\-L\-I\-T\-Y, \-O\-R \-T\-O\-R\-T (\-I\-N\-C\-L\-U\-D\-I\-N\-G \-N\-E\-G\-L\-I\-G\-E\-N\-C\-E \-O\-R \-O\-T\-H\-E\-R\-W\-I\-S\-E) \-A\-R\-I\-S\-I\-N\-G \-I\-N \-A\-N\-Y \-W\-A\-Y \-O\-U\-T \-O\-F \-T\-H\-E \-U\-S\-E \-O\-F \-T\-H\-I\-S \-S\-O\-F\-T\-W\-A\-R\-E, \-E\-V\-E\-N \-I\-F \-A\-D\-V\-I\-S\-E\-D \-O\-F \-T\-H\-E \-P\-O\-S\-S\-I\-B\-I\-L\-I\-T\-Y \-O\-F \-S\-U\-C\-H \-D\-A\-M\-A\-G\-E. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{simulation_8c_source}{simulation.\-c}.
+
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{simulation_8c_a6691ba1de6653c52bce26ebd2a40cdeb}{\index{simulation.\-c@{simulation.\-c}!al\-\_\-copy\-\_\-all@{al\-\_\-copy\-\_\-all}}
+\index{al\-\_\-copy\-\_\-all@{al\-\_\-copy\-\_\-all}!simulation.c@{simulation.\-c}}
+\subsubsection[{al\-\_\-copy\-\_\-all}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf al\-\_\-copy\-\_\-all} (
+\begin{DoxyParamCaption}
+\item[{smb\-\_\-al $\ast$}]{dest, }
+\item[{const smb\-\_\-al $\ast$}]{from}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_a6691ba1de6653c52bce26ebd2a40cdeb}
+
+
+\-Copy all the values from one array list into another. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em dest} & \-The destination array list \\
+\hline
+{\em from} & \-The source array list \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 143 of file simulation.\-c.
+
+\hypertarget{simulation_8c_a31bc1652fab6793018512508db1cf74a}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-det@{fsm\-\_\-sim\-\_\-det}}
+\index{fsm\-\_\-sim\-\_\-det@{fsm\-\_\-sim\-\_\-det}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-det}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-sim\-\_\-det} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_a31bc1652fab6793018512508db1cf74a}
+
+
+\-Run the finite state machine as a deterministic one. 
+
+\-Simulates a \-D\-F\-S\-M. \-Any possible input at any given state should have exactly one transition. \-Zero transitions are allowed (and interpreted as an immediate reject).
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em input} & \-The string of input \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 166 of file simulation.\-c.
+
+\hypertarget{simulation_8c_ab39350b6a48388414f90cb3d248be612}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-nondet@{fsm\-\_\-sim\-\_\-nondet}}
+\index{fsm\-\_\-sim\-\_\-nondet@{fsm\-\_\-sim\-\_\-nondet}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-sim\-\_\-nondet} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_ab39350b6a48388414f90cb3d248be612}
+
+
+\-Simulate the \-F\-S\-M as a non-\/deterministic state machine. 
+
+\-This function is a convenience function that executes the \-N\-D\-F\-S\-M to completion. \-The other functions, begin, step, and delete, can be used to perform a more customizable simulation.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em input} & \-The input string to run with \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em true} & if the machine accepts \\
+\hline
+{\em false} & if the machine rejects \\
+\hline
+\end{DoxyRetVals}
+
+
+\-Definition at line 350 of file simulation.\-c.
+
+\hypertarget{simulation_8c_a4f3c4fb388e554216d0e0d1f2deef77b}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-nondet\-\_\-begin@{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-begin@{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-sim}$\ast$ {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-begin} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{const wchar\-\_\-t $\ast$}]{input}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_a4f3c4fb388e554216d0e0d1f2deef77b}
+
+
+\-Begin a non-\/deterministic simulation of this finite state machine. 
+
+\-This simulation is designed to be run in steps. \-First, call this function. \-Then, loop through many calls to \hyperlink{simulation_8c_a13abb199061ecaa47d343b25c90de327}{fsm\-\_\-sim\-\_\-nondet\-\_\-step()}. \-When \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} returns a value indicating that the simulation is complete, you will have your answer. \-Note that you should also call \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} after a call to this function, because the input may be empty.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to simulate \\
+\hline
+{\em input} & \-The input to run on \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 223 of file simulation.\-c.
+
+\hypertarget{simulation_8c_a3c4e01d2648b8c33db093e54ab47eb94}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure@{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure@{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-al$\ast$ {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm} $\ast$}]{f, }
+\item[{int}]{state}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_a3c4e01d2648b8c33db093e54ab47eb94}
+
+
+\-Return the epsilon closure of the state on this \-F\-S\-M. 
+
+\-The epsilon closure is the set of all states that can be reached from this state without consuming any input.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M \\
+\hline
+{\em state} & \-The state to calculate from \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A list of states in the epsilon closure 
+\end{DoxyReturn}
+
+
+\-Definition at line 60 of file simulation.\-c.
+
+\hypertarget{simulation_8c_a9196a9811703b9beb4065428de78c60c}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection@{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection@{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-non\-\_\-empty\-\_\-intersection} (
+\begin{DoxyParamCaption}
+\item[{smb\-\_\-al $\ast$}]{first, }
+\item[{smb\-\_\-al $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_a9196a9811703b9beb4065428de78c60c}
+
+
+\-Test if the intersection between the two lists is non-\/empty. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & \-The first list \\
+\hline
+{\em second} & \-The second list \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em true} & when the intersection is \-N\-O\-T empty \\
+\hline
+{\em false} & when the intersection \-I\-S empty \\
+\hline
+\end{DoxyRetVals}
+
+
+\-Definition at line 125 of file simulation.\-c.
+
+\hypertarget{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-nondet\-\_\-state@{fsm\-\_\-sim\-\_\-nondet\-\_\-state}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-state@{fsm\-\_\-sim\-\_\-nondet\-\_\-state}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-state} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm\-\_\-sim} $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}
+
+
+\-Check the state of the simulation. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em s} & \-The simulation to check. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} & when the simulation has not ended, but is accepting \\
+\hline
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} & when the simulation has not ended, and is not accepting \\
+\hline
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D} & when the simulation has ended and rejected \\
+\hline
+{\em \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D} & when the simulation has ended and accepted \\
+\hline
+\end{DoxyRetVals}
+\begin{DoxySeeAlso}{\-See also}
+\hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
+
+\hyperlink{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D} 
+
+\hyperlink{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D} 
+\end{DoxySeeAlso}
+
+
+\-Definition at line 243 of file simulation.\-c.
+
+\hypertarget{simulation_8c_a13abb199061ecaa47d343b25c90de327}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-nondet\-\_\-step@{fsm\-\_\-sim\-\_\-nondet\-\_\-step}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-step@{fsm\-\_\-sim\-\_\-nondet\-\_\-step}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-step}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-step} (
+\begin{DoxyParamCaption}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{s}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_a13abb199061ecaa47d343b25c90de327}
+
+
+\-Perform a single step in the non-\/deterministic simulation. 
+
+\-This function performs a single iteration of the simulation algorithm. \-It takes the current states, finds next states with the input character, and then adds in the epsilon closures of all the states. \-You should use \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} to determine the state of the simulation after a step.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em s} & \-The simulation state struct \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 280 of file simulation.\-c.
+
+\hypertarget{simulation_8c_a3fb61b8dae910aa4b46cec1b08e5455e}{\index{simulation.\-c@{simulation.\-c}!fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete@{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}}
+\index{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete@{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}!simulation.c@{simulation.\-c}}
+\subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete} (
+\begin{DoxyParamCaption}
+\item[{smb\-\_\-al $\ast$}]{first, }
+\item[{smb\-\_\-al $\ast$}]{second}
+\end{DoxyParamCaption}
+)}}\label{simulation_8c_a3fb61b8dae910aa4b46cec1b08e5455e}
+
+
+\-Combine the two lists (with no duplicates), and free the second. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em first} & \-The target list (which will be added to) \\
+\hline
+{\em second} & \-The list which will be combined into first and freed. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 104 of file simulation.\-c.
+
