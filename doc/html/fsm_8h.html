@@ -159,16 +159,16 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up any resources held by the <a class="el" href="structfsm__sim.html" title="Holds state for a nondeterministic finite state machine simulation.">fsm_sim</a>.  <a href="#a74507e3eeaafc4250ec923acf9578871"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a2525328d01dee0d928da0ae8c498f984">fsm_sim_delete</a> (<a class="el" href="structfsm__sim.html">fsm_sim</a> *fs, bool free_curr)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up and any resources held by the <a class="el" href="structfsm__sim.html" title="Holds state for a nondeterministic finite state machine simulation.">fsm_sim</a>, and free it.  <a href="#a2525328d01dee0d928da0ae8c498f984"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#aa5163a797ac0db5b1651c7df6d2e12d1">fsm_read_get_int</a> (const wchar_t **start, const wchar_t *prefix)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an integer value from a key-value line.  <a href="#aa5163a797ac0db5b1651c7df6d2e12d1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm__trans.html">fsm_trans</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a9ce28a628461e29ee525cd6a2105b9f7">fsm_read_trans</a> (const wchar_t **source, int *start)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a transition from a line.  <a href="#a9ce28a628461e29ee525cd6a2105b9f7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5163a797ac0db5b1651c7df6d2e12d1"></a><!-- doxytag: member="fsm.h::fsm_read_get_int" ref="aa5163a797ac0db5b1651c7df6d2e12d1" args="(const wchar_t **start, const wchar_t *prefix)" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_read_get_int</b> (const wchar_t **start, const wchar_t *prefix)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ce28a628461e29ee525cd6a2105b9f7"></a><!-- doxytag: member="fsm.h::fsm_read_trans" ref="a9ce28a628461e29ee525cd6a2105b9f7" args="(const wchar_t **source, int *start)" -->
+<a class="el" href="structfsm__trans.html">fsm_trans</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_read_trans</b> (const wchar_t **source, int *start)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a7759fcc6d5acbee423eb831f2a3c028c">fsm_print_char</a> (FILE *dest, wchar_t input)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a character, filtering if necessary.  <a href="#a7759fcc6d5acbee423eb831f2a3c028c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#ac7cf43e628d0aefef49a3d290b065e9c">fsm_dot_char</a> (FILE *dest, wchar_t c)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a character in an FSM specification to dot format.  <a href="#ac7cf43e628d0aefef49a3d290b065e9c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a7c706a1cfd1264318819507f4abcf91c">fsm_read</a> (const wchar_t *source)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a FSM from a string! The format is as follows:  <a href="#a7c706a1cfd1264318819507f4abcf91c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c706a1cfd1264318819507f4abcf91c"></a><!-- doxytag: member="fsm.h::fsm_read" ref="a7c706a1cfd1264318819507f4abcf91c" args="(const wchar_t *source)" -->
+<a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_read</b> (const wchar_t *source)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a3ba204b76773dffba8aca574d7e63434">fsm_print</a> (<a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a string representation of the FSM to a file (or stdout).  <a href="#a3ba204b76773dffba8aca574d7e63434"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a068179080f09c38af390ad19772f7aba">fsm_dot</a> (<a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
@@ -477,7 +477,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>Pointer to the <a class="el" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> created by the function. </dd></dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00341">341</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00340">340</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -516,7 +516,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The index of the state </dd></dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00292">292</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00291">291</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -561,7 +561,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00313">313</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00312">312</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -690,7 +690,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>FSM for the character. </dd></dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00276">276</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00275">275</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -728,7 +728,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00261">261</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00260">260</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -766,7 +766,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00233">233</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00232">232</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -805,7 +805,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00541">541</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00386">386</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -838,7 +838,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <p>This function allows for printing out some characters differently than others. In dot format, quotes should be escaped. Also, epsilon transitions should be labelled something readable.</p>
 <p>dest Destination file. c The character to print </p>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00512">512</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00357">357</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -865,7 +865,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00210">210</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00209">209</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -931,7 +931,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00458">458</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00303">303</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -970,123 +970,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00436">436</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7c706a1cfd1264318819507f4abcf91c"></a><!-- doxytag: member="fsm.h::fsm_read" ref="a7c706a1cfd1264318819507f4abcf91c" args="(const wchar_t *source)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structfsm.html">fsm</a>* <a class="el" href="fsm_8h.html#a7c706a1cfd1264318819507f4abcf91c">fsm_read</a> </td>
-          <td>(</td>
-          <td class="paramtype">const wchar_t *&#160;</td>
-          <td class="paramname"><em>source</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Read a FSM from a string! The format is as follows: </p>
-<div class="fragment"><pre class="fragment">   START LINE (start: n)
-   ACCEPTING LINES ... (&gt;=1) (accept: n)
-   TRANSITION LINES (X-Y:[+|-]A-B[[A-B]...])
-</pre></div> <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#aa5163a797ac0db5b1651c7df6d2e12d1" title="Get an integer value from a key-value line.">fsm_read_get_int()</a> for info on START LINE and ACCEPTING LINES </dd>
-<dd>
-<a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> for info on the TRANSITION LINES</dd></dl>
-<p>Note that this function produces heavy output on stdout if compiled with SMD_ENABLE_DIAGNOSTIC_PRINTING.</p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">source</td><td>The string source </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>A FSM from the string if possible, NULL on error. </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00358">358</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa5163a797ac0db5b1651c7df6d2e12d1"></a><!-- doxytag: member="fsm.h::fsm_read_get_int" ref="aa5163a797ac0db5b1651c7df6d2e12d1" args="(const wchar_t **start, const wchar_t *prefix)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="fsm_8h.html#aa5163a797ac0db5b1651c7df6d2e12d1">fsm_read_get_int</a> </td>
-          <td>(</td>
-          <td class="paramtype">const wchar_t **&#160;</td>
-          <td class="paramname"><em>start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const wchar_t *&#160;</td>
-          <td class="paramname"><em>prefix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Get an integer value from a key-value line. </p>
-<p>The line is in the form "key: value ", where whitespace is not allowed in the key section, but is allowed for the value section. The value must be a positive decimal integer. On error, returns -1.</p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">start</td><td>Pointer to the string pointer. This function advances the pointer to the start of the next line. </td></tr>
-    <tr><td class="paramname">prefix</td><td>The "key:" prefix the line should match. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The integer value </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00092">92</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9ce28a628461e29ee525cd6a2105b9f7"></a><!-- doxytag: member="fsm.h::fsm_read_trans" ref="a9ce28a628461e29ee525cd6a2105b9f7" args="(const wchar_t **source, int *start)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structfsm__trans.html">fsm_trans</a>* <a class="el" href="fsm_8h.html#a9ce28a628461e29ee525cd6a2105b9f7">fsm_read_trans</a> </td>
-          <td>(</td>
-          <td class="paramtype">const wchar_t **&#160;</td>
-          <td class="paramname"><em>source</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>start</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reads a transition from a line. </p>
-<p>This function reads a transition from a line. The transition can have an arbitrary number of ranges, each separated by a space. The line should be of the form: `X-Y:[+|-]A-B[[A-B]...]`, where `X` and `Y` are state numbers, `A` and `B` are characters forming a range, and the `+` or `-` determine whether the transition is positive (only those in the range) or negative (everything not in that range). Note that there is only one `+` or `-`; it applies for all ranges in the transition.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a5cbd48786a015f5151cdd2943e9a5377" title="Reading the &#39;source&#39; state of the transition.">SFIRSTSTATE</a> etc. for more info on the meaning of the states.</dd></dl>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">source</td><td>The source pointer. It is advanced to the beginning of the next line. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">start</td><td>Where to put the start state of the transition. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The transition. </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00152">152</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00281">281</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -1132,7 +1016,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The allocated simulation </dd></dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00374">374</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00373">373</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1170,7 +1054,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00398">398</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00397">397</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1208,7 +1092,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00386">386</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00385">385</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1299,7 +1183,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00360">360</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00359">359</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1615,7 +1499,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00165">165</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00164">164</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1643,7 +1527,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The copy of ft </dd></dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00190">190</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00189">189</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1740,7 +1624,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00150">150</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00149">149</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1767,7 +1651,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00115">115</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00114">114</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1906,7 +1790,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00134">134</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
+<p>Definition at line <a class="el" href="fsm_2datastructs_8c_source.html#l00133">133</a> of file <a class="el" href="fsm_2datastructs_8c_source.html">datastructs.c</a>.</p>
 
 </div>
 </div>
@@ -1967,7 +1851,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 02:56:54 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

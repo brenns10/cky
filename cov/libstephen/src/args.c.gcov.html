@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-23 02:56:53</td>
+            <td class="headerValue">2015-05-23 18:02:19</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -111,17 +111,17 @@
 <span class="lineNum">      49 </span>            :    @param c The character to find the index of.
 <a name="50"><span class="lineNum">      50 </span>            :    @returns The index of the flag.</a>
 <span class="lineNum">      51 </span>            :  */
-<span class="lineNum">      52 </span><span class="lineCov">         11 : int flag_index(char c)</span>
+<span class="lineNum">      52 </span><span class="lineCov">         10 : int flag_index(char c)</span>
 <span class="lineNum">      53 </span>            : {
 <span class="lineNum">      54 </span>            :   int idx;
-<span class="lineNum">      55 </span><span class="lineCov">         11 :   if (c &gt;= 'A' &amp;&amp; c &lt;= 'Z') {</span>
+<span class="lineNum">      55 </span><span class="lineCov">         10 :   if (c &gt;= 'A' &amp;&amp; c &lt;= 'Z') {</span>
 <span class="lineNum">      56 </span><span class="lineNoCov">          0 :     idx = 26 + (c - 'A');</span>
-<span class="lineNum">      57 </span><span class="lineCov">         11 :   } else if (c &gt;= 'a' &amp;&amp; c &lt;= 'z') {</span>
-<span class="lineNum">      58 </span><span class="lineCov">         10 :     idx = (c - 'a');</span>
+<span class="lineNum">      57 </span><span class="lineCov">         10 :   } else if (c &gt;= 'a' &amp;&amp; c &lt;= 'z') {</span>
+<span class="lineNum">      58 </span><span class="lineCov">          9 :     idx = (c - 'a');</span>
 <span class="lineNum">      59 </span>            :   } else {
 <span class="lineNum">      60 </span><span class="lineCov">          1 :     idx = -1;</span>
 <span class="lineNum">      61 </span>            :   }
-<span class="lineNum">      62 </span><span class="lineCov">         11 :   return idx;</span>
+<span class="lineNum">      62 </span><span class="lineCov">         10 :   return idx;</span>
 <span class="lineNum">      63 </span>            : }
 <span class="lineNum">      64 </span>            : 
 <span class="lineNum">      65 </span>            : /**
@@ -206,14 +206,14 @@
 <span class="lineNum">     144 </span>            :    @returns Index of the string.
 <a name="145"><span class="lineNum">     145 </span>            :    @retval -1 String is not in the list.</a>
 <span class="lineNum">     146 </span>            :  */
-<span class="lineNum">     147 </span><span class="lineCov">          8 : int find_string(smb_ll *toSearch, char *toFind)</span>
+<span class="lineNum">     147 </span><span class="lineCov">          7 : int find_string(smb_ll *toSearch, char *toFind)</span>
 <span class="lineNum">     148 </span>            : {
 <span class="lineNum">     149 </span>            :   DATA d;
 <span class="lineNum">     150 </span>            :   char *sCurr;
-<span class="lineNum">     151 </span><span class="lineCov">          8 :   smb_iter iter = ll_get_iter(toSearch);</span>
-<span class="lineNum">     152 </span><span class="lineCov">          8 :   int retVal = -1;</span>
+<span class="lineNum">     151 </span><span class="lineCov">          7 :   smb_iter iter = ll_get_iter(toSearch);</span>
+<span class="lineNum">     152 </span><span class="lineCov">          7 :   int retVal = -1;</span>
 <span class="lineNum">     153 </span>            :   smb_status status;
-<span class="lineNum">     154 </span><span class="lineCov">         16 :   while (iter.has_next(&amp;iter)) {</span>
+<span class="lineNum">     154 </span><span class="lineCov">         14 :   while (iter.has_next(&amp;iter)) {</span>
 <span class="lineNum">     155 </span><span class="lineNoCov">          0 :     d = iter.next(&amp;iter, &amp;status);</span>
 <span class="lineNum">     156 </span>            :     // We are using 'has_next' to check first!
 <span class="lineNum">     157 </span><span class="lineNoCov">          0 :     assert(status == SMB_SUCCESS);</span>
@@ -223,8 +223,8 @@
 <span class="lineNum">     161 </span><span class="lineNoCov">          0 :       break;</span>
 <span class="lineNum">     162 </span>            :     }
 <span class="lineNum">     163 </span>            :   }
-<span class="lineNum">     164 </span><span class="lineCov">          8 :   iter.destroy(&amp;iter);</span>
-<span class="lineNum">     165 </span><span class="lineCov">          8 :   return retVal;</span>
+<span class="lineNum">     164 </span><span class="lineCov">          7 :   iter.destroy(&amp;iter);</span>
+<span class="lineNum">     165 </span><span class="lineCov">          7 :   return retVal;</span>
 <span class="lineNum">     166 </span>            : }
 <span class="lineNum">     167 </span>            : 
 <span class="lineNum">     168 </span>            : /*******************************************************************************
@@ -352,15 +352,15 @@
 <span class="lineNum">     290 </span>            :    @retval 0 if the flag was not set.
 <a name="291"><span class="lineNum">     291 </span>            :    @retval 1 otherwise.</a>
 <span class="lineNum">     292 </span>            :  */
-<span class="lineNum">     293 </span><span class="lineCov">          9 : int check_flag(smb_ad *pData, char flag)</span>
+<span class="lineNum">     293 </span><span class="lineCov">          8 : int check_flag(smb_ad *pData, char flag)</span>
 <span class="lineNum">     294 </span>            : {
 <span class="lineNum">     295 </span>            :   uint64_t idx;
-<span class="lineNum">     296 </span><span class="lineCov">          9 :   idx = flag_index(flag);</span>
-<span class="lineNum">     297 </span><span class="lineCov">          9 :   if (idx != -1) {</span>
-<span class="lineNum">     298 </span><span class="lineCov">          9 :     idx =  pData-&gt;flags &amp; (UINT64_C(1) &lt;&lt; idx);</span>
-<span class="lineNum">     299 </span><span class="lineCov">          9 :     if (idx) return 1;</span>
+<span class="lineNum">     296 </span><span class="lineCov">          8 :   idx = flag_index(flag);</span>
+<span class="lineNum">     297 </span><span class="lineCov">          8 :   if (idx != -1) {</span>
+<span class="lineNum">     298 </span><span class="lineCov">          8 :     idx =  pData-&gt;flags &amp; (UINT64_C(1) &lt;&lt; idx);</span>
+<span class="lineNum">     299 </span><span class="lineCov">          8 :     if (idx) return 1;</span>
 <span class="lineNum">     300 </span>            :   }
-<span class="lineNum">     301 </span><span class="lineCov">          8 :   return 0;</span>
+<span class="lineNum">     301 </span><span class="lineCov">          7 :   return 0;</span>
 <span class="lineNum">     302 </span>            : }
 <span class="lineNum">     303 </span>            : 
 <span class="lineNum">     304 </span>            : /**
@@ -371,9 +371,9 @@
 <span class="lineNum">     309 </span>            :    @returns the index of the flag + 1 if it is set.
 <a name="310"><span class="lineNum">     310 </span>            :    @retval 0 if the flag was not set.</a>
 <span class="lineNum">     311 </span>            :  */
-<span class="lineNum">     312 </span><span class="lineCov">          8 : int check_long_flag(smb_ad *data, char *flag)</span>
+<span class="lineNum">     312 </span><span class="lineCov">          7 : int check_long_flag(smb_ad *data, char *flag)</span>
 <span class="lineNum">     313 </span>            : {
-<span class="lineNum">     314 </span><span class="lineCov">          8 :   return find_string(data-&gt;long_flags, flag) + 1;</span>
+<span class="lineNum">     314 </span><span class="lineCov">          7 :   return find_string(data-&gt;long_flags, flag) + 1;</span>
 <span class="lineNum">     315 </span>            : }
 <span class="lineNum">     316 </span>            : 
 <span class="lineNum">     317 </span>            : /**

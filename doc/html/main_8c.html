@@ -106,8 +106,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests creating a grammar, and printing it out. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a199259c75545a52be8cb131a39a38f86">simple_fsm</a> (void)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A function that tests the basic construction of a simple FSM.  <a href="#a199259c75545a52be8cb131a39a38f86"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a9593258c0b2d36eca2d557cbc581b265">read_fsm</a> (void)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">This function tests reading in a FSM and running it.  <a href="#a9593258c0b2d36eca2d557cbc581b265"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#acde7c3820e7b6ebb1227caa0ea50b133">read_combine_fsm</a> (void)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A function to test reading and combining FSMs.  <a href="#acde7c3820e7b6ebb1227caa0ea50b133"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9">regex</a> (void)</td></tr>
@@ -176,7 +174,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The program's exit code. </dd></dl>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00095">95</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00093">93</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -198,7 +196,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <p>A function to test reading and combining FSMs. </p>
 <p>Reads in two FSMs: one to accept "Stephen" or "stephen". Another to accept "Brennan" or "brennan". Then it creates the union, concatenation, and the Kleene star of each. Then it runs all the machines (nondeterministically) on some test strings, and prints out the resulting FSMs. </p>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00317">317</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00311">311</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -238,29 +236,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>Pointer to the file contents in memory. </dd></dl>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00181">181</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9593258c0b2d36eca2d557cbc581b265"></a><!-- doxytag: member="main.c::read_fsm" ref="a9593258c0b2d36eca2d557cbc581b265" args="(void)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="main_8c.html#a9593258c0b2d36eca2d557cbc581b265">read_fsm</a> </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>This function tests reading in a FSM and running it. </p>
-<p>It reads in the even a's and b's machine, and it simulates it on similar inputs. </p>
-
-<p>Definition at line <a class="el" href="main_8c_source.html#l00458">458</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00175">175</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -282,7 +258,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <p>A light test of my regular expression parser. </p>
 <p>Prompts for a regex, and then loops prompting for test strings. Runs the regex on each test string and reports to stdout whether they are accepted or rejected. </p>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00274">274</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00268">268</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -304,7 +280,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <p>A function that tests the basic construction of a simple FSM. </p>
 <p>Using the actual creation functions, creates a FSM to accept a string with an even number of a's and b's. Currently, the function simulates it nondeterministically, even though the machine is deterministic. </p>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00397">397</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00391">391</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -326,7 +302,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 02:56:54 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

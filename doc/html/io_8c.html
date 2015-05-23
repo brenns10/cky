@@ -77,7 +77,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="header">
   <div class="summary">
-<a href="#define-members">Defines</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">src/fsm/io.c File Reference</div>  </div>
@@ -93,31 +92,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &quot;<a class="el" href="fsm_8h_source.html">fsm.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="str_8h_source.html">str.h</a>&quot;</code><br/>
 <code>#include &quot;libstephen/al.h&quot;</code><br/>
+<code>#include &quot;libstephen/ll.h&quot;</code><br/>
 </div>
 <p><a href="io_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr><td colspan="2"><h2><a name="define-members"></a>
-Defines</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a5cbd48786a015f5151cdd2943e9a5377">SFIRSTSTATE</a>&#160;&#160;&#160;0</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reading the 'source' state of the transition.  <a href="#a5cbd48786a015f5151cdd2943e9a5377"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a643f9bf65a67467a7573b1c17bd22061">SSECONDSTATE</a>&#160;&#160;&#160;1</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reading the 'destination' state of the transition.  <a href="#a643f9bf65a67467a7573b1c17bd22061"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a205395e0ebf73a3658cc569e55a74228">SFIRSTCHAR</a>&#160;&#160;&#160;2</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reading the first character in a range.  <a href="#a205395e0ebf73a3658cc569e55a74228"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a0b19de38135c66b63d8c39767e87a596">SSECONDCHAR</a>&#160;&#160;&#160;3</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reading the second character in a range.  <a href="#a0b19de38135c66b63d8c39767e87a596"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a2804fd2d83c435643b0005aed842b494">SFINISHED</a>&#160;&#160;&#160;4</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Finished reading the transition.  <a href="#a2804fd2d83c435643b0005aed842b494"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a3fdea763af288707dd1f52a05ab2279b">SREADTYPE</a>&#160;&#160;&#160;5</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reading the type of the transition (positive or negative).  <a href="#a3fdea763af288707dd1f52a05ab2279b"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#aa5163a797ac0db5b1651c7df6d2e12d1">fsm_read_get_int</a> (const wchar_t **start, const wchar_t *prefix)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an integer value from a key-value line.  <a href="#aa5163a797ac0db5b1651c7df6d2e12d1"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm__trans.html">fsm_trans</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7">fsm_read_trans</a> (const wchar_t **source, int *start)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a transition from a line.  <a href="#a9ce28a628461e29ee525cd6a2105b9f7"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a7c706a1cfd1264318819507f4abcf91c">fsm_read</a> (const wchar_t *source)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a FSM from a string! The format is as follows:  <a href="#a7c706a1cfd1264318819507f4abcf91c"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c706a1cfd1264318819507f4abcf91c"></a><!-- doxytag: member="io.c::fsm_read" ref="a7c706a1cfd1264318819507f4abcf91c" args="(const wchar_t *source)" -->
+<a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_read</b> (const wchar_t *source)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a7759fcc6d5acbee423eb831f2a3c028c">fsm_print_char</a> (FILE *dest, wchar_t input)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a character, filtering if necessary.  <a href="#a7759fcc6d5acbee423eb831f2a3c028c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a3ba204b76773dffba8aca574d7e63434">fsm_print</a> (<a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
@@ -138,116 +120,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL STEPHEN BRENNAN BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </dd></dl>
 
 <p>Definition in file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-</div><hr/><h2>Define Documentation</h2>
-<a class="anchor" id="a2804fd2d83c435643b0005aed842b494"></a><!-- doxytag: member="io.c::SFINISHED" ref="a2804fd2d83c435643b0005aed842b494" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define <a class="el" href="io_8c.html#a2804fd2d83c435643b0005aed842b494">SFINISHED</a>&#160;&#160;&#160;4</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Finished reading the transition. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00073">73</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a205395e0ebf73a3658cc569e55a74228"></a><!-- doxytag: member="io.c::SFIRSTCHAR" ref="a205395e0ebf73a3658cc569e55a74228" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define <a class="el" href="io_8c.html#a205395e0ebf73a3658cc569e55a74228">SFIRSTCHAR</a>&#160;&#160;&#160;2</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reading the first character in a range. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00063">63</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5cbd48786a015f5151cdd2943e9a5377"></a><!-- doxytag: member="io.c::SFIRSTSTATE" ref="a5cbd48786a015f5151cdd2943e9a5377" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define <a class="el" href="io_8c.html#a5cbd48786a015f5151cdd2943e9a5377">SFIRSTSTATE</a>&#160;&#160;&#160;0</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reading the 'source' state of the transition. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00053">53</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3fdea763af288707dd1f52a05ab2279b"></a><!-- doxytag: member="io.c::SREADTYPE" ref="a3fdea763af288707dd1f52a05ab2279b" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define <a class="el" href="io_8c.html#a3fdea763af288707dd1f52a05ab2279b">SREADTYPE</a>&#160;&#160;&#160;5</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reading the type of the transition (positive or negative). </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00078">78</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0b19de38135c66b63d8c39767e87a596"></a><!-- doxytag: member="io.c::SSECONDCHAR" ref="a0b19de38135c66b63d8c39767e87a596" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define <a class="el" href="io_8c.html#a0b19de38135c66b63d8c39767e87a596">SSECONDCHAR</a>&#160;&#160;&#160;3</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reading the second character in a range. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00068">68</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a643f9bf65a67467a7573b1c17bd22061"></a><!-- doxytag: member="io.c::SSECONDSTATE" ref="a643f9bf65a67467a7573b1c17bd22061" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define <a class="el" href="io_8c.html#a643f9bf65a67467a7573b1c17bd22061">SSECONDSTATE</a>&#160;&#160;&#160;1</td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reading the 'destination' state of the transition. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00058">58</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<hr/><h2>Function Documentation</h2>
+</div><hr/><h2>Function Documentation</h2>
 <a class="anchor" id="a068179080f09c38af390ad19772f7aba"></a><!-- doxytag: member="io.c::fsm_dot" ref="a068179080f09c38af390ad19772f7aba" args="(fsm *f, FILE *dest)" -->
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +156,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00541">541</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00386">386</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -316,7 +189,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <p>This function allows for printing out some characters differently than others. In dot format, quotes should be escaped. Also, epsilon transitions should be labelled something readable.</p>
 <p>dest Destination file. c The character to print </p>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00512">512</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00357">357</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -354,7 +227,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00458">458</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00303">303</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -393,123 +266,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00436">436</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7c706a1cfd1264318819507f4abcf91c"></a><!-- doxytag: member="io.c::fsm_read" ref="a7c706a1cfd1264318819507f4abcf91c" args="(const wchar_t *source)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structfsm.html">fsm</a>* <a class="el" href="fsm_8h.html#a7c706a1cfd1264318819507f4abcf91c">fsm_read</a> </td>
-          <td>(</td>
-          <td class="paramtype">const wchar_t *&#160;</td>
-          <td class="paramname"><em>source</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Read a FSM from a string! The format is as follows: </p>
-<div class="fragment"><pre class="fragment">   START LINE (start: n)
-   ACCEPTING LINES ... (&gt;=1) (accept: n)
-   TRANSITION LINES (X-Y:[+|-]A-B[[A-B]...])
-</pre></div> <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#aa5163a797ac0db5b1651c7df6d2e12d1" title="Get an integer value from a key-value line.">fsm_read_get_int()</a> for info on START LINE and ACCEPTING LINES </dd>
-<dd>
-<a class="el" href="io_8c.html#a9ce28a628461e29ee525cd6a2105b9f7" title="Reads a transition from a line.">fsm_read_trans()</a> for info on the TRANSITION LINES</dd></dl>
-<p>Note that this function produces heavy output on stdout if compiled with SMD_ENABLE_DIAGNOSTIC_PRINTING.</p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">source</td><td>The string source </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>A FSM from the string if possible, NULL on error. </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00358">358</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa5163a797ac0db5b1651c7df6d2e12d1"></a><!-- doxytag: member="io.c::fsm_read_get_int" ref="aa5163a797ac0db5b1651c7df6d2e12d1" args="(const wchar_t **start, const wchar_t *prefix)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="fsm_8h.html#aa5163a797ac0db5b1651c7df6d2e12d1">fsm_read_get_int</a> </td>
-          <td>(</td>
-          <td class="paramtype">const wchar_t **&#160;</td>
-          <td class="paramname"><em>start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const wchar_t *&#160;</td>
-          <td class="paramname"><em>prefix</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Get an integer value from a key-value line. </p>
-<p>The line is in the form "key: value ", where whitespace is not allowed in the key section, but is allowed for the value section. The value must be a positive decimal integer. On error, returns -1.</p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">start</td><td>Pointer to the string pointer. This function advances the pointer to the start of the next line. </td></tr>
-    <tr><td class="paramname">prefix</td><td>The "key:" prefix the line should match. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The integer value </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00092">92</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9ce28a628461e29ee525cd6a2105b9f7"></a><!-- doxytag: member="io.c::fsm_read_trans" ref="a9ce28a628461e29ee525cd6a2105b9f7" args="(const wchar_t **source, int *start)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structfsm__trans.html">fsm_trans</a>* <a class="el" href="fsm_8h.html#a9ce28a628461e29ee525cd6a2105b9f7">fsm_read_trans</a> </td>
-          <td>(</td>
-          <td class="paramtype">const wchar_t **&#160;</td>
-          <td class="paramname"><em>source</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>start</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Reads a transition from a line. </p>
-<p>This function reads a transition from a line. The transition can have an arbitrary number of ranges, each separated by a space. The line should be of the form: `X-Y:[+|-]A-B[[A-B]...]`, where `X` and `Y` are state numbers, `A` and `B` are characters forming a range, and the `+` or `-` determine whether the transition is positive (only those in the range) or negative (everything not in that range). Note that there is only one `+` or `-`; it applies for all ranges in the transition.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="io_8c.html#a5cbd48786a015f5151cdd2943e9a5377" title="Reading the &#39;source&#39; state of the transition.">SFIRSTSTATE</a> etc. for more info on the meaning of the states.</dd></dl>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">source</td><td>The source pointer. It is advanced to the beginning of the next line. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">start</td><td>Where to put the start state of the transition. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The transition. </dd></dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00152">152</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00281">281</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -531,7 +288,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 02:56:54 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

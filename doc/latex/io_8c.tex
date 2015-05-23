@@ -13,30 +13,13 @@
 {\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}str.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
-\subsection*{\-Defines}
-\begin{DoxyCompactItemize}
-\item 
-\#define \hyperlink{io_8c_a5cbd48786a015f5151cdd2943e9a5377}{\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E}~0
-\begin{DoxyCompactList}\small\item\em \-Reading the 'source' state of the transition. \end{DoxyCompactList}\item 
-\#define \hyperlink{io_8c_a643f9bf65a67467a7573b1c17bd22061}{\-S\-S\-E\-C\-O\-N\-D\-S\-T\-A\-T\-E}~1
-\begin{DoxyCompactList}\small\item\em \-Reading the 'destination' state of the transition. \end{DoxyCompactList}\item 
-\#define \hyperlink{io_8c_a205395e0ebf73a3658cc569e55a74228}{\-S\-F\-I\-R\-S\-T\-C\-H\-A\-R}~2
-\begin{DoxyCompactList}\small\item\em \-Reading the first character in a range. \end{DoxyCompactList}\item 
-\#define \hyperlink{io_8c_a0b19de38135c66b63d8c39767e87a596}{\-S\-S\-E\-C\-O\-N\-D\-C\-H\-A\-R}~3
-\begin{DoxyCompactList}\small\item\em \-Reading the second character in a range. \end{DoxyCompactList}\item 
-\#define \hyperlink{io_8c_a2804fd2d83c435643b0005aed842b494}{\-S\-F\-I\-N\-I\-S\-H\-E\-D}~4
-\begin{DoxyCompactList}\small\item\em \-Finished reading the transition. \end{DoxyCompactList}\item 
-\#define \hyperlink{io_8c_a3fdea763af288707dd1f52a05ab2279b}{\-S\-R\-E\-A\-D\-T\-Y\-P\-E}~5
-\begin{DoxyCompactList}\small\item\em \-Reading the type of the transition (positive or negative). \end{DoxyCompactList}\end{DoxyCompactItemize}
+{\ttfamily \#include \char`\"{}libstephen/ll.\-h\char`\"{}}\*
 \subsection*{\-Functions}
 \begin{DoxyCompactItemize}
 \item 
-int \hyperlink{io_8c_aa5163a797ac0db5b1651c7df6d2e12d1}{fsm\-\_\-read\-\_\-get\-\_\-int} (const wchar\-\_\-t $\ast$$\ast$start, const wchar\-\_\-t $\ast$prefix)
-\begin{DoxyCompactList}\small\item\em \-Get an integer value from a key-\/value line. \end{DoxyCompactList}\item 
-\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans} (const wchar\-\_\-t $\ast$$\ast$source, int $\ast$start)
-\begin{DoxyCompactList}\small\item\em \-Reads a transition from a line. \end{DoxyCompactList}\item 
-\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{io_8c_a7c706a1cfd1264318819507f4abcf91c}{fsm\-\_\-read} (const wchar\-\_\-t $\ast$source)
-\begin{DoxyCompactList}\small\item\em \-Read a \-F\-S\-M from a string! \-The format is as follows\-: \end{DoxyCompactList}\item 
+\hypertarget{io_8c_a7c706a1cfd1264318819507f4abcf91c}{\hyperlink{structfsm}{fsm} $\ast$ {\bfseries fsm\-\_\-read} (const wchar\-\_\-t $\ast$source)}\label{io_8c_a7c706a1cfd1264318819507f4abcf91c}
+
+\item 
 void \hyperlink{io_8c_a7759fcc6d5acbee423eb831f2a3c028c}{fsm\-\_\-print\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t input)
 \begin{DoxyCompactList}\small\item\em \-Print a character, filtering if necessary. \end{DoxyCompactList}\item 
 void \hyperlink{io_8c_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print} (\hyperlink{structfsm}{fsm} $\ast$f, \-F\-I\-L\-E $\ast$dest)
@@ -67,93 +50,6 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 
 
 
-\subsection{\-Define \-Documentation}
-\hypertarget{io_8c_a2804fd2d83c435643b0005aed842b494}{\index{io.\-c@{io.\-c}!\-S\-F\-I\-N\-I\-S\-H\-E\-D@{\-S\-F\-I\-N\-I\-S\-H\-E\-D}}
-\index{\-S\-F\-I\-N\-I\-S\-H\-E\-D@{\-S\-F\-I\-N\-I\-S\-H\-E\-D}!io.c@{io.\-c}}
-\subsubsection[{\-S\-F\-I\-N\-I\-S\-H\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-F\-I\-N\-I\-S\-H\-E\-D}~4}}\label{io_8c_a2804fd2d83c435643b0005aed842b494}
-
-
-\-Finished reading the transition. 
-
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} 
-\end{DoxySeeAlso}
-
-
-\-Definition at line 73 of file io.\-c.
-
-\hypertarget{io_8c_a205395e0ebf73a3658cc569e55a74228}{\index{io.\-c@{io.\-c}!\-S\-F\-I\-R\-S\-T\-C\-H\-A\-R@{\-S\-F\-I\-R\-S\-T\-C\-H\-A\-R}}
-\index{\-S\-F\-I\-R\-S\-T\-C\-H\-A\-R@{\-S\-F\-I\-R\-S\-T\-C\-H\-A\-R}!io.c@{io.\-c}}
-\subsubsection[{\-S\-F\-I\-R\-S\-T\-C\-H\-A\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-F\-I\-R\-S\-T\-C\-H\-A\-R}~2}}\label{io_8c_a205395e0ebf73a3658cc569e55a74228}
-
-
-\-Reading the first character in a range. 
-
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} 
-\end{DoxySeeAlso}
-
-
-\-Definition at line 63 of file io.\-c.
-
-\hypertarget{io_8c_a5cbd48786a015f5151cdd2943e9a5377}{\index{io.\-c@{io.\-c}!\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E@{\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E}}
-\index{\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E@{\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E}!io.c@{io.\-c}}
-\subsubsection[{\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E}~0}}\label{io_8c_a5cbd48786a015f5151cdd2943e9a5377}
-
-
-\-Reading the 'source' state of the transition. 
-
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} 
-\end{DoxySeeAlso}
-
-
-\-Definition at line 53 of file io.\-c.
-
-\hypertarget{io_8c_a3fdea763af288707dd1f52a05ab2279b}{\index{io.\-c@{io.\-c}!\-S\-R\-E\-A\-D\-T\-Y\-P\-E@{\-S\-R\-E\-A\-D\-T\-Y\-P\-E}}
-\index{\-S\-R\-E\-A\-D\-T\-Y\-P\-E@{\-S\-R\-E\-A\-D\-T\-Y\-P\-E}!io.c@{io.\-c}}
-\subsubsection[{\-S\-R\-E\-A\-D\-T\-Y\-P\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-R\-E\-A\-D\-T\-Y\-P\-E}~5}}\label{io_8c_a3fdea763af288707dd1f52a05ab2279b}
-
-
-\-Reading the type of the transition (positive or negative). 
-
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} 
-\end{DoxySeeAlso}
-
-
-\-Definition at line 78 of file io.\-c.
-
-\hypertarget{io_8c_a0b19de38135c66b63d8c39767e87a596}{\index{io.\-c@{io.\-c}!\-S\-S\-E\-C\-O\-N\-D\-C\-H\-A\-R@{\-S\-S\-E\-C\-O\-N\-D\-C\-H\-A\-R}}
-\index{\-S\-S\-E\-C\-O\-N\-D\-C\-H\-A\-R@{\-S\-S\-E\-C\-O\-N\-D\-C\-H\-A\-R}!io.c@{io.\-c}}
-\subsubsection[{\-S\-S\-E\-C\-O\-N\-D\-C\-H\-A\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-S\-E\-C\-O\-N\-D\-C\-H\-A\-R}~3}}\label{io_8c_a0b19de38135c66b63d8c39767e87a596}
-
-
-\-Reading the second character in a range. 
-
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} 
-\end{DoxySeeAlso}
-
-
-\-Definition at line 68 of file io.\-c.
-
-\hypertarget{io_8c_a643f9bf65a67467a7573b1c17bd22061}{\index{io.\-c@{io.\-c}!\-S\-S\-E\-C\-O\-N\-D\-S\-T\-A\-T\-E@{\-S\-S\-E\-C\-O\-N\-D\-S\-T\-A\-T\-E}}
-\index{\-S\-S\-E\-C\-O\-N\-D\-S\-T\-A\-T\-E@{\-S\-S\-E\-C\-O\-N\-D\-S\-T\-A\-T\-E}!io.c@{io.\-c}}
-\subsubsection[{\-S\-S\-E\-C\-O\-N\-D\-S\-T\-A\-T\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-S\-S\-E\-C\-O\-N\-D\-S\-T\-A\-T\-E}~1}}\label{io_8c_a643f9bf65a67467a7573b1c17bd22061}
-
-
-\-Reading the 'destination' state of the transition. 
-
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} 
-\end{DoxySeeAlso}
-
-
-\-Definition at line 58 of file io.\-c.
-
-
-
 \subsection{\-Function \-Documentation}
 \hypertarget{io_8c_a068179080f09c38af390ad19772f7aba}{\index{io.\-c@{io.\-c}!fsm\-\_\-dot@{fsm\-\_\-dot}}
 \index{fsm\-\_\-dot@{fsm\-\_\-dot}!io.c@{io.\-c}}
@@ -178,7 +74,7 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 \end{DoxyParams}
 
 
-\-Definition at line 541 of file io.\-c.
+\-Definition at line 386 of file io.\-c.
 
 \hypertarget{io_8c_ac7cf43e628d0aefef49a3d290b065e9c}{\index{io.\-c@{io.\-c}!fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}}
 \index{fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}!io.c@{io.\-c}}
@@ -196,7 +92,7 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 
 dest \-Destination file. c \-The character to print 
 
-\-Definition at line 512 of file io.\-c.
+\-Definition at line 357 of file io.\-c.
 
 \hypertarget{io_8c_a3ba204b76773dffba8aca574d7e63434}{\index{io.\-c@{io.\-c}!fsm\-\_\-print@{fsm\-\_\-print}}
 \index{fsm\-\_\-print@{fsm\-\_\-print}!io.c@{io.\-c}}
@@ -219,7 +115,7 @@ dest \-Destination file. c \-The character to print
 \end{DoxyParams}
 
 
-\-Definition at line 458 of file io.\-c.
+\-Definition at line 303 of file io.\-c.
 
 \hypertarget{io_8c_a7759fcc6d5acbee423eb831f2a3c028c}{\index{io.\-c@{io.\-c}!fsm\-\_\-print\-\_\-char@{fsm\-\_\-print\-\_\-char}}
 \index{fsm\-\_\-print\-\_\-char@{fsm\-\_\-print\-\_\-char}!io.c@{io.\-c}}
@@ -244,100 +140,5 @@ dest \-Destination file. c \-The character to print
 \end{DoxyParams}
 
 
-\-Definition at line 436 of file io.\-c.
-
-\hypertarget{io_8c_a7c706a1cfd1264318819507f4abcf91c}{\index{io.\-c@{io.\-c}!fsm\-\_\-read@{fsm\-\_\-read}}
-\index{fsm\-\_\-read@{fsm\-\_\-read}!io.c@{io.\-c}}
-\subsubsection[{fsm\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf fsm\-\_\-read} (
-\begin{DoxyParamCaption}
-\item[{const wchar\-\_\-t $\ast$}]{source}
-\end{DoxyParamCaption}
-)}}\label{io_8c_a7c706a1cfd1264318819507f4abcf91c}
-
-
-\-Read a \-F\-S\-M from a string! \-The format is as follows\-: 
-
-
-\begin{DoxyCode}
-   START LINE (start: n)
-   ACCEPTING LINES ... (>=1) (accept: n)
-   TRANSITION LINES (X-Y:[+|-]A-B[[A-B]...])
-\end{DoxyCode}
- \begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_aa5163a797ac0db5b1651c7df6d2e12d1}{fsm\-\_\-read\-\_\-get\-\_\-int()} for info on \-S\-T\-A\-R\-T \-L\-I\-N\-E and \-A\-C\-C\-E\-P\-T\-I\-N\-G \-L\-I\-N\-E\-S 
-
-\hyperlink{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{fsm\-\_\-read\-\_\-trans()} for info on the \-T\-R\-A\-N\-S\-I\-T\-I\-O\-N \-L\-I\-N\-E\-S
-\end{DoxySeeAlso}
-\-Note that this function produces heavy output on stdout if compiled with \-S\-M\-D\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-D\-I\-A\-G\-N\-O\-S\-T\-I\-C\-\_\-\-P\-R\-I\-N\-T\-I\-N\-G.
-
-
-\begin{DoxyParams}{\-Parameters}
-{\em source} & \-The string source \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-A \-F\-S\-M from the string if possible, \-N\-U\-L\-L on error. 
-\end{DoxyReturn}
-
-
-\-Definition at line 358 of file io.\-c.
-
-\hypertarget{io_8c_aa5163a797ac0db5b1651c7df6d2e12d1}{\index{io.\-c@{io.\-c}!fsm\-\_\-read\-\_\-get\-\_\-int@{fsm\-\_\-read\-\_\-get\-\_\-int}}
-\index{fsm\-\_\-read\-\_\-get\-\_\-int@{fsm\-\_\-read\-\_\-get\-\_\-int}!io.c@{io.\-c}}
-\subsubsection[{fsm\-\_\-read\-\_\-get\-\_\-int}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-read\-\_\-get\-\_\-int} (
-\begin{DoxyParamCaption}
-\item[{const wchar\-\_\-t $\ast$$\ast$}]{start, }
-\item[{const wchar\-\_\-t $\ast$}]{prefix}
-\end{DoxyParamCaption}
-)}}\label{io_8c_aa5163a797ac0db5b1651c7df6d2e12d1}
-
-
-\-Get an integer value from a key-\/value line. 
-
-\-The line is in the form \char`\"{}key\-: value \char`\"{}, where whitespace is not allowed in the key section, but is allowed for the value section. \-The value must be a positive decimal integer. \-On error, returns -\/1.
-
-
-\begin{DoxyParams}{\-Parameters}
-{\em start} & \-Pointer to the string pointer. \-This function advances the pointer to the start of the next line. \\
-\hline
-{\em prefix} & \-The \char`\"{}key\-:\char`\"{} prefix the line should match. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-The integer value 
-\end{DoxyReturn}
-
-
-\-Definition at line 92 of file io.\-c.
-
-\hypertarget{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}{\index{io.\-c@{io.\-c}!fsm\-\_\-read\-\_\-trans@{fsm\-\_\-read\-\_\-trans}}
-\index{fsm\-\_\-read\-\_\-trans@{fsm\-\_\-read\-\_\-trans}!io.c@{io.\-c}}
-\subsubsection[{fsm\-\_\-read\-\_\-trans}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-trans}$\ast$ {\bf fsm\-\_\-read\-\_\-trans} (
-\begin{DoxyParamCaption}
-\item[{const wchar\-\_\-t $\ast$$\ast$}]{source, }
-\item[{int $\ast$}]{start}
-\end{DoxyParamCaption}
-)}}\label{io_8c_a9ce28a628461e29ee525cd6a2105b9f7}
-
-
-\-Reads a transition from a line. 
-
-\-This function reads a transition from a line. \-The transition can have an arbitrary number of ranges, each separated by a space. \-The line should be of the form\-: `\-X-\/\-Y\-:\mbox{[}+$|$-\/\mbox{]}\-A-\/\-B\mbox{[}\mbox{[}\-A-\/\-B\mbox{]}...\mbox{]}`, where `\-X` and `\-Y` are state numbers, `\-A` and `\-B` are characters forming a range, and the `+` or `-\/` determine whether the transition is positive (only those in the range) or negative (everything not in that range). \-Note that there is only one `+` or `-\/`; it applies for all ranges in the transition.
-
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{io_8c_a5cbd48786a015f5151cdd2943e9a5377}{\-S\-F\-I\-R\-S\-T\-S\-T\-A\-T\-E} etc. for more info on the meaning of the states.
-\end{DoxySeeAlso}
-
-\begin{DoxyParams}[1]{\-Parameters}
- & {\em source} & \-The source pointer. \-It is advanced to the beginning of the next line. \\
-\hline
-\mbox{\tt out}  & {\em start} & \-Where to put the start state of the transition. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-The transition. 
-\end{DoxyReturn}
-
-
-\-Definition at line 152 of file io.\-c.
+\-Definition at line 281 of file io.\-c.
 

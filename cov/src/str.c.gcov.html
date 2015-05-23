@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-23 02:56:53</td>
+            <td class="headerValue">2015-05-23 18:02:19</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -119,62 +119,63 @@
 <span class="lineNum">      57 </span><span class="lineNoCov">          0 :              || digit == L'C' || digit == L'D' || digit == L'E' || digit == L'F'){</span>
 <span class="lineNum">      58 </span><span class="lineNoCov">          0 :     return 10 + towupper(digit) - L'A';</span>
 <span class="lineNum">      59 </span>            :   }
-<span class="lineNum">      60 </span><span class="lineNoCov">          0 : }</span>
-<span class="lineNum">      61 </span>            : 
-<span class="lineNum">      62 </span>            : /**
-<span class="lineNum">      63 </span>            :    @brief Get an escaped character from the string source.
-<span class="lineNum">      64 </span>            : 
-<span class="lineNum">      65 </span>            :    This function will advance the source pointer to after the escape sequence.
-<span class="lineNum">      66 </span>            :    It can get escapes `abfnrtv\xu`, which includes hexadecimal and unicode
-<span class="lineNum">      67 </span>            :    escapes.
-<span class="lineNum">      68 </span>            : 
-<span class="lineNum">      69 </span>            :    @brief source The source pointer
-<a name="70"><span class="lineNum">      70 </span>            :    @return The character that was escaped</a>
-<span class="lineNum">      71 </span>            :  */
-<span class="lineNum">      72 </span><span class="lineNoCov">          0 : wchar_t get_escape(const wchar_t **source, wchar_t epsilon)</span>
-<span class="lineNum">      73 </span>            : {
-<span class="lineNum">      74 </span><span class="lineNoCov">          0 :   wchar_t value = 0;</span>
-<span class="lineNum">      75 </span><span class="lineNoCov">          0 :   wchar_t specifier = **source;</span>
-<span class="lineNum">      76 </span><span class="lineNoCov">          0 :   (*source)++;</span>
-<span class="lineNum">      77 </span><span class="lineNoCov">          0 :   switch (specifier) {</span>
-<span class="lineNum">      78 </span>            :   case L'a':
-<span class="lineNum">      79 </span><span class="lineNoCov">          0 :     return L'\a';</span>
-<span class="lineNum">      80 </span>            :   case L'b':
-<span class="lineNum">      81 </span><span class="lineNoCov">          0 :     return L'\b';</span>
-<span class="lineNum">      82 </span>            :   case L'e':
-<span class="lineNum">      83 </span><span class="lineNoCov">          0 :     return epsilon;</span>
-<span class="lineNum">      84 </span>            :   case L'f':
-<span class="lineNum">      85 </span><span class="lineNoCov">          0 :     return L'\f';</span>
-<span class="lineNum">      86 </span>            :   case L'n':
-<span class="lineNum">      87 </span><span class="lineNoCov">          0 :     return L'\n';</span>
-<span class="lineNum">      88 </span>            :   case L'r':
-<span class="lineNum">      89 </span><span class="lineNoCov">          0 :     return L'\r';</span>
-<span class="lineNum">      90 </span>            :   case L't':
-<span class="lineNum">      91 </span><span class="lineNoCov">          0 :     return L'\t';</span>
-<span class="lineNum">      92 </span>            :   case L'v':
-<span class="lineNum">      93 </span><span class="lineNoCov">          0 :     return L'\v';</span>
-<span class="lineNum">      94 </span>            :   case L'\\':
-<span class="lineNum">      95 </span><span class="lineNoCov">          0 :     return L'\\';</span>
-<span class="lineNum">      96 </span>            :   case L'x':
-<span class="lineNum">      97 </span><span class="lineNoCov">          0 :     value += 16 * hexit_val(**source);</span>
-<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     (*source)++;</span>
-<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     value += hexit_val(**source);</span>
-<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     (*source)++;</span>
-<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     return value;</span>
-<span class="lineNum">     102 </span>            :   case L'u':
-<span class="lineNum">     103 </span><span class="lineNoCov">          0 :     value += 16 * 16 * 16 * hexit_val(**source);</span>
-<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     (*source)++;</span>
-<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     value += 16 * 16 * hexit_val(**source);</span>
-<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     (*source)++;</span>
-<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     value += 16 * hexit_val(**source);</span>
-<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     (*source)++;</span>
-<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     value += hexit_val(**source);</span>
-<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     (*source)++;</span>
-<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     return value;</span>
-<span class="lineNum">     112 </span>            :   default:
-<span class="lineNum">     113 </span><span class="lineNoCov">          0 :     return specifier;</span>
-<span class="lineNum">     114 </span>            :   }
-<span class="lineNum">     115 </span>            : }
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :   return -1;</span>
+<span class="lineNum">      61 </span>            : }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : /**
+<span class="lineNum">      64 </span>            :    @brief Get an escaped character from the string source.
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            :    This function will advance the source pointer to after the escape sequence.
+<span class="lineNum">      67 </span>            :    It can get escapes `abfnrtv\xu`, which includes hexadecimal and unicode
+<span class="lineNum">      68 </span>            :    escapes.
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :    @brief source The source pointer
+<a name="71"><span class="lineNum">      71 </span>            :    @return The character that was escaped</a>
+<span class="lineNum">      72 </span>            :  */
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 : wchar_t get_escape(const wchar_t **source, wchar_t epsilon)</span>
+<span class="lineNum">      74 </span>            : {
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :   wchar_t value = 0;</span>
+<span class="lineNum">      76 </span><span class="lineNoCov">          0 :   wchar_t specifier = **source;</span>
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :   (*source)++;</span>
+<span class="lineNum">      78 </span><span class="lineNoCov">          0 :   switch (specifier) {</span>
+<span class="lineNum">      79 </span>            :   case L'a':
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 :     return L'\a';</span>
+<span class="lineNum">      81 </span>            :   case L'b':
+<span class="lineNum">      82 </span><span class="lineNoCov">          0 :     return L'\b';</span>
+<span class="lineNum">      83 </span>            :   case L'e':
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :     return epsilon;</span>
+<span class="lineNum">      85 </span>            :   case L'f':
+<span class="lineNum">      86 </span><span class="lineNoCov">          0 :     return L'\f';</span>
+<span class="lineNum">      87 </span>            :   case L'n':
+<span class="lineNum">      88 </span><span class="lineNoCov">          0 :     return L'\n';</span>
+<span class="lineNum">      89 </span>            :   case L'r':
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :     return L'\r';</span>
+<span class="lineNum">      91 </span>            :   case L't':
+<span class="lineNum">      92 </span><span class="lineNoCov">          0 :     return L'\t';</span>
+<span class="lineNum">      93 </span>            :   case L'v':
+<span class="lineNum">      94 </span><span class="lineNoCov">          0 :     return L'\v';</span>
+<span class="lineNum">      95 </span>            :   case L'\\':
+<span class="lineNum">      96 </span><span class="lineNoCov">          0 :     return L'\\';</span>
+<span class="lineNum">      97 </span>            :   case L'x':
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :     value += 16 * hexit_val(**source);</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :     value += hexit_val(**source);</span>
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :     return value;</span>
+<span class="lineNum">     103 </span>            :   case L'u':
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :     value += 16 * 16 * 16 * hexit_val(**source);</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     106 </span><span class="lineNoCov">          0 :     value += 16 * 16 * hexit_val(**source);</span>
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     108 </span><span class="lineNoCov">          0 :     value += 16 * hexit_val(**source);</span>
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :     value += hexit_val(**source);</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :     (*source)++;</span>
+<span class="lineNum">     112 </span><span class="lineNoCov">          0 :     return value;</span>
+<span class="lineNum">     113 </span>            :   default:
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :     return specifier;</span>
+<span class="lineNum">     115 </span>            :   }
+<span class="lineNum">     116 </span>            : }
 </pre>
       </td>
     </tr>

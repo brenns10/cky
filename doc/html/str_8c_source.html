@@ -96,52 +96,53 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00057"></a>00057              || digit == L<span class="charliteral">&#39;C&#39;</span> || digit == L<span class="charliteral">&#39;D&#39;</span> || digit == L<span class="charliteral">&#39;E&#39;</span> || digit == L<span class="charliteral">&#39;F&#39;</span>){
 <a name="l00058"></a>00058     <span class="keywordflow">return</span> 10 + towupper(digit) - L<span class="charliteral">&#39;A&#39;</span>;
 <a name="l00059"></a>00059   }
-<a name="l00060"></a>00060 }
-<a name="l00061"></a>00061 
-<a name="l00072"></a><a class="code" href="str_8h.html#a2812a14f008e19005dec1ae9f31d0a93">00072</a> <span class="keywordtype">wchar_t</span> <a class="code" href="str_8c.html#a2812a14f008e19005dec1ae9f31d0a93" title="Get an escaped character from the string source.">get_escape</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **source, <span class="keywordtype">wchar_t</span> epsilon)
-<a name="l00073"></a>00073 {
-<a name="l00074"></a>00074   <span class="keywordtype">wchar_t</span> value = 0;
-<a name="l00075"></a>00075   <span class="keywordtype">wchar_t</span> specifier = **source;
-<a name="l00076"></a>00076   (*source)++;
-<a name="l00077"></a>00077   <span class="keywordflow">switch</span> (specifier) {
-<a name="l00078"></a>00078   <span class="keywordflow">case</span> L<span class="charliteral">&#39;a&#39;</span>:
-<a name="l00079"></a>00079     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\a&#39;</span>;
-<a name="l00080"></a>00080   <span class="keywordflow">case</span> L<span class="charliteral">&#39;b&#39;</span>:
-<a name="l00081"></a>00081     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\b&#39;</span>;
-<a name="l00082"></a>00082   <span class="keywordflow">case</span> L<span class="charliteral">&#39;e&#39;</span>:
-<a name="l00083"></a>00083     <span class="keywordflow">return</span> epsilon;
-<a name="l00084"></a>00084   <span class="keywordflow">case</span> L<span class="charliteral">&#39;f&#39;</span>:
-<a name="l00085"></a>00085     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\f&#39;</span>;
-<a name="l00086"></a>00086   <span class="keywordflow">case</span> L<span class="charliteral">&#39;n&#39;</span>:
-<a name="l00087"></a>00087     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\n&#39;</span>;
-<a name="l00088"></a>00088   <span class="keywordflow">case</span> L<span class="charliteral">&#39;r&#39;</span>:
-<a name="l00089"></a>00089     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\r&#39;</span>;
-<a name="l00090"></a>00090   <span class="keywordflow">case</span> L<span class="charliteral">&#39;t&#39;</span>:
-<a name="l00091"></a>00091     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\t&#39;</span>;
-<a name="l00092"></a>00092   <span class="keywordflow">case</span> L<span class="charliteral">&#39;v&#39;</span>:
-<a name="l00093"></a>00093     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\v&#39;</span>;
-<a name="l00094"></a>00094   <span class="keywordflow">case</span> L<span class="charliteral">&#39;\\&#39;</span>:
-<a name="l00095"></a>00095     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\\&#39;</span>;
-<a name="l00096"></a>00096   <span class="keywordflow">case</span> L<span class="charliteral">&#39;x&#39;</span>:
-<a name="l00097"></a>00097     value += 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
-<a name="l00098"></a>00098     (*source)++;
-<a name="l00099"></a>00099     value += <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
-<a name="l00100"></a>00100     (*source)++;
-<a name="l00101"></a>00101     <span class="keywordflow">return</span> value;
-<a name="l00102"></a>00102   <span class="keywordflow">case</span> L<span class="charliteral">&#39;u&#39;</span>:
-<a name="l00103"></a>00103     value += 16 * 16 * 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
-<a name="l00104"></a>00104     (*source)++;
-<a name="l00105"></a>00105     value += 16 * 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
-<a name="l00106"></a>00106     (*source)++;
-<a name="l00107"></a>00107     value += 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
-<a name="l00108"></a>00108     (*source)++;
-<a name="l00109"></a>00109     value += <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
-<a name="l00110"></a>00110     (*source)++;
-<a name="l00111"></a>00111     <span class="keywordflow">return</span> value;
-<a name="l00112"></a>00112   <span class="keywordflow">default</span>:
-<a name="l00113"></a>00113     <span class="keywordflow">return</span> specifier;
-<a name="l00114"></a>00114   }
-<a name="l00115"></a>00115 }
+<a name="l00060"></a>00060   <span class="keywordflow">return</span> -1;
+<a name="l00061"></a>00061 }
+<a name="l00062"></a>00062 
+<a name="l00073"></a><a class="code" href="str_8h.html#a2812a14f008e19005dec1ae9f31d0a93">00073</a> <span class="keywordtype">wchar_t</span> <a class="code" href="str_8c.html#a2812a14f008e19005dec1ae9f31d0a93" title="Get an escaped character from the string source.">get_escape</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **source, <span class="keywordtype">wchar_t</span> epsilon)
+<a name="l00074"></a>00074 {
+<a name="l00075"></a>00075   <span class="keywordtype">wchar_t</span> value = 0;
+<a name="l00076"></a>00076   <span class="keywordtype">wchar_t</span> specifier = **source;
+<a name="l00077"></a>00077   (*source)++;
+<a name="l00078"></a>00078   <span class="keywordflow">switch</span> (specifier) {
+<a name="l00079"></a>00079   <span class="keywordflow">case</span> L<span class="charliteral">&#39;a&#39;</span>:
+<a name="l00080"></a>00080     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\a&#39;</span>;
+<a name="l00081"></a>00081   <span class="keywordflow">case</span> L<span class="charliteral">&#39;b&#39;</span>:
+<a name="l00082"></a>00082     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\b&#39;</span>;
+<a name="l00083"></a>00083   <span class="keywordflow">case</span> L<span class="charliteral">&#39;e&#39;</span>:
+<a name="l00084"></a>00084     <span class="keywordflow">return</span> epsilon;
+<a name="l00085"></a>00085   <span class="keywordflow">case</span> L<span class="charliteral">&#39;f&#39;</span>:
+<a name="l00086"></a>00086     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\f&#39;</span>;
+<a name="l00087"></a>00087   <span class="keywordflow">case</span> L<span class="charliteral">&#39;n&#39;</span>:
+<a name="l00088"></a>00088     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\n&#39;</span>;
+<a name="l00089"></a>00089   <span class="keywordflow">case</span> L<span class="charliteral">&#39;r&#39;</span>:
+<a name="l00090"></a>00090     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\r&#39;</span>;
+<a name="l00091"></a>00091   <span class="keywordflow">case</span> L<span class="charliteral">&#39;t&#39;</span>:
+<a name="l00092"></a>00092     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\t&#39;</span>;
+<a name="l00093"></a>00093   <span class="keywordflow">case</span> L<span class="charliteral">&#39;v&#39;</span>:
+<a name="l00094"></a>00094     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\v&#39;</span>;
+<a name="l00095"></a>00095   <span class="keywordflow">case</span> L<span class="charliteral">&#39;\\&#39;</span>:
+<a name="l00096"></a>00096     <span class="keywordflow">return</span> L<span class="charliteral">&#39;\\&#39;</span>;
+<a name="l00097"></a>00097   <span class="keywordflow">case</span> L<span class="charliteral">&#39;x&#39;</span>:
+<a name="l00098"></a>00098     value += 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
+<a name="l00099"></a>00099     (*source)++;
+<a name="l00100"></a>00100     value += <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
+<a name="l00101"></a>00101     (*source)++;
+<a name="l00102"></a>00102     <span class="keywordflow">return</span> value;
+<a name="l00103"></a>00103   <span class="keywordflow">case</span> L<span class="charliteral">&#39;u&#39;</span>:
+<a name="l00104"></a>00104     value += 16 * 16 * 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
+<a name="l00105"></a>00105     (*source)++;
+<a name="l00106"></a>00106     value += 16 * 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
+<a name="l00107"></a>00107     (*source)++;
+<a name="l00108"></a>00108     value += 16 * <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
+<a name="l00109"></a>00109     (*source)++;
+<a name="l00110"></a>00110     value += <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(**source);
+<a name="l00111"></a>00111     (*source)++;
+<a name="l00112"></a>00112     <span class="keywordflow">return</span> value;
+<a name="l00113"></a>00113   <span class="keywordflow">default</span>:
+<a name="l00114"></a>00114     <span class="keywordflow">return</span> specifier;
+<a name="l00115"></a>00115   }
+<a name="l00116"></a>00116 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -160,7 +161,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 02:56:54 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
