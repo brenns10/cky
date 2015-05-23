@@ -52,7 +52,7 @@
 fsm *fsm_copy(const fsm *f)
 {
   int i, j;
-  smb_al *old, *newList;
+  smb_al *old;
   fsm_trans *ft;
   fsm *new = fsm_create();
   smb_status status;

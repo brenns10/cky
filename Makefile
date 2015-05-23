@@ -37,7 +37,7 @@
 
 # Compiler Variable Declarations
 CC=gcc
-FLAGS=
+FLAGS=-Wall
 INC=-Ilibstephen/inc/ -Isrc/
 CFLAGS=$(FLAGS) -c -g --std=c99 $(SMB_CONF) $(INC)
 LFLAGS=$(FLAGS)

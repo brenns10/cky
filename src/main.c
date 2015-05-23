@@ -362,7 +362,7 @@ void read_combine_fsm(void)
   fsm_kleene(m2S);
 
   for (i = 0; i < sizeof(inputs)/sizeof(wchar_t *); i++) {
-    printf("BEGIN TESTING: \"%Ls\".\n", inputs[i]);
+    printf("BEGIN TESTING: \"%ls\".\n", inputs[i]);
 
     printf("M1: %s\n", fsm_sim_nondet(m1, inputs[i]) ? "accept" : "reject");
     printf("M2: %s\n", fsm_sim_nondet(m2, inputs[i]) ? "accept" : "reject");
@@ -427,19 +427,19 @@ void simple_fsm(void)
   fsm_add_trans(f, 2, T20);
   fsm_add_trans(f, 0, T02);
 
-  printf("Running on i1=\"%Ls\"\n", i1);
+  printf("Running on i1=\"%ls\"\n", i1);
   if (fsm_sim_nondet(f, i1))
     printf("Accept.\n");
   else
     printf("Reject.\n");
 
-  printf("Running on i2=\"%Ls\"\n", i2);
+  printf("Running on i2=\"%ls\"\n", i2);
   if (fsm_sim_nondet(f, i2))
     printf("Accept.\n");
   else
     printf("Reject.\n");
 
-  printf("Running on i3=\"%Ls\"\n", i3);
+  printf("Running on i3=\"%ls\"\n", i3);
   if (fsm_sim_nondet(f, i3))
     printf("Accept.\n");
   else
@@ -484,7 +484,7 @@ void read_fsm(void) {
   }
 
   for (i = 0; i < sizeof(inputs)/sizeof(wchar_t*); i++) {
-    printf("Running on i%d=\"%Ls\"\n", i, inputs[i]);
+    printf("Running on i%d=\"%ls\"\n", i, inputs[i]);
     if (fsm_sim_nondet(f, inputs[i]))
       printf("Accept.\n");
     else
