@@ -265,6 +265,7 @@ fsm *fsm_read(const wchar_t *source)
   // Parse the fsm and return it.
   f = fsm_parselines(lines);
   smb_free(copy);
+  ll_delete(lines);
   return f;
 }
 
