@@ -61,17 +61,35 @@ static int test_escape(void)
   int i;
   const wchar_t *machine =
     L"start:0\n"
-    L"accept:3\n"
-    L"0-1:+\\n-\\n\n"           // newline
-    L"1-2:+\\x3A-\\x3a\n"       // colon
-    L"2-3:-\\u0051-\\u0051\n";  // anything but Q
+    L"accept:12\n"
+    L"0-1:+\\a-\\a\n"           // alarm
+    L"1-2:+\\b-\\b\n"           // backspace
+    L"2-3:+\\e-\\e\n"           // EPSILON
+    L"3-4:+\\f-\\f\n"           // form feed
+    L"4-5:+\\n-\\n\n"           // newline (lf)
+    L"5-6:+\\r-\\r\n"           // carriage return
+    L"6-7:+\\t-\\t\n"           // tab
+    L"7-8:+\\v-\\v\n"           // vertical tab
+    L"8-9:+\\\\-\\\\\n"         // backslash
+    L"9-10:+\\+-\\+\n"          // other character
+    L"10-11:+\\x3A-\\x3a\n"     // colon
+    L"11-12:+\\u0051-\\u0051\n";// Q
   const wchar_t *inputs[] = {
-    L"\n:a", // accept
-    L"\n:$", // accept
-    L"\n:Q", // reject
-    L"abcd", // reject
+    L"\a\b\f\n\r\t\v\\+:Q", // accept
+    L"a\b\f\n\r\t\v\\+:Q",  // reject
+    L"\ab\f\n\r\t\v\\+:Q",  // reject
+    L"\a\bf\n\r\t\v\\+:Q",  // reject
+    L"\a\b\fn\r\t\v\\+:Q",  // reject
+    L"\a\b\f\nr\t\v\\+:Q",  // reject
+    L"\a\b\f\n\rt\v\\+:Q",  // reject
+    L"\a\b\f\n\r\tv\\+:Q",  // reject
+    L"\a\b\f\n\r\t\v/+:Q",  // reject
+    L"\a\b\f\n\r\t\v\\-:Q", // reject
+    L"\a\b\f\n\r\t\v\\-;Q", // reject
+    L"\a\b\f\n\r\t\v\\-:q", // reject
   };
-  const bool results[] = {true, true, false, false};
+  const bool results[] = {true, false, false, false, false, false, false, false,
+                          false, false, false, false};
 
   fsm *f = fsm_read(machine);
   for (i = 0; i < sizeof(inputs)/sizeof(wchar_t*); i++) {
