@@ -234,36 +234,6 @@ fsm *fsm_read(const wchar_t *source)
 }
 
 /**
-   @brief Print a character, filtering if necessary.
-
-   This subroutine of fsm_print() prints characters in transitions.  It exists
-   to make non-printable characters printable by printing their escaped versions
-   instead.
-
-   @param dest The file to print to.
-   @param input The character to filter.
- */
-void fsm_print_char(FILE *dest, wchar_t input)
-{
-  switch (input) {
-
-  case EPSILON:
-    // Print epsilon as \e
-    fprintf(dest, "\\e");
-    break;
-
-  case L'\n':
-    // Print newline as \n, or else it will utterly break fsm_read().
-    fprintf(dest, "\\n");
-
-  default:
-    // Print other characters as verbatim
-    fprintf(dest, "%lc", input);
-    break;
-  }
-}
-
-/**
    @brief Print a string representation of the FSM to a file (or stdout).
 
    @param f The FSM to print
@@ -299,9 +269,9 @@ void fsm_print(fsm *f, FILE *dest)
 
       // For every range in the transition, print it followed by a space.
       for (start = ft->start, end = ft->end; *start != L'\0'; start++, end++) {
-        fsm_print_char(dest, *start);
+        fprintf(dest, "%s", escape_wchar(*start));
         fprintf(dest, "-");
-        fsm_print_char(dest, *end);
+        fprintf(dest, "%s", escape_wchar(*end));
 
         // If this isn't the last range, print a space to separate
         if (*(start+1) != L'\0') {

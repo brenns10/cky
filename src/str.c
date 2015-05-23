@@ -175,6 +175,43 @@ int read_escape(const wchar_t *source, wchar_t *out)
 }
 
 /**
+   @brief Return a string representation of a character, escaped if necessary.
+
+   The returned string is statically allocated, but only valid until the next
+   time fsm_print_char() is called.
+   @param dest The file to print to.
+   @param input The character to filter.
+ */
+wchar_t *escape_wchar(wchar_t input)
+{
+  static wchar_t buf[] = {L' ', L'\0'};
+  switch (input) {
+  case L'\a':
+    return L"\\a";
+  case L'\b':
+    return L"\\b";
+  case EPSILON:
+    return L"\\e";
+  case L'\f':
+    return L"\\f";
+  case L'\n':
+    return L"\\n";
+  case L'\r':
+    return L"\\r";
+  case L'\t':
+    return L"\\t";
+  case L'\v':
+    return L"\\v";
+  case L'\\':
+    return L"\\\\";
+  default:
+    // Print other characters as verbatim
+    buf[0] = input;
+    return buf;
+  }
+}
+
+/**
    @brief Read a single character from the string, accepting escape sequences.
    @param source The string to read from.
    @param out Place to store the resulting character.
