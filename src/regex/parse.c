@@ -174,7 +174,7 @@ fsm *regex_parse_create_dot_fsm(bool newline_accepted)
   if (!newline_accepted) {
     ft = fsm_trans_create(1, FSM_TRANS_NEGATIVE, dest);
   } else {
-    fsm_trans *ft = fsm_trans_create(0, FSM_TRANS_NEGATIVE, dest);
+    ft = fsm_trans_create(0, FSM_TRANS_NEGATIVE, dest);
   }
   if (!newline_accepted) {
     ft->start[0] = L'\n';
@@ -343,7 +343,6 @@ fsm *regex_parse_char_class(const wchar_t **regex)
 fsm *regex_parse_recursive(const wchar_t *regex, const wchar_t **final)
 {
   // Initial FSM is a machine that accepts the empty string.
-  int i = 0;
   fsm *curr = fsm_create();
   fsm *new;
   curr->start = fsm_add_state(curr, true);

@@ -57,6 +57,7 @@ int hexit_val(wchar_t digit)
              || digit == L'C' || digit == L'D' || digit == L'E' || digit == L'F'){
     return 10 + towupper(digit) - L'A';
   }
+  return -1;
 }
 
 /**

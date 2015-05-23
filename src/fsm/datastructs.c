@@ -102,7 +102,6 @@ fsm_trans *fsm_trans_create(int n, int type, int dest)
  */
 void fsm_trans_destroy(fsm_trans *ft)
 {
-  int len = wcslen(ft->start); // assume len(start) == len(end)
   smb_free(ft->start);
   smb_free(ft->end);
 }
