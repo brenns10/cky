@@ -52,7 +52,6 @@
 
 void simple_gram(void);
 void simple_fsm(void);
-void read_fsm(void);
 void read_combine_fsm(void);
 void regex(void);
 void search(void);
@@ -70,7 +69,6 @@ void help(char *name)
   puts("Tests:");
   puts("  -g, --simple-gram       create and print a grammar");
   puts("  -f, --simple-fsm        programmatically create and run a certain FSM");
-  puts("  -r, --read-fsm          create an FSM by reading a string, and run it");
   puts("  -c, --read-combine-fsm  read FSMs and combine them using various operators");
   puts("  -e, --regex             input regex and test strings");
   puts("  -s, --search            regex search file");
@@ -112,10 +110,6 @@ int main(int argc, char **argv)
   }
   if (check_flag(&data, 'f') || check_long_flag(&data, "simple-fsm")) {
     simple_fsm();
-    executed = true;
-  }
-  if (check_flag(&data, 'r') || check_long_flag(&data, "read-fsm")) {
-    read_fsm();
     executed = true;
   }
   if (check_flag(&data, 'c') || check_long_flag(&data, "read-combine-fsm")) {
@@ -450,52 +444,6 @@ void simple_fsm(void)
 }
 
 /**
-   @brief This function tests reading in a FSM and running it.
-
-   It reads in the even a's and b's machine, and it simulates it on similar
-   inputs.
- */
-void read_fsm(void) {
-  int i;
-  const wchar_t *machine =
-    L"start:0\n"
-    L"accept:0\n"
-    L"0-1:+a-a\n"
-    L"0-2:+b-b\n"
-    L"1-0:+a-a\n"
-    L"1-3:+b-b\n"
-    L"2-3:+a-a\n"
-    L"2-0:+b-b\n"
-    L"3-1:+b-b\n"
-    L"3-2:+a-a\n";
-
-  const wchar_t *inputs[] = {
-    L"ababa",
-    L"aabaa",
-    L"aaaabbbba",
-    L"ab",
-    L"abab",
-    L"aabb"
-  };
-
-  fsm *f = fsm_read(machine);
-  if (f == NULL) {
-    return;
-  }
-
-  for (i = 0; i < sizeof(inputs)/sizeof(wchar_t*); i++) {
-    printf("Running on i%d=\"%ls\"\n", i, inputs[i]);
-    if (fsm_sim_nondet(f, inputs[i]))
-      printf("Accept.\n");
-    else
-      printf("Reject.\n");
-  }
-
-  fsm_print(f, stdout);
-  fsm_delete(f, true);
-}
-
-/**
    @brief Tests creating a grammar, and printing it out.
  */
 void simple_gram(void)
@@ -534,4 +482,5 @@ void simple_gram(void)
 void test(void)
 {
   fsm_test();
+  fsm_io_test();
 }

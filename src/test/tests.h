@@ -11,4 +11,4 @@
 *******************************************************************************/
 
 void fsm_test(void);
-void fsm_sim_test(void);
+void fsm_io_test(void);
