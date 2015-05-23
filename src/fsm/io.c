@@ -47,43 +47,6 @@
 #include "libstephen/al.h"
 #include "libstephen/ll.h"
 
-/**
-   @brief Return a list of lines from the given string.
-
-   The string is modified!  You should make a copy before doing this.
-   @param source The string to split into lines.
-   @return A linked list containing wchar_t* to each line.
- */
-static smb_ll *split_lines(wchar_t *source)
-{
-  wchar_t *start;
-  smb_ll *list;
-  DATA d;
-
-  /*
-    We go through `source` looking for every newline, replace it with NUL, and
-    add the beginnig of the line to the list.
-   */
-  start = source;
-  list = ll_create();
-  while (*source != L'\0') {
-    if (*source == L'\n') {
-      // Add line to list.
-      d.data_ptr = start;
-      ll_append(list, d);
-      // Null-terminate the line.
-      *source = L'\0';
-      // Next string starts at the next character.
-      start = source + 1;
-    }
-    source++;
-  }
-  if (start != source) {
-    d.data_ptr = start;
-    ll_append(list, d);
-  }
-  return list;
-}
 
 /**
    @brief Expand f to have as many states as referenced in the transition.
@@ -141,7 +104,7 @@ static void fsm_parsetrans(wchar_t *line, fsm *f)
 {
   int src_state, dst_state, type, numread, i;
   wchar_t src_char, dst_char, type_char;
-  wchar_t *subline;
+  wchar_t *remaining;
   smb_ll sources, destinations;
   DATA d;
   smb_iter src_it, dst_it;
@@ -160,13 +123,14 @@ static void fsm_parsetrans(wchar_t *line, fsm *f)
   // destinations, and begin reading these ranges.
   ll_init(&sources);
   ll_init(&destinations);
-  subline = line + numread;
-  while (swscanf(subline, L"%lc-%lc%n", &src_char, &dst_char, &numread) == 2) {
+  remaining = line + numread;
+  while (remaining[0] != L'\0') {
+    remaining += read_wchar(remaining, &src_char) + 1;
     d.data_llint = src_char;
     ll_append(&sources, d);
+    remaining += read_wchar(remaining, &dst_char);
     d.data_llint = dst_char;
     ll_append(&destinations, d);
-    subline += numread;
   }
 
   // Now that we've read them all, we can copy them into a new fsm_trans.

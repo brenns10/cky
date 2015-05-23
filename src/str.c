@@ -40,6 +40,7 @@
 #include <wchar.h>
 #include <wctype.h>
 
+#include "libstephen/ll.h"
 #include "str.h"
 #include "fsm.h"
 
@@ -113,4 +114,116 @@ wchar_t get_escape(const wchar_t **source, wchar_t epsilon)
   default:
     return specifier;
   }
+}
+
+/**
+   @brief Place the escaped wchar in source into out.
+
+   Source should be a string "\..." containing an escape sequence.  It should
+   include the backslash.  This function will read the escape sequence, convert
+   it to a wchar_t, store that in out, and return the number of characters read.
+   @param source The string escape sequence to translate.
+   @param out Where to store the output character.
+   @return The number of characters read.
+ */
+int read_escape(const wchar_t *source, wchar_t *out)
+{
+  wchar_t specifier = source[1];
+  *out = 0;
+  switch (specifier) {
+  case L'a':
+    *out = L'\a';
+    return 2;
+  case L'b':
+    *out = L'\b';
+    return 2;
+  case L'e':
+    *out = EPSILON;
+    return 2;
+  case L'f':
+    *out = L'\f';
+    return 2;
+  case L'n':
+    *out = L'\n';
+    return 2;
+  case L'r':
+    *out = L'\r';
+    return 2;
+  case L't':
+    *out = L'\t';
+    return 2;
+  case L'v':
+    *out = L'\v';
+    return 2;
+  case L'\\':
+    *out = L'\\';
+    return 2;
+  case L'x':
+    *out += 16 * hexit_val(source[2]);
+    *out += hexit_val(source[3]);
+    return 4;
+  case L'u':
+    *out += 16 * 16 * 16 * hexit_val(source[2]);
+    *out += 16 * 16 * hexit_val(source[3]);
+    *out += 16 * hexit_val(source[4]);
+    *out += hexit_val(source[5]);
+    return 6;
+  default:
+    *out = specifier;
+    return 2;
+  }
+}
+
+/**
+   @brief Read a single character from the string, accepting escape sequences.
+   @param source The string to read from.
+   @param out Place to store the resulting character.
+   @return Number of characters read from source.
+ */
+int read_wchar(const wchar_t *source, wchar_t *out)
+{
+  if (source[0] == L'\\') {
+    return read_escape(source, out);
+  } else {
+    *out = source[0];
+    return 1;
+  }
+}
+
+/**
+   @brief Return a list of lines from the given string.
+
+   The string is modified!  You should make a copy before doing this.
+   @param source The string to split into lines.
+   @return A linked list containing wchar_t* to each line.
+ */
+smb_ll *split_lines(wchar_t *source)
+{
+  wchar_t *start;
+  smb_ll *list;
+  DATA d;
+
+  /*
+    We go through `source` looking for every newline, replace it with NUL, and
+    add the beginnig of the line to the list.
+   */
+  start = source;
+  list = ll_create();
+  while (*source != L'\0') {
+    if (*source == L'\n') {
+      // Add line to list.
+      d.data_ptr = start;
+      ll_append(list, d);
+      // Null-terminate the line.
+      *source = L'\0';
+      // Next string starts at the next character.
+      start = source + 1;
+    }
+    source++;
+  }
+  if (start != source) {
+    d.data_ptr = start;
+    ll_append(list, d);
+  }
+  return list;
 }
