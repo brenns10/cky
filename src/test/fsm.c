@@ -44,6 +44,28 @@ int fsm_test_memory(void)
 }
 
 /**
+   @brief Test fsm_sim for memory leaks (use Valgrind!).
+ */
+static int test_fsm_sim_memory(void)
+{
+  fsm f;
+  fsm_sim *pfs;
+  smb_al *state;
+
+  // Dummy resources for the FSM simulation.
+  state = al_create();
+  fsm_init(&f);
+
+  // Test is to make sure that these work properly.
+  pfs = fsm_sim_create(&f, state, L"abctest");
+  fsm_sim_delete(pfs, true);
+
+  // Only need to destroy the FSM, since the "curr" state was freed.
+  fsm_destroy(&f, true);
+  return 0;
+}
+
+/**
    @brief Test fsm_trans checking.
 
    Makes sure that testing transitions works correctly.
@@ -359,6 +381,9 @@ void fsm_test(void)
 
   smb_ut_test *test_memory = su_create_test("test_memory", fsm_test_memory);
   su_add_test(group, test_memory);
+
+  smb_ut_test *fsm_sim_memory = su_create_test("fsm_sim_memory", test_fsm_sim_memory);
+  su_add_test(group, fsm_sim_memory);
 
   smb_ut_test *test_check = su_create_test("test_check", fsm_test_check);
   su_add_test(group, test_check);
