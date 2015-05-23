@@ -252,6 +252,10 @@ void fsm_print_char(FILE *dest, wchar_t input)
     fprintf(dest, "\\e");
     break;
 
+  case L'\n':
+    // Print newline as \n, or else it will utterly break fsm_read().
+    fprintf(dest, "\\n");
+
   default:
     // Print other characters as verbatim
     fprintf(dest, "%lc", input);
