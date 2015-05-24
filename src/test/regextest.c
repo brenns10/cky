@@ -262,6 +262,20 @@ static int test_hyphen(void)
   return 0;
 }
 
+static int test_class_escape(void)
+{
+  fsm *f = regex_parse(L"[^\\n]");
+  TEST_ASSERT(!fsm_sim_nondet(f, L""));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"\n"));
+  TEST_ASSERT(fsm_sim_nondet(f, L"a"));
+  TEST_ASSERT(fsm_sim_nondet(f, L" "));
+  TEST_ASSERT(fsm_sim_nondet(f, L"#"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"ab"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"\nb"));
+  fsm_delete(f, true);
+  return 0;
+}
+
 void regex_test(void)
 {
   smb_ut_group *group = su_create_test_group("regex");
@@ -322,6 +336,9 @@ void regex_test(void)
 
   smb_ut_test *hyphen = su_create_test("hyphen", test_hyphen);
   su_add_test(group, hyphen);
+
+  smb_ut_test *class_escape = su_create_test("class_escape", test_class_escape);
+  su_add_test(group, class_escape);
 
   su_run_group(group);
   su_delete_group(group);
