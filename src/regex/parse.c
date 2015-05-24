@@ -196,7 +196,7 @@ fsm *regex_parse_outer_escape(const wchar_t **regex)
   case L'D':
     return regex_parse_create_digit_fsm(FSM_TRANS_NEGATIVE);
   default:
-    c = get_escape(regex, L'e');
+    c = get_escape(regex);
     // get_escape() leaves the pointer AFTER the last character in the escape.
     // We want it ON the last one.
     (*regex)--;
@@ -252,9 +252,8 @@ fsm *regex_parse_char_class(const wchar_t **regex)
     } else {
       // Get the correct character
       if (**regex == L'\\') {
-        printf("Read escape.\n");
         (*regex)++;
-        d.data_llint = get_escape(regex, L'e');
+        d.data_llint = get_escape(regex);
         (*regex)--;
       } else {
         d.data_llint = **regex;
@@ -302,7 +301,7 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   if (type == FSM_TRANS_NEGATIVE) {
     // We cannot allow epsilon to be matched in an actual character class.
     ft->start[ll_length(&start)] = EPSILON;
-    ft->start[ll_length(&start)] = EPSILON;
+    ft->end[ll_length(&start)] = EPSILON;
   }
 
   fsm_add_trans(f, src, ft);

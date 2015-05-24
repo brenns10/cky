@@ -47,7 +47,7 @@ int hexit_val(wchar_t digit)
    @brief source The source pointer
    @return The character that was escaped
  */
-wchar_t get_escape(const wchar_t **source, wchar_t epsilon)
+wchar_t get_escape(const wchar_t **source)
 {
   wchar_t value = 0;
   wchar_t specifier = **source;
@@ -57,8 +57,6 @@ wchar_t get_escape(const wchar_t **source, wchar_t epsilon)
     return L'\a';
   case L'b':
     return L'\b';
-  case L'e':
-    return epsilon;
   case L'f':
     return L'\f';
   case L'n':
