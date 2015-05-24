@@ -81,85 +81,85 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <a href="gram_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/***************************************************************************/</span>
-<a name="l00040"></a>00040 <span class="preprocessor">#ifndef SMB_GRAM_H</span>
-<a name="l00041"></a>00041 <span class="preprocessor"></span><span class="preprocessor">#define SMB_GRAM_H</span>
-<a name="l00042"></a>00042 <span class="preprocessor"></span>
-<a name="l00043"></a>00043 <span class="preprocessor">#include &lt;stdbool.h&gt;</span>
-<a name="l00044"></a>00044 <span class="preprocessor">#include &quot;libstephen/al.h&quot;</span>
-<a name="l00045"></a>00045 
-<a name="l00049"></a><a class="code" href="gram_8h.html#aaa9a8f27075b946e217ae3fca40248f7">00049</a> <span class="preprocessor">#define CFG_SYMBOL_NONE -1</span>
-<a name="l00050"></a>00050 <span class="preprocessor"></span>
-<a name="l00062"></a><a class="code" href="structcfg__rule.html">00062</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00063"></a>00063 
-<a name="l00067"></a><a class="code" href="structcfg__rule.html#ad79dfb552ae253049535ec9313589411">00067</a>   <span class="keywordtype">int</span> <a class="code" href="structcfg__rule.html#ad79dfb552ae253049535ec9313589411" title="The symbol on the left hand side of the rule.">lhs</a>;
-<a name="l00068"></a>00068 
-<a name="l00072"></a><a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c">00072</a>   <span class="keywordtype">int</span> *<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>;
-<a name="l00073"></a>00073 
-<a name="l00077"></a><a class="code" href="structcfg__rule.html#a9c44d66a9b3bbe2357e78def1286d000">00077</a>   <span class="keywordtype">int</span> <a class="code" href="structcfg__rule.html#a9c44d66a9b3bbe2357e78def1286d000" title="The number of symbols in the right hand side.">rhs_len</a>;
-<a name="l00078"></a>00078 
-<a name="l00079"></a>00079 } <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a>;
-<a name="l00080"></a>00080 
-<a name="l00092"></a><a class="code" href="structcnf__rule.html">00092</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00093"></a>00093 
-<a name="l00097"></a><a class="code" href="structcnf__rule.html#ad79dfb552ae253049535ec9313589411">00097</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf__rule.html#ad79dfb552ae253049535ec9313589411" title="The symbol on the left-hand side of the rule.">lhs</a>;
-<a name="l00098"></a>00098 
-<a name="l00102"></a><a class="code" href="structcnf__rule.html#ab118ace8dd815d94943b47babf4eb145">00102</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf__rule.html#ab118ace8dd815d94943b47babf4eb145" title="The first symbol on the right hand side of the rule.">rhs_one</a>;
-<a name="l00103"></a>00103 
-<a name="l00107"></a><a class="code" href="structcnf__rule.html#ac5c0566f94de7cc364b2a1bd7120eb66">00107</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf__rule.html#ac5c0566f94de7cc364b2a1bd7120eb66" title="The second (optional) symbol on the right hand side of the rule.">rhs_two</a>;
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109 } <a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a>;
-<a name="l00110"></a>00110 
-<a name="l00122"></a><a class="code" href="structcfg.html">00122</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00123"></a>00123 
-<a name="l00130"></a><a class="code" href="structcfg.html#af90e802d07cdf4a88bde8043b57ec666">00130</a>   smb_al <a class="code" href="structcfg.html#af90e802d07cdf4a88bde8043b57ec666" title="A list of symbols in the grammar.">symbols</a>;
-<a name="l00131"></a>00131 
-<a name="l00137"></a><a class="code" href="structcfg.html#ae85a135e82c4af0e75739a21b3ec03b4">00137</a>   smb_al <a class="code" href="structcfg.html#ae85a135e82c4af0e75739a21b3ec03b4" title="A list of symbols that are terminal ones.">terminals</a>;
-<a name="l00138"></a>00138 
-<a name="l00142"></a><a class="code" href="structcfg.html#a85034aa36a9d4ff1044b8a4fb14cccb9">00142</a>   smb_al <a class="code" href="structcfg.html#a85034aa36a9d4ff1044b8a4fb14cccb9" title="A list of rules in the grammar.">rules</a>;
-<a name="l00143"></a>00143 
-<a name="l00147"></a><a class="code" href="structcfg.html#a37722a150250e2a5a98e5e0d11e53449">00147</a>   <span class="keywordtype">int</span> <a class="code" href="structcfg.html#a37722a150250e2a5a98e5e0d11e53449" title="The start symbol of the grammar.">start</a>;
-<a name="l00148"></a>00148 
-<a name="l00149"></a>00149 } <a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a>;
-<a name="l00150"></a>00150 
-<a name="l00169"></a><a class="code" href="structcnf.html">00169</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00170"></a>00170 
-<a name="l00177"></a><a class="code" href="structcnf.html#ae85a135e82c4af0e75739a21b3ec03b4">00177</a>   smb_al <a class="code" href="structcnf.html#ae85a135e82c4af0e75739a21b3ec03b4" title="The terminal symbols of the grammar.">terminals</a>;
-<a name="l00178"></a>00178 
-<a name="l00185"></a><a class="code" href="structcnf.html#a48ad19ba58732910c48d1e821a3ea428">00185</a>   smb_al <a class="code" href="structcnf.html#a48ad19ba58732910c48d1e821a3ea428" title="The nonterminal symbols of the grammar.">nonterminals</a>;
-<a name="l00186"></a>00186 
-<a name="l00190"></a><a class="code" href="structcnf.html#a829100f9c15a2838a1fc4e259667d06a">00190</a>   smb_al <a class="code" href="structcnf.html#a829100f9c15a2838a1fc4e259667d06a" title="The rules that have one symbol in the RHS.">rules_one</a>;
-<a name="l00191"></a>00191 
-<a name="l00195"></a><a class="code" href="structcnf.html#a950455ed240737b1e4f06faffccd5175">00195</a>   smb_al <a class="code" href="structcnf.html#a950455ed240737b1e4f06faffccd5175" title="The rules that have two symbols in the RHS.">rules_two</a>;
-<a name="l00196"></a>00196 
-<a name="l00200"></a><a class="code" href="structcnf.html#a37722a150250e2a5a98e5e0d11e53449">00200</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf.html#a37722a150250e2a5a98e5e0d11e53449" title="The start symbol.">start</a>;
-<a name="l00201"></a>00201 
-<a name="l00202"></a>00202 } <a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a>;
+<a name="l00016"></a>00016 <span class="preprocessor">#ifndef SMB_GRAM_H</span>
+<a name="l00017"></a>00017 <span class="preprocessor"></span><span class="preprocessor">#define SMB_GRAM_H</span>
+<a name="l00018"></a>00018 <span class="preprocessor"></span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &lt;stdbool.h&gt;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;libstephen/al.h&quot;</span>
+<a name="l00021"></a>00021 
+<a name="l00025"></a><a class="code" href="gram_8h.html#aaa9a8f27075b946e217ae3fca40248f7">00025</a> <span class="preprocessor">#define CFG_SYMBOL_NONE -1</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span>
+<a name="l00038"></a><a class="code" href="structcfg__rule.html">00038</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00039"></a>00039 
+<a name="l00043"></a><a class="code" href="structcfg__rule.html#ad79dfb552ae253049535ec9313589411">00043</a>   <span class="keywordtype">int</span> <a class="code" href="structcfg__rule.html#ad79dfb552ae253049535ec9313589411" title="The symbol on the left hand side of the rule.">lhs</a>;
+<a name="l00044"></a>00044 
+<a name="l00048"></a><a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c">00048</a>   <span class="keywordtype">int</span> *<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>;
+<a name="l00049"></a>00049 
+<a name="l00053"></a><a class="code" href="structcfg__rule.html#a9c44d66a9b3bbe2357e78def1286d000">00053</a>   <span class="keywordtype">int</span> <a class="code" href="structcfg__rule.html#a9c44d66a9b3bbe2357e78def1286d000" title="The number of symbols in the right hand side.">rhs_len</a>;
+<a name="l00054"></a>00054 
+<a name="l00055"></a>00055 } <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a>;
+<a name="l00056"></a>00056 
+<a name="l00068"></a><a class="code" href="structcnf__rule.html">00068</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00069"></a>00069 
+<a name="l00073"></a><a class="code" href="structcnf__rule.html#ad79dfb552ae253049535ec9313589411">00073</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf__rule.html#ad79dfb552ae253049535ec9313589411" title="The symbol on the left-hand side of the rule.">lhs</a>;
+<a name="l00074"></a>00074 
+<a name="l00078"></a><a class="code" href="structcnf__rule.html#ab118ace8dd815d94943b47babf4eb145">00078</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf__rule.html#ab118ace8dd815d94943b47babf4eb145" title="The first symbol on the right hand side of the rule.">rhs_one</a>;
+<a name="l00079"></a>00079 
+<a name="l00083"></a><a class="code" href="structcnf__rule.html#ac5c0566f94de7cc364b2a1bd7120eb66">00083</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf__rule.html#ac5c0566f94de7cc364b2a1bd7120eb66" title="The second (optional) symbol on the right hand side of the rule.">rhs_two</a>;
+<a name="l00084"></a>00084 
+<a name="l00085"></a>00085 } <a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a>;
+<a name="l00086"></a>00086 
+<a name="l00098"></a><a class="code" href="structcfg.html">00098</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00099"></a>00099 
+<a name="l00106"></a><a class="code" href="structcfg.html#af90e802d07cdf4a88bde8043b57ec666">00106</a>   smb_al <a class="code" href="structcfg.html#af90e802d07cdf4a88bde8043b57ec666" title="A list of symbols in the grammar.">symbols</a>;
+<a name="l00107"></a>00107 
+<a name="l00113"></a><a class="code" href="structcfg.html#ae85a135e82c4af0e75739a21b3ec03b4">00113</a>   smb_al <a class="code" href="structcfg.html#ae85a135e82c4af0e75739a21b3ec03b4" title="A list of symbols that are terminal ones.">terminals</a>;
+<a name="l00114"></a>00114 
+<a name="l00118"></a><a class="code" href="structcfg.html#a85034aa36a9d4ff1044b8a4fb14cccb9">00118</a>   smb_al <a class="code" href="structcfg.html#a85034aa36a9d4ff1044b8a4fb14cccb9" title="A list of rules in the grammar.">rules</a>;
+<a name="l00119"></a>00119 
+<a name="l00123"></a><a class="code" href="structcfg.html#a37722a150250e2a5a98e5e0d11e53449">00123</a>   <span class="keywordtype">int</span> <a class="code" href="structcfg.html#a37722a150250e2a5a98e5e0d11e53449" title="The start symbol of the grammar.">start</a>;
+<a name="l00124"></a>00124 
+<a name="l00125"></a>00125 } <a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a>;
+<a name="l00126"></a>00126 
+<a name="l00145"></a><a class="code" href="structcnf.html">00145</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00146"></a>00146 
+<a name="l00153"></a><a class="code" href="structcnf.html#ae85a135e82c4af0e75739a21b3ec03b4">00153</a>   smb_al <a class="code" href="structcnf.html#ae85a135e82c4af0e75739a21b3ec03b4" title="The terminal symbols of the grammar.">terminals</a>;
+<a name="l00154"></a>00154 
+<a name="l00161"></a><a class="code" href="structcnf.html#a48ad19ba58732910c48d1e821a3ea428">00161</a>   smb_al <a class="code" href="structcnf.html#a48ad19ba58732910c48d1e821a3ea428" title="The nonterminal symbols of the grammar.">nonterminals</a>;
+<a name="l00162"></a>00162 
+<a name="l00166"></a><a class="code" href="structcnf.html#a829100f9c15a2838a1fc4e259667d06a">00166</a>   smb_al <a class="code" href="structcnf.html#a829100f9c15a2838a1fc4e259667d06a" title="The rules that have one symbol in the RHS.">rules_one</a>;
+<a name="l00167"></a>00167 
+<a name="l00171"></a><a class="code" href="structcnf.html#a950455ed240737b1e4f06faffccd5175">00171</a>   smb_al <a class="code" href="structcnf.html#a950455ed240737b1e4f06faffccd5175" title="The rules that have two symbols in the RHS.">rules_two</a>;
+<a name="l00172"></a>00172 
+<a name="l00176"></a><a class="code" href="structcnf.html#a37722a150250e2a5a98e5e0d11e53449">00176</a>   <span class="keywordtype">int</span> <a class="code" href="structcnf.html#a37722a150250e2a5a98e5e0d11e53449" title="The start symbol.">start</a>;
+<a name="l00177"></a>00177 
+<a name="l00178"></a>00178 } <a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a>;
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a956bd96a97a392e63afe06eb92c110df" title="Initialize a new CFG rule.">cfg_rule_init</a>(<a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *pNewRule, <span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_len);
+<a name="l00181"></a>00181 <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *<a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(<span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_len);
+<a name="l00182"></a>00182 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a8412c1780580039ecf9eea268342ce78" title="Clean up the fields of the CFG rule, but don&#39;t free.">cfg_rule_destroy</a>(<a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *pRule);
+<a name="l00183"></a>00183 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a027e6334bb8a80c17986b4ebbe1f95fc" title="Cleanup and free the CFG rule.">cfg_rule_delete</a>(<a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *pRule);
+<a name="l00184"></a>00184 
+<a name="l00185"></a>00185 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a8273268c6def6207571b2e197ad77825" title="Initialize a CNF rule.">cnf_rule_init</a>(<a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *pNewRule, <span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_one, <span class="keywordtype">int</span> rhs_two);
+<a name="l00186"></a>00186 <a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *<a class="code" href="gram_8c.html#af35cacdaab51e6aa556d85147def56f4" title="Allocate and initialize a CNF rule.">cnf_rule_create</a>(<span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_one, <span class="keywordtype">int</span> rhs_two);
+<a name="l00187"></a>00187 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a0cd6b60cabb944241186963bb5e65536" title="Clean up the fields of a CNF rule. Nothing is actually done here.">cnf_rule_destroy</a>(<a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *pRule);
+<a name="l00188"></a>00188 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#aa87d48bbb9cef2e465526313ba61fcb5" title="Free a CNF rule.">cnf_rule_delete</a>(<a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *pRule);
+<a name="l00189"></a>00189 
+<a name="l00190"></a>00190 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#ac3f72e0dc5203203c2b726e3b1e6a0ec" title="Initialize a CFG.">cfg_init</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram);
+<a name="l00191"></a>00191 <a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *<a class="code" href="gram_8c.html#a3bbb21266337299e9acb6241b547f121" title="Allocate and initialize a CFG.">cfg_create</a>(<span class="keywordtype">void</span>);
+<a name="l00192"></a>00192 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a81bf2abe3515e947e700c639a73bb9e1" title="Clean up the fields of a CFG. Do not free.">cfg_destroy</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
+<a name="l00193"></a>00193 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#ab25c222dd3e8b3bef52406e63d644a69" title="Clean up and free a CFG.">cfg_delete</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
+<a name="l00194"></a>00194 
+<a name="l00195"></a>00195 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a6498d2481623fd5851966f63bb2d8008" title="Initialize a CNF grammar.">cnf_init</a>(<a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *pGram);
+<a name="l00196"></a>00196 <a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *<a class="code" href="gram_8c.html#a3a4d3ef76c22529d33625b34667dce89" title="Allocate and initialize a CNF grammar.">cnf_create</a>(<span class="keywordtype">void</span>);
+<a name="l00197"></a>00197 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a3f724816388a9b3aa32eba999fa8a133" title="Clean up the fields of a CNF grammar. Do not free.">cnf_destroy</a>(<a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
+<a name="l00198"></a>00198 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a1903534154b501fa7c03066b603169ec" title="Clean up and free a CNF grammar.">cnf_delete</a>(<a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
+<a name="l00199"></a>00199 
+<a name="l00200"></a>00200 <span class="keywordtype">int</span> <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <span class="keywordtype">char</span> *symbol, <span class="keywordtype">bool</span> terminal);
+<a name="l00201"></a>00201 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *newRule);
+<a name="l00202"></a>00202 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a25ea2b2f8f221d1f3dd487e056695c7c" title="Print the grammar to stdout.">cfg_print</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram);
 <a name="l00203"></a>00203 
-<a name="l00204"></a>00204 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a956bd96a97a392e63afe06eb92c110df" title="Initialize a new CFG rule.">cfg_rule_init</a>(<a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *pNewRule, <span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_len);
-<a name="l00205"></a>00205 <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *<a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(<span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_len);
-<a name="l00206"></a>00206 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a8412c1780580039ecf9eea268342ce78" title="Clean up the fields of the CFG rule, but don&#39;t free.">cfg_rule_destroy</a>(<a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *pRule);
-<a name="l00207"></a>00207 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a027e6334bb8a80c17986b4ebbe1f95fc" title="Cleanup and free the CFG rule.">cfg_rule_delete</a>(<a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *pRule);
-<a name="l00208"></a>00208 
-<a name="l00209"></a>00209 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a8273268c6def6207571b2e197ad77825" title="Initialize a CNF rule.">cnf_rule_init</a>(<a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *pNewRule, <span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_one, <span class="keywordtype">int</span> rhs_two);
-<a name="l00210"></a>00210 <a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *<a class="code" href="gram_8c.html#af35cacdaab51e6aa556d85147def56f4" title="Allocate and initialize a CNF rule.">cnf_rule_create</a>(<span class="keywordtype">int</span> lhs, <span class="keywordtype">int</span> rhs_one, <span class="keywordtype">int</span> rhs_two);
-<a name="l00211"></a>00211 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a0cd6b60cabb944241186963bb5e65536" title="Clean up the fields of a CNF rule. Nothing is actually done here.">cnf_rule_destroy</a>(<a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *pRule);
-<a name="l00212"></a>00212 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#aa87d48bbb9cef2e465526313ba61fcb5" title="Free a CNF rule.">cnf_rule_delete</a>(<a class="code" href="structcnf__rule.html" title="A struct to represent a rule in a CNF CFG.">cnf_rule</a> *pRule);
-<a name="l00213"></a>00213 
-<a name="l00214"></a>00214 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#ac3f72e0dc5203203c2b726e3b1e6a0ec" title="Initialize a CFG.">cfg_init</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram);
-<a name="l00215"></a>00215 <a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *<a class="code" href="gram_8c.html#a3bbb21266337299e9acb6241b547f121" title="Allocate and initialize a CFG.">cfg_create</a>(<span class="keywordtype">void</span>);
-<a name="l00216"></a>00216 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a81bf2abe3515e947e700c639a73bb9e1" title="Clean up the fields of a CFG. Do not free.">cfg_destroy</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
-<a name="l00217"></a>00217 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#ab25c222dd3e8b3bef52406e63d644a69" title="Clean up and free a CFG.">cfg_delete</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
-<a name="l00218"></a>00218 
-<a name="l00219"></a>00219 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a6498d2481623fd5851966f63bb2d8008" title="Initialize a CNF grammar.">cnf_init</a>(<a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *pGram);
-<a name="l00220"></a>00220 <a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *<a class="code" href="gram_8c.html#a3a4d3ef76c22529d33625b34667dce89" title="Allocate and initialize a CNF grammar.">cnf_create</a>(<span class="keywordtype">void</span>);
-<a name="l00221"></a>00221 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a3f724816388a9b3aa32eba999fa8a133" title="Clean up the fields of a CNF grammar. Do not free.">cnf_destroy</a>(<a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
-<a name="l00222"></a>00222 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a1903534154b501fa7c03066b603169ec" title="Clean up and free a CNF grammar.">cnf_delete</a>(<a class="code" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> *pGram, <span class="keywordtype">bool</span> free_symbols);
-<a name="l00223"></a>00223 
-<a name="l00224"></a>00224 <span class="keywordtype">int</span> <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <span class="keywordtype">char</span> *symbol, <span class="keywordtype">bool</span> terminal);
-<a name="l00225"></a>00225 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram, <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *newRule);
-<a name="l00226"></a>00226 <span class="keywordtype">void</span> <a class="code" href="gram_8c.html#a25ea2b2f8f221d1f3dd487e056695c7c" title="Print the grammar to stdout.">cfg_print</a>(<a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *pGram);
-<a name="l00227"></a>00227 
-<a name="l00228"></a>00228 <span class="preprocessor">#endif</span>
+<a name="l00204"></a>00204 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -178,7 +178,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 19:34:23 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 19:45:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-24 19:34:23</td>
+            <td class="headerValue">2015-05-24 19:45:15</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">16</td>
@@ -70,348 +70,351 @@
 <span class="lineNum">       8 </span>            : 
 <span class="lineNum">       9 </span>            :   @brief        Tests for FSM I/O.
 <span class="lineNum">      10 </span>            : 
-<span class="lineNum">      11 </span>            : *******************************************************************************/
-<span class="lineNum">      12 </span>            : 
-<span class="lineNum">      13 </span>            : #include &lt;stdbool.h&gt;
-<span class="lineNum">      14 </span>            : #include &lt;wchar.h&gt;
+<span class="lineNum">      11 </span>            :   @copyright    Copyright (c) 2015, Stephen Brennan.  Released under the Revised
+<span class="lineNum">      12 </span>            :                 BSD License.  See the LICENSE.txt file for details.
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : *******************************************************************************/
 <span class="lineNum">      15 </span>            : 
-<span class="lineNum">      16 </span>            : #include &quot;libstephen/ut.h&quot;
-<span class="lineNum">      17 </span>            : #include &quot;fsm.h&quot;
+<span class="lineNum">      16 </span>            : #include &lt;stdbool.h&gt;
+<span class="lineNum">      17 </span>            : #include &lt;wchar.h&gt;
 <span class="lineNum">      18 </span>            : 
-<span class="lineNum">      19 </span>            : /**
-<span class="lineNum">      20 </span>            :    @brief This function tests reading in a FSM and running it.
+<span class="lineNum">      19 </span>            : #include &quot;libstephen/ut.h&quot;
+<span class="lineNum">      20 </span>            : #include &quot;fsm.h&quot;
 <span class="lineNum">      21 </span>            : 
-<span class="lineNum">      22 </span>            :    It reads in the even a's and b's machine, and it simulates it on similar
-<a name="23"><span class="lineNum">      23 </span>            :    inputs.</a>
-<span class="lineNum">      24 </span>            :  */
-<span class="lineNum">      25 </span><span class="lineCov">          1 : static int test_read_fsm(void) {</span>
-<span class="lineNum">      26 </span>            :   int i;
-<span class="lineNum">      27 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">      28 </span><span class="lineCov">          1 :   const wchar_t *machine =</span>
-<span class="lineNum">      29 </span>            :     L&quot;start:0\n&quot;
-<span class="lineNum">      30 </span>            :     L&quot;accept:0\n&quot;
-<span class="lineNum">      31 </span>            :     L&quot;0-1:+a-a\n&quot;
-<span class="lineNum">      32 </span>            :     L&quot;0-2:+b-b\n&quot;
-<span class="lineNum">      33 </span>            :     L&quot;1-0:+a-a\n&quot;
-<span class="lineNum">      34 </span>            :     L&quot;1-3:+b-b\n&quot;
-<span class="lineNum">      35 </span>            :     L&quot;2-3:+a-a\n&quot;
-<span class="lineNum">      36 </span>            :     L&quot;2-0:+b-b\n&quot;
-<span class="lineNum">      37 </span>            :     L&quot;3-1:+b-b\n&quot;
-<span class="lineNum">      38 </span>            :     L&quot;3-2:+a-a\n&quot;;
-<span class="lineNum">      39 </span><span class="lineCov">          1 :   const wchar_t *inputs[] = {</span>
-<span class="lineNum">      40 </span>            :     L&quot;ababa&quot;,
-<span class="lineNum">      41 </span>            :     L&quot;aabaa&quot;,
-<span class="lineNum">      42 </span>            :     L&quot;aaaabbbba&quot;,
-<span class="lineNum">      43 </span>            :     L&quot;ab&quot;,
-<span class="lineNum">      44 </span>            :     L&quot;abab&quot;,
-<span class="lineNum">      45 </span>            :     L&quot;aabb&quot;
-<span class="lineNum">      46 </span>            :   };
-<span class="lineNum">      47 </span><span class="lineCov">          1 :   const bool results[] = {false, false, false, false, true, true};</span>
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
-<span class="lineNum">      50 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
-<span class="lineNum">      51 </span><span class="lineCov">          7 :   for (i = 0; i &lt; sizeof(inputs)/sizeof(wchar_t*); i++) {</span>
-<span class="lineNum">      52 </span><span class="lineCov">          6 :     TEST_ASSERT(fsm_sim_nondet(f, inputs[i]) == results[i]);</span>
-<span class="lineNum">      53 </span>            :   }
-<span class="lineNum">      54 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
-<span class="lineNum">      55 </span><span class="lineCov">          1 :   return 0;</span>
-<span class="lineNum">      56 </span>            : }
-<span class="lineNum">      57 </span>            : 
-<span class="lineNum">      58 </span>            : /**
-<a name="59"><span class="lineNum">      59 </span>            :    @brief This function tests reading an FSM with escape sequences.</a>
-<span class="lineNum">      60 </span>            :  */
-<span class="lineNum">      61 </span><span class="lineCov">          1 : static int test_escape(void)</span>
-<span class="lineNum">      62 </span>            : {
-<span class="lineNum">      63 </span>            :   int i;
-<span class="lineNum">      64 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">      65 </span><span class="lineCov">          1 :   const wchar_t *machine =</span>
-<span class="lineNum">      66 </span>            :     L&quot;start:0\n&quot;
-<span class="lineNum">      67 </span>            :     L&quot;accept:12\n&quot;
-<span class="lineNum">      68 </span>            :     L&quot;0-1:+\\a-\\a\n&quot;           // alarm
-<span class="lineNum">      69 </span>            :     L&quot;1-2:+\\b-\\b\n&quot;           // backspace
-<span class="lineNum">      70 </span>            :     L&quot;2-3:+\\e-\\e\n&quot;           // EPSILON
-<span class="lineNum">      71 </span>            :     L&quot;3-4:+\\f-\\f\n&quot;           // form feed
-<span class="lineNum">      72 </span>            :     L&quot;4-5:+\\n-\\n\n&quot;           // newline (lf)
-<span class="lineNum">      73 </span>            :     L&quot;5-6:+\\r-\\r\n&quot;           // carriage return
-<span class="lineNum">      74 </span>            :     L&quot;6-7:+\\t-\\t\n&quot;           // tab
-<span class="lineNum">      75 </span>            :     L&quot;7-8:+\\v-\\v\n&quot;           // vertical tab
-<span class="lineNum">      76 </span>            :     L&quot;8-9:+\\\\-\\\\\n&quot;         // backslash
-<span class="lineNum">      77 </span>            :     L&quot;9-10:+\\+-\\+\n&quot;          // other character
-<span class="lineNum">      78 </span>            :     L&quot;10-11:+\\x3A-\\x3a\n&quot;     // colon
-<span class="lineNum">      79 </span>            :     L&quot;11-12:+\\u0051-\\u0051\n&quot;;// Q
-<span class="lineNum">      80 </span><span class="lineCov">          1 :   const wchar_t *inputs[] = {</span>
-<span class="lineNum">      81 </span>            :     L&quot;\a\b\f\n\r\t\v\\+:Q&quot;, // accept
-<span class="lineNum">      82 </span>            :     L&quot;a\b\f\n\r\t\v\\+:Q&quot;,  // reject
-<span class="lineNum">      83 </span>            :     L&quot;\ab\f\n\r\t\v\\+:Q&quot;,  // reject
-<span class="lineNum">      84 </span>            :     L&quot;\a\bf\n\r\t\v\\+:Q&quot;,  // reject
-<span class="lineNum">      85 </span>            :     L&quot;\a\b\fn\r\t\v\\+:Q&quot;,  // reject
-<span class="lineNum">      86 </span>            :     L&quot;\a\b\f\nr\t\v\\+:Q&quot;,  // reject
-<span class="lineNum">      87 </span>            :     L&quot;\a\b\f\n\rt\v\\+:Q&quot;,  // reject
-<span class="lineNum">      88 </span>            :     L&quot;\a\b\f\n\r\tv\\+:Q&quot;,  // reject
-<span class="lineNum">      89 </span>            :     L&quot;\a\b\f\n\r\t\v/+:Q&quot;,  // reject
-<span class="lineNum">      90 </span>            :     L&quot;\a\b\f\n\r\t\v\\-:Q&quot;, // reject
-<span class="lineNum">      91 </span>            :     L&quot;\a\b\f\n\r\t\v\\-;Q&quot;, // reject
-<span class="lineNum">      92 </span>            :     L&quot;\a\b\f\n\r\t\v\\-:q&quot;, // reject
-<span class="lineNum">      93 </span>            :   };
-<span class="lineNum">      94 </span><span class="lineCov">          1 :   const bool results[] = {true, false, false, false, false, false, false, false,</span>
-<span class="lineNum">      95 </span>            :                           false, false, false, false};
-<span class="lineNum">      96 </span>            : 
-<span class="lineNum">      97 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
-<span class="lineNum">      98 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
-<span class="lineNum">      99 </span><span class="lineCov">         13 :   for (i = 0; i &lt; sizeof(inputs)/sizeof(wchar_t*); i++) {</span>
-<span class="lineNum">     100 </span><span class="lineCov">         12 :     TEST_ASSERT(fsm_sim_nondet(f, inputs[i]) == results[i]);</span>
-<span class="lineNum">     101 </span>            :   }
-<span class="lineNum">     102 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
-<span class="lineNum">     103 </span><span class="lineCov">          1 :   return 0;</span>
-<a name="104"><span class="lineNum">     104 </span>            : }</a>
-<span class="lineNum">     105 </span>            : 
-<span class="lineNum">     106 </span><span class="lineCov">          1 : int test_read_combine(void)</span>
-<span class="lineNum">     107 </span>            : {
-<span class="lineNum">     108 </span><span class="lineCov">          1 :   const wchar_t *m1spec =</span>
-<span class="lineNum">     109 </span>            :     L&quot;start:0\n&quot;
-<span class="lineNum">     110 </span>            :     L&quot;accept:7\n&quot;
-<span class="lineNum">     111 </span>            :     L&quot;0-1:+s-sS-S\n&quot;
-<span class="lineNum">     112 </span>            :     L&quot;1-2:+t-t\n&quot;
-<span class="lineNum">     113 </span>            :     L&quot;2-3:+e-e\n&quot;
-<span class="lineNum">     114 </span>            :     L&quot;3-4:+p-p\n&quot;
-<span class="lineNum">     115 </span>            :     L&quot;4-5:+h-h\n&quot;
-<span class="lineNum">     116 </span>            :     L&quot;5-6:+e-e\n&quot;
-<span class="lineNum">     117 </span>            :     L&quot;6-7:+n-n\n&quot;;
-<span class="lineNum">     118 </span>            : 
-<span class="lineNum">     119 </span><span class="lineCov">          1 :   const wchar_t *m2spec =</span>
-<span class="lineNum">     120 </span>            :     L&quot;start:0\n&quot;
-<span class="lineNum">     121 </span>            :     L&quot;accept:7\n&quot;
-<span class="lineNum">     122 </span>            :     L&quot;0-1:+b-bB-B\n&quot;
-<span class="lineNum">     123 </span>            :     L&quot;1-2:+r-r\n&quot;
-<span class="lineNum">     124 </span>            :     L&quot;2-3:+e-e\n&quot;
-<span class="lineNum">     125 </span>            :     L&quot;3-4:+n-n\n&quot;
-<span class="lineNum">     126 </span>            :     L&quot;4-5:+n-n\n&quot;
-<span class="lineNum">     127 </span>            :     L&quot;5-6:+a-a\n&quot;
-<span class="lineNum">     128 </span>            :     L&quot;6-7:+n-n\n&quot;;
-<span class="lineNum">     129 </span>            : 
-<span class="lineNum">     130 </span><span class="lineCov">          1 :   const wchar_t *inputs[] = {</span>
-<span class="lineNum">     131 </span>            :     L&quot;stephen&quot;,
-<span class="lineNum">     132 </span>            :     L&quot;Stephen&quot;,
-<span class="lineNum">     133 </span>            :     L&quot;brennan&quot;,
-<span class="lineNum">     134 </span>            :     L&quot;Brennan&quot;,
-<span class="lineNum">     135 </span>            :     L&quot;stephenbrennan&quot;,
-<span class="lineNum">     136 </span>            :     L&quot;stephenBrennan&quot;,
-<span class="lineNum">     137 </span>            :     L&quot;Stephenbrennan&quot;,
-<span class="lineNum">     138 </span>            :     L&quot;StephenBrennan&quot;,
-<span class="lineNum">     139 </span>            :     L&quot;StephenstephenStephen&quot;,
-<span class="lineNum">     140 </span>            :     L&quot;BrennanbrennanBrennan&quot;,
-<span class="lineNum">     141 </span>            :     L&quot;&quot;
-<span class="lineNum">     142 </span>            :   };
-<span class="lineNum">     143 </span><span class="lineCov">          1 :   const bool results[][6] = {</span>
-<span class="lineNum">     144 </span>            :     // {M1, M2,    M1 U M2, M1M2, M1*,  M2*
-<span class="lineNum">     145 </span>            :     {true,  false, true,  false, true,  false}, // &quot;stephen&quot;
-<span class="lineNum">     146 </span>            :     {true,  false, true,  false, true,  false}, // &quot;Stephen&quot;
-<span class="lineNum">     147 </span>            :     {false, true,  true,  false, false, true }, // &quot;brennan&quot;
-<span class="lineNum">     148 </span>            :     {false, true,  true,  false, false, true }, // &quot;Brennan&quot;
-<span class="lineNum">     149 </span>            :     {false, false, false, true,  false, false}, // &quot;stephenbrennan&quot;
-<span class="lineNum">     150 </span>            :     {false, false, false, true,  false, false}, // &quot;stephenBrennan&quot;
-<span class="lineNum">     151 </span>            :     {false, false, false, true,  false, false}, // &quot;Stephenbrennan&quot;
-<span class="lineNum">     152 </span>            :     {false, false, false, true,  false, false}, // &quot;StephenBrennan&quot;
-<span class="lineNum">     153 </span>            :     {false, false, false, false, true,  false}, // &quot;Stephenstephenstephen&quot;
-<span class="lineNum">     154 </span>            :     {false, false, false, false, false, true }, // &quot;BrennanbrennanBrennan&quot;
-<span class="lineNum">     155 </span>            :     {false, false, false, false, true,  true }  // &quot;&quot;
-<span class="lineNum">     156 </span>            :   };
-<span class="lineNum">     157 </span>            :   int i;
-<span class="lineNum">     158 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">     159 </span>            :   fsm *m1Um2, *m1Cm2, *m1S, *m2S;
-<span class="lineNum">     160 </span><span class="lineCov">          1 :   fsm *m1 = fsm_read(m1spec, &amp;status), *m2 = fsm_read(m2spec, &amp;status);</span>
-<span class="lineNum">     161 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
-<span class="lineNum">     162 </span><span class="lineCov">          1 :   m1Um2 = fsm_copy(m1);</span>
-<span class="lineNum">     163 </span><span class="lineCov">          1 :   m1Cm2 = fsm_copy(m1);</span>
-<span class="lineNum">     164 </span><span class="lineCov">          1 :   m1S = fsm_copy(m1);</span>
-<span class="lineNum">     165 </span><span class="lineCov">          1 :   m2S = fsm_copy(m2);</span>
-<span class="lineNum">     166 </span><span class="lineCov">          1 :   fsm_union(m1Um2, m2);</span>
-<span class="lineNum">     167 </span><span class="lineCov">          1 :   fsm_concat(m1Cm2, m2);</span>
-<span class="lineNum">     168 </span><span class="lineCov">          1 :   fsm_kleene(m1S);</span>
-<span class="lineNum">     169 </span><span class="lineCov">          1 :   fsm_kleene(m2S);</span>
-<span class="lineNum">     170 </span>            : 
-<span class="lineNum">     171 </span><span class="lineCov">         12 :   for (i = 0; i &lt; sizeof(inputs)/sizeof(wchar_t *); i++) {</span>
-<span class="lineNum">     172 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][0] == fsm_sim_nondet(m1, inputs[i]));</span>
-<span class="lineNum">     173 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][1] == fsm_sim_nondet(m2, inputs[i]));</span>
-<span class="lineNum">     174 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][2] == fsm_sim_nondet(m1Um2, inputs[i]));</span>
-<span class="lineNum">     175 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][3] == fsm_sim_nondet(m1Cm2, inputs[i]));</span>
-<span class="lineNum">     176 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][4] == fsm_sim_nondet(m1S, inputs[i]));</span>
-<span class="lineNum">     177 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][5] == fsm_sim_nondet(m2S, inputs[i]));</span>
-<span class="lineNum">     178 </span>            :   }
-<span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span><span class="lineCov">          1 :   fsm_delete(m1, true);</span>
-<span class="lineNum">     181 </span><span class="lineCov">          1 :   fsm_delete(m2, true);</span>
-<span class="lineNum">     182 </span><span class="lineCov">          1 :   fsm_delete(m1Um2, true);</span>
-<span class="lineNum">     183 </span><span class="lineCov">          1 :   fsm_delete(m1Cm2, true);</span>
-<span class="lineNum">     184 </span><span class="lineCov">          1 :   fsm_delete(m1S, true);</span>
-<span class="lineNum">     185 </span><span class="lineCov">          1 :   fsm_delete(m2S, true);</span>
-<span class="lineNum">     186 </span><span class="lineCov">          1 :   return 0;</span>
-<a name="187"><span class="lineNum">     187 </span>            : }</a>
-<span class="lineNum">     188 </span>            : 
-<span class="lineNum">     189 </span><span class="lineCov">          1 : int test_empty_string(void)</span>
-<span class="lineNum">     190 </span>            : {
-<span class="lineNum">     191 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;&quot;;</span>
-<span class="lineNum">     192 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">     193 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
-<span class="lineNum">     194 </span><span class="lineCov">          1 :   TEST_ASSERT(f == NULL);</span>
-<span class="lineNum">     195 </span><span class="lineCov">          1 :   TEST_ASSERT(status == CKY_TOO_FEW_LINES);</span>
-<span class="lineNum">     196 </span><span class="lineCov">          1 :   return 0;</span>
-<a name="197"><span class="lineNum">     197 </span>            : }</a>
-<span class="lineNum">     198 </span>            : 
-<span class="lineNum">     199 </span><span class="lineCov">          1 : int test_no_start(void)</span>
-<span class="lineNum">     200 </span>            : {
-<span class="lineNum">     201 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;accept:1\n0-1:+a-a\n&quot;;</span>
-<span class="lineNum">     202 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">     203 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
-<span class="lineNum">     204 </span><span class="lineCov">          1 :   TEST_ASSERT(f != NULL);</span>
-<span class="lineNum">     205 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
-<span class="lineNum">     206 </span><span class="lineCov">          1 :   TEST_ASSERT(fsm_sim_nondet(f, L&quot;a&quot;));</span>
-<span class="lineNum">     207 </span><span class="lineCov">          1 :   TEST_ASSERT(!fsm_sim_nondet(f, L&quot;b&quot;));</span>
-<span class="lineNum">     208 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
-<span class="lineNum">     209 </span><span class="lineCov">          1 :   return 0;</span>
-<a name="210"><span class="lineNum">     210 </span>            : }</a>
-<span class="lineNum">     211 </span>            : 
-<span class="lineNum">     212 </span><span class="lineCov">          1 : int test_no_trailing_newline(void)</span>
-<span class="lineNum">     213 </span>            : {
-<span class="lineNum">     214 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;start:0\naccept:1\n0-1:+a-a&quot;;</span>
-<span class="lineNum">     215 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">     216 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
-<span class="lineNum">     217 </span><span class="lineCov">          1 :   TEST_ASSERT(f != NULL);</span>
-<span class="lineNum">     218 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
-<span class="lineNum">     219 </span><span class="lineCov">          1 :   TEST_ASSERT(fsm_sim_nondet(f, L&quot;a&quot;));</span>
-<span class="lineNum">     220 </span><span class="lineCov">          1 :   TEST_ASSERT(!fsm_sim_nondet(f, L&quot;b&quot;));</span>
-<span class="lineNum">     221 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
-<span class="lineNum">     222 </span><span class="lineCov">          1 :   return 0;</span>
-<a name="223"><span class="lineNum">     223 </span>            : }</a>
-<span class="lineNum">     224 </span>            : 
-<span class="lineNum">     225 </span><span class="lineCov">          1 : int test_whitespace(void)</span>
-<span class="lineNum">     226 </span>            : {
-<span class="lineNum">     227 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;start: 0\naccept: 1\n0-1:+a-a&quot;;</span>
-<span class="lineNum">     228 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">     229 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
-<span class="lineNum">     230 </span><span class="lineCov">          1 :   TEST_ASSERT(f != NULL);</span>
-<span class="lineNum">     231 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
-<span class="lineNum">     232 </span><span class="lineCov">          1 :   TEST_ASSERT(fsm_sim_nondet(f, L&quot;a&quot;));</span>
-<span class="lineNum">     233 </span><span class="lineCov">          1 :   TEST_ASSERT(!fsm_sim_nondet(f, L&quot;b&quot;));</span>
-<span class="lineNum">     234 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
-<span class="lineNum">     235 </span><span class="lineCov">          1 :   return 0;</span>
-<a name="236"><span class="lineNum">     236 </span>            : }</a>
-<span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span><span class="lineCov">          6 : static int fail_on(const wchar_t *machine)</span>
-<span class="lineNum">     239 </span>            : {
-<span class="lineNum">     240 </span><span class="lineCov">          6 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">     241 </span><span class="lineCov">          6 :   fsm *f = fsm_read(machine, &amp;status);</span>
-<span class="lineNum">     242 </span><span class="lineCov">          6 :   TEST_ASSERT(f == NULL);</span>
-<span class="lineNum">     243 </span><span class="lineCov">          6 :   TEST_ASSERT(status == CKY_MALFORMED_TRANS);</span>
-<span class="lineNum">     244 </span><span class="lineCov">          6 :   return 0;</span>
-<a name="245"><span class="lineNum">     245 </span>            : }</a>
-<span class="lineNum">     246 </span>            : 
-<span class="lineNum">     247 </span><span class="lineCov">          1 : int test_missing_src(void)</span>
-<span class="lineNum">     248 </span>            : {
-<span class="lineNum">     249 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n-1:+a-a&quot;);</span>
-<a name="250"><span class="lineNum">     250 </span>            : }</a>
-<span class="lineNum">     251 </span>            : 
-<span class="lineNum">     252 </span><span class="lineCov">          1 : int test_missing_hyphen(void)</span>
-<span class="lineNum">     253 </span>            : {
-<span class="lineNum">     254 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n01:+a-a&quot;);</span>
-<a name="255"><span class="lineNum">     255 </span>            : }</a>
-<span class="lineNum">     256 </span>            : 
-<span class="lineNum">     257 </span><span class="lineCov">          1 : int test_missing_dst(void)</span>
-<span class="lineNum">     258 </span>            : {
-<span class="lineNum">     259 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n-1:+a-a&quot;);</span>
-<a name="260"><span class="lineNum">     260 </span>            : }</a>
-<span class="lineNum">     261 </span>            : 
-<span class="lineNum">     262 </span><span class="lineCov">          1 : int test_missing_type(void)</span>
-<span class="lineNum">     263 </span>            : {
-<span class="lineNum">     264 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n0-1:a-a&quot;);</span>
-<a name="265"><span class="lineNum">     265 </span>            : }</a>
-<span class="lineNum">     266 </span>            : 
-<span class="lineNum">     267 </span><span class="lineCov">          1 : int test_bad_escaping(void)</span>
-<span class="lineNum">     268 </span>            : {
-<span class="lineNum">     269 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n0-1:+\\u-\\u&quot;);</span>
-<a name="270"><span class="lineNum">     270 </span>            : }</a>
-<span class="lineNum">     271 </span>            : 
-<span class="lineNum">     272 </span><span class="lineCov">          1 : int test_bad_escaping2(void)</span>
-<span class="lineNum">     273 </span>            : {
-<span class="lineNum">     274 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n0-1:+\\&quot;);</span>
-<a name="275"><span class="lineNum">     275 </span>            : }</a>
-<span class="lineNum">     276 </span>            : 
-<span class="lineNum">     277 </span><span class="lineCov">          1 : int test_simple_str(void)</span>
-<span class="lineNum">     278 </span>            : {
-<span class="lineNum">     279 </span>            :   // Create FSM &quot;src&quot; that accepts &quot;foo&quot;.
-<span class="lineNum">     280 </span><span class="lineCov">          1 :   wchar_t *machine =</span>
-<span class="lineNum">     281 </span>            :     L&quot;start:0\n&quot;
-<span class="lineNum">     282 </span>            :     L&quot;accept:3\n&quot;
-<span class="lineNum">     283 </span>            :     L&quot;0-1:+f-f\n&quot;
-<span class="lineNum">     284 </span>            :     L&quot;1-2:+o-o\n&quot;
-<span class="lineNum">     285 </span>            :     L&quot;2-3:+o-o\n&quot;;
-<span class="lineNum">     286 </span>            :   wchar_t *out;
-<span class="lineNum">     287 </span><span class="lineCov">          1 :   fsm *src = fsm_create();</span>
-<span class="lineNum">     288 </span><span class="lineCov">          1 :   int s00 = fsm_add_state(src, false);</span>
-<span class="lineNum">     289 </span><span class="lineCov">          1 :   int s01 = fsm_add_state(src, false);</span>
-<span class="lineNum">     290 </span><span class="lineCov">          1 :   int s02 = fsm_add_state(src, false);</span>
-<span class="lineNum">     291 </span><span class="lineCov">          1 :   int s03 = fsm_add_state(src, true);</span>
-<span class="lineNum">     292 </span><span class="lineCov">          1 :   src-&gt;start = s00;</span>
-<span class="lineNum">     293 </span><span class="lineCov">          1 :   fsm_add_single(src, s00, s01, L'f', L'f', FSM_TRANS_POSITIVE);</span>
-<span class="lineNum">     294 </span><span class="lineCov">          1 :   fsm_add_single(src, s01, s02, L'o', L'o', FSM_TRANS_POSITIVE);</span>
-<span class="lineNum">     295 </span><span class="lineCov">          1 :   fsm_add_single(src, s02, s03, L'o', L'o', FSM_TRANS_POSITIVE);</span>
-<span class="lineNum">     296 </span>            : 
-<span class="lineNum">     297 </span><span class="lineCov">          1 :   out = fsm_str(src);</span>
-<span class="lineNum">     298 </span><span class="lineCov">          1 :   TEST_ASSERT(0 == wcscmp(machine, out));</span>
-<span class="lineNum">     299 </span><span class="lineCov">          1 :   smb_free(out);</span>
-<span class="lineNum">     300 </span><span class="lineCov">          1 :   fsm_delete(src, true);</span>
-<span class="lineNum">     301 </span><span class="lineCov">          1 :   return 0;</span>
-<a name="302"><span class="lineNum">     302 </span>            : }</a>
-<span class="lineNum">     303 </span>            : 
-<span class="lineNum">     304 </span><span class="lineCov">          1 : void fsm_io_test(void)</span>
-<span class="lineNum">     305 </span>            : {
-<span class="lineNum">     306 </span><span class="lineCov">          1 :   smb_ut_group *group = su_create_test_group(&quot;fsm_io&quot;);</span>
-<span class="lineNum">     307 </span>            : 
-<span class="lineNum">     308 </span><span class="lineCov">          1 :   smb_ut_test *read_fsm = su_create_test(&quot;read_fsm&quot;, test_read_fsm);</span>
-<span class="lineNum">     309 </span><span class="lineCov">          1 :   su_add_test(group, read_fsm);</span>
+<span class="lineNum">      22 </span>            : /**
+<span class="lineNum">      23 </span>            :    @brief This function tests reading in a FSM and running it.
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :    It reads in the even a's and b's machine, and it simulates it on similar
+<a name="26"><span class="lineNum">      26 </span>            :    inputs.</a>
+<span class="lineNum">      27 </span>            :  */
+<span class="lineNum">      28 </span><span class="lineCov">          1 : static int test_read_fsm(void) {</span>
+<span class="lineNum">      29 </span>            :   int i;
+<span class="lineNum">      30 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">      31 </span><span class="lineCov">          1 :   const wchar_t *machine =</span>
+<span class="lineNum">      32 </span>            :     L&quot;start:0\n&quot;
+<span class="lineNum">      33 </span>            :     L&quot;accept:0\n&quot;
+<span class="lineNum">      34 </span>            :     L&quot;0-1:+a-a\n&quot;
+<span class="lineNum">      35 </span>            :     L&quot;0-2:+b-b\n&quot;
+<span class="lineNum">      36 </span>            :     L&quot;1-0:+a-a\n&quot;
+<span class="lineNum">      37 </span>            :     L&quot;1-3:+b-b\n&quot;
+<span class="lineNum">      38 </span>            :     L&quot;2-3:+a-a\n&quot;
+<span class="lineNum">      39 </span>            :     L&quot;2-0:+b-b\n&quot;
+<span class="lineNum">      40 </span>            :     L&quot;3-1:+b-b\n&quot;
+<span class="lineNum">      41 </span>            :     L&quot;3-2:+a-a\n&quot;;
+<span class="lineNum">      42 </span><span class="lineCov">          1 :   const wchar_t *inputs[] = {</span>
+<span class="lineNum">      43 </span>            :     L&quot;ababa&quot;,
+<span class="lineNum">      44 </span>            :     L&quot;aabaa&quot;,
+<span class="lineNum">      45 </span>            :     L&quot;aaaabbbba&quot;,
+<span class="lineNum">      46 </span>            :     L&quot;ab&quot;,
+<span class="lineNum">      47 </span>            :     L&quot;abab&quot;,
+<span class="lineNum">      48 </span>            :     L&quot;aabb&quot;
+<span class="lineNum">      49 </span>            :   };
+<span class="lineNum">      50 </span><span class="lineCov">          1 :   const bool results[] = {false, false, false, false, true, true};</span>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
+<span class="lineNum">      53 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
+<span class="lineNum">      54 </span><span class="lineCov">          7 :   for (i = 0; i &lt; sizeof(inputs)/sizeof(wchar_t*); i++) {</span>
+<span class="lineNum">      55 </span><span class="lineCov">          6 :     TEST_ASSERT(fsm_sim_nondet(f, inputs[i]) == results[i]);</span>
+<span class="lineNum">      56 </span>            :   }
+<span class="lineNum">      57 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
+<span class="lineNum">      58 </span><span class="lineCov">          1 :   return 0;</span>
+<span class="lineNum">      59 </span>            : }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            : /**
+<a name="62"><span class="lineNum">      62 </span>            :    @brief This function tests reading an FSM with escape sequences.</a>
+<span class="lineNum">      63 </span>            :  */
+<span class="lineNum">      64 </span><span class="lineCov">          1 : static int test_escape(void)</span>
+<span class="lineNum">      65 </span>            : {
+<span class="lineNum">      66 </span>            :   int i;
+<span class="lineNum">      67 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">      68 </span><span class="lineCov">          1 :   const wchar_t *machine =</span>
+<span class="lineNum">      69 </span>            :     L&quot;start:0\n&quot;
+<span class="lineNum">      70 </span>            :     L&quot;accept:12\n&quot;
+<span class="lineNum">      71 </span>            :     L&quot;0-1:+\\a-\\a\n&quot;           // alarm
+<span class="lineNum">      72 </span>            :     L&quot;1-2:+\\b-\\b\n&quot;           // backspace
+<span class="lineNum">      73 </span>            :     L&quot;2-3:+\\e-\\e\n&quot;           // EPSILON
+<span class="lineNum">      74 </span>            :     L&quot;3-4:+\\f-\\f\n&quot;           // form feed
+<span class="lineNum">      75 </span>            :     L&quot;4-5:+\\n-\\n\n&quot;           // newline (lf)
+<span class="lineNum">      76 </span>            :     L&quot;5-6:+\\r-\\r\n&quot;           // carriage return
+<span class="lineNum">      77 </span>            :     L&quot;6-7:+\\t-\\t\n&quot;           // tab
+<span class="lineNum">      78 </span>            :     L&quot;7-8:+\\v-\\v\n&quot;           // vertical tab
+<span class="lineNum">      79 </span>            :     L&quot;8-9:+\\\\-\\\\\n&quot;         // backslash
+<span class="lineNum">      80 </span>            :     L&quot;9-10:+\\+-\\+\n&quot;          // other character
+<span class="lineNum">      81 </span>            :     L&quot;10-11:+\\x3A-\\x3a\n&quot;     // colon
+<span class="lineNum">      82 </span>            :     L&quot;11-12:+\\u0051-\\u0051\n&quot;;// Q
+<span class="lineNum">      83 </span><span class="lineCov">          1 :   const wchar_t *inputs[] = {</span>
+<span class="lineNum">      84 </span>            :     L&quot;\a\b\f\n\r\t\v\\+:Q&quot;, // accept
+<span class="lineNum">      85 </span>            :     L&quot;a\b\f\n\r\t\v\\+:Q&quot;,  // reject
+<span class="lineNum">      86 </span>            :     L&quot;\ab\f\n\r\t\v\\+:Q&quot;,  // reject
+<span class="lineNum">      87 </span>            :     L&quot;\a\bf\n\r\t\v\\+:Q&quot;,  // reject
+<span class="lineNum">      88 </span>            :     L&quot;\a\b\fn\r\t\v\\+:Q&quot;,  // reject
+<span class="lineNum">      89 </span>            :     L&quot;\a\b\f\nr\t\v\\+:Q&quot;,  // reject
+<span class="lineNum">      90 </span>            :     L&quot;\a\b\f\n\rt\v\\+:Q&quot;,  // reject
+<span class="lineNum">      91 </span>            :     L&quot;\a\b\f\n\r\tv\\+:Q&quot;,  // reject
+<span class="lineNum">      92 </span>            :     L&quot;\a\b\f\n\r\t\v/+:Q&quot;,  // reject
+<span class="lineNum">      93 </span>            :     L&quot;\a\b\f\n\r\t\v\\-:Q&quot;, // reject
+<span class="lineNum">      94 </span>            :     L&quot;\a\b\f\n\r\t\v\\-;Q&quot;, // reject
+<span class="lineNum">      95 </span>            :     L&quot;\a\b\f\n\r\t\v\\-:q&quot;, // reject
+<span class="lineNum">      96 </span>            :   };
+<span class="lineNum">      97 </span><span class="lineCov">          1 :   const bool results[] = {true, false, false, false, false, false, false, false,</span>
+<span class="lineNum">      98 </span>            :                           false, false, false, false};
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
+<span class="lineNum">     101 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
+<span class="lineNum">     102 </span><span class="lineCov">         13 :   for (i = 0; i &lt; sizeof(inputs)/sizeof(wchar_t*); i++) {</span>
+<span class="lineNum">     103 </span><span class="lineCov">         12 :     TEST_ASSERT(fsm_sim_nondet(f, inputs[i]) == results[i]);</span>
+<span class="lineNum">     104 </span>            :   }
+<span class="lineNum">     105 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
+<span class="lineNum">     106 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="107"><span class="lineNum">     107 </span>            : }</a>
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span><span class="lineCov">          1 : int test_read_combine(void)</span>
+<span class="lineNum">     110 </span>            : {
+<span class="lineNum">     111 </span><span class="lineCov">          1 :   const wchar_t *m1spec =</span>
+<span class="lineNum">     112 </span>            :     L&quot;start:0\n&quot;
+<span class="lineNum">     113 </span>            :     L&quot;accept:7\n&quot;
+<span class="lineNum">     114 </span>            :     L&quot;0-1:+s-sS-S\n&quot;
+<span class="lineNum">     115 </span>            :     L&quot;1-2:+t-t\n&quot;
+<span class="lineNum">     116 </span>            :     L&quot;2-3:+e-e\n&quot;
+<span class="lineNum">     117 </span>            :     L&quot;3-4:+p-p\n&quot;
+<span class="lineNum">     118 </span>            :     L&quot;4-5:+h-h\n&quot;
+<span class="lineNum">     119 </span>            :     L&quot;5-6:+e-e\n&quot;
+<span class="lineNum">     120 </span>            :     L&quot;6-7:+n-n\n&quot;;
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span><span class="lineCov">          1 :   const wchar_t *m2spec =</span>
+<span class="lineNum">     123 </span>            :     L&quot;start:0\n&quot;
+<span class="lineNum">     124 </span>            :     L&quot;accept:7\n&quot;
+<span class="lineNum">     125 </span>            :     L&quot;0-1:+b-bB-B\n&quot;
+<span class="lineNum">     126 </span>            :     L&quot;1-2:+r-r\n&quot;
+<span class="lineNum">     127 </span>            :     L&quot;2-3:+e-e\n&quot;
+<span class="lineNum">     128 </span>            :     L&quot;3-4:+n-n\n&quot;
+<span class="lineNum">     129 </span>            :     L&quot;4-5:+n-n\n&quot;
+<span class="lineNum">     130 </span>            :     L&quot;5-6:+a-a\n&quot;
+<span class="lineNum">     131 </span>            :     L&quot;6-7:+n-n\n&quot;;
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span><span class="lineCov">          1 :   const wchar_t *inputs[] = {</span>
+<span class="lineNum">     134 </span>            :     L&quot;stephen&quot;,
+<span class="lineNum">     135 </span>            :     L&quot;Stephen&quot;,
+<span class="lineNum">     136 </span>            :     L&quot;brennan&quot;,
+<span class="lineNum">     137 </span>            :     L&quot;Brennan&quot;,
+<span class="lineNum">     138 </span>            :     L&quot;stephenbrennan&quot;,
+<span class="lineNum">     139 </span>            :     L&quot;stephenBrennan&quot;,
+<span class="lineNum">     140 </span>            :     L&quot;Stephenbrennan&quot;,
+<span class="lineNum">     141 </span>            :     L&quot;StephenBrennan&quot;,
+<span class="lineNum">     142 </span>            :     L&quot;StephenstephenStephen&quot;,
+<span class="lineNum">     143 </span>            :     L&quot;BrennanbrennanBrennan&quot;,
+<span class="lineNum">     144 </span>            :     L&quot;&quot;
+<span class="lineNum">     145 </span>            :   };
+<span class="lineNum">     146 </span><span class="lineCov">          1 :   const bool results[][6] = {</span>
+<span class="lineNum">     147 </span>            :     // {M1, M2,    M1 U M2, M1M2, M1*,  M2*
+<span class="lineNum">     148 </span>            :     {true,  false, true,  false, true,  false}, // &quot;stephen&quot;
+<span class="lineNum">     149 </span>            :     {true,  false, true,  false, true,  false}, // &quot;Stephen&quot;
+<span class="lineNum">     150 </span>            :     {false, true,  true,  false, false, true }, // &quot;brennan&quot;
+<span class="lineNum">     151 </span>            :     {false, true,  true,  false, false, true }, // &quot;Brennan&quot;
+<span class="lineNum">     152 </span>            :     {false, false, false, true,  false, false}, // &quot;stephenbrennan&quot;
+<span class="lineNum">     153 </span>            :     {false, false, false, true,  false, false}, // &quot;stephenBrennan&quot;
+<span class="lineNum">     154 </span>            :     {false, false, false, true,  false, false}, // &quot;Stephenbrennan&quot;
+<span class="lineNum">     155 </span>            :     {false, false, false, true,  false, false}, // &quot;StephenBrennan&quot;
+<span class="lineNum">     156 </span>            :     {false, false, false, false, true,  false}, // &quot;Stephenstephenstephen&quot;
+<span class="lineNum">     157 </span>            :     {false, false, false, false, false, true }, // &quot;BrennanbrennanBrennan&quot;
+<span class="lineNum">     158 </span>            :     {false, false, false, false, true,  true }  // &quot;&quot;
+<span class="lineNum">     159 </span>            :   };
+<span class="lineNum">     160 </span>            :   int i;
+<span class="lineNum">     161 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     162 </span>            :   fsm *m1Um2, *m1Cm2, *m1S, *m2S;
+<span class="lineNum">     163 </span><span class="lineCov">          1 :   fsm *m1 = fsm_read(m1spec, &amp;status), *m2 = fsm_read(m2spec, &amp;status);</span>
+<span class="lineNum">     164 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
+<span class="lineNum">     165 </span><span class="lineCov">          1 :   m1Um2 = fsm_copy(m1);</span>
+<span class="lineNum">     166 </span><span class="lineCov">          1 :   m1Cm2 = fsm_copy(m1);</span>
+<span class="lineNum">     167 </span><span class="lineCov">          1 :   m1S = fsm_copy(m1);</span>
+<span class="lineNum">     168 </span><span class="lineCov">          1 :   m2S = fsm_copy(m2);</span>
+<span class="lineNum">     169 </span><span class="lineCov">          1 :   fsm_union(m1Um2, m2);</span>
+<span class="lineNum">     170 </span><span class="lineCov">          1 :   fsm_concat(m1Cm2, m2);</span>
+<span class="lineNum">     171 </span><span class="lineCov">          1 :   fsm_kleene(m1S);</span>
+<span class="lineNum">     172 </span><span class="lineCov">          1 :   fsm_kleene(m2S);</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineCov">         12 :   for (i = 0; i &lt; sizeof(inputs)/sizeof(wchar_t *); i++) {</span>
+<span class="lineNum">     175 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][0] == fsm_sim_nondet(m1, inputs[i]));</span>
+<span class="lineNum">     176 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][1] == fsm_sim_nondet(m2, inputs[i]));</span>
+<span class="lineNum">     177 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][2] == fsm_sim_nondet(m1Um2, inputs[i]));</span>
+<span class="lineNum">     178 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][3] == fsm_sim_nondet(m1Cm2, inputs[i]));</span>
+<span class="lineNum">     179 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][4] == fsm_sim_nondet(m1S, inputs[i]));</span>
+<span class="lineNum">     180 </span><span class="lineCov">         11 :     TEST_ASSERT(results[i][5] == fsm_sim_nondet(m2S, inputs[i]));</span>
+<span class="lineNum">     181 </span>            :   }
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span><span class="lineCov">          1 :   fsm_delete(m1, true);</span>
+<span class="lineNum">     184 </span><span class="lineCov">          1 :   fsm_delete(m2, true);</span>
+<span class="lineNum">     185 </span><span class="lineCov">          1 :   fsm_delete(m1Um2, true);</span>
+<span class="lineNum">     186 </span><span class="lineCov">          1 :   fsm_delete(m1Cm2, true);</span>
+<span class="lineNum">     187 </span><span class="lineCov">          1 :   fsm_delete(m1S, true);</span>
+<span class="lineNum">     188 </span><span class="lineCov">          1 :   fsm_delete(m2S, true);</span>
+<span class="lineNum">     189 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="190"><span class="lineNum">     190 </span>            : }</a>
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineCov">          1 : int test_empty_string(void)</span>
+<span class="lineNum">     193 </span>            : {
+<span class="lineNum">     194 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;&quot;;</span>
+<span class="lineNum">     195 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     196 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
+<span class="lineNum">     197 </span><span class="lineCov">          1 :   TEST_ASSERT(f == NULL);</span>
+<span class="lineNum">     198 </span><span class="lineCov">          1 :   TEST_ASSERT(status == CKY_TOO_FEW_LINES);</span>
+<span class="lineNum">     199 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="200"><span class="lineNum">     200 </span>            : }</a>
+<span class="lineNum">     201 </span>            : 
+<span class="lineNum">     202 </span><span class="lineCov">          1 : int test_no_start(void)</span>
+<span class="lineNum">     203 </span>            : {
+<span class="lineNum">     204 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;accept:1\n0-1:+a-a\n&quot;;</span>
+<span class="lineNum">     205 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     206 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
+<span class="lineNum">     207 </span><span class="lineCov">          1 :   TEST_ASSERT(f != NULL);</span>
+<span class="lineNum">     208 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
+<span class="lineNum">     209 </span><span class="lineCov">          1 :   TEST_ASSERT(fsm_sim_nondet(f, L&quot;a&quot;));</span>
+<span class="lineNum">     210 </span><span class="lineCov">          1 :   TEST_ASSERT(!fsm_sim_nondet(f, L&quot;b&quot;));</span>
+<span class="lineNum">     211 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
+<span class="lineNum">     212 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="213"><span class="lineNum">     213 </span>            : }</a>
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span><span class="lineCov">          1 : int test_no_trailing_newline(void)</span>
+<span class="lineNum">     216 </span>            : {
+<span class="lineNum">     217 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;start:0\naccept:1\n0-1:+a-a&quot;;</span>
+<span class="lineNum">     218 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     219 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
+<span class="lineNum">     220 </span><span class="lineCov">          1 :   TEST_ASSERT(f != NULL);</span>
+<span class="lineNum">     221 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
+<span class="lineNum">     222 </span><span class="lineCov">          1 :   TEST_ASSERT(fsm_sim_nondet(f, L&quot;a&quot;));</span>
+<span class="lineNum">     223 </span><span class="lineCov">          1 :   TEST_ASSERT(!fsm_sim_nondet(f, L&quot;b&quot;));</span>
+<span class="lineNum">     224 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
+<span class="lineNum">     225 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="226"><span class="lineNum">     226 </span>            : }</a>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineCov">          1 : int test_whitespace(void)</span>
+<span class="lineNum">     229 </span>            : {
+<span class="lineNum">     230 </span><span class="lineCov">          1 :   const wchar_t *machine = L&quot;start: 0\naccept: 1\n0-1:+a-a&quot;;</span>
+<span class="lineNum">     231 </span><span class="lineCov">          1 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     232 </span><span class="lineCov">          1 :   fsm *f = fsm_read(machine, &amp;status);</span>
+<span class="lineNum">     233 </span><span class="lineCov">          1 :   TEST_ASSERT(f != NULL);</span>
+<span class="lineNum">     234 </span><span class="lineCov">          1 :   TEST_ASSERT(status == SMB_SUCCESS);</span>
+<span class="lineNum">     235 </span><span class="lineCov">          1 :   TEST_ASSERT(fsm_sim_nondet(f, L&quot;a&quot;));</span>
+<span class="lineNum">     236 </span><span class="lineCov">          1 :   TEST_ASSERT(!fsm_sim_nondet(f, L&quot;b&quot;));</span>
+<span class="lineNum">     237 </span><span class="lineCov">          1 :   fsm_delete(f, true);</span>
+<span class="lineNum">     238 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="239"><span class="lineNum">     239 </span>            : }</a>
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span><span class="lineCov">          6 : static int fail_on(const wchar_t *machine)</span>
+<span class="lineNum">     242 </span>            : {
+<span class="lineNum">     243 </span><span class="lineCov">          6 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     244 </span><span class="lineCov">          6 :   fsm *f = fsm_read(machine, &amp;status);</span>
+<span class="lineNum">     245 </span><span class="lineCov">          6 :   TEST_ASSERT(f == NULL);</span>
+<span class="lineNum">     246 </span><span class="lineCov">          6 :   TEST_ASSERT(status == CKY_MALFORMED_TRANS);</span>
+<span class="lineNum">     247 </span><span class="lineCov">          6 :   return 0;</span>
+<a name="248"><span class="lineNum">     248 </span>            : }</a>
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span><span class="lineCov">          1 : int test_missing_src(void)</span>
+<span class="lineNum">     251 </span>            : {
+<span class="lineNum">     252 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n-1:+a-a&quot;);</span>
+<a name="253"><span class="lineNum">     253 </span>            : }</a>
+<span class="lineNum">     254 </span>            : 
+<span class="lineNum">     255 </span><span class="lineCov">          1 : int test_missing_hyphen(void)</span>
+<span class="lineNum">     256 </span>            : {
+<span class="lineNum">     257 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n01:+a-a&quot;);</span>
+<a name="258"><span class="lineNum">     258 </span>            : }</a>
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span><span class="lineCov">          1 : int test_missing_dst(void)</span>
+<span class="lineNum">     261 </span>            : {
+<span class="lineNum">     262 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n-1:+a-a&quot;);</span>
+<a name="263"><span class="lineNum">     263 </span>            : }</a>
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span><span class="lineCov">          1 : int test_missing_type(void)</span>
+<span class="lineNum">     266 </span>            : {
+<span class="lineNum">     267 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n0-1:a-a&quot;);</span>
+<a name="268"><span class="lineNum">     268 </span>            : }</a>
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span><span class="lineCov">          1 : int test_bad_escaping(void)</span>
+<span class="lineNum">     271 </span>            : {
+<span class="lineNum">     272 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n0-1:+\\u-\\u&quot;);</span>
+<a name="273"><span class="lineNum">     273 </span>            : }</a>
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span><span class="lineCov">          1 : int test_bad_escaping2(void)</span>
+<span class="lineNum">     276 </span>            : {
+<span class="lineNum">     277 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n0-1:+\\&quot;);</span>
+<a name="278"><span class="lineNum">     278 </span>            : }</a>
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span><span class="lineCov">          1 : int test_simple_str(void)</span>
+<span class="lineNum">     281 </span>            : {
+<span class="lineNum">     282 </span>            :   // Create FSM &quot;src&quot; that accepts &quot;foo&quot;.
+<span class="lineNum">     283 </span><span class="lineCov">          1 :   wchar_t *machine =</span>
+<span class="lineNum">     284 </span>            :     L&quot;start:0\n&quot;
+<span class="lineNum">     285 </span>            :     L&quot;accept:3\n&quot;
+<span class="lineNum">     286 </span>            :     L&quot;0-1:+f-f\n&quot;
+<span class="lineNum">     287 </span>            :     L&quot;1-2:+o-o\n&quot;
+<span class="lineNum">     288 </span>            :     L&quot;2-3:+o-o\n&quot;;
+<span class="lineNum">     289 </span>            :   wchar_t *out;
+<span class="lineNum">     290 </span><span class="lineCov">          1 :   fsm *src = fsm_create();</span>
+<span class="lineNum">     291 </span><span class="lineCov">          1 :   int s00 = fsm_add_state(src, false);</span>
+<span class="lineNum">     292 </span><span class="lineCov">          1 :   int s01 = fsm_add_state(src, false);</span>
+<span class="lineNum">     293 </span><span class="lineCov">          1 :   int s02 = fsm_add_state(src, false);</span>
+<span class="lineNum">     294 </span><span class="lineCov">          1 :   int s03 = fsm_add_state(src, true);</span>
+<span class="lineNum">     295 </span><span class="lineCov">          1 :   src-&gt;start = s00;</span>
+<span class="lineNum">     296 </span><span class="lineCov">          1 :   fsm_add_single(src, s00, s01, L'f', L'f', FSM_TRANS_POSITIVE);</span>
+<span class="lineNum">     297 </span><span class="lineCov">          1 :   fsm_add_single(src, s01, s02, L'o', L'o', FSM_TRANS_POSITIVE);</span>
+<span class="lineNum">     298 </span><span class="lineCov">          1 :   fsm_add_single(src, s02, s03, L'o', L'o', FSM_TRANS_POSITIVE);</span>
+<span class="lineNum">     299 </span>            : 
+<span class="lineNum">     300 </span><span class="lineCov">          1 :   out = fsm_str(src);</span>
+<span class="lineNum">     301 </span><span class="lineCov">          1 :   TEST_ASSERT(0 == wcscmp(machine, out));</span>
+<span class="lineNum">     302 </span><span class="lineCov">          1 :   smb_free(out);</span>
+<span class="lineNum">     303 </span><span class="lineCov">          1 :   fsm_delete(src, true);</span>
+<span class="lineNum">     304 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="305"><span class="lineNum">     305 </span>            : }</a>
+<span class="lineNum">     306 </span>            : 
+<span class="lineNum">     307 </span><span class="lineCov">          1 : void fsm_io_test(void)</span>
+<span class="lineNum">     308 </span>            : {
+<span class="lineNum">     309 </span><span class="lineCov">          1 :   smb_ut_group *group = su_create_test_group(&quot;fsm_io&quot;);</span>
 <span class="lineNum">     310 </span>            : 
-<span class="lineNum">     311 </span><span class="lineCov">          1 :   smb_ut_test *escape = su_create_test(&quot;escape&quot;, test_escape);</span>
-<span class="lineNum">     312 </span><span class="lineCov">          1 :   su_add_test(group, escape);</span>
+<span class="lineNum">     311 </span><span class="lineCov">          1 :   smb_ut_test *read_fsm = su_create_test(&quot;read_fsm&quot;, test_read_fsm);</span>
+<span class="lineNum">     312 </span><span class="lineCov">          1 :   su_add_test(group, read_fsm);</span>
 <span class="lineNum">     313 </span>            : 
-<span class="lineNum">     314 </span><span class="lineCov">          1 :   smb_ut_test *read_combine = su_create_test(&quot;read_combine&quot;, test_read_combine);</span>
-<span class="lineNum">     315 </span><span class="lineCov">          1 :   su_add_test(group, read_combine);</span>
+<span class="lineNum">     314 </span><span class="lineCov">          1 :   smb_ut_test *escape = su_create_test(&quot;escape&quot;, test_escape);</span>
+<span class="lineNum">     315 </span><span class="lineCov">          1 :   su_add_test(group, escape);</span>
 <span class="lineNum">     316 </span>            : 
-<span class="lineNum">     317 </span><span class="lineCov">          1 :   smb_ut_test *empty_string = su_create_test(&quot;empty_string&quot;, test_empty_string);</span>
-<span class="lineNum">     318 </span><span class="lineCov">          1 :   su_add_test(group, empty_string);</span>
+<span class="lineNum">     317 </span><span class="lineCov">          1 :   smb_ut_test *read_combine = su_create_test(&quot;read_combine&quot;, test_read_combine);</span>
+<span class="lineNum">     318 </span><span class="lineCov">          1 :   su_add_test(group, read_combine);</span>
 <span class="lineNum">     319 </span>            : 
-<span class="lineNum">     320 </span><span class="lineCov">          1 :   smb_ut_test *no_start = su_create_test(&quot;no_start&quot;, test_no_start);</span>
-<span class="lineNum">     321 </span><span class="lineCov">          1 :   su_add_test(group, no_start);</span>
+<span class="lineNum">     320 </span><span class="lineCov">          1 :   smb_ut_test *empty_string = su_create_test(&quot;empty_string&quot;, test_empty_string);</span>
+<span class="lineNum">     321 </span><span class="lineCov">          1 :   su_add_test(group, empty_string);</span>
 <span class="lineNum">     322 </span>            : 
-<span class="lineNum">     323 </span><span class="lineCov">          1 :   smb_ut_test *no_trailing_newline = su_create_test(&quot;no_trailing_newline&quot;, test_no_trailing_newline);</span>
-<span class="lineNum">     324 </span><span class="lineCov">          1 :   su_add_test(group, no_trailing_newline);</span>
+<span class="lineNum">     323 </span><span class="lineCov">          1 :   smb_ut_test *no_start = su_create_test(&quot;no_start&quot;, test_no_start);</span>
+<span class="lineNum">     324 </span><span class="lineCov">          1 :   su_add_test(group, no_start);</span>
 <span class="lineNum">     325 </span>            : 
-<span class="lineNum">     326 </span><span class="lineCov">          1 :   smb_ut_test *whitespace = su_create_test(&quot;whitespace&quot;, test_whitespace);</span>
-<span class="lineNum">     327 </span><span class="lineCov">          1 :   su_add_test(group, whitespace);</span>
+<span class="lineNum">     326 </span><span class="lineCov">          1 :   smb_ut_test *no_trailing_newline = su_create_test(&quot;no_trailing_newline&quot;, test_no_trailing_newline);</span>
+<span class="lineNum">     327 </span><span class="lineCov">          1 :   su_add_test(group, no_trailing_newline);</span>
 <span class="lineNum">     328 </span>            : 
-<span class="lineNum">     329 </span><span class="lineCov">          1 :   smb_ut_test *missing_src = su_create_test(&quot;missing_src&quot;, test_missing_src);</span>
-<span class="lineNum">     330 </span><span class="lineCov">          1 :   su_add_test(group, missing_src);</span>
+<span class="lineNum">     329 </span><span class="lineCov">          1 :   smb_ut_test *whitespace = su_create_test(&quot;whitespace&quot;, test_whitespace);</span>
+<span class="lineNum">     330 </span><span class="lineCov">          1 :   su_add_test(group, whitespace);</span>
 <span class="lineNum">     331 </span>            : 
-<span class="lineNum">     332 </span><span class="lineCov">          1 :   smb_ut_test *missing_hyphen = su_create_test(&quot;missing_hyphen&quot;, test_missing_hyphen);</span>
-<span class="lineNum">     333 </span><span class="lineCov">          1 :   su_add_test(group, missing_hyphen);</span>
+<span class="lineNum">     332 </span><span class="lineCov">          1 :   smb_ut_test *missing_src = su_create_test(&quot;missing_src&quot;, test_missing_src);</span>
+<span class="lineNum">     333 </span><span class="lineCov">          1 :   su_add_test(group, missing_src);</span>
 <span class="lineNum">     334 </span>            : 
-<span class="lineNum">     335 </span><span class="lineCov">          1 :   smb_ut_test *missing_dst = su_create_test(&quot;missing_dst&quot;, test_missing_dst);</span>
-<span class="lineNum">     336 </span><span class="lineCov">          1 :   su_add_test(group, missing_dst);</span>
+<span class="lineNum">     335 </span><span class="lineCov">          1 :   smb_ut_test *missing_hyphen = su_create_test(&quot;missing_hyphen&quot;, test_missing_hyphen);</span>
+<span class="lineNum">     336 </span><span class="lineCov">          1 :   su_add_test(group, missing_hyphen);</span>
 <span class="lineNum">     337 </span>            : 
-<span class="lineNum">     338 </span><span class="lineCov">          1 :   smb_ut_test *missing_type = su_create_test(&quot;missing_type&quot;, test_missing_type);</span>
-<span class="lineNum">     339 </span><span class="lineCov">          1 :   su_add_test(group, missing_type);</span>
+<span class="lineNum">     338 </span><span class="lineCov">          1 :   smb_ut_test *missing_dst = su_create_test(&quot;missing_dst&quot;, test_missing_dst);</span>
+<span class="lineNum">     339 </span><span class="lineCov">          1 :   su_add_test(group, missing_dst);</span>
 <span class="lineNum">     340 </span>            : 
-<span class="lineNum">     341 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping = su_create_test(&quot;bad_escaping&quot;, test_bad_escaping);</span>
-<span class="lineNum">     342 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping);</span>
+<span class="lineNum">     341 </span><span class="lineCov">          1 :   smb_ut_test *missing_type = su_create_test(&quot;missing_type&quot;, test_missing_type);</span>
+<span class="lineNum">     342 </span><span class="lineCov">          1 :   su_add_test(group, missing_type);</span>
 <span class="lineNum">     343 </span>            : 
-<span class="lineNum">     344 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping2 = su_create_test(&quot;bad_escaping2&quot;, test_bad_escaping2);</span>
-<span class="lineNum">     345 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping2);</span>
+<span class="lineNum">     344 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping = su_create_test(&quot;bad_escaping&quot;, test_bad_escaping);</span>
+<span class="lineNum">     345 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping);</span>
 <span class="lineNum">     346 </span>            : 
-<span class="lineNum">     347 </span><span class="lineCov">          1 :   smb_ut_test *simple_str = su_create_test(&quot;simple_str&quot;, test_simple_str);</span>
-<span class="lineNum">     348 </span><span class="lineCov">          1 :   su_add_test(group, simple_str);</span>
+<span class="lineNum">     347 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping2 = su_create_test(&quot;bad_escaping2&quot;, test_bad_escaping2);</span>
+<span class="lineNum">     348 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping2);</span>
 <span class="lineNum">     349 </span>            : 
-<span class="lineNum">     350 </span><span class="lineCov">          1 :   su_run_group(group);</span>
-<span class="lineNum">     351 </span><span class="lineCov">          1 :   su_delete_group(group);</span>
-<span class="lineNum">     352 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     350 </span><span class="lineCov">          1 :   smb_ut_test *simple_str = su_create_test(&quot;simple_str&quot;, test_simple_str);</span>
+<span class="lineNum">     351 </span><span class="lineCov">          1 :   su_add_test(group, simple_str);</span>
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span><span class="lineCov">          1 :   su_run_group(group);</span>
+<span class="lineNum">     354 </span><span class="lineCov">          1 :   su_delete_group(group);</span>
+<span class="lineNum">     355 </span><span class="lineCov">          1 : }</span>
 </pre>
       </td>
     </tr>

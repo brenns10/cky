@@ -81,42 +81,42 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <a href="regex_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/***************************************************************************/</span>
-<a name="l00040"></a>00040 <span class="preprocessor">#ifndef SMB_REGEX_H</span>
-<a name="l00041"></a>00041 <span class="preprocessor"></span><span class="preprocessor">#define SMB_REGEX_H</span>
-<a name="l00042"></a>00042 <span class="preprocessor"></span>
-<a name="l00043"></a>00043 <span class="preprocessor">#include &quot;libstephen/al.h&quot;</span>
-<a name="l00044"></a>00044 <span class="preprocessor">#include &quot;<a class="code" href="fsm_8h.html" title="Finite state machine definitions.">fsm.h</a>&quot;</span>
-<a name="l00045"></a>00045 
-<a name="l00049"></a><a class="code" href="structregex__hit.html">00049</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
-<a name="l00050"></a>00050 
-<a name="l00054"></a><a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449">00054</a>   <span class="keywordtype">int</span> <a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449" title="The location the hit starts at. This is inclusive.">start</a>;
-<a name="l00055"></a>00055 
-<a name="l00059"></a><a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc">00059</a>   <span class="keywordtype">int</span> <a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc" title="Number of characters in the hit.">length</a>;
-<a name="l00060"></a>00060 
-<a name="l00061"></a>00061 } <a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a>;
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063 <span class="comment">// datastructs.c</span>
-<a name="l00064"></a>00064 <span class="keywordtype">void</span> <a class="code" href="regex_2datastructs_8c.html#a620b076c4e97fc7c6e95600bd9f6fc39" title="Initialize a regex_hit.">regex_hit_init</a>(<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *obj, <span class="keywordtype">int</span> start, <span class="keywordtype">int</span> length);
-<a name="l00065"></a>00065 <a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *<a class="code" href="regex_2datastructs_8c.html#af780fe7ad3fe1abdc77113d94cd85aa2" title="Allocate a regex_hit.">regex_hit_create</a>(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> length);
-<a name="l00066"></a>00066 <span class="keywordtype">void</span> <a class="code" href="regex_2datastructs_8c.html#a38c12ce2ebc264d6b371e83396d45b02" title="Clean up a regex_hit object.">regex_hit_destroy</a>(<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *obj);
-<a name="l00067"></a>00067 <span class="keywordtype">void</span> <a class="code" href="regex_2datastructs_8c.html#abc7bd85bcf94515c25ecc6fd3c4508f4" title="Clean up and free a regex_hit object.">regex_hit_delete</a>(<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *obj);
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069 <span class="comment">// parse.c</span>
-<a name="l00070"></a>00070 <span class="keywordtype">void</span> <a class="code" href="parse_8c.html#ac6a448a418b078c44fb0d0d302431eba" title="Adjust the FSM according to its modifier, if any.">regex_parse_check_modifier</a>(<a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<span class="keyword">new</span>, <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
-<a name="l00071"></a>00071 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a2c49189ca53918ba1e644d5c3d0a4fc1" title="Return a FSM that accepts any whitespace.">regex_parse_create_whitespace_fsm</a>(<span class="keywordtype">int</span> type);
-<a name="l00072"></a>00072 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a2e56e4221f6f7b0abb6dda80395dba08" title="Return a FSM for word characters (letters, numbers, and underscore).">regex_parse_create_word_fsm</a>(<span class="keywordtype">int</span> type);
-<a name="l00073"></a>00073 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a9d29a86b2059e1fb7aa3b05662eb1f88" title="Return a FSM for digits.">regex_parse_create_digit_fsm</a>(<span class="keywordtype">int</span> type);
-<a name="l00074"></a>00074 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a2b81fd55b1de3e8405c4e5d17dd7b63d" title="Returns an FSM for an escape sequence, outside of a character class.">regex_parse_outer_escape</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
-<a name="l00075"></a>00075 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a292a18ffe8a3ffa53aae02a662c04415" title="Create a FSM for a character class.">regex_parse_char_class</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
-<a name="l00076"></a>00076 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078 <span class="comment">// search.c</span>
-<a name="l00079"></a>00079 smb_al *<a class="code" href="search_8c.html#a20107415f6769b987e6d7beee78ed478" title="Perform a regex-style search with an FSM on a search text.">fsm_search</a>(<a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *regex_fsm, <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *srchText, <span class="keywordtype">bool</span> greedy,
-<a name="l00080"></a>00080                    <span class="keywordtype">bool</span> overlap);
-<a name="l00081"></a>00081 smb_al *<a class="code" href="search_8c.html#ac5ffd8988768ff06b05465eda3025753" title="Searches for a regular expression on a search text.">regex_search</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>, <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *srchText, <span class="keywordtype">bool</span> greedy,
-<a name="l00082"></a>00082                      <span class="keywordtype">bool</span> overlap);
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084 <span class="preprocessor">#endif</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#ifndef SMB_REGEX_H</span>
+<a name="l00017"></a>00017 <span class="preprocessor"></span><span class="preprocessor">#define SMB_REGEX_H</span>
+<a name="l00018"></a>00018 <span class="preprocessor"></span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &quot;libstephen/al.h&quot;</span>
+<a name="l00020"></a>00020 <span class="preprocessor">#include &quot;<a class="code" href="fsm_8h.html" title="Finite state machine definitions.">fsm.h</a>&quot;</span>
+<a name="l00021"></a>00021 
+<a name="l00025"></a><a class="code" href="structregex__hit.html">00025</a> <span class="keyword">typedef</span> <span class="keyword">struct </span>{
+<a name="l00026"></a>00026 
+<a name="l00030"></a><a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449">00030</a>   <span class="keywordtype">int</span> <a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449" title="The location the hit starts at. This is inclusive.">start</a>;
+<a name="l00031"></a>00031 
+<a name="l00035"></a><a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc">00035</a>   <span class="keywordtype">int</span> <a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc" title="Number of characters in the hit.">length</a>;
+<a name="l00036"></a>00036 
+<a name="l00037"></a>00037 } <a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a>;
+<a name="l00038"></a>00038 
+<a name="l00039"></a>00039 <span class="comment">// datastructs.c</span>
+<a name="l00040"></a>00040 <span class="keywordtype">void</span> <a class="code" href="regex_2datastructs_8c.html#a620b076c4e97fc7c6e95600bd9f6fc39" title="Initialize a regex_hit.">regex_hit_init</a>(<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *obj, <span class="keywordtype">int</span> start, <span class="keywordtype">int</span> length);
+<a name="l00041"></a>00041 <a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *<a class="code" href="regex_2datastructs_8c.html#af780fe7ad3fe1abdc77113d94cd85aa2" title="Allocate a regex_hit.">regex_hit_create</a>(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> length);
+<a name="l00042"></a>00042 <span class="keywordtype">void</span> <a class="code" href="regex_2datastructs_8c.html#a38c12ce2ebc264d6b371e83396d45b02" title="Clean up a regex_hit object.">regex_hit_destroy</a>(<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *obj);
+<a name="l00043"></a>00043 <span class="keywordtype">void</span> <a class="code" href="regex_2datastructs_8c.html#abc7bd85bcf94515c25ecc6fd3c4508f4" title="Clean up and free a regex_hit object.">regex_hit_delete</a>(<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *obj);
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045 <span class="comment">// parse.c</span>
+<a name="l00046"></a>00046 <span class="keywordtype">void</span> <a class="code" href="parse_8c.html#ac6a448a418b078c44fb0d0d302431eba" title="Adjust the FSM according to its modifier, if any.">regex_parse_check_modifier</a>(<a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<span class="keyword">new</span>, <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
+<a name="l00047"></a>00047 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a2c49189ca53918ba1e644d5c3d0a4fc1" title="Return a FSM that accepts any whitespace.">regex_parse_create_whitespace_fsm</a>(<span class="keywordtype">int</span> type);
+<a name="l00048"></a>00048 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a2e56e4221f6f7b0abb6dda80395dba08" title="Return a FSM for word characters (letters, numbers, and underscore).">regex_parse_create_word_fsm</a>(<span class="keywordtype">int</span> type);
+<a name="l00049"></a>00049 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a9d29a86b2059e1fb7aa3b05662eb1f88" title="Return a FSM for digits.">regex_parse_create_digit_fsm</a>(<span class="keywordtype">int</span> type);
+<a name="l00050"></a>00050 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a2b81fd55b1de3e8405c4e5d17dd7b63d" title="Returns an FSM for an escape sequence, outside of a character class.">regex_parse_outer_escape</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
+<a name="l00051"></a>00051 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a292a18ffe8a3ffa53aae02a662c04415" title="Create a FSM for a character class.">regex_parse_char_class</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
+<a name="l00052"></a>00052 <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *<a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>);
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054 <span class="comment">// search.c</span>
+<a name="l00055"></a>00055 smb_al *<a class="code" href="search_8c.html#a20107415f6769b987e6d7beee78ed478" title="Perform a regex-style search with an FSM on a search text.">fsm_search</a>(<a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *regex_fsm, <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *srchText, <span class="keywordtype">bool</span> greedy,
+<a name="l00056"></a>00056                    <span class="keywordtype">bool</span> overlap);
+<a name="l00057"></a>00057 smb_al *<a class="code" href="search_8c.html#ac5ffd8988768ff06b05465eda3025753" title="Searches for a regular expression on a search text.">regex_search</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>, <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *srchText, <span class="keywordtype">bool</span> greedy,
+<a name="l00058"></a>00058                      <span class="keywordtype">bool</span> overlap);
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -135,7 +135,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 19:34:23 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 19:45:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

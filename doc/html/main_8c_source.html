@@ -81,317 +81,317 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <a href="main_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/***************************************************************************/</span>
-<a name="l00040"></a>00040 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
-<a name="l00041"></a>00041 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
-<a name="l00042"></a>00042 <span class="preprocessor">#include &lt;wchar.h&gt;</span>
-<a name="l00043"></a>00043 <span class="preprocessor">#include &lt;string.h&gt;</span>
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045 <span class="preprocessor">#include &quot;libstephen/base.h&quot;</span>
-<a name="l00046"></a>00046 <span class="preprocessor">#include &quot;libstephen/ad.h&quot;</span>
-<a name="l00047"></a>00047 <span class="preprocessor">#include &quot;libstephen/util.h&quot;</span>
-<a name="l00048"></a>00048 <span class="preprocessor">#include &quot;<a class="code" href="gram_8h.html" title="Context-free grammar data structures.">gram.h</a>&quot;</span>
-<a name="l00049"></a>00049 <span class="preprocessor">#include &quot;<a class="code" href="fsm_8h.html" title="Finite state machine definitions.">fsm.h</a>&quot;</span>
-<a name="l00050"></a>00050 <span class="preprocessor">#include &quot;<a class="code" href="regex_8h.html" title="Declarations for regular expression routines.">regex.h</a>&quot;</span>
-<a name="l00051"></a>00051 <span class="preprocessor">#include &quot;<a class="code" href="tests_8h.html" title="Test runners.">test/tests.h</a>&quot;</span>
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee" title="Tests creating a grammar, and printing it out.">simple_gram</a>(<span class="keywordtype">void</span>);
-<a name="l00054"></a>00054 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86" title="A function that tests the basic construction of a simple FSM.">simple_fsm</a>(<span class="keywordtype">void</span>);
-<a name="l00055"></a>00055 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>(<span class="keywordtype">void</span>);
-<a name="l00056"></a>00056 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024" title="Interactively search a file for a pattern.">search</a>(<span class="keywordtype">void</span>);
-<a name="l00057"></a>00057 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a>(<span class="keywordtype">void</span>);
-<a name="l00058"></a>00058 <span class="keywordtype">void</span> test(<span class="keywordtype">void</span>);
-<a name="l00059"></a>00059 
-<a name="l00063"></a><a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3">00063</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3" title="Print the help message for the main program.">help</a>(<span class="keywordtype">char</span> *name)
-<a name="l00064"></a>00064 {
-<a name="l00065"></a>00065   printf(<span class="stringliteral">&quot;Usage: %s [TESTS]\n&quot;</span>, name);
-<a name="l00066"></a>00066   puts(<span class="stringliteral">&quot;Runs tests on CKY parser and regex engine.&quot;</span>);
-<a name="l00067"></a>00067   puts(<span class="stringliteral">&quot;&quot;</span>);
-<a name="l00068"></a>00068   puts(<span class="stringliteral">&quot;Tests:&quot;</span>);
-<a name="l00069"></a>00069   puts(<span class="stringliteral">&quot;  -g, --simple-gram       create and print a grammar&quot;</span>);
-<a name="l00070"></a>00070   puts(<span class="stringliteral">&quot;  -f, --simple-fsm        programmatically create and run a certain FSM&quot;</span>);
-<a name="l00071"></a>00071   puts(<span class="stringliteral">&quot;  -e, --regex             input regex and test strings&quot;</span>);
-<a name="l00072"></a>00072   puts(<span class="stringliteral">&quot;  -s, --search            regex search file&quot;</span>);
-<a name="l00073"></a>00073   puts(<span class="stringliteral">&quot;  -d, --dot               create graphviz dot from regex&quot;</span>);
-<a name="l00074"></a>00074   puts(<span class="stringliteral">&quot;  -t, --test              run tests&quot;</span>);
-<a name="l00075"></a>00075   puts(<span class="stringliteral">&quot;&quot;</span>);
-<a name="l00076"></a>00076   puts(<span class="stringliteral">&quot;Misc:&quot;</span>);
-<a name="l00077"></a>00077   puts(<span class="stringliteral">&quot;  -h, --help              display this help message and exit&quot;</span>);
-<a name="l00078"></a>00078 }
-<a name="l00079"></a>00079 
-<a name="l00091"></a><a class="code" href="main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">00091</a> <span class="keywordtype">int</span> <a class="code" href="main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title="Main entry point of the program.">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)
-<a name="l00092"></a>00092 {
-<a name="l00093"></a>00093   smb_ad data;
-<a name="l00094"></a>00094   <span class="keywordtype">bool</span> executed = <span class="keyword">false</span>;
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096   arg_data_init(&amp;data);
-<a name="l00097"></a>00097   process_args(&amp;data, argc - 1, argv + 1);
-<a name="l00098"></a>00098 
-<a name="l00099"></a>00099   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;h&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;help&quot;</span>)) {
-<a name="l00100"></a>00100     <a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3" title="Print the help message for the main program.">help</a>(argv[0]);
-<a name="l00101"></a>00101     arg_data_destroy(&amp;data);
-<a name="l00102"></a>00102     exit(0);
-<a name="l00103"></a>00103   }
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;g&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;simple-gram&quot;</span>)) {
-<a name="l00106"></a>00106     <a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee" title="Tests creating a grammar, and printing it out.">simple_gram</a>();
-<a name="l00107"></a>00107     executed = <span class="keyword">true</span>;
-<a name="l00108"></a>00108   }
-<a name="l00109"></a>00109   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;f&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;simple-fsm&quot;</span>)) {
-<a name="l00110"></a>00110     <a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86" title="A function that tests the basic construction of a simple FSM.">simple_fsm</a>();
-<a name="l00111"></a>00111     executed = <span class="keyword">true</span>;
-<a name="l00112"></a>00112   }
-<a name="l00113"></a>00113   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;e&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;regex&quot;</span>)) {
-<a name="l00114"></a>00114     <a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>();
-<a name="l00115"></a>00115     executed = <span class="keyword">true</span>;
-<a name="l00116"></a>00116   }
-<a name="l00117"></a>00117   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;s&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;search&quot;</span>)) {
-<a name="l00118"></a>00118     <a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024" title="Interactively search a file for a pattern.">search</a>();
-<a name="l00119"></a>00119     executed = <span class="keyword">true</span>;
-<a name="l00120"></a>00120   }
-<a name="l00121"></a>00121   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;d&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;dot&quot;</span>)) {
-<a name="l00122"></a>00122     <a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a>();
-<a name="l00123"></a>00123     arg_data_destroy(&amp;data);
-<a name="l00124"></a>00124     <span class="keywordflow">return</span> 0; <span class="comment">// exit silently</span>
-<a name="l00125"></a>00125   }
-<a name="l00126"></a>00126   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;t&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;test&quot;</span>)) {
-<a name="l00127"></a>00127     test();
-<a name="l00128"></a>00128     executed = <span class="keyword">true</span>;
-<a name="l00129"></a>00129   }
-<a name="l00130"></a>00130 
-<a name="l00131"></a>00131   <span class="keywordflow">if</span> (!executed) {
-<a name="l00132"></a>00132     <a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3" title="Print the help message for the main program.">help</a>(argv[0]);
-<a name="l00133"></a>00133     arg_data_destroy(&amp;data);
-<a name="l00134"></a>00134     exit(1);
-<a name="l00135"></a>00135   }
-<a name="l00136"></a>00136 
-<a name="l00137"></a>00137   arg_data_destroy(&amp;data);
-<a name="l00138"></a>00138   <span class="keywordflow">return</span> 0;
-<a name="l00139"></a>00139 }
-<a name="l00140"></a>00140 
-<a name="l00144"></a><a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c">00144</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a>(<span class="keywordtype">void</span>)
-<a name="l00145"></a>00145 {
-<a name="l00146"></a>00146   smb_status status = SMB_SUCCESS;
-<a name="l00147"></a>00147   <span class="keywordtype">wchar_t</span> *str;
-<a name="l00148"></a>00148   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *compiled_fsm;
-<a name="l00149"></a>00149 
-<a name="l00150"></a>00150   str = smb_read_linew(stdin, &amp;status);
-<a name="l00151"></a>00151   compiled_fsm = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(str);
-<a name="l00152"></a>00152   smb_free(str);
-<a name="l00153"></a>00153   <a class="code" href="io_8c.html#a068179080f09c38af390ad19772f7aba" title="Print an FSM to graphviz dot format.">fsm_dot</a>(compiled_fsm, stdout);
-<a name="l00154"></a>00154   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(compiled_fsm, <span class="keyword">true</span>);
-<a name="l00155"></a>00155 }
-<a name="l00156"></a>00156 
-<a name="l00169"></a><a class="code" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e">00169</a> <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e" title="Read a file completely into memory.">read_file</a>(FILE *file, <span class="keywordtype">int</span> *bytes)
-<a name="l00170"></a>00170 {
-<a name="l00171"></a>00171   <span class="keywordtype">char</span> *buffer;
-<a name="l00172"></a>00172   <span class="comment">// assume file is open</span>
-<a name="l00173"></a>00173   fseek(file, 0L, SEEK_END);
-<a name="l00174"></a>00174   *bytes = (int) ftell(file) + 1; <span class="comment">// extra for null terminator</span>
-<a name="l00175"></a>00175   fseek(file, 0L, SEEK_SET);
-<a name="l00176"></a>00176   buffer = smb_new(<span class="keywordtype">char</span>, *bytes);
-<a name="l00177"></a>00177   <span class="keywordflow">if</span> (buffer == NULL) {
-<a name="l00178"></a>00178     PRINT_ERROR_LOC;
-<a name="l00179"></a>00179     fprintf(stderr, <span class="stringliteral">&quot;Error allocating memory for file.\n&quot;</span>);
-<a name="l00180"></a>00180     <span class="keywordflow">return</span> NULL;
-<a name="l00181"></a>00181   }
-<a name="l00182"></a>00182   fread(buffer, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>), *bytes, file);
-<a name="l00183"></a>00183   <span class="keywordflow">return</span> buffer;
-<a name="l00184"></a>00184 }
-<a name="l00185"></a>00185 
-<a name="l00189"></a><a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024">00189</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024" title="Interactively search a file for a pattern.">search</a>(<span class="keywordtype">void</span>)
-<a name="l00190"></a>00190 {
-<a name="l00191"></a>00191   <span class="keywordtype">char</span> *filename;
-<a name="l00192"></a>00192   FILE *file;
-<a name="l00193"></a>00193   <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>;
-<a name="l00194"></a>00194   <span class="keywordtype">wchar_t</span> *wregex;
-<a name="l00195"></a>00195   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *regex_fsm;
-<a name="l00196"></a>00196   <span class="keywordtype">char</span> *input;
-<a name="l00197"></a>00197   <span class="keywordtype">wchar_t</span> *winput;
-<a name="l00198"></a>00198   <span class="keywordtype">int</span> len;
-<a name="l00199"></a>00199   smb_al *results;
-<a name="l00200"></a>00200   <a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *hit;
-<a name="l00201"></a>00201   smb_status status = SMB_SUCCESS;
-<a name="l00202"></a>00202   <span class="keywordtype">int</span> i;
+<a name="l00016"></a>00016 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &lt;wchar.h&gt;</span>
+<a name="l00019"></a>00019 <span class="preprocessor">#include &lt;string.h&gt;</span>
+<a name="l00020"></a>00020 
+<a name="l00021"></a>00021 <span class="preprocessor">#include &quot;libstephen/base.h&quot;</span>
+<a name="l00022"></a>00022 <span class="preprocessor">#include &quot;libstephen/ad.h&quot;</span>
+<a name="l00023"></a>00023 <span class="preprocessor">#include &quot;libstephen/util.h&quot;</span>
+<a name="l00024"></a>00024 <span class="preprocessor">#include &quot;<a class="code" href="gram_8h.html" title="Context-free grammar data structures.">gram.h</a>&quot;</span>
+<a name="l00025"></a>00025 <span class="preprocessor">#include &quot;<a class="code" href="fsm_8h.html" title="Finite state machine definitions.">fsm.h</a>&quot;</span>
+<a name="l00026"></a>00026 <span class="preprocessor">#include &quot;<a class="code" href="regex_8h.html" title="Declarations for regular expression routines.">regex.h</a>&quot;</span>
+<a name="l00027"></a>00027 <span class="preprocessor">#include &quot;<a class="code" href="tests_8h.html" title="Test runners.">test/tests.h</a>&quot;</span>
+<a name="l00028"></a>00028 
+<a name="l00029"></a>00029 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee" title="Tests creating a grammar, and printing it out.">simple_gram</a>(<span class="keywordtype">void</span>);
+<a name="l00030"></a>00030 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86" title="A function that tests the basic construction of a simple FSM.">simple_fsm</a>(<span class="keywordtype">void</span>);
+<a name="l00031"></a>00031 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>(<span class="keywordtype">void</span>);
+<a name="l00032"></a>00032 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024" title="Interactively search a file for a pattern.">search</a>(<span class="keywordtype">void</span>);
+<a name="l00033"></a>00033 <span class="keywordtype">void</span> <a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a>(<span class="keywordtype">void</span>);
+<a name="l00034"></a>00034 <span class="keywordtype">void</span> test(<span class="keywordtype">void</span>);
+<a name="l00035"></a>00035 
+<a name="l00039"></a><a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3">00039</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3" title="Print the help message for the main program.">help</a>(<span class="keywordtype">char</span> *name)
+<a name="l00040"></a>00040 {
+<a name="l00041"></a>00041   printf(<span class="stringliteral">&quot;Usage: %s [TESTS]\n&quot;</span>, name);
+<a name="l00042"></a>00042   puts(<span class="stringliteral">&quot;Runs tests on CKY parser and regex engine.&quot;</span>);
+<a name="l00043"></a>00043   puts(<span class="stringliteral">&quot;&quot;</span>);
+<a name="l00044"></a>00044   puts(<span class="stringliteral">&quot;Tests:&quot;</span>);
+<a name="l00045"></a>00045   puts(<span class="stringliteral">&quot;  -g, --simple-gram       create and print a grammar&quot;</span>);
+<a name="l00046"></a>00046   puts(<span class="stringliteral">&quot;  -f, --simple-fsm        programmatically create and run a certain FSM&quot;</span>);
+<a name="l00047"></a>00047   puts(<span class="stringliteral">&quot;  -e, --regex             input regex and test strings&quot;</span>);
+<a name="l00048"></a>00048   puts(<span class="stringliteral">&quot;  -s, --search            regex search file&quot;</span>);
+<a name="l00049"></a>00049   puts(<span class="stringliteral">&quot;  -d, --dot               create graphviz dot from regex&quot;</span>);
+<a name="l00050"></a>00050   puts(<span class="stringliteral">&quot;  -t, --test              run tests&quot;</span>);
+<a name="l00051"></a>00051   puts(<span class="stringliteral">&quot;&quot;</span>);
+<a name="l00052"></a>00052   puts(<span class="stringliteral">&quot;Misc:&quot;</span>);
+<a name="l00053"></a>00053   puts(<span class="stringliteral">&quot;  -h, --help              display this help message and exit&quot;</span>);
+<a name="l00054"></a>00054 }
+<a name="l00055"></a>00055 
+<a name="l00067"></a><a class="code" href="main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">00067</a> <span class="keywordtype">int</span> <a class="code" href="main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627" title="Main entry point of the program.">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)
+<a name="l00068"></a>00068 {
+<a name="l00069"></a>00069   smb_ad data;
+<a name="l00070"></a>00070   <span class="keywordtype">bool</span> executed = <span class="keyword">false</span>;
+<a name="l00071"></a>00071 
+<a name="l00072"></a>00072   arg_data_init(&amp;data);
+<a name="l00073"></a>00073   process_args(&amp;data, argc - 1, argv + 1);
+<a name="l00074"></a>00074 
+<a name="l00075"></a>00075   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;h&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;help&quot;</span>)) {
+<a name="l00076"></a>00076     <a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3" title="Print the help message for the main program.">help</a>(argv[0]);
+<a name="l00077"></a>00077     arg_data_destroy(&amp;data);
+<a name="l00078"></a>00078     exit(0);
+<a name="l00079"></a>00079   }
+<a name="l00080"></a>00080 
+<a name="l00081"></a>00081   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;g&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;simple-gram&quot;</span>)) {
+<a name="l00082"></a>00082     <a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee" title="Tests creating a grammar, and printing it out.">simple_gram</a>();
+<a name="l00083"></a>00083     executed = <span class="keyword">true</span>;
+<a name="l00084"></a>00084   }
+<a name="l00085"></a>00085   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;f&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;simple-fsm&quot;</span>)) {
+<a name="l00086"></a>00086     <a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86" title="A function that tests the basic construction of a simple FSM.">simple_fsm</a>();
+<a name="l00087"></a>00087     executed = <span class="keyword">true</span>;
+<a name="l00088"></a>00088   }
+<a name="l00089"></a>00089   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;e&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;regex&quot;</span>)) {
+<a name="l00090"></a>00090     <a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>();
+<a name="l00091"></a>00091     executed = <span class="keyword">true</span>;
+<a name="l00092"></a>00092   }
+<a name="l00093"></a>00093   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;s&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;search&quot;</span>)) {
+<a name="l00094"></a>00094     <a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024" title="Interactively search a file for a pattern.">search</a>();
+<a name="l00095"></a>00095     executed = <span class="keyword">true</span>;
+<a name="l00096"></a>00096   }
+<a name="l00097"></a>00097   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;d&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;dot&quot;</span>)) {
+<a name="l00098"></a>00098     <a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a>();
+<a name="l00099"></a>00099     arg_data_destroy(&amp;data);
+<a name="l00100"></a>00100     <span class="keywordflow">return</span> 0; <span class="comment">// exit silently</span>
+<a name="l00101"></a>00101   }
+<a name="l00102"></a>00102   <span class="keywordflow">if</span> (check_flag(&amp;data, <span class="charliteral">&#39;t&#39;</span>) || check_long_flag(&amp;data, <span class="stringliteral">&quot;test&quot;</span>)) {
+<a name="l00103"></a>00103     test();
+<a name="l00104"></a>00104     executed = <span class="keyword">true</span>;
+<a name="l00105"></a>00105   }
+<a name="l00106"></a>00106 
+<a name="l00107"></a>00107   <span class="keywordflow">if</span> (!executed) {
+<a name="l00108"></a>00108     <a class="code" href="main_8c.html#afef748afdbb301df2ae02ec95034b9e3" title="Print the help message for the main program.">help</a>(argv[0]);
+<a name="l00109"></a>00109     arg_data_destroy(&amp;data);
+<a name="l00110"></a>00110     exit(1);
+<a name="l00111"></a>00111   }
+<a name="l00112"></a>00112 
+<a name="l00113"></a>00113   arg_data_destroy(&amp;data);
+<a name="l00114"></a>00114   <span class="keywordflow">return</span> 0;
+<a name="l00115"></a>00115 }
+<a name="l00116"></a>00116 
+<a name="l00120"></a><a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c">00120</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a>(<span class="keywordtype">void</span>)
+<a name="l00121"></a>00121 {
+<a name="l00122"></a>00122   smb_status status = SMB_SUCCESS;
+<a name="l00123"></a>00123   <span class="keywordtype">wchar_t</span> *str;
+<a name="l00124"></a>00124   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *compiled_fsm;
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126   str = smb_read_linew(stdin, &amp;status);
+<a name="l00127"></a>00127   compiled_fsm = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(str);
+<a name="l00128"></a>00128   smb_free(str);
+<a name="l00129"></a>00129   <a class="code" href="io_8c.html#a068179080f09c38af390ad19772f7aba" title="Print an FSM to graphviz dot format.">fsm_dot</a>(compiled_fsm, stdout);
+<a name="l00130"></a>00130   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(compiled_fsm, <span class="keyword">true</span>);
+<a name="l00131"></a>00131 }
+<a name="l00132"></a>00132 
+<a name="l00145"></a><a class="code" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e">00145</a> <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e" title="Read a file completely into memory.">read_file</a>(FILE *file, <span class="keywordtype">int</span> *bytes)
+<a name="l00146"></a>00146 {
+<a name="l00147"></a>00147   <span class="keywordtype">char</span> *buffer;
+<a name="l00148"></a>00148   <span class="comment">// assume file is open</span>
+<a name="l00149"></a>00149   fseek(file, 0L, SEEK_END);
+<a name="l00150"></a>00150   *bytes = (int) ftell(file) + 1; <span class="comment">// extra for null terminator</span>
+<a name="l00151"></a>00151   fseek(file, 0L, SEEK_SET);
+<a name="l00152"></a>00152   buffer = smb_new(<span class="keywordtype">char</span>, *bytes);
+<a name="l00153"></a>00153   <span class="keywordflow">if</span> (buffer == NULL) {
+<a name="l00154"></a>00154     PRINT_ERROR_LOC;
+<a name="l00155"></a>00155     fprintf(stderr, <span class="stringliteral">&quot;Error allocating memory for file.\n&quot;</span>);
+<a name="l00156"></a>00156     <span class="keywordflow">return</span> NULL;
+<a name="l00157"></a>00157   }
+<a name="l00158"></a>00158   fread(buffer, <span class="keyword">sizeof</span>(<span class="keywordtype">char</span>), *bytes, file);
+<a name="l00159"></a>00159   <span class="keywordflow">return</span> buffer;
+<a name="l00160"></a>00160 }
+<a name="l00161"></a>00161 
+<a name="l00165"></a><a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024">00165</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a8c16096db9937d634d96eb8f6b79c024" title="Interactively search a file for a pattern.">search</a>(<span class="keywordtype">void</span>)
+<a name="l00166"></a>00166 {
+<a name="l00167"></a>00167   <span class="keywordtype">char</span> *filename;
+<a name="l00168"></a>00168   FILE *file;
+<a name="l00169"></a>00169   <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>;
+<a name="l00170"></a>00170   <span class="keywordtype">wchar_t</span> *wregex;
+<a name="l00171"></a>00171   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *regex_fsm;
+<a name="l00172"></a>00172   <span class="keywordtype">char</span> *input;
+<a name="l00173"></a>00173   <span class="keywordtype">wchar_t</span> *winput;
+<a name="l00174"></a>00174   <span class="keywordtype">int</span> len;
+<a name="l00175"></a>00175   smb_al *results;
+<a name="l00176"></a>00176   <a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *hit;
+<a name="l00177"></a>00177   smb_status status = SMB_SUCCESS;
+<a name="l00178"></a>00178   <span class="keywordtype">int</span> i;
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180   printf(<span class="stringliteral">&quot;Input Filename: &quot;</span>);
+<a name="l00181"></a>00181   filename = smb_read_line(stdin, &amp;status);
+<a name="l00182"></a>00182   file = fopen(filename, <span class="stringliteral">&quot;r&quot;</span>);
+<a name="l00183"></a>00183   smb_free(filename);
+<a name="l00184"></a>00184   <span class="keywordflow">if</span> (file == NULL) {
+<a name="l00185"></a>00185     perror(<span class="stringliteral">&quot;Error opening file: &quot;</span>);
+<a name="l00186"></a>00186     <span class="keywordflow">return</span>;
+<a name="l00187"></a>00187   }
+<a name="l00188"></a>00188 
+<a name="l00189"></a>00189   printf(<span class="stringliteral">&quot;Input Regex: &quot;</span>);
+<a name="l00190"></a>00190   regex = smb_read_line(stdin, &amp;status);
+<a name="l00191"></a>00191   len = strlen(regex) + 1;
+<a name="l00192"></a>00192   wregex = smb_new(<span class="keywordtype">wchar_t</span>, len);
+<a name="l00193"></a>00193   <span class="keywordflow">if</span> (utf8toucs4(wregex, regex, len) != 0) {
+<a name="l00194"></a>00194     PRINT_ERROR_LOC;
+<a name="l00195"></a>00195     fprintf(stderr, <span class="stringliteral">&quot;Error converting to UCS 4.\n&quot;</span>);
+<a name="l00196"></a>00196     smb_free(regex);
+<a name="l00197"></a>00197     smb_free(wregex);
+<a name="l00198"></a>00198     <span class="keywordflow">return</span>;
+<a name="l00199"></a>00199   }
+<a name="l00200"></a>00200   smb_free(regex);
+<a name="l00201"></a>00201   regex_fsm = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(wregex);
+<a name="l00202"></a>00202   smb_free(wregex);
 <a name="l00203"></a>00203 
-<a name="l00204"></a>00204   printf(<span class="stringliteral">&quot;Input Filename: &quot;</span>);
-<a name="l00205"></a>00205   filename = smb_read_line(stdin, &amp;status);
-<a name="l00206"></a>00206   file = fopen(filename, <span class="stringliteral">&quot;r&quot;</span>);
-<a name="l00207"></a>00207   smb_free(filename);
-<a name="l00208"></a>00208   <span class="keywordflow">if</span> (file == NULL) {
-<a name="l00209"></a>00209     perror(<span class="stringliteral">&quot;Error opening file: &quot;</span>);
-<a name="l00210"></a>00210     <span class="keywordflow">return</span>;
-<a name="l00211"></a>00211   }
-<a name="l00212"></a>00212 
-<a name="l00213"></a>00213   printf(<span class="stringliteral">&quot;Input Regex: &quot;</span>);
-<a name="l00214"></a>00214   regex = smb_read_line(stdin, &amp;status);
-<a name="l00215"></a>00215   len = strlen(regex) + 1;
-<a name="l00216"></a>00216   wregex = smb_new(<span class="keywordtype">wchar_t</span>, len);
-<a name="l00217"></a>00217   <span class="keywordflow">if</span> (utf8toucs4(wregex, regex, len) != 0) {
-<a name="l00218"></a>00218     PRINT_ERROR_LOC;
-<a name="l00219"></a>00219     fprintf(stderr, <span class="stringliteral">&quot;Error converting to UCS 4.\n&quot;</span>);
-<a name="l00220"></a>00220     smb_free(regex);
-<a name="l00221"></a>00221     smb_free(wregex);
-<a name="l00222"></a>00222     <span class="keywordflow">return</span>;
-<a name="l00223"></a>00223   }
-<a name="l00224"></a>00224   smb_free(regex);
-<a name="l00225"></a>00225   regex_fsm = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(wregex);
-<a name="l00226"></a>00226   smb_free(wregex);
-<a name="l00227"></a>00227 
-<a name="l00228"></a>00228   input = <a class="code" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e" title="Read a file completely into memory.">read_file</a>(file, &amp;status);
-<a name="l00229"></a>00229   fclose(file);
-<a name="l00230"></a>00230   len = strlen(input) + 1;
-<a name="l00231"></a>00231   winput = smb_new(<span class="keywordtype">wchar_t</span>, len);
-<a name="l00232"></a>00232   <span class="keywordflow">if</span> (utf8toucs4(winput, input, len) != 0) {
-<a name="l00233"></a>00233     PRINT_ERROR_LOC;
-<a name="l00234"></a>00234     fprintf(stderr, <span class="stringliteral">&quot;Error converting to UCS 4.\n&quot;</span>);
-<a name="l00235"></a>00235     <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(regex_fsm, <span class="keyword">true</span>);
-<a name="l00236"></a>00236     smb_free(input);
-<a name="l00237"></a>00237     smb_free(winput);
-<a name="l00238"></a>00238     <span class="keywordflow">return</span>;
-<a name="l00239"></a>00239   }
-<a name="l00240"></a>00240   smb_free(input);
-<a name="l00241"></a>00241 
-<a name="l00242"></a>00242   results = <a class="code" href="search_8c.html#a20107415f6769b987e6d7beee78ed478" title="Perform a regex-style search with an FSM on a search text.">fsm_search</a>(regex_fsm, winput, <span class="keyword">false</span>, <span class="keyword">false</span>);
-<a name="l00243"></a>00243   <span class="keywordflow">for</span> (i = 0; i &lt; al_length(results); i++) {
-<a name="l00244"></a>00244     hit = (<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *)al_get(results, i, &amp;status).data_ptr;
-<a name="l00245"></a>00245     printf(<span class="stringliteral">&quot;=&gt; Hit at index %d, length %d\n&quot;</span>, hit-&gt;<a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449" title="The location the hit starts at. This is inclusive.">start</a>, hit-&gt;<a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc" title="Number of characters in the hit.">length</a>);
-<a name="l00246"></a>00246     printf(<span class="stringliteral">&quot;   \&quot;%.*ls\&quot;\n&quot;</span>, hit-&gt;<a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc" title="Number of characters in the hit.">length</a>, winput + hit-&gt;<a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449" title="The location the hit starts at. This is inclusive.">start</a>);
-<a name="l00247"></a>00247     <a class="code" href="regex_2datastructs_8c.html#abc7bd85bcf94515c25ecc6fd3c4508f4" title="Clean up and free a regex_hit object.">regex_hit_delete</a>(hit);
-<a name="l00248"></a>00248   }
-<a name="l00249"></a>00249 
-<a name="l00250"></a>00250   smb_free(winput);
-<a name="l00251"></a>00251   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(regex_fsm, <span class="keyword">true</span>);
-<a name="l00252"></a>00252   al_delete(results);
-<a name="l00253"></a>00253 }
-<a name="l00254"></a>00254 
-<a name="l00262"></a><a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9">00262</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>(<span class="keywordtype">void</span>)
-<a name="l00263"></a>00263 {
-<a name="l00264"></a>00264   <span class="keywordtype">wchar_t</span> *str;
-<a name="l00265"></a>00265   smb_status status = SMB_SUCCESS;
-<a name="l00266"></a>00266   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> * compiled_fsm;
-<a name="l00267"></a>00267 
-<a name="l00268"></a>00268   printf(<span class="stringliteral">&quot;Input Regex: &quot;</span>);
-<a name="l00269"></a>00269   str = smb_read_linew(stdin, &amp;status);
-<a name="l00270"></a>00270   puts(<span class="stringliteral">&quot;Parsing...&quot;</span>);
-<a name="l00271"></a>00271   compiled_fsm = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(str);
-<a name="l00272"></a>00272   smb_free(str);
-<a name="l00273"></a>00273   printf(<span class="stringliteral">&quot;Parsed!  Do you wish to see the FSM? [y/n]: &quot;</span>);
-<a name="l00274"></a>00274 
-<a name="l00275"></a>00275   str = smb_read_linew(stdin, &amp;status);
-<a name="l00276"></a>00276   <span class="keywordflow">if</span> (str[0] == L<span class="charliteral">&#39;y&#39;</span> || str[0] == L<span class="charliteral">&#39;Y&#39;</span>) {
-<a name="l00277"></a>00277     puts(<span class="stringliteral">&quot;&quot;</span>);
-<a name="l00278"></a>00278     <a class="code" href="io_8c.html#acb881baaa8e12249b25112855ab136c5" title="Print the FSM to the desired output stream.">fsm_print</a>(compiled_fsm, stdout);
-<a name="l00279"></a>00279   } <span class="keywordflow">else</span> { puts(<span class="stringliteral">&quot;&quot;</span>); }
-<a name="l00280"></a>00280   smb_free(str);
-<a name="l00281"></a>00281 
-<a name="l00282"></a>00282   puts(<span class="stringliteral">&quot;&quot;</span>);
+<a name="l00204"></a>00204   input = <a class="code" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e" title="Read a file completely into memory.">read_file</a>(file, &amp;status);
+<a name="l00205"></a>00205   fclose(file);
+<a name="l00206"></a>00206   len = strlen(input) + 1;
+<a name="l00207"></a>00207   winput = smb_new(<span class="keywordtype">wchar_t</span>, len);
+<a name="l00208"></a>00208   <span class="keywordflow">if</span> (utf8toucs4(winput, input, len) != 0) {
+<a name="l00209"></a>00209     PRINT_ERROR_LOC;
+<a name="l00210"></a>00210     fprintf(stderr, <span class="stringliteral">&quot;Error converting to UCS 4.\n&quot;</span>);
+<a name="l00211"></a>00211     <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(regex_fsm, <span class="keyword">true</span>);
+<a name="l00212"></a>00212     smb_free(input);
+<a name="l00213"></a>00213     smb_free(winput);
+<a name="l00214"></a>00214     <span class="keywordflow">return</span>;
+<a name="l00215"></a>00215   }
+<a name="l00216"></a>00216   smb_free(input);
+<a name="l00217"></a>00217 
+<a name="l00218"></a>00218   results = <a class="code" href="search_8c.html#a20107415f6769b987e6d7beee78ed478" title="Perform a regex-style search with an FSM on a search text.">fsm_search</a>(regex_fsm, winput, <span class="keyword">false</span>, <span class="keyword">false</span>);
+<a name="l00219"></a>00219   <span class="keywordflow">for</span> (i = 0; i &lt; al_length(results); i++) {
+<a name="l00220"></a>00220     hit = (<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *)al_get(results, i, &amp;status).data_ptr;
+<a name="l00221"></a>00221     printf(<span class="stringliteral">&quot;=&gt; Hit at index %d, length %d\n&quot;</span>, hit-&gt;<a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449" title="The location the hit starts at. This is inclusive.">start</a>, hit-&gt;<a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc" title="Number of characters in the hit.">length</a>);
+<a name="l00222"></a>00222     printf(<span class="stringliteral">&quot;   \&quot;%.*ls\&quot;\n&quot;</span>, hit-&gt;<a class="code" href="structregex__hit.html#a9f59b34b1f25fe00023291b678246bcc" title="Number of characters in the hit.">length</a>, winput + hit-&gt;<a class="code" href="structregex__hit.html#a37722a150250e2a5a98e5e0d11e53449" title="The location the hit starts at. This is inclusive.">start</a>);
+<a name="l00223"></a>00223     <a class="code" href="regex_2datastructs_8c.html#abc7bd85bcf94515c25ecc6fd3c4508f4" title="Clean up and free a regex_hit object.">regex_hit_delete</a>(hit);
+<a name="l00224"></a>00224   }
+<a name="l00225"></a>00225 
+<a name="l00226"></a>00226   smb_free(winput);
+<a name="l00227"></a>00227   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(regex_fsm, <span class="keyword">true</span>);
+<a name="l00228"></a>00228   al_delete(results);
+<a name="l00229"></a>00229 }
+<a name="l00230"></a>00230 
+<a name="l00238"></a><a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9">00238</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9" title="A light test of my regular expression parser.">regex</a>(<span class="keywordtype">void</span>)
+<a name="l00239"></a>00239 {
+<a name="l00240"></a>00240   <span class="keywordtype">wchar_t</span> *str;
+<a name="l00241"></a>00241   smb_status status = SMB_SUCCESS;
+<a name="l00242"></a>00242   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> * compiled_fsm;
+<a name="l00243"></a>00243 
+<a name="l00244"></a>00244   printf(<span class="stringliteral">&quot;Input Regex: &quot;</span>);
+<a name="l00245"></a>00245   str = smb_read_linew(stdin, &amp;status);
+<a name="l00246"></a>00246   puts(<span class="stringliteral">&quot;Parsing...&quot;</span>);
+<a name="l00247"></a>00247   compiled_fsm = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(str);
+<a name="l00248"></a>00248   smb_free(str);
+<a name="l00249"></a>00249   printf(<span class="stringliteral">&quot;Parsed!  Do you wish to see the FSM? [y/n]: &quot;</span>);
+<a name="l00250"></a>00250 
+<a name="l00251"></a>00251   str = smb_read_linew(stdin, &amp;status);
+<a name="l00252"></a>00252   <span class="keywordflow">if</span> (str[0] == L<span class="charliteral">&#39;y&#39;</span> || str[0] == L<span class="charliteral">&#39;Y&#39;</span>) {
+<a name="l00253"></a>00253     puts(<span class="stringliteral">&quot;&quot;</span>);
+<a name="l00254"></a>00254     <a class="code" href="io_8c.html#acb881baaa8e12249b25112855ab136c5" title="Print the FSM to the desired output stream.">fsm_print</a>(compiled_fsm, stdout);
+<a name="l00255"></a>00255   } <span class="keywordflow">else</span> { puts(<span class="stringliteral">&quot;&quot;</span>); }
+<a name="l00256"></a>00256   smb_free(str);
+<a name="l00257"></a>00257 
+<a name="l00258"></a>00258   puts(<span class="stringliteral">&quot;&quot;</span>);
+<a name="l00259"></a>00259 
+<a name="l00260"></a>00260   <span class="keywordflow">while</span> (<span class="keyword">true</span>) {
+<a name="l00261"></a>00261     printf(<span class="stringliteral">&quot;Input Test String: &quot;</span>);
+<a name="l00262"></a>00262     str = smb_read_linew(stdin, &amp;status);
+<a name="l00263"></a>00263     <span class="keywordflow">if</span> (wcscmp(str, L<span class="stringliteral">&quot;exit&quot;</span>) == 0) {
+<a name="l00264"></a>00264       smb_free(str);
+<a name="l00265"></a>00265       <span class="keywordflow">break</span>;
+<a name="l00266"></a>00266     }
+<a name="l00267"></a>00267     printf(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(compiled_fsm, str) ? <span class="stringliteral">&quot;Accepted.\n\n&quot;</span> : <span class="stringliteral">&quot;Rejected.\n\n&quot;</span>);
+<a name="l00268"></a>00268     smb_free(str);
+<a name="l00269"></a>00269   }
+<a name="l00270"></a>00270   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(compiled_fsm, <span class="keyword">true</span>);
+<a name="l00271"></a>00271 }
+<a name="l00272"></a>00272 
+<a name="l00280"></a><a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86">00280</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86" title="A function that tests the basic construction of a simple FSM.">simple_fsm</a>(<span class="keywordtype">void</span>)
+<a name="l00281"></a>00281 {
+<a name="l00282"></a>00282   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="fsm_2datastructs_8c.html#a81bb701b090eeab2a57dd58311b04ddf" title="Allocate and initialize an FSM.">fsm_create</a>();
 <a name="l00283"></a>00283 
-<a name="l00284"></a>00284   <span class="keywordflow">while</span> (<span class="keyword">true</span>) {
-<a name="l00285"></a>00285     printf(<span class="stringliteral">&quot;Input Test String: &quot;</span>);
-<a name="l00286"></a>00286     str = smb_read_linew(stdin, &amp;status);
-<a name="l00287"></a>00287     <span class="keywordflow">if</span> (wcscmp(str, L<span class="stringliteral">&quot;exit&quot;</span>) == 0) {
-<a name="l00288"></a>00288       smb_free(str);
-<a name="l00289"></a>00289       <span class="keywordflow">break</span>;
-<a name="l00290"></a>00290     }
-<a name="l00291"></a>00291     printf(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(compiled_fsm, str) ? <span class="stringliteral">&quot;Accepted.\n\n&quot;</span> : <span class="stringliteral">&quot;Rejected.\n\n&quot;</span>);
-<a name="l00292"></a>00292     smb_free(str);
-<a name="l00293"></a>00293   }
-<a name="l00294"></a>00294   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(compiled_fsm, <span class="keyword">true</span>);
-<a name="l00295"></a>00295 }
+<a name="l00284"></a>00284   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T01 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 1);
+<a name="l00285"></a>00285   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T10 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 0);
+<a name="l00286"></a>00286   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T13 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 3);
+<a name="l00287"></a>00287   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T31 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 1);
+<a name="l00288"></a>00288   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T32 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 2);
+<a name="l00289"></a>00289   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T23 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 3);
+<a name="l00290"></a>00290   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T20 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 0);
+<a name="l00291"></a>00291   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T02 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 2);
+<a name="l00292"></a>00292 
+<a name="l00293"></a>00293   <span class="keywordtype">wchar_t</span> *i1 = L<span class="stringliteral">&quot;abab&quot;</span>;
+<a name="l00294"></a>00294   <span class="keywordtype">wchar_t</span> *i2 = L<span class="stringliteral">&quot;aab&quot;</span>;
+<a name="l00295"></a>00295   <span class="keywordtype">wchar_t</span> *i3 = L<span class="stringliteral">&quot;aaaabbbba&quot;</span>;
 <a name="l00296"></a>00296 
-<a name="l00304"></a><a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86">00304</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#a199259c75545a52be8cb131a39a38f86" title="A function that tests the basic construction of a simple FSM.">simple_fsm</a>(<span class="keywordtype">void</span>)
-<a name="l00305"></a>00305 {
-<a name="l00306"></a>00306   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="fsm_2datastructs_8c.html#a81bb701b090eeab2a57dd58311b04ddf" title="Allocate and initialize an FSM.">fsm_create</a>();
-<a name="l00307"></a>00307 
-<a name="l00308"></a>00308   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T01 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 1);
-<a name="l00309"></a>00309   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T10 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 0);
-<a name="l00310"></a>00310   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T13 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 3);
-<a name="l00311"></a>00311   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T31 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 1);
-<a name="l00312"></a>00312   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T32 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 2);
-<a name="l00313"></a>00313   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T23 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;a&#39;</span>, L<span class="charliteral">&#39;a&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 3);
-<a name="l00314"></a>00314   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T20 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 0);
-<a name="l00315"></a>00315   <a class="code" href="structfsm__trans.html" title="Contains information regarding a FSM transition.">fsm_trans</a> *T02 = <a class="code" href="fsm_2datastructs_8c.html#aae38451b4efa993bd9388e19bc1c293a" title="Allocate and initialize a fsm_trans object with a single range.">fsm_trans_create_single</a>(L<span class="charliteral">&#39;b&#39;</span>, L<span class="charliteral">&#39;b&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>, 2);
-<a name="l00316"></a>00316 
-<a name="l00317"></a>00317   <span class="keywordtype">wchar_t</span> *i1 = L<span class="stringliteral">&quot;abab&quot;</span>;
-<a name="l00318"></a>00318   <span class="keywordtype">wchar_t</span> *i2 = L<span class="stringliteral">&quot;aab&quot;</span>;
-<a name="l00319"></a>00319   <span class="keywordtype">wchar_t</span> *i3 = L<span class="stringliteral">&quot;aaaabbbba&quot;</span>;
-<a name="l00320"></a>00320 
-<a name="l00321"></a>00321   f-&gt;<a class="code" href="structfsm.html#a37722a150250e2a5a98e5e0d11e53449" title="The index of the start states.">start</a> = 0;
-<a name="l00322"></a>00322 
-<a name="l00323"></a>00323   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">true</span>);  <span class="comment">// 0</span>
-<a name="l00324"></a>00324   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">false</span>); <span class="comment">// 1</span>
-<a name="l00325"></a>00325   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">false</span>); <span class="comment">// 2</span>
-<a name="l00326"></a>00326   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">false</span>); <span class="comment">// 3</span>
-<a name="l00327"></a>00327 
-<a name="l00328"></a>00328   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 0, T01);
-<a name="l00329"></a>00329   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 1, T10);
-<a name="l00330"></a>00330   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 1, T13);
-<a name="l00331"></a>00331   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 3, T31);
-<a name="l00332"></a>00332   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 3, T32);
-<a name="l00333"></a>00333   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 2, T23);
-<a name="l00334"></a>00334   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 2, T20);
-<a name="l00335"></a>00335   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 0, T02);
-<a name="l00336"></a>00336 
-<a name="l00337"></a>00337   printf(<span class="stringliteral">&quot;Running on i1=\&quot;%ls\&quot;\n&quot;</span>, i1);
-<a name="l00338"></a>00338   <span class="keywordflow">if</span> (<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, i1))
-<a name="l00339"></a>00339     printf(<span class="stringliteral">&quot;Accept.\n&quot;</span>);
-<a name="l00340"></a>00340   <span class="keywordflow">else</span>
-<a name="l00341"></a>00341     printf(<span class="stringliteral">&quot;Reject.\n&quot;</span>);
-<a name="l00342"></a>00342 
-<a name="l00343"></a>00343   printf(<span class="stringliteral">&quot;Running on i2=\&quot;%ls\&quot;\n&quot;</span>, i2);
-<a name="l00344"></a>00344   <span class="keywordflow">if</span> (<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, i2))
-<a name="l00345"></a>00345     printf(<span class="stringliteral">&quot;Accept.\n&quot;</span>);
-<a name="l00346"></a>00346   <span class="keywordflow">else</span>
-<a name="l00347"></a>00347     printf(<span class="stringliteral">&quot;Reject.\n&quot;</span>);
-<a name="l00348"></a>00348 
-<a name="l00349"></a>00349   printf(<span class="stringliteral">&quot;Running on i3=\&quot;%ls\&quot;\n&quot;</span>, i3);
-<a name="l00350"></a>00350   <span class="keywordflow">if</span> (<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, i3))
-<a name="l00351"></a>00351     printf(<span class="stringliteral">&quot;Accept.\n&quot;</span>);
-<a name="l00352"></a>00352   <span class="keywordflow">else</span>
-<a name="l00353"></a>00353     printf(<span class="stringliteral">&quot;Reject.\n&quot;</span>);
+<a name="l00297"></a>00297   f-&gt;<a class="code" href="structfsm.html#a37722a150250e2a5a98e5e0d11e53449" title="The index of the start states.">start</a> = 0;
+<a name="l00298"></a>00298 
+<a name="l00299"></a>00299   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">true</span>);  <span class="comment">// 0</span>
+<a name="l00300"></a>00300   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">false</span>); <span class="comment">// 1</span>
+<a name="l00301"></a>00301   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">false</span>); <span class="comment">// 2</span>
+<a name="l00302"></a>00302   <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(f, <span class="keyword">false</span>); <span class="comment">// 3</span>
+<a name="l00303"></a>00303 
+<a name="l00304"></a>00304   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 0, T01);
+<a name="l00305"></a>00305   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 1, T10);
+<a name="l00306"></a>00306   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 1, T13);
+<a name="l00307"></a>00307   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 3, T31);
+<a name="l00308"></a>00308   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 3, T32);
+<a name="l00309"></a>00309   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 2, T23);
+<a name="l00310"></a>00310   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 2, T20);
+<a name="l00311"></a>00311   <a class="code" href="fsm_2datastructs_8c.html#ab76ad642dc83c77ae9f458faa8444bf9" title="Add a transition to the FSM.">fsm_add_trans</a>(f, 0, T02);
+<a name="l00312"></a>00312 
+<a name="l00313"></a>00313   printf(<span class="stringliteral">&quot;Running on i1=\&quot;%ls\&quot;\n&quot;</span>, i1);
+<a name="l00314"></a>00314   <span class="keywordflow">if</span> (<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, i1))
+<a name="l00315"></a>00315     printf(<span class="stringliteral">&quot;Accept.\n&quot;</span>);
+<a name="l00316"></a>00316   <span class="keywordflow">else</span>
+<a name="l00317"></a>00317     printf(<span class="stringliteral">&quot;Reject.\n&quot;</span>);
+<a name="l00318"></a>00318 
+<a name="l00319"></a>00319   printf(<span class="stringliteral">&quot;Running on i2=\&quot;%ls\&quot;\n&quot;</span>, i2);
+<a name="l00320"></a>00320   <span class="keywordflow">if</span> (<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, i2))
+<a name="l00321"></a>00321     printf(<span class="stringliteral">&quot;Accept.\n&quot;</span>);
+<a name="l00322"></a>00322   <span class="keywordflow">else</span>
+<a name="l00323"></a>00323     printf(<span class="stringliteral">&quot;Reject.\n&quot;</span>);
+<a name="l00324"></a>00324 
+<a name="l00325"></a>00325   printf(<span class="stringliteral">&quot;Running on i3=\&quot;%ls\&quot;\n&quot;</span>, i3);
+<a name="l00326"></a>00326   <span class="keywordflow">if</span> (<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, i3))
+<a name="l00327"></a>00327     printf(<span class="stringliteral">&quot;Accept.\n&quot;</span>);
+<a name="l00328"></a>00328   <span class="keywordflow">else</span>
+<a name="l00329"></a>00329     printf(<span class="stringliteral">&quot;Reject.\n&quot;</span>);
+<a name="l00330"></a>00330 
+<a name="l00331"></a>00331   <a class="code" href="io_8c.html#acb881baaa8e12249b25112855ab136c5" title="Print the FSM to the desired output stream.">fsm_print</a>(f, stdout);
+<a name="l00332"></a>00332   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00333"></a>00333 }
+<a name="l00334"></a>00334 
+<a name="l00338"></a><a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee">00338</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee" title="Tests creating a grammar, and printing it out.">simple_gram</a>(<span class="keywordtype">void</span>)
+<a name="l00339"></a>00339 {
+<a name="l00340"></a>00340   <span class="keywordtype">char</span> *start = <span class="stringliteral">&quot;start&quot;</span>;
+<a name="l00341"></a>00341   <span class="keywordtype">char</span> *plus = <span class="stringliteral">&quot;+&quot;</span>;
+<a name="l00342"></a>00342   <span class="keywordtype">char</span> *minus = <span class="stringliteral">&quot;-&quot;</span>;
+<a name="l00343"></a>00343   <span class="keywordtype">char</span> *number = <span class="stringliteral">&quot;NUMBER&quot;</span>;
+<a name="l00344"></a>00344 
+<a name="l00345"></a>00345   <a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *gram = <a class="code" href="gram_8c.html#a3bbb21266337299e9acb6241b547f121" title="Allocate and initialize a CFG.">cfg_create</a>();
+<a name="l00346"></a>00346   <span class="keywordtype">int</span> nStart = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, start, <span class="keyword">false</span>);
+<a name="l00347"></a>00347   <span class="keywordtype">int</span> nPlus = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, plus, <span class="keyword">true</span>);
+<a name="l00348"></a>00348   <span class="keywordtype">int</span> nMinus = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, minus, <span class="keyword">true</span>);
+<a name="l00349"></a>00349   <span class="keywordtype">int</span> nNumber = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, number, <span class="keyword">true</span>);
+<a name="l00350"></a>00350 
+<a name="l00351"></a>00351   <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *rule_plus = <a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(nStart, 3);
+<a name="l00352"></a>00352   <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *rule_minus = <a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(nStart, 3);
+<a name="l00353"></a>00353   <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *rule_number = <a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(nStart, 1);
 <a name="l00354"></a>00354 
-<a name="l00355"></a>00355   <a class="code" href="io_8c.html#acb881baaa8e12249b25112855ab136c5" title="Print the FSM to the desired output stream.">fsm_print</a>(f, stdout);
-<a name="l00356"></a>00356   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
-<a name="l00357"></a>00357 }
-<a name="l00358"></a>00358 
-<a name="l00362"></a><a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee">00362</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#ae6944b49c049abac30afba21d5cafeee" title="Tests creating a grammar, and printing it out.">simple_gram</a>(<span class="keywordtype">void</span>)
-<a name="l00363"></a>00363 {
-<a name="l00364"></a>00364   <span class="keywordtype">char</span> *start = <span class="stringliteral">&quot;start&quot;</span>;
-<a name="l00365"></a>00365   <span class="keywordtype">char</span> *plus = <span class="stringliteral">&quot;+&quot;</span>;
-<a name="l00366"></a>00366   <span class="keywordtype">char</span> *minus = <span class="stringliteral">&quot;-&quot;</span>;
-<a name="l00367"></a>00367   <span class="keywordtype">char</span> *number = <span class="stringliteral">&quot;NUMBER&quot;</span>;
-<a name="l00368"></a>00368 
-<a name="l00369"></a>00369   <a class="code" href="structcfg.html" title="A struct to represent a context-free grammar.">cfg</a> *gram = <a class="code" href="gram_8c.html#a3bbb21266337299e9acb6241b547f121" title="Allocate and initialize a CFG.">cfg_create</a>();
-<a name="l00370"></a>00370   <span class="keywordtype">int</span> nStart = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, start, <span class="keyword">false</span>);
-<a name="l00371"></a>00371   <span class="keywordtype">int</span> nPlus = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, plus, <span class="keyword">true</span>);
-<a name="l00372"></a>00372   <span class="keywordtype">int</span> nMinus = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, minus, <span class="keyword">true</span>);
-<a name="l00373"></a>00373   <span class="keywordtype">int</span> nNumber = <a class="code" href="gram_8c.html#acbd525a22eee91f62e4cd298f2ef9812" title="Add a string symbol to the grammar.">cfg_add_symbol</a>(gram, number, <span class="keyword">true</span>);
-<a name="l00374"></a>00374 
-<a name="l00375"></a>00375   <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *rule_plus = <a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(nStart, 3);
-<a name="l00376"></a>00376   <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *rule_minus = <a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(nStart, 3);
-<a name="l00377"></a>00377   <a class="code" href="structcfg__rule.html" title="A struct to represent a rule in a context-free grammar.">cfg_rule</a> *rule_number = <a class="code" href="gram_8c.html#a5ec2c946aabf126e8d76e22894a3e63d" title="Allocate and initialize a new CFG rule.">cfg_rule_create</a>(nStart, 1);
-<a name="l00378"></a>00378 
-<a name="l00379"></a>00379   rule_plus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[0] = nStart;
-<a name="l00380"></a>00380   rule_plus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[1] = nPlus;
-<a name="l00381"></a>00381   rule_plus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[2] = nStart;
-<a name="l00382"></a>00382   rule_minus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[0] = nStart;
-<a name="l00383"></a>00383   rule_minus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[1] = nMinus;
-<a name="l00384"></a>00384   rule_minus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[2] = nStart;
-<a name="l00385"></a>00385   rule_number-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[0] = nNumber;
-<a name="l00386"></a>00386 
-<a name="l00387"></a>00387   <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(gram, rule_plus);
-<a name="l00388"></a>00388   <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(gram, rule_minus);
-<a name="l00389"></a>00389   <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(gram, rule_number);
-<a name="l00390"></a>00390 
-<a name="l00391"></a>00391   <a class="code" href="gram_8c.html#a25ea2b2f8f221d1f3dd487e056695c7c" title="Print the grammar to stdout.">cfg_print</a>(gram);
-<a name="l00392"></a>00392   <a class="code" href="gram_8c.html#ab25c222dd3e8b3bef52406e63d644a69" title="Clean up and free a CFG.">cfg_delete</a>(gram, <span class="keyword">false</span>);
-<a name="l00393"></a>00393 }
-<a name="l00394"></a>00394 
-<a name="l00395"></a>00395 <span class="keywordtype">void</span> test(<span class="keywordtype">void</span>)
-<a name="l00396"></a>00396 {
-<a name="l00397"></a>00397   fsm_test();
-<a name="l00398"></a>00398   fsm_io_test();
-<a name="l00399"></a>00399 }
+<a name="l00355"></a>00355   rule_plus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[0] = nStart;
+<a name="l00356"></a>00356   rule_plus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[1] = nPlus;
+<a name="l00357"></a>00357   rule_plus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[2] = nStart;
+<a name="l00358"></a>00358   rule_minus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[0] = nStart;
+<a name="l00359"></a>00359   rule_minus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[1] = nMinus;
+<a name="l00360"></a>00360   rule_minus-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[2] = nStart;
+<a name="l00361"></a>00361   rule_number-&gt;<a class="code" href="structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c" title="An array of symbols for the right hand side of the rule.">rhs</a>[0] = nNumber;
+<a name="l00362"></a>00362 
+<a name="l00363"></a>00363   <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(gram, rule_plus);
+<a name="l00364"></a>00364   <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(gram, rule_minus);
+<a name="l00365"></a>00365   <a class="code" href="gram_8c.html#a657852cde038965b93378f9af3fa8ffe" title="Add a rule to the grammar.">cfg_add_rule</a>(gram, rule_number);
+<a name="l00366"></a>00366 
+<a name="l00367"></a>00367   <a class="code" href="gram_8c.html#a25ea2b2f8f221d1f3dd487e056695c7c" title="Print the grammar to stdout.">cfg_print</a>(gram);
+<a name="l00368"></a>00368   <a class="code" href="gram_8c.html#ab25c222dd3e8b3bef52406e63d644a69" title="Clean up and free a CFG.">cfg_delete</a>(gram, <span class="keyword">false</span>);
+<a name="l00369"></a>00369 }
+<a name="l00370"></a>00370 
+<a name="l00371"></a>00371 <span class="keywordtype">void</span> test(<span class="keywordtype">void</span>)
+<a name="l00372"></a>00372 {
+<a name="l00373"></a>00373   fsm_test();
+<a name="l00374"></a>00374   fsm_io_test();
+<a name="l00375"></a>00375 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -410,7 +410,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 19:34:23 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 19:45:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
