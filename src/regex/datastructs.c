@@ -56,10 +56,6 @@ void regex_hit_destroy(regex_hit *obj)
    @param obj The regex_hit to free.
  */
 void regex_hit_delete(regex_hit *obj) {
-  if (obj) {
-    regex_hit_destroy(obj);
-    smb_free(obj);
-  } else {
-    fprintf(stderr, "regex_hit_delete: called with null pointer.\n");
-  }
+  regex_hit_destroy(obj);
+  smb_free(obj);
 }
