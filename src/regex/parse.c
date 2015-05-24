@@ -149,12 +149,10 @@ fsm *regex_parse_create_dot_fsm(bool newline_accepted)
   f->start = src;
   if (!newline_accepted) {
     ft = fsm_trans_create(1, FSM_TRANS_NEGATIVE, dest);
-  } else {
-    ft = fsm_trans_create(0, FSM_TRANS_NEGATIVE, dest);
-  }
-  if (!newline_accepted) {
     ft->start[0] = L'\n';
     ft->end[0] = L'\n';
+  } else {
+    ft = fsm_trans_create(0, FSM_TRANS_NEGATIVE, dest);
   }
   fsm_add_trans(f, src, ft);
   return f;
