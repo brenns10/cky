@@ -10,6 +10,7 @@
 {\ttfamily \#include $<$wchar.\-h$>$}\*
 {\ttfamily \#include $<$wctype.\-h$>$}\*
 {\ttfamily \#include $<$stdbool.\-h$>$}\*
+{\ttfamily \#include $<$assert.\-h$>$}\*
 {\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}str.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
@@ -17,9 +18,8 @@
 \subsection*{\-Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{io_8c_a7c706a1cfd1264318819507f4abcf91c}{\hyperlink{structfsm}{fsm} $\ast$ {\bfseries fsm\-\_\-read} (const wchar\-\_\-t $\ast$source)}\label{io_8c_a7c706a1cfd1264318819507f4abcf91c}
-
-\item 
+\hyperlink{structfsm}{fsm} $\ast$ \hyperlink{io_8c_a156b01e2dc6a3219d79725c9f33b738e}{fsm\-\_\-read} (const wchar\-\_\-t $\ast$source, smb\-\_\-status $\ast$status)
+\begin{DoxyCompactList}\small\item\em \-Read a \-Finite \-State \-Machine from its text representation. \end{DoxyCompactList}\item 
 void \hyperlink{io_8c_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print} (\hyperlink{structfsm}{fsm} $\ast$f, \-F\-I\-L\-E $\ast$dest)
 \begin{DoxyCompactList}\small\item\em \-Print a string representation of the \-F\-S\-M to a file (or stdout). \end{DoxyCompactList}\item 
 void \hyperlink{io_8c_ac7cf43e628d0aefef49a3d290b065e9c}{fsm\-\_\-dot\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t c)
@@ -72,7 +72,7 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 \end{DoxyParams}
 
 
-\-Definition at line 325 of file io.\-c.
+\-Definition at line 353 of file io.\-c.
 
 \hypertarget{io_8c_ac7cf43e628d0aefef49a3d290b065e9c}{\index{io.\-c@{io.\-c}!fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}}
 \index{fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}!io.c@{io.\-c}}
@@ -97,7 +97,7 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 \end{DoxyParams}
 
 
-\-Definition at line 296 of file io.\-c.
+\-Definition at line 324 of file io.\-c.
 
 \hypertarget{io_8c_a3ba204b76773dffba8aca574d7e63434}{\index{io.\-c@{io.\-c}!fsm\-\_\-print@{fsm\-\_\-print}}
 \index{fsm\-\_\-print@{fsm\-\_\-print}!io.c@{io.\-c}}
@@ -120,5 +120,38 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 \end{DoxyParams}
 
 
-\-Definition at line 242 of file io.\-c.
+\-Definition at line 270 of file io.\-c.
+
+\hypertarget{io_8c_a156b01e2dc6a3219d79725c9f33b738e}{\index{io.\-c@{io.\-c}!fsm\-\_\-read@{fsm\-\_\-read}}
+\index{fsm\-\_\-read@{fsm\-\_\-read}!io.c@{io.\-c}}
+\subsubsection[{fsm\-\_\-read}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm}$\ast$ {\bf fsm\-\_\-read} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{source, }
+\item[{smb\-\_\-status $\ast$}]{status}
+\end{DoxyParamCaption}
+)}}\label{io_8c_a156b01e2dc6a3219d79725c9f33b738e}
+
+
+\-Read a \-Finite \-State \-Machine from its text representation. 
+
+\-All fsm's can be printed using \hyperlink{io_8c_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print()}. \-This function $\ast$should$\ast$ be able to take any such string representation and convert it back into an equivalent fsm again. 
+\begin{DoxyParams}{\-Parameters}
+{\em source} & \-The string to read in. \\
+\hline
+{\em status} & \-Status variable for error reporting. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-New \-F\-S\-M, or \-N\-U\-L\-L on error. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{\-Exceptions}
+{\em \-C\-K\-Y\-\_\-\-T\-O\-O\-\_\-\-F\-E\-W\-\_\-\-L\-I\-N\-E\-S} & if there isn't at least one line. \\
+\hline
+{\em \-C\-K\-Y\-\_\-\-M\-A\-L\-F\-O\-R\-M\-E\-D\-\_\-\-T\-R\-A\-N\-S} & if there is a problem reading a transition. \\
+\hline
+\end{DoxyExceptions}
+
+
+\-Definition at line 243 of file io.\-c.
 

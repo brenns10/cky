@@ -20,6 +20,7 @@ var searchData=
   ['fsm_5fio_2ec',['fsm_io.c',['../fsm__io_8c.html',1,'']]],
   ['fsm_5fkleene',['fsm_kleene',['../operations_8c.html#a4662ffb1d485ce12b01639a4aa57d54d',1,'fsm_kleene(fsm *f):&#160;operations.c'],['../fsm_8h.html#a4662ffb1d485ce12b01639a4aa57d54d',1,'fsm_kleene(fsm *f):&#160;operations.c']]],
   ['fsm_5fprint',['fsm_print',['../io_8c.html#a3ba204b76773dffba8aca574d7e63434',1,'fsm_print(fsm *f, FILE *dest):&#160;io.c'],['../fsm_8h.html#a3ba204b76773dffba8aca574d7e63434',1,'fsm_print(fsm *f, FILE *dest):&#160;io.c']]],
+  ['fsm_5fread',['fsm_read',['../io_8c.html#a156b01e2dc6a3219d79725c9f33b738e',1,'fsm_read(const wchar_t *source, smb_status *status):&#160;io.c'],['../fsm_8h.html#a156b01e2dc6a3219d79725c9f33b738e',1,'fsm_read(const wchar_t *source, smb_status *status):&#160;io.c']]],
   ['fsm_5fsearch',['fsm_search',['../search_8c.html#a20107415f6769b987e6d7beee78ed478',1,'fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool overlap):&#160;search.c'],['../regex_8h.html#a20107415f6769b987e6d7beee78ed478',1,'fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy, bool overlap):&#160;search.c']]],
   ['fsm_5fsim',['fsm_sim',['../structfsm__sim.html',1,'']]],
   ['fsm_5fsim_5faccepted',['FSM_SIM_ACCEPTED',['../fsm_8h.html#a04ef1a1d749f5d7861edaebaac9ecc6e',1,'fsm.h']]],

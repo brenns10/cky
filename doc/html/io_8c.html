@@ -89,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;wchar.h&gt;</code><br/>
 <code>#include &lt;wctype.h&gt;</code><br/>
 <code>#include &lt;stdbool.h&gt;</code><br/>
+<code>#include &lt;assert.h&gt;</code><br/>
 <code>#include &quot;<a class="el" href="fsm_8h_source.html">fsm.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="str_8h_source.html">str.h</a>&quot;</code><br/>
 <code>#include &quot;libstephen/al.h&quot;</code><br/>
@@ -98,8 +99,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c706a1cfd1264318819507f4abcf91c"></a><!-- doxytag: member="io.c::fsm_read" ref="a7c706a1cfd1264318819507f4abcf91c" args="(const wchar_t *source)" -->
-<a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_read</b> (const wchar_t *source)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a156b01e2dc6a3219d79725c9f33b738e">fsm_read</a> (const wchar_t *source, smb_status *status)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a Finite State Machine from its text representation.  <a href="#a156b01e2dc6a3219d79725c9f33b738e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a3ba204b76773dffba8aca574d7e63434">fsm_print</a> (<a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a string representation of the FSM to a file (or stdout).  <a href="#a3ba204b76773dffba8aca574d7e63434"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#ac7cf43e628d0aefef49a3d290b065e9c">fsm_dot_char</a> (FILE *dest, wchar_t c)</td></tr>
@@ -154,7 +155,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00325">325</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00353">353</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -193,7 +194,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00296">296</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00324">324</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -231,7 +232,54 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00242">242</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00270">270</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a156b01e2dc6a3219d79725c9f33b738e"></a><!-- doxytag: member="io.c::fsm_read" ref="a156b01e2dc6a3219d79725c9f33b738e" args="(const wchar_t *source, smb_status *status)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structfsm.html">fsm</a>* <a class="el" href="fsm_8h.html#a156b01e2dc6a3219d79725c9f33b738e">fsm_read</a> </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">smb_status *&#160;</td>
+          <td class="paramname"><em>status</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Read a Finite State Machine from its text representation. </p>
+<p>All fsm's can be printed using <a class="el" href="io_8c.html#a3ba204b76773dffba8aca574d7e63434" title="Print a string representation of the FSM to a file (or stdout).">fsm_print()</a>. This function *should* be able to take any such string representation and convert it back into an equivalent fsm again. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The string to read in. </td></tr>
+    <tr><td class="paramname">status</td><td>Status variable for error reporting. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>New FSM, or NULL on error. </dd></dl>
+<dl class="exception"><dt><b>Exceptions:</b></dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">CKY_TOO_FEW_LINES</td><td>if there isn't at least one line. </td></tr>
+    <tr><td class="paramname">CKY_MALFORMED_TRANS</td><td>if there is a problem reading a transition. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="io_8c_source.html#l00243">243</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -253,7 +301,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 02:59:17 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 04:09:49 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

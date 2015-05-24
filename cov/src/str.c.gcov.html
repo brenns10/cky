@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">55</td>
-            <td class="headerCovTableEntry">101</td>
-            <td class="headerCovTableEntryLo">54.5 %</td>
+            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntry">110</td>
+            <td class="headerCovTableEntryLo">58.2 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-24 02:59:16</td>
+            <td class="headerValue">2015-05-24 04:09:49</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -185,147 +185,164 @@
 <span class="lineNum">     123 </span>            :    include the backslash.  This function will read the escape sequence, convert
 <span class="lineNum">     124 </span>            :    it to a wchar_t, store that in out, and return the number of characters read.
 <span class="lineNum">     125 </span>            :    @param source The string escape sequence to translate.
-<span class="lineNum">     126 </span>            :    @param out Where to store the output character.
-<a name="127"><span class="lineNum">     127 </span>            :    @return The number of characters read.</a>
-<span class="lineNum">     128 </span>            :  */
-<span class="lineNum">     129 </span><span class="lineCov">         24 : int read_escape(const wchar_t *source, wchar_t *out)</span>
-<span class="lineNum">     130 </span>            : {
-<span class="lineNum">     131 </span><span class="lineCov">         24 :   wchar_t specifier = source[1];</span>
-<span class="lineNum">     132 </span><span class="lineCov">         24 :   *out = 0;</span>
-<span class="lineNum">     133 </span><span class="lineCov">         24 :   switch (specifier) {</span>
-<span class="lineNum">     134 </span>            :   case L'a':
-<span class="lineNum">     135 </span><span class="lineCov">          2 :     *out = L'\a';</span>
-<span class="lineNum">     136 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     137 </span>            :   case L'b':
-<span class="lineNum">     138 </span><span class="lineCov">          2 :     *out = L'\b';</span>
-<span class="lineNum">     139 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     140 </span>            :   case L'e':
-<span class="lineNum">     141 </span><span class="lineCov">          2 :     *out = EPSILON;</span>
-<span class="lineNum">     142 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     143 </span>            :   case L'f':
-<span class="lineNum">     144 </span><span class="lineCov">          2 :     *out = L'\f';</span>
-<span class="lineNum">     145 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     146 </span>            :   case L'n':
-<span class="lineNum">     147 </span><span class="lineCov">          2 :     *out = L'\n';</span>
-<span class="lineNum">     148 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     149 </span>            :   case L'r':
-<span class="lineNum">     150 </span><span class="lineCov">          2 :     *out = L'\r';</span>
-<span class="lineNum">     151 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     152 </span>            :   case L't':
-<span class="lineNum">     153 </span><span class="lineCov">          2 :     *out = L'\t';</span>
-<span class="lineNum">     154 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     155 </span>            :   case L'v':
-<span class="lineNum">     156 </span><span class="lineCov">          2 :     *out = L'\v';</span>
-<span class="lineNum">     157 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     158 </span>            :   case L'\\':
-<span class="lineNum">     159 </span><span class="lineCov">          2 :     *out = L'\\';</span>
-<span class="lineNum">     160 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     161 </span>            :   case L'x':
-<span class="lineNum">     162 </span><span class="lineCov">          2 :     *out += 16 * hexit_val(source[2]);</span>
-<span class="lineNum">     163 </span><span class="lineCov">          2 :     *out += hexit_val(source[3]);</span>
-<span class="lineNum">     164 </span><span class="lineCov">          2 :     return 4;</span>
-<span class="lineNum">     165 </span>            :   case L'u':
-<span class="lineNum">     166 </span><span class="lineCov">          2 :     *out += 16 * 16 * 16 * hexit_val(source[2]);</span>
-<span class="lineNum">     167 </span><span class="lineCov">          2 :     *out += 16 * 16 * hexit_val(source[3]);</span>
-<span class="lineNum">     168 </span><span class="lineCov">          2 :     *out += 16 * hexit_val(source[4]);</span>
-<span class="lineNum">     169 </span><span class="lineCov">          2 :     *out += hexit_val(source[5]);</span>
-<span class="lineNum">     170 </span><span class="lineCov">          2 :     return 6;</span>
-<span class="lineNum">     171 </span>            :   default:
-<span class="lineNum">     172 </span><span class="lineCov">          2 :     *out = specifier;</span>
-<span class="lineNum">     173 </span><span class="lineCov">          2 :     return 2;</span>
-<span class="lineNum">     174 </span>            :   }
-<span class="lineNum">     175 </span>            : }
-<span class="lineNum">     176 </span>            : 
-<span class="lineNum">     177 </span>            : /**
-<span class="lineNum">     178 </span>            :    @brief Return a string representation of a character, escaped if necessary.
-<span class="lineNum">     179 </span>            : 
-<span class="lineNum">     180 </span>            :    The returned string is statically allocated, but only valid until the next
-<span class="lineNum">     181 </span>            :    time fsm_print_char() is called.
-<span class="lineNum">     182 </span>            :    @param dest The file to print to.
-<a name="183"><span class="lineNum">     183 </span>            :    @param input The character to filter.</a>
-<span class="lineNum">     184 </span>            :  */
-<span class="lineNum">     185 </span><span class="lineNoCov">          0 : wchar_t *escape_wchar(wchar_t input)</span>
-<span class="lineNum">     186 </span>            : {
-<span class="lineNum">     187 </span>            :   static wchar_t buf[] = {L' ', L'\0'};
-<span class="lineNum">     188 </span><span class="lineNoCov">          0 :   switch (input) {</span>
-<span class="lineNum">     189 </span>            :   case L'\a':
-<span class="lineNum">     190 </span><span class="lineNoCov">          0 :     return L&quot;\\a&quot;;</span>
-<span class="lineNum">     191 </span>            :   case L'\b':
-<span class="lineNum">     192 </span><span class="lineNoCov">          0 :     return L&quot;\\b&quot;;</span>
-<span class="lineNum">     193 </span>            :   case EPSILON:
-<span class="lineNum">     194 </span><span class="lineNoCov">          0 :     return L&quot;\\e&quot;;</span>
-<span class="lineNum">     195 </span>            :   case L'\f':
-<span class="lineNum">     196 </span><span class="lineNoCov">          0 :     return L&quot;\\f&quot;;</span>
-<span class="lineNum">     197 </span>            :   case L'\n':
-<span class="lineNum">     198 </span><span class="lineNoCov">          0 :     return L&quot;\\n&quot;;</span>
-<span class="lineNum">     199 </span>            :   case L'\r':
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 :     return L&quot;\\r&quot;;</span>
-<span class="lineNum">     201 </span>            :   case L'\t':
-<span class="lineNum">     202 </span><span class="lineNoCov">          0 :     return L&quot;\\t&quot;;</span>
-<span class="lineNum">     203 </span>            :   case L'\v':
-<span class="lineNum">     204 </span><span class="lineNoCov">          0 :     return L&quot;\\v&quot;;</span>
-<span class="lineNum">     205 </span>            :   case L'\\':
-<span class="lineNum">     206 </span><span class="lineNoCov">          0 :     return L&quot;\\\\&quot;;</span>
-<span class="lineNum">     207 </span>            :   default:
-<span class="lineNum">     208 </span>            :     // Print other characters as verbatim
-<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     buf[0] = input;</span>
-<span class="lineNum">     210 </span><span class="lineNoCov">          0 :     return buf;</span>
-<span class="lineNum">     211 </span>            :   }
-<span class="lineNum">     212 </span>            : }
-<span class="lineNum">     213 </span>            : 
-<span class="lineNum">     214 </span>            : /**
-<span class="lineNum">     215 </span>            :    @brief Read a single character from the string, accepting escape sequences.
-<span class="lineNum">     216 </span>            :    @param source The string to read from.
-<span class="lineNum">     217 </span>            :    @param out Place to store the resulting character.
-<a name="218"><span class="lineNum">     218 </span>            :    @return Number of characters read from source.</a>
-<span class="lineNum">     219 </span>            :  */
-<span class="lineNum">     220 </span><span class="lineCov">         72 : int read_wchar(const wchar_t *source, wchar_t *out)</span>
-<span class="lineNum">     221 </span>            : {
-<span class="lineNum">     222 </span><span class="lineCov">         72 :   if (source[0] == L'\\') {</span>
-<span class="lineNum">     223 </span><span class="lineCov">         24 :     return read_escape(source, out);</span>
-<span class="lineNum">     224 </span>            :   } else {
-<span class="lineNum">     225 </span><span class="lineCov">         48 :     *out = source[0];</span>
-<span class="lineNum">     226 </span><span class="lineCov">         48 :     return 1;</span>
-<span class="lineNum">     227 </span>            :   }
-<span class="lineNum">     228 </span>            : }
-<span class="lineNum">     229 </span>            : 
-<span class="lineNum">     230 </span>            : /**
-<span class="lineNum">     231 </span>            :    @brief Return a list of lines from the given string.
-<span class="lineNum">     232 </span>            : 
-<span class="lineNum">     233 </span>            :    The string is modified!  You should make a copy before doing this.
-<span class="lineNum">     234 </span>            :    @param source The string to split into lines.
-<a name="235"><span class="lineNum">     235 </span>            :    @return A linked list containing wchar_t* to each line.</a>
+<span class="lineNum">     126 </span>            :    @param len The length of the string to read. (assumed &gt;= 1)
+<span class="lineNum">     127 </span>            :    @param out Where to store the output character.
+<span class="lineNum">     128 </span>            :    @return The number of characters read.
+<a name="129"><span class="lineNum">     129 </span>            :    @exception Sets *out to WEOF if it would readpast len.</a>
+<span class="lineNum">     130 </span>            :  */
+<span class="lineNum">     131 </span><span class="lineCov">         26 : int read_escape(const wchar_t *source, int len, wchar_t *out)</span>
+<span class="lineNum">     132 </span>            : {
+<span class="lineNum">     133 </span>            :   wchar_t specifier;
+<span class="lineNum">     134 </span><span class="lineCov">         26 :   if (len &lt; 2) {</span>
+<span class="lineNum">     135 </span><span class="lineCov">          1 :     *out = WEOF;</span>
+<span class="lineNum">     136 </span><span class="lineCov">          1 :     return len;</span>
+<span class="lineNum">     137 </span>            :   }
+<span class="lineNum">     138 </span><span class="lineCov">         25 :   specifier = source[1];</span>
+<span class="lineNum">     139 </span><span class="lineCov">         25 :   *out = 0;</span>
+<span class="lineNum">     140 </span><span class="lineCov">         25 :   switch (specifier) {</span>
+<span class="lineNum">     141 </span>            :   case L'a':
+<span class="lineNum">     142 </span><span class="lineCov">          2 :     *out = L'\a';</span>
+<span class="lineNum">     143 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     144 </span>            :   case L'b':
+<span class="lineNum">     145 </span><span class="lineCov">          2 :     *out = L'\b';</span>
+<span class="lineNum">     146 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     147 </span>            :   case L'e':
+<span class="lineNum">     148 </span><span class="lineCov">          2 :     *out = EPSILON;</span>
+<span class="lineNum">     149 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     150 </span>            :   case L'f':
+<span class="lineNum">     151 </span><span class="lineCov">          2 :     *out = L'\f';</span>
+<span class="lineNum">     152 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     153 </span>            :   case L'n':
+<span class="lineNum">     154 </span><span class="lineCov">          2 :     *out = L'\n';</span>
+<span class="lineNum">     155 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     156 </span>            :   case L'r':
+<span class="lineNum">     157 </span><span class="lineCov">          2 :     *out = L'\r';</span>
+<span class="lineNum">     158 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     159 </span>            :   case L't':
+<span class="lineNum">     160 </span><span class="lineCov">          2 :     *out = L'\t';</span>
+<span class="lineNum">     161 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     162 </span>            :   case L'v':
+<span class="lineNum">     163 </span><span class="lineCov">          2 :     *out = L'\v';</span>
+<span class="lineNum">     164 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     165 </span>            :   case L'\\':
+<span class="lineNum">     166 </span><span class="lineCov">          2 :     *out = L'\\';</span>
+<span class="lineNum">     167 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     168 </span>            :   case L'x':
+<span class="lineNum">     169 </span><span class="lineCov">          2 :     if (len &lt; 4) {</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :       *out = WEOF;</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :       return len;</span>
+<span class="lineNum">     172 </span>            :     }
+<span class="lineNum">     173 </span><span class="lineCov">          2 :     *out += 16 * hexit_val(source[2]);</span>
+<span class="lineNum">     174 </span><span class="lineCov">          2 :     *out += hexit_val(source[3]);</span>
+<span class="lineNum">     175 </span><span class="lineCov">          2 :     return 4;</span>
+<span class="lineNum">     176 </span>            :   case L'u':
+<span class="lineNum">     177 </span><span class="lineCov">          3 :     if (len &lt; 6) {</span>
+<span class="lineNum">     178 </span><span class="lineCov">          1 :       *out = WEOF;</span>
+<span class="lineNum">     179 </span><span class="lineCov">          1 :       return len;</span>
+<span class="lineNum">     180 </span>            :     }
+<span class="lineNum">     181 </span><span class="lineCov">          2 :     *out += 16 * 16 * 16 * hexit_val(source[2]);</span>
+<span class="lineNum">     182 </span><span class="lineCov">          2 :     *out += 16 * 16 * hexit_val(source[3]);</span>
+<span class="lineNum">     183 </span><span class="lineCov">          2 :     *out += 16 * hexit_val(source[4]);</span>
+<span class="lineNum">     184 </span><span class="lineCov">          2 :     *out += hexit_val(source[5]);</span>
+<span class="lineNum">     185 </span><span class="lineCov">          2 :     return 6;</span>
+<span class="lineNum">     186 </span>            :   default:
+<span class="lineNum">     187 </span><span class="lineCov">          2 :     *out = specifier;</span>
+<span class="lineNum">     188 </span><span class="lineCov">          2 :     return 2;</span>
+<span class="lineNum">     189 </span>            :   }
+<span class="lineNum">     190 </span>            : }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            : /**
+<span class="lineNum">     193 </span>            :    @brief Return a string representation of a character, escaped if necessary.
+<span class="lineNum">     194 </span>            : 
+<span class="lineNum">     195 </span>            :    The returned string is statically allocated, but only valid until the next
+<span class="lineNum">     196 </span>            :    time fsm_print_char() is called.
+<span class="lineNum">     197 </span>            :    @param dest The file to print to.
+<a name="198"><span class="lineNum">     198 </span>            :    @param input The character to filter.</a>
+<span class="lineNum">     199 </span>            :  */
+<span class="lineNum">     200 </span><span class="lineNoCov">          0 : wchar_t *escape_wchar(wchar_t input)</span>
+<span class="lineNum">     201 </span>            : {
+<span class="lineNum">     202 </span>            :   static wchar_t buf[] = {L' ', L'\0'};
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :   switch (input) {</span>
+<span class="lineNum">     204 </span>            :   case L'\a':
+<span class="lineNum">     205 </span><span class="lineNoCov">          0 :     return L&quot;\\a&quot;;</span>
+<span class="lineNum">     206 </span>            :   case L'\b':
+<span class="lineNum">     207 </span><span class="lineNoCov">          0 :     return L&quot;\\b&quot;;</span>
+<span class="lineNum">     208 </span>            :   case EPSILON:
+<span class="lineNum">     209 </span><span class="lineNoCov">          0 :     return L&quot;\\e&quot;;</span>
+<span class="lineNum">     210 </span>            :   case L'\f':
+<span class="lineNum">     211 </span><span class="lineNoCov">          0 :     return L&quot;\\f&quot;;</span>
+<span class="lineNum">     212 </span>            :   case L'\n':
+<span class="lineNum">     213 </span><span class="lineNoCov">          0 :     return L&quot;\\n&quot;;</span>
+<span class="lineNum">     214 </span>            :   case L'\r':
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :     return L&quot;\\r&quot;;</span>
+<span class="lineNum">     216 </span>            :   case L'\t':
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :     return L&quot;\\t&quot;;</span>
+<span class="lineNum">     218 </span>            :   case L'\v':
+<span class="lineNum">     219 </span><span class="lineNoCov">          0 :     return L&quot;\\v&quot;;</span>
+<span class="lineNum">     220 </span>            :   case L'\\':
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :     return L&quot;\\\\&quot;;</span>
+<span class="lineNum">     222 </span>            :   default:
+<span class="lineNum">     223 </span>            :     // Print other characters as verbatim
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     buf[0] = input;</span>
+<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     return buf;</span>
+<span class="lineNum">     226 </span>            :   }
+<span class="lineNum">     227 </span>            : }
+<span class="lineNum">     228 </span>            : 
+<span class="lineNum">     229 </span>            : /**
+<span class="lineNum">     230 </span>            :    @brief Read a single character from the string, accepting escape sequences.
+<span class="lineNum">     231 </span>            :    @param source The string to read from.
+<span class="lineNum">     232 </span>            :    @param len Number of characters in the string. (assumed &gt;= 1)
+<span class="lineNum">     233 </span>            :    @param out Place to store the resulting character.
+<span class="lineNum">     234 </span>            :    @return Number of characters read from source.
+<a name="235"><span class="lineNum">     235 </span>            :    @exception Sets *out to WEOF if the read would go past len.</a>
 <span class="lineNum">     236 </span>            :  */
-<span class="lineNum">     237 </span><span class="lineCov">          4 : smb_ll *split_lines(wchar_t *source)</span>
+<span class="lineNum">     237 </span><span class="lineCov">         80 : int read_wchar(const wchar_t *source, int len, wchar_t *out)</span>
 <span class="lineNum">     238 </span>            : {
-<span class="lineNum">     239 </span>            :   wchar_t *start;
-<span class="lineNum">     240 </span>            :   smb_ll *list;
-<span class="lineNum">     241 </span>            :   DATA d;
-<span class="lineNum">     242 </span>            : 
-<span class="lineNum">     243 </span>            :   /*
-<span class="lineNum">     244 </span>            :     We go through `source` looking for every newline, replace it with NUL, and
-<span class="lineNum">     245 </span>            :     add the beginnig of the line to the list.
-<span class="lineNum">     246 </span>            :    */
-<span class="lineNum">     247 </span><span class="lineCov">          4 :   start = source;</span>
-<span class="lineNum">     248 </span><span class="lineCov">          4 :   list = ll_create();</span>
-<span class="lineNum">     249 </span><span class="lineCov">        430 :   while (*source != L'\0') {</span>
-<span class="lineNum">     250 </span><span class="lineCov">        422 :     if (*source == L'\n') {</span>
-<span class="lineNum">     251 </span>            :       // Add line to list.
-<span class="lineNum">     252 </span><span class="lineCov">         42 :       d.data_ptr = start;</span>
-<span class="lineNum">     253 </span><span class="lineCov">         42 :       ll_append(list, d);</span>
-<span class="lineNum">     254 </span>            :       // Null-terminate the line.
-<span class="lineNum">     255 </span><span class="lineCov">         42 :       *source = L'\0';</span>
-<span class="lineNum">     256 </span>            :       // Next string starts at the next character.
-<span class="lineNum">     257 </span><span class="lineCov">         42 :       start = source + 1;</span>
-<span class="lineNum">     258 </span>            :     }
-<span class="lineNum">     259 </span><span class="lineCov">        422 :     source++;</span>
-<span class="lineNum">     260 </span>            :   }
-<span class="lineNum">     261 </span><span class="lineCov">          4 :   if (start != source) {</span>
-<span class="lineNum">     262 </span><span class="lineNoCov">          0 :     d.data_ptr = start;</span>
-<span class="lineNum">     263 </span><span class="lineNoCov">          0 :     ll_append(list, d);</span>
-<span class="lineNum">     264 </span>            :   }
-<span class="lineNum">     265 </span><span class="lineCov">          4 :   return list;</span>
-<span class="lineNum">     266 </span>            : }
+<span class="lineNum">     239 </span><span class="lineCov">         80 :   if (source[0] == L'\\') {</span>
+<span class="lineNum">     240 </span><span class="lineCov">         26 :     return read_escape(source, len, out);</span>
+<span class="lineNum">     241 </span>            :   } else {
+<span class="lineNum">     242 </span><span class="lineCov">         54 :     *out = source[0];</span>
+<span class="lineNum">     243 </span><span class="lineCov">         54 :     return 1;</span>
+<span class="lineNum">     244 </span>            :   }
+<span class="lineNum">     245 </span>            : }
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            : /**
+<span class="lineNum">     248 </span>            :    @brief Return a list of lines from the given string.
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :    The string is modified!  You should make a copy before doing this.
+<span class="lineNum">     251 </span>            :    @param source The string to split into lines.
+<a name="252"><span class="lineNum">     252 </span>            :    @return A linked list containing wchar_t* to each line.</a>
+<span class="lineNum">     253 </span>            :  */
+<span class="lineNum">     254 </span><span class="lineCov">         14 : smb_ll *split_lines(wchar_t *source)</span>
+<span class="lineNum">     255 </span>            : {
+<span class="lineNum">     256 </span>            :   wchar_t *start;
+<span class="lineNum">     257 </span>            :   smb_ll *list;
+<span class="lineNum">     258 </span>            :   DATA d;
+<span class="lineNum">     259 </span>            : 
+<span class="lineNum">     260 </span>            :   /*
+<span class="lineNum">     261 </span>            :     We go through `source` looking for every newline, replace it with NUL, and
+<span class="lineNum">     262 </span>            :     add the beginnig of the line to the list.
+<span class="lineNum">     263 </span>            :    */
+<span class="lineNum">     264 </span><span class="lineCov">         14 :   start = source;</span>
+<span class="lineNum">     265 </span><span class="lineCov">         14 :   list = ll_create();</span>
+<span class="lineNum">     266 </span><span class="lineCov">        666 :   while (*source != L'\0') {</span>
+<span class="lineNum">     267 </span><span class="lineCov">        638 :     if (*source == L'\n') {</span>
+<span class="lineNum">     268 </span>            :       // Add line to list.
+<span class="lineNum">     269 </span><span class="lineCov">         60 :       d.data_ptr = start;</span>
+<span class="lineNum">     270 </span><span class="lineCov">         60 :       ll_append(list, d);</span>
+<span class="lineNum">     271 </span>            :       // Null-terminate the line.
+<span class="lineNum">     272 </span><span class="lineCov">         60 :       *source = L'\0';</span>
+<span class="lineNum">     273 </span>            :       // Next string starts at the next character.
+<span class="lineNum">     274 </span><span class="lineCov">         60 :       start = source + 1;</span>
+<span class="lineNum">     275 </span>            :     }
+<span class="lineNum">     276 </span><span class="lineCov">        638 :     source++;</span>
+<span class="lineNum">     277 </span>            :   }
+<span class="lineNum">     278 </span><span class="lineCov">         14 :   if (start != source) {</span>
+<span class="lineNum">     279 </span><span class="lineCov">          8 :     d.data_ptr = start;</span>
+<span class="lineNum">     280 </span><span class="lineCov">          8 :     ll_append(list, d);</span>
+<span class="lineNum">     281 </span>            :   }
+<span class="lineNum">     282 </span><span class="lineCov">         14 :   return list;</span>
+<span class="lineNum">     283 </span>            : }
 </pre>
       </td>
     </tr>
