@@ -104,13 +104,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00052"></a>00052 }
 <a name="l00053"></a>00053 
 <a name="l00058"></a><a class="code" href="regex_8h.html#abc7bd85bcf94515c25ecc6fd3c4508f4">00058</a> <span class="keywordtype">void</span> <a class="code" href="regex_2datastructs_8c.html#abc7bd85bcf94515c25ecc6fd3c4508f4" title="Clean up and free a regex_hit object.">regex_hit_delete</a>(<a class="code" href="structregex__hit.html" title="A struct to hold regular expression search hits.">regex_hit</a> *obj) {
-<a name="l00059"></a>00059   <span class="keywordflow">if</span> (obj) {
-<a name="l00060"></a>00060     <a class="code" href="regex_2datastructs_8c.html#a38c12ce2ebc264d6b371e83396d45b02" title="Clean up a regex_hit object.">regex_hit_destroy</a>(obj);
-<a name="l00061"></a>00061     smb_free(obj);
-<a name="l00062"></a>00062   } <span class="keywordflow">else</span> {
-<a name="l00063"></a>00063     fprintf(stderr, <span class="stringliteral">&quot;regex_hit_delete: called with null pointer.\n&quot;</span>);
-<a name="l00064"></a>00064   }
-<a name="l00065"></a>00065 }
+<a name="l00059"></a>00059   <a class="code" href="regex_2datastructs_8c.html#a38c12ce2ebc264d6b371e83396d45b02" title="Clean up a regex_hit object.">regex_hit_destroy</a>(obj);
+<a name="l00060"></a>00060   smb_free(obj);
+<a name="l00061"></a>00061 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -129,7 +125,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 19:45:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 21:11:41 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

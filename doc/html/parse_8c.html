@@ -91,6 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &quot;<a class="el" href="regex_8h_source.html">regex.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="fsm_8h_source.html">fsm.h</a>&quot;</code><br/>
 <code>#include &quot;libstephen/ll.h&quot;</code><br/>
+<code>#include &quot;libstephen/log.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="str_8h_source.html">str.h</a>&quot;</code><br/>
 </div>
 <p><a href="parse_8c_source.html">Go to the source code of this file.</a></p>
@@ -158,7 +159,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>A FSM that can be used to decide the language of the regex. </dd></dl>
 
-<p>Definition at line <a class="el" href="parse_8c_source.html#l00391">391</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
+<p>Definition at line <a class="el" href="parse_8c_source.html#l00395">395</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
 
 </div>
 </div>
@@ -187,7 +188,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>FSM for character class. </dd></dl>
 
-<p>Definition at line <a class="el" href="parse_8c_source.html#l00222">222</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
+<p>Definition at line <a class="el" href="parse_8c_source.html#l00226">226</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
 
 </div>
 </div>
@@ -226,7 +227,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parse_8c_source.html#l00035">35</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
+<p>Definition at line <a class="el" href="parse_8c_source.html#l00036">36</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
 
 </div>
 </div>
@@ -249,7 +250,7 @@ Functions</h2></td></tr>
 <p>The dot should accept 'almost' anything. The one thing that my dot character will never accept is L'\0' (the null terminator). The dot should not match WEOF, but since wchar_t can't hold WEOF, I'm good there. Generally, the dot is not supposed to match L'<br/>
 ' either, so I will also add that, but optionally. </p>
 
-<p>Definition at line <a class="el" href="parse_8c_source.html#l00143">143</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
+<p>Definition at line <a class="el" href="parse_8c_source.html#l00144">144</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
 
 </div>
 </div>
@@ -276,7 +277,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="parse_8c_source.html#l00073">73</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
+<p>Definition at line <a class="el" href="parse_8c_source.html#l00074">74</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
 
 </div>
 </div>
@@ -306,7 +307,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>FSM to accept the backslash escape sequence. </dd></dl>
 
-<p>Definition at line <a class="el" href="parse_8c_source.html#l00176">176</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
+<p>Definition at line <a class="el" href="parse_8c_source.html#l00180">180</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
 
 </div>
 </div>
@@ -347,7 +348,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>An FSM for the regular expression. </dd></dl>
 
-<p>Definition at line <a class="el" href="parse_8c_source.html#l00319">319</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
+<p>Definition at line <a class="el" href="parse_8c_source.html#l00323">323</a> of file <a class="el" href="parse_8c_source.html">parse.c</a>.</p>
 
 </div>
 </div>
@@ -369,7 +370,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 19:45:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 21:11:41 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

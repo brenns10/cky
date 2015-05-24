@@ -21,6 +21,7 @@ var searchData=
   ['regex_5fparse_5fouter_5fescape',['regex_parse_outer_escape',['../parse_8c.html#a2b81fd55b1de3e8405c4e5d17dd7b63d',1,'regex_parse_outer_escape(const wchar_t **regex):&#160;parse.c'],['../regex_8h.html#a2b81fd55b1de3e8405c4e5d17dd7b63d',1,'regex_parse_outer_escape(const wchar_t **regex):&#160;parse.c']]],
   ['regex_5fparse_5frecursive',['regex_parse_recursive',['../parse_8c.html#a4f016183fc8f0da8ac87bd6f6047708c',1,'parse.c']]],
   ['regex_5fsearch',['regex_search',['../search_8c.html#ac5ffd8988768ff06b05465eda3025753',1,'regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy, bool overlap):&#160;search.c'],['../regex_8h.html#ac5ffd8988768ff06b05465eda3025753',1,'regex_search(const wchar_t *regex, const wchar_t *srchText, bool greedy, bool overlap):&#160;search.c']]],
+  ['regextest_2ec',['regextest.c',['../regextest_8c.html',1,'']]],
   ['rhs',['rhs',['../structcfg__rule.html#aa5629183aa50f5a8cb0aaa8896b7e37c',1,'cfg_rule']]],
   ['rhs_5flen',['rhs_len',['../structcfg__rule.html#a9c44d66a9b3bbe2357e78def1286d000',1,'cfg_rule']]],
   ['rhs_5fone',['rhs_one',['../structcnf__rule.html#ab118ace8dd815d94943b47babf4eb145',1,'cnf_rule']]],
