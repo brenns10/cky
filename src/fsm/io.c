@@ -269,9 +269,9 @@ void fsm_print(fsm *f, FILE *dest)
 
       // For every range in the transition, print it followed by a space.
       for (start = ft->start, end = ft->end; *start != L'\0'; start++, end++) {
-        fprintf(dest, "%s", escape_wchar(*start));
+        fprintf(dest, "%ls", escape_wchar(*start));
         fprintf(dest, "-");
-        fprintf(dest, "%s", escape_wchar(*end));
+        fprintf(dest, "%ls", escape_wchar(*end));
 
         // If this isn't the last range, print a space to separate
         if (*(start+1) != L'\0') {

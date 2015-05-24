@@ -52,7 +52,6 @@
 
 void simple_gram(void);
 void simple_fsm(void);
-void read_combine_fsm(void);
 void regex(void);
 void search(void);
 void dot(void);
@@ -69,7 +68,6 @@ void help(char *name)
   puts("Tests:");
   puts("  -g, --simple-gram       create and print a grammar");
   puts("  -f, --simple-fsm        programmatically create and run a certain FSM");
-  puts("  -c, --read-combine-fsm  read FSMs and combine them using various operators");
   puts("  -e, --regex             input regex and test strings");
   puts("  -s, --search            regex search file");
   puts("  -d, --dot               create graphviz dot from regex");
@@ -110,10 +108,6 @@ int main(int argc, char **argv)
   }
   if (check_flag(&data, 'f') || check_long_flag(&data, "simple-fsm")) {
     simple_fsm();
-    executed = true;
-  }
-  if (check_flag(&data, 'c') || check_long_flag(&data, "read-combine-fsm")) {
-    read_combine_fsm();
     executed = true;
   }
   if (check_flag(&data, 'e') || check_long_flag(&data, "regex")) {
@@ -298,87 +292,6 @@ void regex(void)
     smb_free(str);
   }
   fsm_delete(compiled_fsm, true);
-}
-
-/**
-   @brief A function to test reading and combining FSMs.
-
-   Reads in two FSMs: one to accept "Stephen" or "stephen".  Another to accept
-   "Brennan" or "brennan".  Then it creates the union, concatenation, and the
-   Kleene star of each.  Then it runs all the machines (nondeterministically) on
-   some test strings, and prints out the resulting FSMs.
- */
-void read_combine_fsm(void)
-{
-  const wchar_t *m1spec =
-    L"start:0\n"
-    L"accept:7\n"
-    L"0-1:+s-s S-S\n"
-    L"1-2:+t-t\n"
-    L"2-3:+e-e\n"
-    L"3-4:+p-p\n"
-    L"4-5:+h-h\n"
-    L"5-6:+e-e\n"
-    L"6-7:+n-n\n";
-
-  const wchar_t *m2spec =
-    L"start:0\n"
-    L"accept:7\n"
-    L"0-1:+b-b B-B\n"
-    L"1-2:+r-r\n"
-    L"2-3:+e-e\n"
-    L"3-4:+n-n\n"
-    L"4-5:+n-n\n"
-    L"5-6:+a-a\n"
-    L"6-7:+n-n\n";
-
-  const wchar_t *inputs[] = {
-    L"stephen",
-    L"Stephen",
-    L"brennan",
-    L"Brennan",
-    L"stephenbrennan",
-    L"stephenBrennan",
-    L"Stephenbrennan",
-    L"StephenBrennan",
-    L"StephenstephenStephen",
-    L"BrennanbrennanBrennan",
-    L""
-  };
-
-  int i;
-  fsm *m1 = fsm_read(m1spec), *m2 = fsm_read(m2spec);
-  fsm *m1Um2 = fsm_copy(m1), *m1Cm2 = fsm_copy(m1);
-  fsm *m1S = fsm_copy(m1), *m2S = fsm_copy(m2);
-  fsm_union(m1Um2, m2);
-  fsm_concat(m1Cm2, m2);
-  fsm_kleene(m1S);
-  fsm_kleene(m2S);
-
-  for (i = 0; i < sizeof(inputs)/sizeof(wchar_t *); i++) {
-    printf("BEGIN TESTING: \"%ls\".\n", inputs[i]);
-
-    printf("M1: %s\n", fsm_sim_nondet(m1, inputs[i]) ? "accept" : "reject");
-    printf("M2: %s\n", fsm_sim_nondet(m2, inputs[i]) ? "accept" : "reject");
-    printf("M1 U M2: %s\n", fsm_sim_nondet(m1Um2, inputs[i]) ? "accept" : "reject");
-    printf("M1 + M2: %s\n", fsm_sim_nondet(m1Cm2, inputs[i]) ? "accept" : "reject");
-    printf("M1*: %s\n", fsm_sim_nondet(m1S, inputs[i]) ? "accept" : "reject");
-    printf("M2*: %s\n", fsm_sim_nondet(m2S, inputs[i]) ? "accept" : "reject");
-  }
-
-  fsm_print(m1, stdout);
-  fsm_print(m2, stdout);
-  fsm_print(m1Um2, stdout);
-  fsm_print(m1Cm2, stdout);
-  fsm_print(m1S, stdout);
-  fsm_print(m2S, stdout);
-
-  fsm_delete(m1, true);
-  fsm_delete(m2, true);
-  fsm_delete(m1Um2, true);
-  fsm_delete(m1Cm2, true);
-  fsm_delete(m1S, true);
-  fsm_delete(m2S, true);
 }
 
 /**

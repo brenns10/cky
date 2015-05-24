@@ -99,6 +99,84 @@ static int test_escape(void)
   return 0;
 }
 
+int test_read_combine(void)
+{
+  const wchar_t *m1spec =
+    L"start:0\n"
+    L"accept:7\n"
+    L"0-1:+s-sS-S\n"
+    L"1-2:+t-t\n"
+    L"2-3:+e-e\n"
+    L"3-4:+p-p\n"
+    L"4-5:+h-h\n"
+    L"5-6:+e-e\n"
+    L"6-7:+n-n\n";
+
+  const wchar_t *m2spec =
+    L"start:0\n"
+    L"accept:7\n"
+    L"0-1:+b-bB-B\n"
+    L"1-2:+r-r\n"
+    L"2-3:+e-e\n"
+    L"3-4:+n-n\n"
+    L"4-5:+n-n\n"
+    L"5-6:+a-a\n"
+    L"6-7:+n-n\n";
+
+  const wchar_t *inputs[] = {
+    L"stephen",
+    L"Stephen",
+    L"brennan",
+    L"Brennan",
+    L"stephenbrennan",
+    L"stephenBrennan",
+    L"Stephenbrennan",
+    L"StephenBrennan",
+    L"StephenstephenStephen",
+    L"BrennanbrennanBrennan",
+    L""
+  };
+  const bool results[][6] = {
+    // {M1, M2,    M1 U M2, M1M2, M1*,  M2*
+    {true,  false, true,  false, true,  false}, // "stephen"
+    {true,  false, true,  false, true,  false}, // "Stephen"
+    {false, true,  true,  false, false, true }, // "brennan"
+    {false, true,  true,  false, false, true }, // "Brennan"
+    {false, false, false, true,  false, false}, // "stephenbrennan"
+    {false, false, false, true,  false, false}, // "stephenBrennan"
+    {false, false, false, true,  false, false}, // "Stephenbrennan"
+    {false, false, false, true,  false, false}, // "StephenBrennan"
+    {false, false, false, false, true,  false}, // "Stephenstephenstephen"
+    {false, false, false, false, false, true }, // "BrennanbrennanBrennan"
+    {false, false, false, false, true,  true }  // ""
+  };
+  int i;
+  fsm *m1 = fsm_read(m1spec), *m2 = fsm_read(m2spec);
+  fsm *m1Um2 = fsm_copy(m1), *m1Cm2 = fsm_copy(m1);
+  fsm *m1S = fsm_copy(m1), *m2S = fsm_copy(m2);
+  fsm_union(m1Um2, m2);
+  fsm_concat(m1Cm2, m2);
+  fsm_kleene(m1S);
+  fsm_kleene(m2S);
+
+  for (i = 0; i < sizeof(inputs)/sizeof(wchar_t *); i++) {
+    TEST_ASSERT(results[i][0] == fsm_sim_nondet(m1, inputs[i]));
+    TEST_ASSERT(results[i][1] == fsm_sim_nondet(m2, inputs[i]));
+    TEST_ASSERT(results[i][2] == fsm_sim_nondet(m1Um2, inputs[i]));
+    TEST_ASSERT(results[i][3] == fsm_sim_nondet(m1Cm2, inputs[i]));
+    TEST_ASSERT(results[i][4] == fsm_sim_nondet(m1S, inputs[i]));
+    TEST_ASSERT(results[i][5] == fsm_sim_nondet(m2S, inputs[i]));
+  }
+
+  fsm_delete(m1, true);
+  fsm_delete(m2, true);
+  fsm_delete(m1Um2, true);
+  fsm_delete(m1Cm2, true);
+  fsm_delete(m1S, true);
+  fsm_delete(m2S, true);
+  return 0;
+}
+
 void fsm_io_test(void)
 {
   smb_ut_group *group = su_create_test_group("fsm_io");
@@ -108,6 +186,9 @@ void fsm_io_test(void)
 
   smb_ut_test *escape = su_create_test("escape", test_escape);
   su_add_test(group, escape);
+
+  smb_ut_test *read_combine = su_create_test("read_combine", test_read_combine);
+  su_add_test(group, read_combine);
 
   su_run_group(group);
   su_delete_group(group);
