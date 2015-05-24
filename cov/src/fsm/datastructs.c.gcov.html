@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-23 18:02:19</td>
+            <td class="headerValue">2015-05-24 02:40:49</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">20</td>
@@ -124,24 +124,24 @@
 <span class="lineNum">      62 </span>            :    @param type The type of transition (positive or negative)
 <a name="63"><span class="lineNum">      63 </span>            :    @param dest The destination of the transition</a>
 <span class="lineNum">      64 </span>            :  */
-<span class="lineNum">      65 </span><span class="lineCov">         50 : void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)</span>
+<span class="lineNum">      65 </span><span class="lineCov">        125 : void fsm_trans_init(fsm_trans *ft, int n, int type, int dest)</span>
 <span class="lineNum">      66 </span>            : {
 <span class="lineNum">      67 </span>            :   int i;
-<span class="lineNum">      68 </span><span class="lineCov">         50 :   ft-&gt;type = type;</span>
+<span class="lineNum">      68 </span><span class="lineCov">        125 :   ft-&gt;type = type;</span>
 <span class="lineNum">      69 </span>            : 
 <span class="lineNum">      70 </span>            :   // Allocate space for the range plus null terminator
-<span class="lineNum">      71 </span><span class="lineCov">         50 :   ft-&gt;start = smb_new(wchar_t, n + 1);</span>
-<span class="lineNum">      72 </span><span class="lineCov">         50 :   ft-&gt;end = smb_new(wchar_t, n + 1);</span>
+<span class="lineNum">      71 </span><span class="lineCov">        125 :   ft-&gt;start = smb_new(wchar_t, n + 1);</span>
+<span class="lineNum">      72 </span><span class="lineCov">        125 :   ft-&gt;end = smb_new(wchar_t, n + 1);</span>
 <span class="lineNum">      73 </span>            : 
-<span class="lineNum">      74 </span><span class="lineCov">        106 :   for (i = 0; i &lt; n; i++) {</span>
-<span class="lineNum">      75 </span><span class="lineCov">         56 :     ft-&gt;start[i] = WEOF;</span>
-<span class="lineNum">      76 </span><span class="lineCov">         56 :     ft-&gt;end[i] = WEOF;</span>
+<span class="lineNum">      74 </span><span class="lineCov">        264 :   for (i = 0; i &lt; n; i++) {</span>
+<span class="lineNum">      75 </span><span class="lineCov">        139 :     ft-&gt;start[i] = WEOF;</span>
+<span class="lineNum">      76 </span><span class="lineCov">        139 :     ft-&gt;end[i] = WEOF;</span>
 <span class="lineNum">      77 </span>            :   }
-<span class="lineNum">      78 </span><span class="lineCov">         50 :   ft-&gt;start[n] = L'\0';</span>
-<span class="lineNum">      79 </span><span class="lineCov">         50 :   ft-&gt;end[n] = L'\0';</span>
+<span class="lineNum">      78 </span><span class="lineCov">        125 :   ft-&gt;start[n] = L'\0';</span>
+<span class="lineNum">      79 </span><span class="lineCov">        125 :   ft-&gt;end[n] = L'\0';</span>
 <span class="lineNum">      80 </span>            : 
-<span class="lineNum">      81 </span><span class="lineCov">         50 :   ft-&gt;dest = dest;</span>
-<span class="lineNum">      82 </span><span class="lineCov">         50 : }</span>
+<span class="lineNum">      81 </span><span class="lineCov">        125 :   ft-&gt;dest = dest;</span>
+<span class="lineNum">      82 </span><span class="lineCov">        125 : }</span>
 <span class="lineNum">      83 </span>            : 
 <span class="lineNum">      84 </span>            : /**
 <span class="lineNum">      85 </span>            :    @brief Allocate and initialize a fsm_trans object.
@@ -150,11 +150,11 @@
 <span class="lineNum">      88 </span>            :    @param type The type of transition
 <a name="89"><span class="lineNum">      89 </span>            :    @param dest The destination of the transition</a>
 <span class="lineNum">      90 </span>            :  */
-<span class="lineNum">      91 </span><span class="lineCov">         48 : fsm_trans *fsm_trans_create(int n, int type, int dest)</span>
+<span class="lineNum">      91 </span><span class="lineCov">        123 : fsm_trans *fsm_trans_create(int n, int type, int dest)</span>
 <span class="lineNum">      92 </span>            : {
-<span class="lineNum">      93 </span><span class="lineCov">         48 :   fsm_trans *ft = smb_new(fsm_trans, 1);</span>
-<span class="lineNum">      94 </span><span class="lineCov">         48 :   fsm_trans_init(ft, n, type, dest);</span>
-<span class="lineNum">      95 </span><span class="lineCov">         48 :   return ft;</span>
+<span class="lineNum">      93 </span><span class="lineCov">        123 :   fsm_trans *ft = smb_new(fsm_trans, 1);</span>
+<span class="lineNum">      94 </span><span class="lineCov">        123 :   fsm_trans_init(ft, n, type, dest);</span>
+<span class="lineNum">      95 </span><span class="lineCov">        123 :   return ft;</span>
 <span class="lineNum">      96 </span>            : }
 <span class="lineNum">      97 </span>            : 
 <span class="lineNum">      98 </span>            : /**
@@ -162,22 +162,22 @@
 <span class="lineNum">     100 </span>            : 
 <a name="101"><span class="lineNum">     101 </span>            :    @param ft The object to clean up</a>
 <span class="lineNum">     102 </span>            :  */
-<span class="lineNum">     103 </span><span class="lineCov">         50 : void fsm_trans_destroy(fsm_trans *ft)</span>
+<span class="lineNum">     103 </span><span class="lineCov">        125 : void fsm_trans_destroy(fsm_trans *ft)</span>
 <span class="lineNum">     104 </span>            : {
-<span class="lineNum">     105 </span><span class="lineCov">         50 :   smb_free(ft-&gt;start);</span>
-<span class="lineNum">     106 </span><span class="lineCov">         50 :   smb_free(ft-&gt;end);</span>
-<span class="lineNum">     107 </span><span class="lineCov">         50 : }</span>
+<span class="lineNum">     105 </span><span class="lineCov">        125 :   smb_free(ft-&gt;start);</span>
+<span class="lineNum">     106 </span><span class="lineCov">        125 :   smb_free(ft-&gt;end);</span>
+<span class="lineNum">     107 </span><span class="lineCov">        125 : }</span>
 <span class="lineNum">     108 </span>            : 
 <span class="lineNum">     109 </span>            : /**
 <span class="lineNum">     110 </span>            :    @brief Free the fsm_trans object.
 <span class="lineNum">     111 </span>            : 
 <a name="112"><span class="lineNum">     112 </span>            :    @param ft The object to free</a>
 <span class="lineNum">     113 </span>            :  */
-<span class="lineNum">     114 </span><span class="lineCov">         48 : void fsm_trans_delete(fsm_trans *ft)</span>
+<span class="lineNum">     114 </span><span class="lineCov">        123 : void fsm_trans_delete(fsm_trans *ft)</span>
 <span class="lineNum">     115 </span>            : {
-<span class="lineNum">     116 </span><span class="lineCov">         48 :   fsm_trans_destroy(ft);</span>
-<span class="lineNum">     117 </span><span class="lineCov">         48 :   smb_free(ft);</span>
-<span class="lineNum">     118 </span><span class="lineCov">         48 : }</span>
+<span class="lineNum">     116 </span><span class="lineCov">        123 :   fsm_trans_destroy(ft);</span>
+<span class="lineNum">     117 </span><span class="lineCov">        123 :   smb_free(ft);</span>
+<span class="lineNum">     118 </span><span class="lineCov">        123 : }</span>
 <span class="lineNum">     119 </span>            : 
 <span class="lineNum">     120 </span>            : ////////////////////////////////////////////////////////////////////////////////
 <span class="lineNum">     121 </span>            : // fsm_trans Utilities
@@ -208,13 +208,13 @@
 <span class="lineNum">     146 </span>            :    @param type The type of the object
 <a name="147"><span class="lineNum">     147 </span>            :    @param dest The destination of the transition</a>
 <span class="lineNum">     148 </span>            :  */
-<span class="lineNum">     149 </span><span class="lineCov">         26 : fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type,</span>
+<span class="lineNum">     149 </span><span class="lineCov">         33 : fsm_trans *fsm_trans_create_single(wchar_t start, wchar_t end, int type,</span>
 <span class="lineNum">     150 </span>            :                                    int dest)
 <span class="lineNum">     151 </span>            : {
-<span class="lineNum">     152 </span><span class="lineCov">         26 :   fsm_trans *ft = fsm_trans_create(1, type, dest);</span>
-<span class="lineNum">     153 </span><span class="lineCov">         26 :   ft-&gt;start[0] = start;</span>
-<span class="lineNum">     154 </span><span class="lineCov">         26 :   ft-&gt;end[0] = end;</span>
-<span class="lineNum">     155 </span><span class="lineCov">         26 :   return ft;</span>
+<span class="lineNum">     152 </span><span class="lineCov">         33 :   fsm_trans *ft = fsm_trans_create(1, type, dest);</span>
+<span class="lineNum">     153 </span><span class="lineCov">         33 :   ft-&gt;start[0] = start;</span>
+<span class="lineNum">     154 </span><span class="lineCov">         33 :   ft-&gt;end[0] = end;</span>
+<span class="lineNum">     155 </span><span class="lineCov">         33 :   return ft;</span>
 <span class="lineNum">     156 </span>            : }
 <span class="lineNum">     157 </span>            : 
 <span class="lineNum">     158 </span>            : /**
@@ -223,22 +223,22 @@
 <span class="lineNum">     161 </span>            :    @param ft The transition to check
 <a name="162"><span class="lineNum">     162 </span>            :    @param c The character to check</a>
 <span class="lineNum">     163 </span>            :  */
-<span class="lineNum">     164 </span><span class="lineCov">        331 : bool fsm_trans_check(const fsm_trans *ft, wchar_t c)</span>
+<span class="lineNum">     164 </span><span class="lineCov">       1360 : bool fsm_trans_check(const fsm_trans *ft, wchar_t c)</span>
 <span class="lineNum">     165 </span>            : {
-<span class="lineNum">     166 </span><span class="lineCov">        331 :   wchar_t *start = ft-&gt;start, *end = ft-&gt;end;</span>
+<span class="lineNum">     166 </span><span class="lineCov">       1360 :   wchar_t *start = ft-&gt;start, *end = ft-&gt;end;</span>
 <span class="lineNum">     167 </span>            : 
-<span class="lineNum">     168 </span><span class="lineCov">        866 :   while (start &amp;&amp; end &amp;&amp; *start != '\0' &amp;&amp; *end != '\0') {</span>
-<span class="lineNum">     169 </span><span class="lineCov">        337 :     if (c &gt;= *start &amp;&amp; c &lt;= *end) {</span>
-<span class="lineNum">     170 </span><span class="lineCov">        133 :       if (ft-&gt;type == FSM_TRANS_POSITIVE)</span>
-<span class="lineNum">     171 </span><span class="lineCov">        128 :         return true;</span>
+<span class="lineNum">     168 </span><span class="lineCov">       3648 :   while (start &amp;&amp; end &amp;&amp; *start != '\0' &amp;&amp; *end != '\0') {</span>
+<span class="lineNum">     169 </span><span class="lineCov">       1528 :     if (c &gt;= *start &amp;&amp; c &lt;= *end) {</span>
+<span class="lineNum">     170 </span><span class="lineCov">        600 :       if (ft-&gt;type == FSM_TRANS_POSITIVE)</span>
+<span class="lineNum">     171 </span><span class="lineCov">        595 :         return true;</span>
 <span class="lineNum">     172 </span>            :       else
 <span class="lineNum">     173 </span><span class="lineCov">          5 :         return false;</span>
 <span class="lineNum">     174 </span>            :     }
-<span class="lineNum">     175 </span><span class="lineCov">        204 :     start++; end++;</span>
+<span class="lineNum">     175 </span><span class="lineCov">        928 :     start++; end++;</span>
 <span class="lineNum">     176 </span>            :   }
 <span class="lineNum">     177 </span>            : 
-<span class="lineNum">     178 </span><span class="lineCov">        198 :   if (ft-&gt;type == FSM_TRANS_POSITIVE)</span>
-<span class="lineNum">     179 </span><span class="lineCov">        192 :     return false;</span>
+<span class="lineNum">     178 </span><span class="lineCov">        760 :   if (ft-&gt;type == FSM_TRANS_POSITIVE)</span>
+<span class="lineNum">     179 </span><span class="lineCov">        754 :     return false;</span>
 <span class="lineNum">     180 </span>            :   else
 <span class="lineNum">     181 </span><span class="lineCov">          6 :     return true;</span>
 <span class="lineNum">     182 </span>            : }
@@ -248,15 +248,15 @@
 <span class="lineNum">     186 </span>            :    @param ft The transition to copy
 <a name="187"><span class="lineNum">     187 </span>            :    @return The copy of ft</a>
 <span class="lineNum">     188 </span>            :  */
-<span class="lineNum">     189 </span><span class="lineCov">          9 : fsm_trans *fsm_trans_copy(const fsm_trans *ft)</span>
+<span class="lineNum">     189 </span><span class="lineCov">         51 : fsm_trans *fsm_trans_copy(const fsm_trans *ft)</span>
 <span class="lineNum">     190 </span>            : {
-<span class="lineNum">     191 </span><span class="lineCov">          9 :   int i, rangeSize = wcslen(ft-&gt;start);</span>
-<span class="lineNum">     192 </span><span class="lineCov">          9 :   fsm_trans *new = fsm_trans_create(rangeSize, ft-&gt;type, ft-&gt;dest);</span>
-<span class="lineNum">     193 </span><span class="lineCov">         18 :   for (i = 0; i &lt; rangeSize; i++) {</span>
-<span class="lineNum">     194 </span><span class="lineCov">          9 :     new-&gt;start[i] = ft-&gt;start[i];</span>
-<span class="lineNum">     195 </span><span class="lineCov">          9 :     new-&gt;end[i] = ft-&gt;end[i];</span>
+<span class="lineNum">     191 </span><span class="lineCov">         51 :   int i, rangeSize = wcslen(ft-&gt;start);</span>
+<span class="lineNum">     192 </span><span class="lineCov">         51 :   fsm_trans *new = fsm_trans_create(rangeSize, ft-&gt;type, ft-&gt;dest);</span>
+<span class="lineNum">     193 </span><span class="lineCov">        108 :   for (i = 0; i &lt; rangeSize; i++) {</span>
+<span class="lineNum">     194 </span><span class="lineCov">         57 :     new-&gt;start[i] = ft-&gt;start[i];</span>
+<span class="lineNum">     195 </span><span class="lineCov">         57 :     new-&gt;end[i] = ft-&gt;end[i];</span>
 <span class="lineNum">     196 </span>            :   }
-<span class="lineNum">     197 </span><span class="lineCov">          9 :   return new;</span>
+<span class="lineNum">     197 </span><span class="lineCov">         51 :   return new;</span>
 <span class="lineNum">     198 </span>            : }
 <span class="lineNum">     199 </span>            : 
 <span class="lineNum">     200 </span>            : ////////////////////////////////////////////////////////////////////////////////
@@ -268,21 +268,21 @@
 <span class="lineNum">     206 </span>            : 
 <a name="207"><span class="lineNum">     207 </span>            :    @param f The FSM to Initialize</a>
 <span class="lineNum">     208 </span>            :  */
-<span class="lineNum">     209 </span><span class="lineCov">         13 : void fsm_init(fsm *f)</span>
+<span class="lineNum">     209 </span><span class="lineCov">         20 : void fsm_init(fsm *f)</span>
 <span class="lineNum">     210 </span>            : {
-<span class="lineNum">     211 </span><span class="lineCov">         13 :   f-&gt;start = -1;</span>
-<span class="lineNum">     212 </span><span class="lineCov">         13 :   al_init(&amp;f-&gt;transitions);</span>
-<span class="lineNum">     213 </span><span class="lineCov">         13 :   al_init(&amp;f-&gt;accepting);</span>
-<span class="lineNum">     214 </span><span class="lineCov">         13 : }</span>
+<span class="lineNum">     211 </span><span class="lineCov">         20 :   f-&gt;start = -1;</span>
+<span class="lineNum">     212 </span><span class="lineCov">         20 :   al_init(&amp;f-&gt;transitions);</span>
+<span class="lineNum">     213 </span><span class="lineCov">         20 :   al_init(&amp;f-&gt;accepting);</span>
+<span class="lineNum">     214 </span><span class="lineCov">         20 : }</span>
 <span class="lineNum">     215 </span>            : 
 <span class="lineNum">     216 </span>            : /**
 <a name="217"><span class="lineNum">     217 </span>            :    @brief Allocate and initialize an FSM.</a>
 <span class="lineNum">     218 </span>            :  */
-<span class="lineNum">     219 </span><span class="lineCov">         11 : fsm *fsm_create(void)</span>
+<span class="lineNum">     219 </span><span class="lineCov">         18 : fsm *fsm_create(void)</span>
 <span class="lineNum">     220 </span>            : {
-<span class="lineNum">     221 </span><span class="lineCov">         11 :   fsm *f = smb_new(fsm, 1);</span>
-<span class="lineNum">     222 </span><span class="lineCov">         11 :   fsm_init(f);</span>
-<span class="lineNum">     223 </span><span class="lineCov">         11 :   return f;</span>
+<span class="lineNum">     221 </span><span class="lineCov">         18 :   fsm *f = smb_new(fsm, 1);</span>
+<span class="lineNum">     222 </span><span class="lineCov">         18 :   fsm_init(f);</span>
+<span class="lineNum">     223 </span><span class="lineCov">         18 :   return f;</span>
 <span class="lineNum">     224 </span>            : }
 <span class="lineNum">     225 </span>            : 
 <span class="lineNum">     226 </span>            : /**
@@ -291,27 +291,27 @@
 <span class="lineNum">     229 </span>            :    @param f The FSM to clean up
 <a name="230"><span class="lineNum">     230 </span>            :    @param free_transitions Do we free the transitions too?</a>
 <span class="lineNum">     231 </span>            :  */
-<span class="lineNum">     232 </span><span class="lineCov">         13 : void fsm_destroy(fsm *f, bool free_transitions)</span>
+<span class="lineNum">     232 </span><span class="lineCov">         20 : void fsm_destroy(fsm *f, bool free_transitions)</span>
 <span class="lineNum">     233 </span>            : {
 <span class="lineNum">     234 </span>            :   int i, j;
-<span class="lineNum">     235 </span><span class="lineCov">         13 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     235 </span><span class="lineCov">         20 :   smb_status status = SMB_SUCCESS;</span>
 <span class="lineNum">     236 </span>            :   smb_al *list;
 <span class="lineNum">     237 </span>            : 
-<span class="lineNum">     238 </span><span class="lineCov">         58 :   for (i = 0; i &lt; al_length(&amp;f-&gt;transitions); i++) {</span>
-<span class="lineNum">     239 </span><span class="lineCov">         45 :     list = (smb_al *) al_get(&amp;f-&gt;transitions, i, &amp;status).data_ptr;</span>
-<span class="lineNum">     240 </span><span class="lineCov">         45 :     assert(status == SMB_SUCCESS);</span>
-<span class="lineNum">     241 </span><span class="lineCov">         45 :     if (free_transitions) {</span>
-<span class="lineNum">     242 </span><span class="lineCov">         86 :       for (j = 0; j &lt; al_length(list); j++) {</span>
-<span class="lineNum">     243 </span><span class="lineCov">         41 :         fsm_trans_delete((fsm_trans *) al_get(list, j, &amp;status).data_ptr);</span>
-<span class="lineNum">     244 </span><span class="lineCov">         41 :         assert(status == SMB_SUCCESS);</span>
+<span class="lineNum">     238 </span><span class="lineCov">        145 :   for (i = 0; i &lt; al_length(&amp;f-&gt;transitions); i++) {</span>
+<span class="lineNum">     239 </span><span class="lineCov">        125 :     list = (smb_al *) al_get(&amp;f-&gt;transitions, i, &amp;status).data_ptr;</span>
+<span class="lineNum">     240 </span><span class="lineCov">        125 :     assert(status == SMB_SUCCESS);</span>
+<span class="lineNum">     241 </span><span class="lineCov">        125 :     if (free_transitions) {</span>
+<span class="lineNum">     242 </span><span class="lineCov">        241 :       for (j = 0; j &lt; al_length(list); j++) {</span>
+<span class="lineNum">     243 </span><span class="lineCov">        116 :         fsm_trans_delete((fsm_trans *) al_get(list, j, &amp;status).data_ptr);</span>
+<span class="lineNum">     244 </span><span class="lineCov">        116 :         assert(status == SMB_SUCCESS);</span>
 <span class="lineNum">     245 </span>            :       }
 <span class="lineNum">     246 </span>            :     }
-<span class="lineNum">     247 </span><span class="lineCov">         45 :     al_delete(list);</span>
+<span class="lineNum">     247 </span><span class="lineCov">        125 :     al_delete(list);</span>
 <span class="lineNum">     248 </span>            :   }
 <span class="lineNum">     249 </span>            : 
-<span class="lineNum">     250 </span><span class="lineCov">         13 :   al_destroy(&amp;f-&gt;transitions);</span>
-<span class="lineNum">     251 </span><span class="lineCov">         13 :   al_destroy(&amp;f-&gt;accepting);</span>
-<span class="lineNum">     252 </span><span class="lineCov">         13 : }</span>
+<span class="lineNum">     250 </span><span class="lineCov">         20 :   al_destroy(&amp;f-&gt;transitions);</span>
+<span class="lineNum">     251 </span><span class="lineCov">         20 :   al_destroy(&amp;f-&gt;accepting);</span>
+<span class="lineNum">     252 </span><span class="lineCov">         20 : }</span>
 <span class="lineNum">     253 </span>            : 
 <span class="lineNum">     254 </span>            : /**
 <span class="lineNum">     255 </span>            :    @brief Clean up and free an FSM.
@@ -319,11 +319,11 @@
 <span class="lineNum">     257 </span>            :    @param f The FSM to free
 <a name="258"><span class="lineNum">     258 </span>            :    @param free_transitions Do we free the transitions too?</a>
 <span class="lineNum">     259 </span>            :  */
-<span class="lineNum">     260 </span><span class="lineCov">         11 : void fsm_delete(fsm *f, bool free_transitions)</span>
+<span class="lineNum">     260 </span><span class="lineCov">         18 : void fsm_delete(fsm *f, bool free_transitions)</span>
 <span class="lineNum">     261 </span>            : {
-<span class="lineNum">     262 </span><span class="lineCov">         11 :   fsm_destroy(f, free_transitions);</span>
-<span class="lineNum">     263 </span><span class="lineCov">         11 :   smb_free(f);</span>
-<span class="lineNum">     264 </span><span class="lineCov">         11 : }</span>
+<span class="lineNum">     262 </span><span class="lineCov">         18 :   fsm_destroy(f, free_transitions);</span>
+<span class="lineNum">     263 </span><span class="lineCov">         18 :   smb_free(f);</span>
+<span class="lineNum">     264 </span><span class="lineCov">         18 : }</span>
 <span class="lineNum">     265 </span>            : 
 <span class="lineNum">     266 </span>            : ////////////////////////////////////////////////////////////////////////////////
 <span class="lineNum">     267 </span>            : // fsm Utilities
@@ -350,18 +350,18 @@
 <span class="lineNum">     288 </span>            :    @param accepting Whether to add the state to the accepting list
 <a name="289"><span class="lineNum">     289 </span>            :    @return The index of the state</a>
 <span class="lineNum">     290 </span>            :  */
-<span class="lineNum">     291 </span><span class="lineCov">         45 : int fsm_add_state(fsm *f, bool accepting)</span>
+<span class="lineNum">     291 </span><span class="lineCov">        125 : int fsm_add_state(fsm *f, bool accepting)</span>
 <span class="lineNum">     292 </span>            : {
 <span class="lineNum">     293 </span>            :   DATA d;
 <span class="lineNum">     294 </span>            :   int index;
-<span class="lineNum">     295 </span><span class="lineCov">         45 :   d.data_ptr = (void *) al_create();</span>
-<span class="lineNum">     296 </span><span class="lineCov">         45 :   al_append(&amp;f-&gt;transitions, d);</span>
-<span class="lineNum">     297 </span><span class="lineCov">         45 :   index = al_length(&amp;f-&gt;transitions) - 1;</span>
-<span class="lineNum">     298 </span><span class="lineCov">         45 :   if (accepting) {</span>
+<span class="lineNum">     295 </span><span class="lineCov">        125 :   d.data_ptr = (void *) al_create();</span>
+<span class="lineNum">     296 </span><span class="lineCov">        125 :   al_append(&amp;f-&gt;transitions, d);</span>
+<span class="lineNum">     297 </span><span class="lineCov">        125 :   index = al_length(&amp;f-&gt;transitions) - 1;</span>
+<span class="lineNum">     298 </span><span class="lineCov">        125 :   if (accepting) {</span>
 <span class="lineNum">     299 </span><span class="lineCov">          9 :     d.data_llint = index;</span>
 <span class="lineNum">     300 </span><span class="lineCov">          9 :     al_append(&amp;f-&gt;accepting, d);</span>
 <span class="lineNum">     301 </span>            :   }
-<span class="lineNum">     302 </span><span class="lineCov">         45 :   return index;</span>
+<span class="lineNum">     302 </span><span class="lineCov">        125 :   return index;</span>
 <span class="lineNum">     303 </span>            : }
 <span class="lineNum">     304 </span>            : 
 <span class="lineNum">     305 </span>            : /**
@@ -371,16 +371,16 @@
 <span class="lineNum">     309 </span>            :    @param state The state the transition is from
 <a name="310"><span class="lineNum">     310 </span>            :    @param ft The transition to add</a>
 <span class="lineNum">     311 </span>            :  */
-<span class="lineNum">     312 </span><span class="lineCov">         41 : void fsm_add_trans(fsm *f, int state, const fsm_trans *ft)</span>
+<span class="lineNum">     312 </span><span class="lineCov">        116 : void fsm_add_trans(fsm *f, int state, const fsm_trans *ft)</span>
 <span class="lineNum">     313 </span>            : {
 <span class="lineNum">     314 </span>            :   DATA d;
-<span class="lineNum">     315 </span><span class="lineCov">         41 :   smb_status status = SMB_SUCCESS;</span>
-<span class="lineNum">     316 </span><span class="lineCov">         41 :   smb_al *list = (smb_al *) al_get(&amp;f-&gt;transitions, state, &amp;status).data_ptr;</span>
-<span class="lineNum">     317 </span><span class="lineCov">         41 :   assert(status == SMB_SUCCESS);</span>
+<span class="lineNum">     315 </span><span class="lineCov">        116 :   smb_status status = SMB_SUCCESS;</span>
+<span class="lineNum">     316 </span><span class="lineCov">        116 :   smb_al *list = (smb_al *) al_get(&amp;f-&gt;transitions, state, &amp;status).data_ptr;</span>
+<span class="lineNum">     317 </span><span class="lineCov">        116 :   assert(status == SMB_SUCCESS);</span>
 <span class="lineNum">     318 </span>            :   // TODO: Change this from an assertion to an error.
-<span class="lineNum">     319 </span><span class="lineCov">         41 :   d.data_ptr = (void *) ft;</span>
-<span class="lineNum">     320 </span><span class="lineCov">         41 :   al_append(list, d);</span>
-<span class="lineNum">     321 </span><span class="lineCov">         41 : }</span>
+<span class="lineNum">     319 </span><span class="lineCov">        116 :   d.data_ptr = (void *) ft;</span>
+<span class="lineNum">     320 </span><span class="lineCov">        116 :   al_append(list, d);</span>
+<span class="lineNum">     321 </span><span class="lineCov">        116 : }</span>
 <span class="lineNum">     322 </span>            : 
 <span class="lineNum">     323 </span>            : /**
 <span class="lineNum">     324 </span>            :    @brief Add a single range transition to the FSM.
@@ -418,12 +418,12 @@
 <span class="lineNum">     356 </span>            :    @param curr The current state of the simulation
 <a name="357"><span class="lineNum">     357 </span>            :    @param input The input string</a>
 <span class="lineNum">     358 </span>            :  */
-<span class="lineNum">     359 </span><span class="lineCov">         21 : void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input)</span>
+<span class="lineNum">     359 </span><span class="lineCov">         99 : void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input)</span>
 <span class="lineNum">     360 </span>            : {
-<span class="lineNum">     361 </span><span class="lineCov">         21 :   fs-&gt;f = f;</span>
-<span class="lineNum">     362 </span><span class="lineCov">         21 :   fs-&gt;curr = curr;</span>
-<span class="lineNum">     363 </span><span class="lineCov">         21 :   fs-&gt;input = input;</span>
-<span class="lineNum">     364 </span><span class="lineCov">         21 : }</span>
+<span class="lineNum">     361 </span><span class="lineCov">         99 :   fs-&gt;f = f;</span>
+<span class="lineNum">     362 </span><span class="lineCov">         99 :   fs-&gt;curr = curr;</span>
+<span class="lineNum">     363 </span><span class="lineCov">         99 :   fs-&gt;input = input;</span>
+<span class="lineNum">     364 </span><span class="lineCov">         99 : }</span>
 <span class="lineNum">     365 </span>            : 
 <span class="lineNum">     366 </span>            : /**
 <span class="lineNum">     367 </span>            :    @brief Allocate and initialize an fsm_sim struct
@@ -432,11 +432,11 @@
 <span class="lineNum">     370 </span>            :    @param input The input string
 <a name="371"><span class="lineNum">     371 </span>            :    @return The allocated simulation</a>
 <span class="lineNum">     372 </span>            :  */
-<span class="lineNum">     373 </span><span class="lineCov">         21 : fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input)</span>
+<span class="lineNum">     373 </span><span class="lineCov">         99 : fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input)</span>
 <span class="lineNum">     374 </span>            : {
-<span class="lineNum">     375 </span><span class="lineCov">         21 :   fsm_sim *fs = smb_new(fsm_sim, 1);</span>
-<span class="lineNum">     376 </span><span class="lineCov">         21 :   fsm_sim_init(fs, f, curr, input);</span>
-<span class="lineNum">     377 </span><span class="lineCov">         21 :   return fs;</span>
+<span class="lineNum">     375 </span><span class="lineCov">         99 :   fsm_sim *fs = smb_new(fsm_sim, 1);</span>
+<span class="lineNum">     376 </span><span class="lineCov">         99 :   fsm_sim_init(fs, f, curr, input);</span>
+<span class="lineNum">     377 </span><span class="lineCov">         99 :   return fs;</span>
 <span class="lineNum">     378 </span>            : }
 <span class="lineNum">     379 </span>            : 
 <span class="lineNum">     380 </span>            : /**
@@ -444,23 +444,23 @@
 <span class="lineNum">     382 </span>            :    @param fs The simulation
 <a name="383"><span class="lineNum">     383 </span>            :    @param free_curr Do we free the state list (generally, true)</a>
 <span class="lineNum">     384 </span>            :  */
-<span class="lineNum">     385 </span><span class="lineCov">         21 : void fsm_sim_destroy(fsm_sim *fs, bool free_curr)</span>
+<span class="lineNum">     385 </span><span class="lineCov">         99 : void fsm_sim_destroy(fsm_sim *fs, bool free_curr)</span>
 <span class="lineNum">     386 </span>            : {
-<span class="lineNum">     387 </span><span class="lineCov">         21 :   if (free_curr) {</span>
-<span class="lineNum">     388 </span><span class="lineCov">         21 :     al_delete(fs-&gt;curr);</span>
+<span class="lineNum">     387 </span><span class="lineCov">         99 :   if (free_curr) {</span>
+<span class="lineNum">     388 </span><span class="lineCov">         99 :     al_delete(fs-&gt;curr);</span>
 <span class="lineNum">     389 </span>            :   }
-<span class="lineNum">     390 </span><span class="lineCov">         21 : }</span>
+<span class="lineNum">     390 </span><span class="lineCov">         99 : }</span>
 <span class="lineNum">     391 </span>            : 
 <span class="lineNum">     392 </span>            : /**
 <span class="lineNum">     393 </span>            :    @brief Clean up and any resources held by the fsm_sim, and free it.
 <span class="lineNum">     394 </span>            :    @param fs The simulation
 <a name="395"><span class="lineNum">     395 </span>            :    @param free_curr Do we free the state list (generally, true)</a>
 <span class="lineNum">     396 </span>            :  */
-<span class="lineNum">     397 </span><span class="lineCov">         21 : void fsm_sim_delete(fsm_sim *fs, bool free_curr)</span>
+<span class="lineNum">     397 </span><span class="lineCov">         99 : void fsm_sim_delete(fsm_sim *fs, bool free_curr)</span>
 <span class="lineNum">     398 </span>            : {
-<span class="lineNum">     399 </span><span class="lineCov">         21 :   fsm_sim_destroy(fs, free_curr);</span>
-<span class="lineNum">     400 </span><span class="lineCov">         21 :   smb_free(fs);</span>
-<span class="lineNum">     401 </span><span class="lineCov">         21 : }</span>
+<span class="lineNum">     399 </span><span class="lineCov">         99 :   fsm_sim_destroy(fs, free_curr);</span>
+<span class="lineNum">     400 </span><span class="lineCov">         99 :   smb_free(fs);</span>
+<span class="lineNum">     401 </span><span class="lineCov">         99 : }</span>
 </pre>
       </td>
     </tr>

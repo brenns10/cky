@@ -85,11 +85,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00041"></a>00041 <span class="preprocessor"></span><span class="preprocessor">#define SMB_STR_H</span>
 <a name="l00042"></a>00042 <span class="preprocessor"></span>
 <a name="l00043"></a>00043 <span class="preprocessor">#include &lt;wchar.h&gt;</span>
-<a name="l00044"></a>00044 
-<a name="l00045"></a>00045 <span class="keywordtype">int</span> <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(<span class="keywordtype">wchar_t</span> digit);
-<a name="l00046"></a>00046 <span class="keywordtype">wchar_t</span> <a class="code" href="str_8c.html#a2812a14f008e19005dec1ae9f31d0a93" title="Get an escaped character from the string source.">get_escape</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **source, <span class="keywordtype">wchar_t</span> epsilon);
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048 <span class="preprocessor">#endif</span>
+<a name="l00044"></a>00044 <span class="preprocessor">#include &quot;libstephen/ll.h&quot;</span>
+<a name="l00045"></a>00045 
+<a name="l00046"></a>00046 <span class="keywordtype">int</span> <a class="code" href="str_8c.html#aed00068498087567bc6dc5b0ebe9b8cd" title="Get the value of a hexadecimal digit.">hexit_val</a>(<span class="keywordtype">wchar_t</span> digit);
+<a name="l00047"></a>00047 <span class="keywordtype">wchar_t</span> <a class="code" href="str_8c.html#a2812a14f008e19005dec1ae9f31d0a93" title="Get an escaped character from the string source.">get_escape</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> **source, <span class="keywordtype">wchar_t</span> epsilon);
+<a name="l00048"></a>00048 <span class="keywordtype">int</span> <a class="code" href="str_8c.html#a22f6b36b94a1c641c64b0ae4ecda1ab1" title="Place the escaped wchar in source into out.">read_escape</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *source, <span class="keywordtype">wchar_t</span> *out);
+<a name="l00049"></a>00049 smb_ll *<a class="code" href="str_8c.html#a3184340dd1acca4224fcff44a77e5f29" title="Return a list of lines from the given string.">split_lines</a>(<span class="keywordtype">wchar_t</span> *source);
+<a name="l00050"></a>00050 <span class="keywordtype">int</span> <a class="code" href="str_8c.html#a812810aedab948de41e220276385108d" title="Read a single character from the string, accepting escape sequences.">read_wchar</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *source, <span class="keywordtype">wchar_t</span> *out);
+<a name="l00051"></a>00051 <span class="keywordtype">wchar_t</span> *<a class="code" href="str_8c.html#ac21e56b9ef36b81143763d44d3f88598" title="Return a string representation of a character, escaped if necessary.">escape_wchar</a>(<span class="keywordtype">wchar_t</span> input);
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053 <span class="preprocessor">#endif</span>
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -108,7 +113,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 02:40:50 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

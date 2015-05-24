@@ -85,8 +85,9 @@ void \hyperlink{fsm_8h_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-sim\-\_\-dele
 \hypertarget{fsm_8h_a9ce28a628461e29ee525cd6a2105b9f7}{\hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ {\bfseries fsm\-\_\-read\-\_\-trans} (const wchar\-\_\-t $\ast$$\ast$source, int $\ast$start)}\label{fsm_8h_a9ce28a628461e29ee525cd6a2105b9f7}
 
 \item 
-void \hyperlink{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}{fsm\-\_\-print\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t input)
-\begin{DoxyCompactList}\small\item\em \-Print a character, filtering if necessary. \end{DoxyCompactList}\item 
+\hypertarget{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}{void {\bfseries fsm\-\_\-print\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t input)}\label{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}
+
+\item 
 void \hyperlink{fsm_8h_ac7cf43e628d0aefef49a3d290b065e9c}{fsm\-\_\-dot\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t c)
 \begin{DoxyCompactList}\small\item\em \-Prints a character in an \-F\-S\-M specification to dot format. \end{DoxyCompactList}\item 
 \hypertarget{fsm_8h_a7c706a1cfd1264318819507f4abcf91c}{\hyperlink{structfsm}{fsm} $\ast$ {\bfseries fsm\-\_\-read} (const wchar\-\_\-t $\ast$source)}\label{fsm_8h_a7c706a1cfd1264318819507f4abcf91c}
@@ -562,7 +563,7 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \end{DoxyParams}
 
 
-\-Definition at line 386 of file io.\-c.
+\-Definition at line 325 of file io.\-c.
 
 \hypertarget{fsm_8h_ac7cf43e628d0aefef49a3d290b065e9c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}}
 \index{fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}!fsm.h@{fsm.\-h}}
@@ -578,9 +579,16 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 
 \-This function allows for printing out some characters differently than others. \-In dot format, quotes should be escaped. \-Also, epsilon transitions should be labelled something readable.
 
-dest \-Destination file. c \-The character to print 
 
-\-Definition at line 357 of file io.\-c.
+\begin{DoxyParams}{\-Parameters}
+{\em dest} & \-Destination file. \\
+\hline
+{\em c} & \-The character to print \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 296 of file io.\-c.
 
 \hypertarget{fsm_8h_afacfbf350f8cfbaa5982803593273551}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-init@{fsm\-\_\-init}}
 \index{fsm\-\_\-init@{fsm\-\_\-init}!fsm.h@{fsm.\-h}}
@@ -645,32 +653,7 @@ dest \-Destination file. c \-The character to print
 \end{DoxyParams}
 
 
-\-Definition at line 303 of file io.\-c.
-
-\hypertarget{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-print\-\_\-char@{fsm\-\_\-print\-\_\-char}}
-\index{fsm\-\_\-print\-\_\-char@{fsm\-\_\-print\-\_\-char}!fsm.h@{fsm.\-h}}
-\subsubsection[{fsm\-\_\-print\-\_\-char}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-print\-\_\-char} (
-\begin{DoxyParamCaption}
-\item[{\-F\-I\-L\-E $\ast$}]{dest, }
-\item[{wchar\-\_\-t}]{input}
-\end{DoxyParamCaption}
-)}}\label{fsm_8h_a7759fcc6d5acbee423eb831f2a3c028c}
-
-
-\-Print a character, filtering if necessary. 
-
-\-This subroutine of \hyperlink{io_8c_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print()} prints characters in transitions. \-It exists to make non-\/printable characters printable by printing their escaped versions instead.
-
-
-\begin{DoxyParams}{\-Parameters}
-{\em dest} & \-The file to print to. \\
-\hline
-{\em input} & \-The character to filter. \\
-\hline
-\end{DoxyParams}
-
-
-\-Definition at line 281 of file io.\-c.
+\-Definition at line 242 of file io.\-c.
 
 \hypertarget{fsm_8h_a7af8fcfc37e238c0d85d48649c2d209b}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}}
 \index{fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}!fsm.h@{fsm.\-h}}

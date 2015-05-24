@@ -100,8 +100,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c706a1cfd1264318819507f4abcf91c"></a><!-- doxytag: member="io.c::fsm_read" ref="a7c706a1cfd1264318819507f4abcf91c" args="(const wchar_t *source)" -->
 <a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_read</b> (const wchar_t *source)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a7759fcc6d5acbee423eb831f2a3c028c">fsm_print_char</a> (FILE *dest, wchar_t input)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a character, filtering if necessary.  <a href="#a7759fcc6d5acbee423eb831f2a3c028c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#a3ba204b76773dffba8aca574d7e63434">fsm_print</a> (<a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a string representation of the FSM to a file (or stdout).  <a href="#a3ba204b76773dffba8aca574d7e63434"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8c.html#ac7cf43e628d0aefef49a3d290b065e9c">fsm_dot_char</a> (FILE *dest, wchar_t c)</td></tr>
@@ -156,7 +154,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00386">386</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00325">325</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -187,9 +185,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 <p>Prints a character in an FSM specification to dot format. </p>
 <p>This function allows for printing out some characters differently than others. In dot format, quotes should be escaped. Also, epsilon transitions should be labelled something readable.</p>
-<p>dest Destination file. c The character to print </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dest</td><td>Destination file. </td></tr>
+    <tr><td class="paramname">c</td><td>The character to print </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00357">357</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00296">296</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -227,46 +231,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00303">303</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7759fcc6d5acbee423eb831f2a3c028c"></a><!-- doxytag: member="io.c::fsm_print_char" ref="a7759fcc6d5acbee423eb831f2a3c028c" args="(FILE *dest, wchar_t input)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="fsm_8h.html#a7759fcc6d5acbee423eb831f2a3c028c">fsm_print_char</a> </td>
-          <td>(</td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>dest</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">wchar_t&#160;</td>
-          <td class="paramname"><em>input</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Print a character, filtering if necessary. </p>
-<p>This subroutine of <a class="el" href="io_8c.html#a3ba204b76773dffba8aca574d7e63434" title="Print a string representation of the FSM to a file (or stdout).">fsm_print()</a> prints characters in transitions. It exists to make non-printable characters printable by printing their escaped versions instead.</p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dest</td><td>The file to print to. </td></tr>
-    <tr><td class="paramname">input</td><td>The character to filter. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="io_8c_source.html#l00281">281</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00242">242</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -288,7 +253,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 02:40:50 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

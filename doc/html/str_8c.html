@@ -87,6 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;wchar.h&gt;</code><br/>
 <code>#include &lt;wctype.h&gt;</code><br/>
+<code>#include &quot;libstephen/ll.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="str_8h_source.html">str.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="fsm_8h_source.html">fsm.h</a>&quot;</code><br/>
 </div>
@@ -98,6 +99,14 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value of a hexadecimal digit.  <a href="#aed00068498087567bc6dc5b0ebe9b8cd"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">wchar_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8c.html#a2812a14f008e19005dec1ae9f31d0a93">get_escape</a> (const wchar_t **source, wchar_t epsilon)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an escaped character from the string source.  <a href="#a2812a14f008e19005dec1ae9f31d0a93"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8c.html#a22f6b36b94a1c641c64b0ae4ecda1ab1">read_escape</a> (const wchar_t *source, wchar_t *out)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Place the escaped wchar in source into out.  <a href="#a22f6b36b94a1c641c64b0ae4ecda1ab1"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">wchar_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8c.html#ac21e56b9ef36b81143763d44d3f88598">escape_wchar</a> (wchar_t input)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a string representation of a character, escaped if necessary.  <a href="#ac21e56b9ef36b81143763d44d3f88598"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8c.html#a812810aedab948de41e220276385108d">read_wchar</a> (const wchar_t *source, wchar_t *out)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a single character from the string, accepting escape sequences.  <a href="#a812810aedab948de41e220276385108d"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">smb_ll *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8c.html#a3184340dd1acca4224fcff44a77e5f29">split_lines</a> (wchar_t *source)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a list of lines from the given string.  <a href="#a3184340dd1acca4224fcff44a77e5f29"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Common functions for working with strings. </p>
@@ -111,6 +120,35 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 <p>Definition in file <a class="el" href="str_8c_source.html">str.c</a>.</p>
 </div><hr/><h2>Function Documentation</h2>
+<a class="anchor" id="ac21e56b9ef36b81143763d44d3f88598"></a><!-- doxytag: member="str.c::escape_wchar" ref="ac21e56b9ef36b81143763d44d3f88598" args="(wchar_t input)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wchar_t* <a class="el" href="str_8h.html#ac21e56b9ef36b81143763d44d3f88598">escape_wchar</a> </td>
+          <td>(</td>
+          <td class="paramtype">wchar_t&#160;</td>
+          <td class="paramname"><em>input</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Return a string representation of a character, escaped if necessary. </p>
+<p>The returned string is statically allocated, but only valid until the next time fsm_print_char() is called. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dest</td><td>The file to print to. </td></tr>
+    <tr><td class="paramname">input</td><td>The character to filter. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="str_8c_source.html#l00185">185</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a2812a14f008e19005dec1ae9f31d0a93"></a><!-- doxytag: member="str.c::get_escape" ref="a2812a14f008e19005dec1ae9f31d0a93" args="(const wchar_t **source, wchar_t epsilon)" -->
 <div class="memitem">
 <div class="memproto">
@@ -141,7 +179,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <p>source The source pointer </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The character that was escaped </dd></dl>
 
-<p>Definition at line <a class="el" href="str_8c_source.html#l00073">73</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
+<p>Definition at line <a class="el" href="str_8c_source.html#l00074">74</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
 
 </div>
 </div>
@@ -169,7 +207,115 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The value of the digit in hexadecimal. </dd></dl>
 
-<p>Definition at line <a class="el" href="str_8c_source.html#l00051">51</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
+<p>Definition at line <a class="el" href="str_8c_source.html#l00052">52</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a22f6b36b94a1c641c64b0ae4ecda1ab1"></a><!-- doxytag: member="str.c::read_escape" ref="a22f6b36b94a1c641c64b0ae4ecda1ab1" args="(const wchar_t *source, wchar_t *out)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="str_8h.html#a22f6b36b94a1c641c64b0ae4ecda1ab1">read_escape</a> </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wchar_t *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Place the escaped wchar in source into out. </p>
+<p>Source should be a string "\..." containing an escape sequence. It should include the backslash. This function will read the escape sequence, convert it to a wchar_t, store that in out, and return the number of characters read. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The string escape sequence to translate. </td></tr>
+    <tr><td class="paramname">out</td><td>Where to store the output character. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The number of characters read. </dd></dl>
+
+<p>Definition at line <a class="el" href="str_8c_source.html#l00129">129</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a812810aedab948de41e220276385108d"></a><!-- doxytag: member="str.c::read_wchar" ref="a812810aedab948de41e220276385108d" args="(const wchar_t *source, wchar_t *out)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="str_8h.html#a812810aedab948de41e220276385108d">read_wchar</a> </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">wchar_t *&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Read a single character from the string, accepting escape sequences. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The string to read from. </td></tr>
+    <tr><td class="paramname">out</td><td>Place to store the resulting character. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>Number of characters read from source. </dd></dl>
+
+<p>Definition at line <a class="el" href="str_8c_source.html#l00220">220</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3184340dd1acca4224fcff44a77e5f29"></a><!-- doxytag: member="str.c::split_lines" ref="a3184340dd1acca4224fcff44a77e5f29" args="(wchar_t *source)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">smb_ll* <a class="el" href="str_8h.html#a3184340dd1acca4224fcff44a77e5f29">split_lines</a> </td>
+          <td>(</td>
+          <td class="paramtype">wchar_t *&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Return a list of lines from the given string. </p>
+<p>The string is modified! You should make a copy before doing this. </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The string to split into lines. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>A linked list containing wchar_t* to each line. </dd></dl>
+
+<p>Definition at line <a class="el" href="str_8c_source.html#l00237">237</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
 
 </div>
 </div>
@@ -191,7 +337,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 02:40:50 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

@@ -7,13 +7,22 @@
 
 
 {\ttfamily \#include $<$wchar.\-h$>$}\*
+{\ttfamily \#include \char`\"{}libstephen/ll.\-h\char`\"{}}\*
 \subsection*{\-Functions}
 \begin{DoxyCompactItemize}
 \item 
 int \hyperlink{str_8h_aed00068498087567bc6dc5b0ebe9b8cd}{hexit\-\_\-val} (wchar\-\_\-t digit)
 \begin{DoxyCompactList}\small\item\em \-Get the value of a hexadecimal digit. \end{DoxyCompactList}\item 
 wchar\-\_\-t \hyperlink{str_8h_a2812a14f008e19005dec1ae9f31d0a93}{get\-\_\-escape} (const wchar\-\_\-t $\ast$$\ast$source, wchar\-\_\-t epsilon)
-\begin{DoxyCompactList}\small\item\em \-Get an escaped character from the string source. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \-Get an escaped character from the string source. \end{DoxyCompactList}\item 
+int \hyperlink{str_8h_a22f6b36b94a1c641c64b0ae4ecda1ab1}{read\-\_\-escape} (const wchar\-\_\-t $\ast$source, wchar\-\_\-t $\ast$out)
+\begin{DoxyCompactList}\small\item\em \-Place the escaped wchar in source into out. \end{DoxyCompactList}\item 
+smb\-\_\-ll $\ast$ \hyperlink{str_8h_a3184340dd1acca4224fcff44a77e5f29}{split\-\_\-lines} (wchar\-\_\-t $\ast$source)
+\begin{DoxyCompactList}\small\item\em \-Return a list of lines from the given string. \end{DoxyCompactList}\item 
+int \hyperlink{str_8h_a812810aedab948de41e220276385108d}{read\-\_\-wchar} (const wchar\-\_\-t $\ast$source, wchar\-\_\-t $\ast$out)
+\begin{DoxyCompactList}\small\item\em \-Read a single character from the string, accepting escape sequences. \end{DoxyCompactList}\item 
+wchar\-\_\-t $\ast$ \hyperlink{str_8h_ac21e56b9ef36b81143763d44d3f88598}{escape\-\_\-wchar} (wchar\-\_\-t input)
+\begin{DoxyCompactList}\small\item\em \-Return a string representation of a character, escaped if necessary. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{\-Detailed \-Description}
@@ -37,6 +46,28 @@ wchar\-\_\-t \hyperlink{str_8h_a2812a14f008e19005dec1ae9f31d0a93}{get\-\_\-escap
 
 
 \subsection{\-Function \-Documentation}
+\hypertarget{str_8h_ac21e56b9ef36b81143763d44d3f88598}{\index{str.\-h@{str.\-h}!escape\-\_\-wchar@{escape\-\_\-wchar}}
+\index{escape\-\_\-wchar@{escape\-\_\-wchar}!str.h@{str.\-h}}
+\subsubsection[{escape\-\_\-wchar}]{\setlength{\rightskip}{0pt plus 5cm}wchar\-\_\-t$\ast$ {\bf escape\-\_\-wchar} (
+\begin{DoxyParamCaption}
+\item[{wchar\-\_\-t}]{input}
+\end{DoxyParamCaption}
+)}}\label{str_8h_ac21e56b9ef36b81143763d44d3f88598}
+
+
+\-Return a string representation of a character, escaped if necessary. 
+
+\-The returned string is statically allocated, but only valid until the next time fsm\-\_\-print\-\_\-char() is called. 
+\begin{DoxyParams}{\-Parameters}
+{\em dest} & \-The file to print to. \\
+\hline
+{\em input} & \-The character to filter. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 185 of file str.\-c.
+
 \hypertarget{str_8h_a2812a14f008e19005dec1ae9f31d0a93}{\index{str.\-h@{str.\-h}!get\-\_\-escape@{get\-\_\-escape}}
 \index{get\-\_\-escape@{get\-\_\-escape}!str.h@{str.\-h}}
 \subsubsection[{get\-\_\-escape}]{\setlength{\rightskip}{0pt plus 5cm}wchar\-\_\-t {\bf get\-\_\-escape} (
@@ -56,7 +87,7 @@ source \-The source pointer \begin{DoxyReturn}{\-Returns}
 \end{DoxyReturn}
 
 
-\-Definition at line 73 of file str.\-c.
+\-Definition at line 74 of file str.\-c.
 
 \hypertarget{str_8h_aed00068498087567bc6dc5b0ebe9b8cd}{\index{str.\-h@{str.\-h}!hexit\-\_\-val@{hexit\-\_\-val}}
 \index{hexit\-\_\-val@{hexit\-\_\-val}!str.h@{str.\-h}}
@@ -79,5 +110,80 @@ source \-The source pointer \begin{DoxyReturn}{\-Returns}
 \end{DoxyReturn}
 
 
-\-Definition at line 51 of file str.\-c.
+\-Definition at line 52 of file str.\-c.
+
+\hypertarget{str_8h_a22f6b36b94a1c641c64b0ae4ecda1ab1}{\index{str.\-h@{str.\-h}!read\-\_\-escape@{read\-\_\-escape}}
+\index{read\-\_\-escape@{read\-\_\-escape}!str.h@{str.\-h}}
+\subsubsection[{read\-\_\-escape}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf read\-\_\-escape} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{source, }
+\item[{wchar\-\_\-t $\ast$}]{out}
+\end{DoxyParamCaption}
+)}}\label{str_8h_a22f6b36b94a1c641c64b0ae4ecda1ab1}
+
+
+\-Place the escaped wchar in source into out. 
+
+\-Source should be a string \char`\"{}$\backslash$...\char`\"{} containing an escape sequence. \-It should include the backslash. \-This function will read the escape sequence, convert it to a wchar\-\_\-t, store that in out, and return the number of characters read. 
+\begin{DoxyParams}{\-Parameters}
+{\em source} & \-The string escape sequence to translate. \\
+\hline
+{\em out} & \-Where to store the output character. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The number of characters read. 
+\end{DoxyReturn}
+
+
+\-Definition at line 129 of file str.\-c.
+
+\hypertarget{str_8h_a812810aedab948de41e220276385108d}{\index{str.\-h@{str.\-h}!read\-\_\-wchar@{read\-\_\-wchar}}
+\index{read\-\_\-wchar@{read\-\_\-wchar}!str.h@{str.\-h}}
+\subsubsection[{read\-\_\-wchar}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf read\-\_\-wchar} (
+\begin{DoxyParamCaption}
+\item[{const wchar\-\_\-t $\ast$}]{source, }
+\item[{wchar\-\_\-t $\ast$}]{out}
+\end{DoxyParamCaption}
+)}}\label{str_8h_a812810aedab948de41e220276385108d}
+
+
+\-Read a single character from the string, accepting escape sequences. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em source} & \-The string to read from. \\
+\hline
+{\em out} & \-Place to store the resulting character. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Number of characters read from source. 
+\end{DoxyReturn}
+
+
+\-Definition at line 220 of file str.\-c.
+
+\hypertarget{str_8h_a3184340dd1acca4224fcff44a77e5f29}{\index{str.\-h@{str.\-h}!split\-\_\-lines@{split\-\_\-lines}}
+\index{split\-\_\-lines@{split\-\_\-lines}!str.h@{str.\-h}}
+\subsubsection[{split\-\_\-lines}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-ll$\ast$ {\bf split\-\_\-lines} (
+\begin{DoxyParamCaption}
+\item[{wchar\-\_\-t $\ast$}]{source}
+\end{DoxyParamCaption}
+)}}\label{str_8h_a3184340dd1acca4224fcff44a77e5f29}
+
+
+\-Return a list of lines from the given string. 
+
+\-The string is modified! \-You should make a copy before doing this. 
+\begin{DoxyParams}{\-Parameters}
+{\em source} & \-The string to split into lines. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-A linked list containing wchar\-\_\-t$\ast$ to each line. 
+\end{DoxyReturn}
+
+
+\-Definition at line 237 of file str.\-c.
 

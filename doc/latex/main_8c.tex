@@ -25,8 +25,6 @@
 \begin{DoxyCompactList}\small\item\em \-Tests creating a grammar, and printing it out. \end{DoxyCompactList}\item 
 void \hyperlink{main_8c_a199259c75545a52be8cb131a39a38f86}{simple\-\_\-fsm} (void)
 \begin{DoxyCompactList}\small\item\em \-A function that tests the basic construction of a simple \-F\-S\-M. \end{DoxyCompactList}\item 
-void \hyperlink{main_8c_acde7c3820e7b6ebb1227caa0ea50b133}{read\-\_\-combine\-\_\-fsm} (void)
-\begin{DoxyCompactList}\small\item\em \-A function to test reading and combining \-F\-S\-Ms. \end{DoxyCompactList}\item 
 void \hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex} (void)
 \begin{DoxyCompactList}\small\item\em \-A light test of my regular expression parser. \end{DoxyCompactList}\item 
 \hypertarget{main_8c_a8c16096db9937d634d96eb8f6b79c024}{void \hyperlink{main_8c_a8c16096db9937d634d96eb8f6b79c024}{search} (void)}\label{main_8c_a8c16096db9937d634d96eb8f6b79c024}
@@ -94,22 +92,7 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 \end{DoxyReturn}
 
 
-\-Definition at line 93 of file main.\-c.
-
-\hypertarget{main_8c_acde7c3820e7b6ebb1227caa0ea50b133}{\index{main.\-c@{main.\-c}!read\-\_\-combine\-\_\-fsm@{read\-\_\-combine\-\_\-fsm}}
-\index{read\-\_\-combine\-\_\-fsm@{read\-\_\-combine\-\_\-fsm}!main.c@{main.\-c}}
-\subsubsection[{read\-\_\-combine\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf read\-\_\-combine\-\_\-fsm} (
-\begin{DoxyParamCaption}
-\item[{void}]{}
-\end{DoxyParamCaption}
-)}}\label{main_8c_acde7c3820e7b6ebb1227caa0ea50b133}
-
-
-\-A function to test reading and combining \-F\-S\-Ms. 
-
-\-Reads in two \-F\-S\-Ms\-: one to accept \char`\"{}\-Stephen\char`\"{} or \char`\"{}stephen\char`\"{}. \-Another to accept \char`\"{}\-Brennan\char`\"{} or \char`\"{}brennan\char`\"{}. \-Then it creates the union, concatenation, and the \-Kleene star of each. \-Then it runs all the machines (nondeterministically) on some test strings, and prints out the resulting \-F\-S\-Ms. 
-
-\-Definition at line 311 of file main.\-c.
+\-Definition at line 91 of file main.\-c.
 
 \hypertarget{main_8c_a8e150082e585faad4c237eefa1ae290e}{\index{main.\-c@{main.\-c}!read\-\_\-file@{read\-\_\-file}}
 \index{read\-\_\-file@{read\-\_\-file}!main.c@{main.\-c}}
@@ -137,7 +120,7 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 \end{DoxyReturn}
 
 
-\-Definition at line 175 of file main.\-c.
+\-Definition at line 169 of file main.\-c.
 
 \hypertarget{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{\index{main.\-c@{main.\-c}!regex@{regex}}
 \index{regex@{regex}!main.c@{main.\-c}}
@@ -152,7 +135,7 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 
 \-Prompts for a regex, and then loops prompting for test strings. \-Runs the regex on each test string and reports to stdout whether they are accepted or rejected. 
 
-\-Definition at line 268 of file main.\-c.
+\-Definition at line 262 of file main.\-c.
 
 \hypertarget{main_8c_a199259c75545a52be8cb131a39a38f86}{\index{main.\-c@{main.\-c}!simple\-\_\-fsm@{simple\-\_\-fsm}}
 \index{simple\-\_\-fsm@{simple\-\_\-fsm}!main.c@{main.\-c}}
@@ -167,5 +150,5 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 
 \-Using the actual creation functions, creates a \-F\-S\-M to accept a string with an even number of a's and b's. \-Currently, the function simulates it nondeterministically, even though the machine is deterministic. 
 
-\-Definition at line 391 of file main.\-c.
+\-Definition at line 304 of file main.\-c.
 

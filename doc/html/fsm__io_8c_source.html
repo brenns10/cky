@@ -84,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00013"></a>00013 <span class="preprocessor">#include &lt;stdbool.h&gt;</span>
 <a name="l00014"></a>00014 <span class="preprocessor">#include &lt;wchar.h&gt;</span>
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;libstephen/ut.h&quot;</span>o
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;libstephen/ut.h&quot;</span>
 <a name="l00017"></a>00017 <span class="preprocessor">#include &quot;<a class="code" href="fsm_8h.html" title="Finite state machine definitions.">fsm.h</a>&quot;</span>
 <a name="l00018"></a>00018 
 <a name="l00025"></a>00025 <span class="keyword">static</span> <span class="keywordtype">int</span> test_read_fsm(<span class="keywordtype">void</span>) {
@@ -118,16 +118,143 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00053"></a>00053   <span class="keywordflow">return</span> 0;
 <a name="l00054"></a>00054 }
 <a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="keywordtype">void</span> fsm_io_test(<span class="keywordtype">void</span>)
-<a name="l00057"></a>00057 {
-<a name="l00058"></a>00058   smb_ut_group *group = su_create_test_group(<span class="stringliteral">&quot;fsm_io&quot;</span>);
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060   smb_ut_test *read_fsm = su_create_test(<span class="stringliteral">&quot;read_fsm&quot;</span>, test_read_fsm);
-<a name="l00061"></a>00061   su_add_test(group, read_fsm);
-<a name="l00062"></a>00062 
-<a name="l00063"></a>00063   su_run_group(group);
-<a name="l00064"></a>00064   su_delete_group(group);
-<a name="l00065"></a>00065 }
+<a name="l00059"></a>00059 <span class="keyword">static</span> <span class="keywordtype">int</span> test_escape(<span class="keywordtype">void</span>)
+<a name="l00060"></a>00060 {
+<a name="l00061"></a>00061   <span class="keywordtype">int</span> i;
+<a name="l00062"></a>00062   <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *machine =
+<a name="l00063"></a>00063     L<span class="stringliteral">&quot;start:0\n&quot;</span>
+<a name="l00064"></a>00064     L<span class="stringliteral">&quot;accept:12\n&quot;</span>
+<a name="l00065"></a>00065     L<span class="stringliteral">&quot;0-1:+\\a-\\a\n&quot;</span>           <span class="comment">// alarm</span>
+<a name="l00066"></a>00066     L<span class="stringliteral">&quot;1-2:+\\b-\\b\n&quot;</span>           <span class="comment">// backspace</span>
+<a name="l00067"></a>00067     L<span class="stringliteral">&quot;2-3:+\\e-\\e\n&quot;</span>           <span class="comment">// EPSILON</span>
+<a name="l00068"></a>00068     L<span class="stringliteral">&quot;3-4:+\\f-\\f\n&quot;</span>           <span class="comment">// form feed</span>
+<a name="l00069"></a>00069     L<span class="stringliteral">&quot;4-5:+\\n-\\n\n&quot;</span>           <span class="comment">// newline (lf)</span>
+<a name="l00070"></a>00070     L<span class="stringliteral">&quot;5-6:+\\r-\\r\n&quot;</span>           <span class="comment">// carriage return</span>
+<a name="l00071"></a>00071     L<span class="stringliteral">&quot;6-7:+\\t-\\t\n&quot;</span>           <span class="comment">// tab</span>
+<a name="l00072"></a>00072     L<span class="stringliteral">&quot;7-8:+\\v-\\v\n&quot;</span>           <span class="comment">// vertical tab</span>
+<a name="l00073"></a>00073     L<span class="stringliteral">&quot;8-9:+\\\\-\\\\\n&quot;</span>         <span class="comment">// backslash</span>
+<a name="l00074"></a>00074     L<span class="stringliteral">&quot;9-10:+\\+-\\+\n&quot;</span>          <span class="comment">// other character</span>
+<a name="l00075"></a>00075     L<span class="stringliteral">&quot;10-11:+\\x3A-\\x3a\n&quot;</span>     <span class="comment">// colon</span>
+<a name="l00076"></a>00076     L<span class="stringliteral">&quot;11-12:+\\u0051-\\u0051\n&quot;</span>;<span class="comment">// Q</span>
+<a name="l00077"></a>00077   <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *inputs[] = {
+<a name="l00078"></a>00078     L<span class="stringliteral">&quot;\a\b\f\n\r\t\v\\+:Q&quot;</span>, <span class="comment">// accept</span>
+<a name="l00079"></a>00079     L<span class="stringliteral">&quot;a\b\f\n\r\t\v\\+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00080"></a>00080     L<span class="stringliteral">&quot;\ab\f\n\r\t\v\\+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00081"></a>00081     L<span class="stringliteral">&quot;\a\bf\n\r\t\v\\+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00082"></a>00082     L<span class="stringliteral">&quot;\a\b\fn\r\t\v\\+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00083"></a>00083     L<span class="stringliteral">&quot;\a\b\f\nr\t\v\\+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00084"></a>00084     L<span class="stringliteral">&quot;\a\b\f\n\rt\v\\+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00085"></a>00085     L<span class="stringliteral">&quot;\a\b\f\n\r\tv\\+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00086"></a>00086     L<span class="stringliteral">&quot;\a\b\f\n\r\t\v/+:Q&quot;</span>,  <span class="comment">// reject</span>
+<a name="l00087"></a>00087     L<span class="stringliteral">&quot;\a\b\f\n\r\t\v\\-:Q&quot;</span>, <span class="comment">// reject</span>
+<a name="l00088"></a>00088     L<span class="stringliteral">&quot;\a\b\f\n\r\t\v\\-;Q&quot;</span>, <span class="comment">// reject</span>
+<a name="l00089"></a>00089     L<span class="stringliteral">&quot;\a\b\f\n\r\t\v\\-:q&quot;</span>, <span class="comment">// reject</span>
+<a name="l00090"></a>00090   };
+<a name="l00091"></a>00091   <span class="keyword">const</span> <span class="keywordtype">bool</span> results[] = {<span class="keyword">true</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>,
+<a name="l00092"></a>00092                           <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>};
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = fsm_read(machine);
+<a name="l00095"></a>00095   <span class="keywordflow">for</span> (i = 0; i &lt; <span class="keyword">sizeof</span>(inputs)/<span class="keyword">sizeof</span>(<span class="keywordtype">wchar_t</span>*); i++) {
+<a name="l00096"></a>00096     TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, inputs[i]) == results[i]);
+<a name="l00097"></a>00097   }
+<a name="l00098"></a>00098   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00099"></a>00099   <span class="keywordflow">return</span> 0;
+<a name="l00100"></a>00100 }
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102 <span class="keywordtype">int</span> test_read_combine(<span class="keywordtype">void</span>)
+<a name="l00103"></a>00103 {
+<a name="l00104"></a>00104   <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *m1spec =
+<a name="l00105"></a>00105     L<span class="stringliteral">&quot;start:0\n&quot;</span>
+<a name="l00106"></a>00106     L<span class="stringliteral">&quot;accept:7\n&quot;</span>
+<a name="l00107"></a>00107     L<span class="stringliteral">&quot;0-1:+s-sS-S\n&quot;</span>
+<a name="l00108"></a>00108     L<span class="stringliteral">&quot;1-2:+t-t\n&quot;</span>
+<a name="l00109"></a>00109     L<span class="stringliteral">&quot;2-3:+e-e\n&quot;</span>
+<a name="l00110"></a>00110     L<span class="stringliteral">&quot;3-4:+p-p\n&quot;</span>
+<a name="l00111"></a>00111     L<span class="stringliteral">&quot;4-5:+h-h\n&quot;</span>
+<a name="l00112"></a>00112     L<span class="stringliteral">&quot;5-6:+e-e\n&quot;</span>
+<a name="l00113"></a>00113     L<span class="stringliteral">&quot;6-7:+n-n\n&quot;</span>;
+<a name="l00114"></a>00114 
+<a name="l00115"></a>00115   <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *m2spec =
+<a name="l00116"></a>00116     L<span class="stringliteral">&quot;start:0\n&quot;</span>
+<a name="l00117"></a>00117     L<span class="stringliteral">&quot;accept:7\n&quot;</span>
+<a name="l00118"></a>00118     L<span class="stringliteral">&quot;0-1:+b-bB-B\n&quot;</span>
+<a name="l00119"></a>00119     L<span class="stringliteral">&quot;1-2:+r-r\n&quot;</span>
+<a name="l00120"></a>00120     L<span class="stringliteral">&quot;2-3:+e-e\n&quot;</span>
+<a name="l00121"></a>00121     L<span class="stringliteral">&quot;3-4:+n-n\n&quot;</span>
+<a name="l00122"></a>00122     L<span class="stringliteral">&quot;4-5:+n-n\n&quot;</span>
+<a name="l00123"></a>00123     L<span class="stringliteral">&quot;5-6:+a-a\n&quot;</span>
+<a name="l00124"></a>00124     L<span class="stringliteral">&quot;6-7:+n-n\n&quot;</span>;
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126   <span class="keyword">const</span> <span class="keywordtype">wchar_t</span> *inputs[] = {
+<a name="l00127"></a>00127     L<span class="stringliteral">&quot;stephen&quot;</span>,
+<a name="l00128"></a>00128     L<span class="stringliteral">&quot;Stephen&quot;</span>,
+<a name="l00129"></a>00129     L<span class="stringliteral">&quot;brennan&quot;</span>,
+<a name="l00130"></a>00130     L<span class="stringliteral">&quot;Brennan&quot;</span>,
+<a name="l00131"></a>00131     L<span class="stringliteral">&quot;stephenbrennan&quot;</span>,
+<a name="l00132"></a>00132     L<span class="stringliteral">&quot;stephenBrennan&quot;</span>,
+<a name="l00133"></a>00133     L<span class="stringliteral">&quot;Stephenbrennan&quot;</span>,
+<a name="l00134"></a>00134     L<span class="stringliteral">&quot;StephenBrennan&quot;</span>,
+<a name="l00135"></a>00135     L<span class="stringliteral">&quot;StephenstephenStephen&quot;</span>,
+<a name="l00136"></a>00136     L<span class="stringliteral">&quot;BrennanbrennanBrennan&quot;</span>,
+<a name="l00137"></a>00137     L<span class="stringliteral">&quot;&quot;</span>
+<a name="l00138"></a>00138   };
+<a name="l00139"></a>00139   <span class="keyword">const</span> <span class="keywordtype">bool</span> results[][6] = {
+<a name="l00140"></a>00140     <span class="comment">// {M1, M2,    M1 U M2, M1M2, M1*,  M2*</span>
+<a name="l00141"></a>00141     {<span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>}, <span class="comment">// &quot;stephen&quot;</span>
+<a name="l00142"></a>00142     {<span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>}, <span class="comment">// &quot;Stephen&quot;</span>
+<a name="l00143"></a>00143     {<span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span> }, <span class="comment">// &quot;brennan&quot;</span>
+<a name="l00144"></a>00144     {<span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span> }, <span class="comment">// &quot;Brennan&quot;</span>
+<a name="l00145"></a>00145     {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">false</span>}, <span class="comment">// &quot;stephenbrennan&quot;</span>
+<a name="l00146"></a>00146     {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">false</span>}, <span class="comment">// &quot;stephenBrennan&quot;</span>
+<a name="l00147"></a>00147     {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">false</span>}, <span class="comment">// &quot;Stephenbrennan&quot;</span>
+<a name="l00148"></a>00148     {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>, <span class="keyword">false</span>}, <span class="comment">// &quot;StephenBrennan&quot;</span>
+<a name="l00149"></a>00149     {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">false</span>}, <span class="comment">// &quot;Stephenstephenstephen&quot;</span>
+<a name="l00150"></a>00150     {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span> }, <span class="comment">// &quot;BrennanbrennanBrennan&quot;</span>
+<a name="l00151"></a>00151     {<span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">true</span>,  <span class="keyword">true</span> }  <span class="comment">// &quot;&quot;</span>
+<a name="l00152"></a>00152   };
+<a name="l00153"></a>00153   <span class="keywordtype">int</span> i;
+<a name="l00154"></a>00154   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *m1 = fsm_read(m1spec), *m2 = fsm_read(m2spec);
+<a name="l00155"></a>00155   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *m1Um2 = <a class="code" href="operations_8c.html#ab816304e4ee51e61a06602a3ab7bb197" title="Allocate an entirely new copy of an existing FSM.">fsm_copy</a>(m1), *m1Cm2 = <a class="code" href="operations_8c.html#ab816304e4ee51e61a06602a3ab7bb197" title="Allocate an entirely new copy of an existing FSM.">fsm_copy</a>(m1);
+<a name="l00156"></a>00156   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *m1S = <a class="code" href="operations_8c.html#ab816304e4ee51e61a06602a3ab7bb197" title="Allocate an entirely new copy of an existing FSM.">fsm_copy</a>(m1), *m2S = <a class="code" href="operations_8c.html#ab816304e4ee51e61a06602a3ab7bb197" title="Allocate an entirely new copy of an existing FSM.">fsm_copy</a>(m2);
+<a name="l00157"></a>00157   <a class="code" href="operations_8c.html#a1fe9ede8ddc9e41fcf053d2a789086c9" title="Construct the union of the two FSMs into the first one.">fsm_union</a>(m1Um2, m2);
+<a name="l00158"></a>00158   <a class="code" href="operations_8c.html#aa9a8e9bf4de56221564455887ac69adb" title="Concatenate two FSMs into the first FSM object.">fsm_concat</a>(m1Cm2, m2);
+<a name="l00159"></a>00159   <a class="code" href="operations_8c.html#a4662ffb1d485ce12b01639a4aa57d54d" title="Modify an FSM to accept 0 or more occurrences of it.">fsm_kleene</a>(m1S);
+<a name="l00160"></a>00160   <a class="code" href="operations_8c.html#a4662ffb1d485ce12b01639a4aa57d54d" title="Modify an FSM to accept 0 or more occurrences of it.">fsm_kleene</a>(m2S);
+<a name="l00161"></a>00161 
+<a name="l00162"></a>00162   <span class="keywordflow">for</span> (i = 0; i &lt; <span class="keyword">sizeof</span>(inputs)/<span class="keyword">sizeof</span>(<span class="keywordtype">wchar_t</span> *); i++) {
+<a name="l00163"></a>00163     TEST_ASSERT(results[i][0] == <a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(m1, inputs[i]));
+<a name="l00164"></a>00164     TEST_ASSERT(results[i][1] == <a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(m2, inputs[i]));
+<a name="l00165"></a>00165     TEST_ASSERT(results[i][2] == <a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(m1Um2, inputs[i]));
+<a name="l00166"></a>00166     TEST_ASSERT(results[i][3] == <a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(m1Cm2, inputs[i]));
+<a name="l00167"></a>00167     TEST_ASSERT(results[i][4] == <a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(m1S, inputs[i]));
+<a name="l00168"></a>00168     TEST_ASSERT(results[i][5] == <a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(m2S, inputs[i]));
+<a name="l00169"></a>00169   }
+<a name="l00170"></a>00170 
+<a name="l00171"></a>00171   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(m1, <span class="keyword">true</span>);
+<a name="l00172"></a>00172   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(m2, <span class="keyword">true</span>);
+<a name="l00173"></a>00173   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(m1Um2, <span class="keyword">true</span>);
+<a name="l00174"></a>00174   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(m1Cm2, <span class="keyword">true</span>);
+<a name="l00175"></a>00175   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(m1S, <span class="keyword">true</span>);
+<a name="l00176"></a>00176   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(m2S, <span class="keyword">true</span>);
+<a name="l00177"></a>00177   <span class="keywordflow">return</span> 0;
+<a name="l00178"></a>00178 }
+<a name="l00179"></a>00179 
+<a name="l00180"></a>00180 <span class="keywordtype">void</span> fsm_io_test(<span class="keywordtype">void</span>)
+<a name="l00181"></a>00181 {
+<a name="l00182"></a>00182   smb_ut_group *group = su_create_test_group(<span class="stringliteral">&quot;fsm_io&quot;</span>);
+<a name="l00183"></a>00183 
+<a name="l00184"></a>00184   smb_ut_test *read_fsm = su_create_test(<span class="stringliteral">&quot;read_fsm&quot;</span>, test_read_fsm);
+<a name="l00185"></a>00185   su_add_test(group, read_fsm);
+<a name="l00186"></a>00186 
+<a name="l00187"></a>00187   smb_ut_test *escape = su_create_test(<span class="stringliteral">&quot;escape&quot;</span>, test_escape);
+<a name="l00188"></a>00188   su_add_test(group, escape);
+<a name="l00189"></a>00189 
+<a name="l00190"></a>00190   smb_ut_test *read_combine = su_create_test(<span class="stringliteral">&quot;read_combine&quot;</span>, test_read_combine);
+<a name="l00191"></a>00191   su_add_test(group, read_combine);
+<a name="l00192"></a>00192 
+<a name="l00193"></a>00193   su_run_group(group);
+<a name="l00194"></a>00194   su_delete_group(group);
+<a name="l00195"></a>00195 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -146,7 +273,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 23 2015 18:02:20 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 02:40:50 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
