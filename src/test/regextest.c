@@ -132,6 +132,76 @@ static int test_dot(void)
   return 0;
 }
 
+static int test_whitespace(void)
+{
+  fsm *f = regex_parse(L"\\s+");
+  TEST_ASSERT(!fsm_sim_nondet(f, L""));
+  TEST_ASSERT(fsm_sim_nondet(f, L" \t \v\r\n\f"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L" \t\v\r\n\f,"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L" \t\v\r\n\fa"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L" \t\v\r\n\fA"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L" \t\v\r\n\f1"));
+  fsm_delete(f, true);
+  return 0;
+}
+
+static int test_word(void)
+{
+  fsm *f = regex_parse(L"\\w+");
+  TEST_ASSERT(!fsm_sim_nondet(f, L""));
+  TEST_ASSERT(fsm_sim_nondet(f, L"Aa0_9zBZ"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"Aa0_9zBZ,"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"Aa0_9zBZ "));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"Aa0_9zBZ'"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"Aa0_9zBZ\t"));
+  fsm_delete(f, true);
+  return 0;
+}
+
+static int test_digit(void)
+{
+  fsm *f = regex_parse(L"\\d+");
+  TEST_ASSERT(!fsm_sim_nondet(f, L""));
+  TEST_ASSERT(fsm_sim_nondet(f, L"0123456789"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"0123456789_"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"0123456789a"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"0123456789A"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"0123456789!"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"0123456789 "));
+  fsm_delete(f, true);
+  return 0;
+}
+
+static int test_whitespace_neg(void)
+{
+  fsm *f = regex_parse(L"\\S+");
+  TEST_ASSERT(fsm_sim_nondet(f, L""));
+  TEST_ASSERT(!fsm_sim_nondet(f, L" \t \v\r\n\f"));
+  TEST_ASSERT(fsm_sim_nondet(f, L"aoeu_1245+[!{("));
+  fsm_delete(f, true);
+  return 0;
+}
+
+static int test_word_neg(void)
+{
+  fsm *f = regex_parse(L"\\W+");
+  TEST_ASSERT(fsm_sim_nondet(f, L""));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"Aa0_9zBZ"));
+  TEST_ASSERT(fsm_sim_nondet(f, L"&=!}([=*})+ \t\v\r\n"));
+  fsm_delete(f, true);
+  return 0;
+}
+
+static int test_digit_neg(void)
+{
+  fsm *f = regex_parse(L"\\D+");
+  TEST_ASSERT(fsm_sim_nondet(f, L""));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"0123456789"));
+  TEST_ASSERT(fsm_sim_nondet(f, L"aBcD \t\r\n =}#!]!"));
+  fsm_delete(f, true);
+  return 0;
+}
+
 void regex_test(void)
 {
   smb_ut_group *group = su_create_test_group("regex");
@@ -162,6 +232,24 @@ void regex_test(void)
 
   smb_ut_test *dot = su_create_test("dot", test_dot);
   su_add_test(group, dot);
+
+  smb_ut_test *whitespace = su_create_test("whitespace", test_whitespace);
+  su_add_test(group, whitespace);
+
+  smb_ut_test *word = su_create_test("word", test_word);
+  su_add_test(group, word);
+
+  smb_ut_test *digit = su_create_test("digit", test_digit);
+  su_add_test(group, digit);
+
+  smb_ut_test *whitespace_neg = su_create_test("whitespace_neg", test_whitespace_neg);
+  su_add_test(group, whitespace_neg);
+
+  smb_ut_test *word_neg = su_create_test("word_neg", test_word_neg);
+  su_add_test(group, word_neg);
+
+  smb_ut_test *digit_neg = su_create_test("digit_neg", test_digit_neg);
+  su_add_test(group, digit_neg);
 
   su_run_group(group);
   su_delete_group(group);
