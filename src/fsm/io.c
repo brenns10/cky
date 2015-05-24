@@ -47,7 +47,7 @@
 #include "str.h"
 #include "libstephen/al.h"
 #include "libstephen/ll.h"
-
+#include "libstephen/cb.h"
 
 /**
    @brief Expand f to have as many states as referenced in the transition.
@@ -262,25 +262,35 @@ fsm *fsm_read(const wchar_t *source, smb_status *status)
 }
 
 /**
-   @brief Print a string representation of the FSM to a file (or stdout).
-
+   @brief Return a wchar_t* representation of the fsm (suitable for printing).
    @param f The FSM to print
-   @param dest The file to print to
+   @return The string version of the FSM.
  */
-void fsm_print(fsm *f, FILE *dest)
+wchar_t *fsm_str(const fsm *f)
 {
+  #define CHARS_PER_DECLARATION 8
+  #define CHARS_PER_TRANSITION  12
+  #define TRANSITIONS_PER_STATE  2
   smb_status status;
   int i, j;
   smb_al *list;
   wchar_t *start, *end;
   fsm_trans *ft;
+  wcbuf wc;
+  // Initialize our output buffer to have approximately enough space.  This is
+  // strictly an estimate, but the character buffer will handle reallocation if
+  // we're wrong.
+  wcb_init(&wc, CHARS_PER_DECLARATION * (1 + al_length(&f->accepting)) +
+           CHARS_PER_TRANSITION * al_length(&f->transitions) *
+           TRANSITIONS_PER_STATE);
 
   // Print the start state
-  fprintf(dest, "start:%d\n", f->start);
+  wcb_printf(&wc, L"start:%d\n", f->start);
 
   // Print all the accepting states
   for (i = 0; i < al_length(&f->accepting); i++) {
-    fprintf(dest, "accept:%Ld\n", al_get(&f->accepting, i, &status).data_llint);
+    wcb_printf(&wc, L"accept:%Ld\n",
+               al_get(&f->accepting, i, &status).data_llint);
   }
 
   // For each state's transition list
@@ -292,23 +302,37 @@ void fsm_print(fsm *f, FILE *dest)
 
       // Print the transition and whether it's positive or negative.
       ft = (fsm_trans *) al_get(list, j, &status).data_ptr;
-      fprintf(dest, "%d-%d:%c", i, ft->dest,
-              (ft->type == FSM_TRANS_POSITIVE ? '+' : '-'));
+      wcb_printf(&wc, L"%d-%d:%c", i, ft->dest,
+                 (ft->type == FSM_TRANS_POSITIVE ? '+' : '-'));
 
       // For every range in the transition, print it followed by a space.
       for (start = ft->start, end = ft->end; *start != L'\0'; start++, end++) {
-        fprintf(dest, "%ls", escape_wchar(*start));
-        fprintf(dest, "-");
-        fprintf(dest, "%ls", escape_wchar(*end));
+        wcb_printf(&wc, L"%ls-%ls", escape_wchar(*start), escape_wchar(*end));
 
         // If this isn't the last range, print a space to separate
         if (*(start+1) != L'\0') {
-          fprintf(stdout, " ");
+          wcb_append(&wc, L" ");
         }
       }
-      fprintf(dest, "\n");
+      wcb_append(&wc, L"\n");
     }
   }
+  // Reallocate to exactly the right size for the string.
+  wc.buf = smb_renew(wchar_t, wc.buf, wc.length + 1);
+  // Since we're returning the string, don't wcb_destroy()!
+  return wc.buf;
+}
+
+/**
+   @brief Print the FSM to the desired output stream.
+   @param f FSM to print.
+   @param dest Output stream/file to print to.
+ */
+void fsm_print(const fsm *f, FILE *dest)
+{
+  wchar_t *str = fsm_str(f);
+  fputws(str, dest);
+  smb_free(str);
 }
 
 /**
