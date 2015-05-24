@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# 
+#
 # File:         Makefile
 #
 # Author:       Stephen Brennan
@@ -37,7 +37,7 @@
 
 # Compiler Variable Declarations
 CC=gcc
-FLAGS=-Wall
+FLAGS=-Wall -pedantic
 INC=-Ilibstephen/inc/ -Isrc/
 CFLAGS=$(FLAGS) -c -g --std=c99 $(SMB_CONF) $(INC)
 LFLAGS=$(FLAGS)
