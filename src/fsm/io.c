@@ -41,6 +41,7 @@
 #include <wchar.h>
 #include <wctype.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "fsm.h"
 #include "str.h"
@@ -67,17 +68,17 @@ static void fsm_extend_states(fsm *f, int src, int dst)
 
    @param lines List of lines in the spec.
    @param f FSM we are currently building.
+   @param status Status variable.
  */
-static void fsm_parseacceptlines(smb_ll *lines, fsm *f)
+static void fsm_parseacceptlines(smb_ll *lines, fsm *f, smb_status *status)
 {
   wchar_t *line;
   DATA d;
   int state;
-  smb_status status = SMB_SUCCESS;
 
   // Iterate through lines
-  d = ll_pop_front(lines, &status);
-  while (status == SMB_SUCCESS) {
+  d = ll_pop_front(lines, status);
+  while (*status == SMB_SUCCESS) {
     // Get the next line.
     line = d.data_ptr;
     if (swscanf(line, L"accept:%d", &state) == 1) {
@@ -91,46 +92,48 @@ static void fsm_parseacceptlines(smb_ll *lines, fsm *f)
       break;
     }
     // Pop the next line off, if it exists.
-    d = ll_pop_front(lines, &status);
+    d = ll_pop_front(lines, status);
   }
+  *status = SMB_SUCCESS; // if we ran out of lines, it's not an error
 }
 
 /**
    @brief Parse a transition from a single line.
    @param line The line to parse.
    @param f The FSM to put it in when we are done.
+   @param status Status variable.
  */
-static void fsm_parsetrans(wchar_t *line, fsm *f)
+static void fsm_parsetrans(wchar_t *line, fsm *f, smb_status *status)
 {
-  int src_state, dst_state, type, numread, i;
+  int src_state, dst_state, type, numread, i, length;
   wchar_t src_char, dst_char, type_char;
-  wchar_t *remaining;
   smb_ll sources, destinations;
   DATA d;
   smb_iter src_it, dst_it;
   fsm_trans *t;
-  smb_status status;
 
   // First, get the source state, destination state, and type.
   if (swscanf(line, L"%d-%d:%lc%n", &src_state, &dst_state,
               &type_char, &numread) != 3) {
-    fprintf(stderr, "error: malformed transition line \"%ls\"\n", line);
-    return; // TODO: smb_status!
+    *status = CKY_MALFORMED_TRANS;
+    return;
   }
   type = type_char == L'+' ? FSM_TRANS_POSITIVE : FSM_TRANS_NEGATIVE;
+  length = wcslen(line);
 
   // Now, we initialize some lists to contain the range sources and
   // destinations, and begin reading these ranges.
   ll_init(&sources);
   ll_init(&destinations);
-  remaining = line + numread;
-  while (remaining[0] != L'\0') {
-    remaining += read_wchar(remaining, &src_char) + 1;
+  while (numread < length) {
+    // add one to skip the hyphen! ------------------------------------v
+    numread += read_wchar(line + numread, length-numread, &src_char) + 1;
     d.data_llint = src_char;
     ll_append(&sources, d);
-    remaining += read_wchar(remaining, &dst_char);
+    numread += read_wchar(line + numread, length-numread,  &dst_char);
     d.data_llint = dst_char;
     ll_append(&destinations, d);
+    if (dst_char == WEOF || src_char == WEOF) goto error;
   }
 
   // Now that we've read them all, we can copy them into a new fsm_trans.
@@ -139,62 +142,70 @@ static void fsm_parsetrans(wchar_t *line, fsm *f)
   t = fsm_trans_create(ll_length(&sources), type, dst_state);
   i = 0;
   while (src_it.has_next(&src_it)) {
-    d = src_it.next(&src_it, &status);
+    d = src_it.next(&src_it, status);
+    assert(*status == SMB_SUCCESS); // should be true
     t->start[i] = d.data_llint;
-    d = dst_it.next(&dst_it, &status);
+    d = dst_it.next(&dst_it, status);
+    assert(*status == SMB_SUCCESS); // should be true
     t->end[i] = d.data_llint;
     i++;
   }
 
-  // Clean up our lists.
   ll_destroy(&sources);
   ll_destroy(&destinations);
-
-  // Ensure that the FSM already has the states, and add the transition.
   fsm_extend_states(f, src_state, dst_state);
   fsm_add_trans(f, src_state, t);
+  return;
+
+ error:
+  *status = CKY_MALFORMED_TRANS;
+  ll_destroy(&sources);
+  ll_destroy(&destinations);
 }
 
 /**
    @brief Parse the remaining lines from the line list as transitions.
    @param lines The line list.
    @param f The FSM we're building.
+   @param status Status variable.
  */
-static void fsm_parsetranslines(smb_ll *lines, fsm *f)
+static void fsm_parsetranslines(smb_ll *lines, fsm *f, smb_status *status)
 {
   wchar_t *line;
   DATA d;
-  smb_status status = SMB_SUCCESS;
 
-  d = ll_pop_front(lines, &status);
-  while (status == SMB_SUCCESS) {
+  d = ll_pop_front(lines, status);
+  while (*status == SMB_SUCCESS) {
     line = d.data_ptr;
-    fsm_parsetrans(line, f);
-    d = ll_pop_front(lines, &status);
+    fsm_parsetrans(line, f, status);
+    if (*status != SMB_SUCCESS) return;
+    d = ll_pop_front(lines, status);
   }
+  *status = SMB_SUCCESS;  // running out of lines is not an error!
 }
 
 /**
    @brief Return a FSM parsed from a list of lines.
    @param lines The list of lines.
+   @param status Status variable
  */
-static fsm *fsm_parselines(smb_ll *lines)
+static fsm *fsm_parselines(smb_ll *lines, smb_status *status)
 {
   wchar_t *line;
   fsm *f;
   int state;
-  smb_status status = SMB_SUCCESS;
   DATA d;
 
   // TODO: probably use an smb_status for the error handling.
   if (ll_length(lines) < 1) {
-    fprintf(stderr, "error: need at least one line in FSM.\n");
+    *status = CKY_TOO_FEW_LINES;
     return NULL;
   }
 
   // Allocate FSM and get the first line.
   f = fsm_create();
-  d = ll_pop_front(lines, &status);
+  d = ll_pop_front(lines, status);
+  assert(*status == SMB_SUCCESS); // must be at least one line
   line = d.data_ptr;
 
   // The first line may be a "start:" line, or else we assume start:0.
@@ -207,12 +218,28 @@ static fsm *fsm_parselines(smb_ll *lines)
     ll_push_front(lines, d);
   }
 
-  fsm_parseacceptlines(lines, f);
-  fsm_parsetranslines(lines, f);
+  fsm_parseacceptlines(lines, f, status);
+  fsm_parsetranslines(lines, f, status);
+  if (*status != SMB_SUCCESS) {
+    fsm_delete(f, true);
+    f = NULL;
+  }
   return f;
 }
 
-fsm *fsm_read(const wchar_t *source)
+/**
+   @brief Read a Finite State Machine from its text representation.
+
+   All fsm's can be printed using fsm_print().  This function *should* be able
+   to take any such string representation and convert it back into an equivalent
+   fsm again.
+   @param source The string to read in.
+   @param status Status variable for error reporting.
+   @returns New FSM, or NULL on error.
+   @exception CKY_TOO_FEW_LINES if there isn't at least one line.
+   @exception CKY_MALFORMED_TRANS if there is a problem reading a transition.
+ */
+fsm *fsm_read(const wchar_t *source, smb_status *status)
 {
   smb_ll *lines;
   fsm *f;
@@ -227,7 +254,7 @@ fsm *fsm_read(const wchar_t *source)
   // could do some further removal of empty lines, etc. here
 
   // Parse the fsm and return it.
-  f = fsm_parselines(lines);
+  f = fsm_parselines(lines, status);
   smb_free(copy);
   ll_delete(lines);
   return f;

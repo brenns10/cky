@@ -123,12 +123,19 @@ wchar_t get_escape(const wchar_t **source, wchar_t epsilon)
    include the backslash.  This function will read the escape sequence, convert
    it to a wchar_t, store that in out, and return the number of characters read.
    @param source The string escape sequence to translate.
+   @param len The length of the string to read. (assumed >= 1)
    @param out Where to store the output character.
    @return The number of characters read.
+   @exception Sets *out to WEOF if it would readpast len.
  */
-int read_escape(const wchar_t *source, wchar_t *out)
+int read_escape(const wchar_t *source, int len, wchar_t *out)
 {
-  wchar_t specifier = source[1];
+  wchar_t specifier;
+  if (len < 2) {
+    *out = WEOF;
+    return len;
+  }
+  specifier = source[1];
   *out = 0;
   switch (specifier) {
   case L'a':
@@ -159,10 +166,18 @@ int read_escape(const wchar_t *source, wchar_t *out)
     *out = L'\\';
     return 2;
   case L'x':
+    if (len < 4) {
+      *out = WEOF;
+      return len;
+    }
     *out += 16 * hexit_val(source[2]);
     *out += hexit_val(source[3]);
     return 4;
   case L'u':
+    if (len < 6) {
+      *out = WEOF;
+      return len;
+    }
     *out += 16 * 16 * 16 * hexit_val(source[2]);
     *out += 16 * 16 * hexit_val(source[3]);
     *out += 16 * hexit_val(source[4]);
@@ -214,13 +229,15 @@ wchar_t *escape_wchar(wchar_t input)
 /**
    @brief Read a single character from the string, accepting escape sequences.
    @param source The string to read from.
+   @param len Number of characters in the string. (assumed >= 1)
    @param out Place to store the resulting character.
    @return Number of characters read from source.
+   @exception Sets *out to WEOF if the read would go past len.
  */
-int read_wchar(const wchar_t *source, wchar_t *out)
+int read_wchar(const wchar_t *source, int len, wchar_t *out)
 {
   if (source[0] == L'\\') {
-    return read_escape(source, out);
+    return read_escape(source, len, out);
   } else {
     *out = source[0];
     return 1;

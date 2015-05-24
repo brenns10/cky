@@ -45,9 +45,9 @@
 
 int hexit_val(wchar_t digit);
 wchar_t get_escape(const wchar_t **source, wchar_t epsilon);
-int read_escape(const wchar_t *source, wchar_t *out);
+int read_escape(const wchar_t *source, int len, wchar_t *out);
 smb_ll *split_lines(wchar_t *source);
-int read_wchar(const wchar_t *source, wchar_t *out);
+int read_wchar(const wchar_t *source, int len, wchar_t *out);
 wchar_t *escape_wchar(wchar_t input);
 
 #endif

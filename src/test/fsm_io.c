@@ -24,6 +24,7 @@
  */
 static int test_read_fsm(void) {
   int i;
+  smb_status status = SMB_SUCCESS;
   const wchar_t *machine =
     L"start:0\n"
     L"accept:0\n"
@@ -45,7 +46,8 @@ static int test_read_fsm(void) {
   };
   const bool results[] = {false, false, false, false, true, true};
 
-  fsm *f = fsm_read(machine);
+  fsm *f = fsm_read(machine, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
   for (i = 0; i < sizeof(inputs)/sizeof(wchar_t*); i++) {
     TEST_ASSERT(fsm_sim_nondet(f, inputs[i]) == results[i]);
   }
@@ -59,6 +61,7 @@ static int test_read_fsm(void) {
 static int test_escape(void)
 {
   int i;
+  smb_status status = SMB_SUCCESS;
   const wchar_t *machine =
     L"start:0\n"
     L"accept:12\n"
@@ -91,7 +94,8 @@ static int test_escape(void)
   const bool results[] = {true, false, false, false, false, false, false, false,
                           false, false, false, false};
 
-  fsm *f = fsm_read(machine);
+  fsm *f = fsm_read(machine, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
   for (i = 0; i < sizeof(inputs)/sizeof(wchar_t*); i++) {
     TEST_ASSERT(fsm_sim_nondet(f, inputs[i]) == results[i]);
   }
@@ -151,9 +155,14 @@ int test_read_combine(void)
     {false, false, false, false, true,  true }  // ""
   };
   int i;
-  fsm *m1 = fsm_read(m1spec), *m2 = fsm_read(m2spec);
-  fsm *m1Um2 = fsm_copy(m1), *m1Cm2 = fsm_copy(m1);
-  fsm *m1S = fsm_copy(m1), *m2S = fsm_copy(m2);
+  smb_status status = SMB_SUCCESS;
+  fsm *m1Um2, *m1Cm2, *m1S, *m2S;
+  fsm *m1 = fsm_read(m1spec, &status), *m2 = fsm_read(m2spec, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  m1Um2 = fsm_copy(m1);
+  m1Cm2 = fsm_copy(m1);
+  m1S = fsm_copy(m1);
+  m2S = fsm_copy(m2);
   fsm_union(m1Um2, m2);
   fsm_concat(m1Cm2, m2);
   fsm_kleene(m1S);

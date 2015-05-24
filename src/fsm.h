@@ -230,6 +230,10 @@ typedef struct {
 
 } fsm_sim;
 
+// Error constant declarations:
+#define CKY_TOO_FEW_LINES   (SMB_EXTERNAL_EXCEPTION_START + 0)
+#define CKY_MALFORMED_TRANS (SMB_EXTERNAL_EXCEPTION_START + 1)
+
 // datastructs.c
 void fsm_trans_init(fsm_trans *ft, int n, int type, int dest);
 fsm_trans *fsm_trans_create(int n, int type, int dest);
@@ -263,7 +267,7 @@ fsm_trans *fsm_read_trans(const wchar_t **source, int *start);
 void fsm_print_char(FILE *dest, wchar_t input);
 void fsm_dot_char(FILE * dest, wchar_t c);
 
-fsm *fsm_read(const wchar_t *source);
+fsm *fsm_read(const wchar_t *source, smb_status *status);
 void fsm_print(fsm *f, FILE *dest);
 void fsm_dot(fsm *f, FILE *dest);
 
