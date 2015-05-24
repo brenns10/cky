@@ -268,7 +268,8 @@ void fsm_print_char(FILE *dest, wchar_t input);
 void fsm_dot_char(FILE * dest, wchar_t c);
 
 fsm *fsm_read(const wchar_t *source, smb_status *status);
-void fsm_print(fsm *f, FILE *dest);
+wchar_t *fsm_str(const fsm *f);
+void fsm_print(const fsm *f, FILE *dest);
 void fsm_dot(fsm *f, FILE *dest);
 
 // simulation.c

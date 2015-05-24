@@ -274,6 +274,33 @@ int test_bad_escaping2(void)
   return fail_on(L"start:0\naccept:1\n0-1:+\\");
 }
 
+int test_simple_str(void)
+{
+  // Create FSM "src" that accepts "foo".
+  wchar_t *machine =
+    L"start:0\n"
+    L"accept:3\n"
+    L"0-1:+f-f\n"
+    L"1-2:+o-o\n"
+    L"2-3:+o-o\n";
+  wchar_t *out;
+  fsm *src = fsm_create();
+  int s00 = fsm_add_state(src, false);
+  int s01 = fsm_add_state(src, false);
+  int s02 = fsm_add_state(src, false);
+  int s03 = fsm_add_state(src, true);
+  src->start = s00;
+  fsm_add_single(src, s00, s01, L'f', L'f', FSM_TRANS_POSITIVE);
+  fsm_add_single(src, s01, s02, L'o', L'o', FSM_TRANS_POSITIVE);
+  fsm_add_single(src, s02, s03, L'o', L'o', FSM_TRANS_POSITIVE);
+
+  out = fsm_str(src);
+  TEST_ASSERT(0 == wcscmp(machine, out));
+  smb_free(out);
+  fsm_delete(src, true);
+  return 0;
+}
+
 void fsm_io_test(void)
 {
   smb_ut_group *group = su_create_test_group("fsm_io");
@@ -316,6 +343,9 @@ void fsm_io_test(void)
 
   smb_ut_test *bad_escaping2 = su_create_test("bad_escaping2", test_bad_escaping2);
   su_add_test(group, bad_escaping2);
+
+  smb_ut_test *simple_str = su_create_test("simple_str", test_simple_str);
+  su_add_test(group, simple_str);
 
   su_run_group(group);
   su_delete_group(group);

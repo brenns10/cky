@@ -308,11 +308,6 @@ wchar_t *fsm_str(const fsm *f)
       // For every range in the transition, print it followed by a space.
       for (start = ft->start, end = ft->end; *start != L'\0'; start++, end++) {
         wcb_printf(&wc, L"%ls-%ls", escape_wchar(*start), escape_wchar(*end));
-
-        // If this isn't the last range, print a space to separate
-        if (*(start+1) != L'\0') {
-          wcb_append(&wc, L" ");
-        }
       }
       wcb_append(&wc, L"\n");
     }
