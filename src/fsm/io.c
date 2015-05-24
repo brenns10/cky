@@ -302,7 +302,7 @@ wchar_t *fsm_str(const fsm *f)
 void fsm_print(const fsm *f, FILE *dest)
 {
   wchar_t *str = fsm_str(f);
-  fputws(str, dest);
+  fprintf(dest, "%ls", str);
   smb_free(str);
 }
 
