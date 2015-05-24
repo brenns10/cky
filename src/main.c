@@ -372,4 +372,5 @@ void test(void)
 {
   fsm_test();
   fsm_io_test();
+  regex_test();
 }

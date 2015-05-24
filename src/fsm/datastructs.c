@@ -18,6 +18,7 @@
 
 #include "fsm.h"
 #include "libstephen/al.h"
+#include "libstephen/log.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // fsm_trans Fundamental Functions

@@ -19,6 +19,7 @@
 #include "regex.h"         // functions we're implementing
 #include "fsm.h"           // for fsm operations
 #include "libstephen/ll.h" // for linked lists
+#include "libstephen/log.h"
 #include "str.h"           // for get_escape
 
 /**
@@ -148,12 +149,17 @@ fsm *regex_parse_create_dot_fsm(bool newline_accepted)
   int dest = fsm_add_state(f, true); // accepting
   f->start = src;
   if (!newline_accepted) {
-    ft = fsm_trans_create(1, FSM_TRANS_NEGATIVE, dest);
-    ft->start[0] = L'\n';
-    ft->end[0] = L'\n';
+    ft = fsm_trans_create(2, FSM_TRANS_NEGATIVE, dest);
+    ft->start[1] = L'\n';
+    ft->end[1] = L'\n';
   } else {
-    ft = fsm_trans_create(0, FSM_TRANS_NEGATIVE, dest);
+    ft = fsm_trans_create(1, FSM_TRANS_NEGATIVE, dest);
   }
+
+  // No matter what, we can't allow EPSILON transitions for a dot.
+  ft->start[0] = EPSILON;
+  ft->start[0] = EPSILON;
+
   fsm_add_trans(f, src, ft);
   return f;
 }
@@ -284,13 +290,13 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   while (iter.has_next(&iter)) {
     d = iter.next(&iter, &status);
     assert(status == SMB_SUCCESS);
-    ft->start[iter.index] = (wchar_t) d.data_llint;
+    ft->start[iter.index-1] = (wchar_t) d.data_llint;
   }
   iter = ll_get_iter(&end);
   while (iter.has_next(&iter)) {
     d = iter.next(&iter, &status);
     assert(status == SMB_SUCCESS);
-    ft->end[iter.index] = (wchar_t) d.data_llint;
+    ft->end[iter.index-1] = (wchar_t) d.data_llint;
   }
 
   fsm_add_trans(f, src, ft);
