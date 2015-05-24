@@ -16,7 +16,7 @@
 \item 
 int \hyperlink{str_8c_aed00068498087567bc6dc5b0ebe9b8cd}{hexit\-\_\-val} (wchar\-\_\-t digit)
 \begin{DoxyCompactList}\small\item\em \-Get the value of a hexadecimal digit. \end{DoxyCompactList}\item 
-wchar\-\_\-t \hyperlink{str_8c_a2812a14f008e19005dec1ae9f31d0a93}{get\-\_\-escape} (const wchar\-\_\-t $\ast$$\ast$source, wchar\-\_\-t epsilon)
+wchar\-\_\-t \hyperlink{str_8c_a40d05018488beaaf81d524413833a682}{get\-\_\-escape} (const wchar\-\_\-t $\ast$$\ast$source)
 \begin{DoxyCompactList}\small\item\em \-Get an escaped character from the string source. \end{DoxyCompactList}\item 
 int \hyperlink{str_8c_a25b3736bf633be787ba3b6c9a8d99890}{read\-\_\-escape} (const wchar\-\_\-t $\ast$source, int len, wchar\-\_\-t $\ast$out)
 \begin{DoxyCompactList}\small\item\em \-Place the escaped wchar in source into out. \end{DoxyCompactList}\item 
@@ -65,16 +65,15 @@ smb\-\_\-ll $\ast$ \hyperlink{str_8c_a3184340dd1acca4224fcff44a77e5f29}{split\-\
 \end{DoxyParams}
 
 
-\-Definition at line 176 of file str.\-c.
+\-Definition at line 174 of file str.\-c.
 
-\hypertarget{str_8c_a2812a14f008e19005dec1ae9f31d0a93}{\index{str.\-c@{str.\-c}!get\-\_\-escape@{get\-\_\-escape}}
+\hypertarget{str_8c_a40d05018488beaaf81d524413833a682}{\index{str.\-c@{str.\-c}!get\-\_\-escape@{get\-\_\-escape}}
 \index{get\-\_\-escape@{get\-\_\-escape}!str.c@{str.\-c}}
 \subsubsection[{get\-\_\-escape}]{\setlength{\rightskip}{0pt plus 5cm}wchar\-\_\-t {\bf get\-\_\-escape} (
 \begin{DoxyParamCaption}
-\item[{const wchar\-\_\-t $\ast$$\ast$}]{source, }
-\item[{wchar\-\_\-t}]{epsilon}
+\item[{const wchar\-\_\-t $\ast$$\ast$}]{source}
 \end{DoxyParamCaption}
-)}}\label{str_8c_a2812a14f008e19005dec1ae9f31d0a93}
+)}}\label{str_8c_a40d05018488beaaf81d524413833a682}
 
 
 \-Get an escaped character from the string source. 
@@ -143,7 +142,7 @@ source \-The source pointer \begin{DoxyReturn}{\-Returns}
 \end{DoxyExceptions}
 
 
-\-Definition at line 107 of file str.\-c.
+\-Definition at line 105 of file str.\-c.
 
 \hypertarget{str_8c_a84b6142837916c633216658e38c5fcda}{\index{str.\-c@{str.\-c}!read\-\_\-wchar@{read\-\_\-wchar}}
 \index{read\-\_\-wchar@{read\-\_\-wchar}!str.c@{str.\-c}}
@@ -177,7 +176,7 @@ source \-The source pointer \begin{DoxyReturn}{\-Returns}
 \end{DoxyExceptions}
 
 
-\-Definition at line 213 of file str.\-c.
+\-Definition at line 211 of file str.\-c.
 
 \hypertarget{str_8c_a3184340dd1acca4224fcff44a77e5f29}{\index{str.\-c@{str.\-c}!split\-\_\-lines@{split\-\_\-lines}}
 \index{split\-\_\-lines@{split\-\_\-lines}!str.c@{str.\-c}}
@@ -200,5 +199,5 @@ source \-The source pointer \begin{DoxyReturn}{\-Returns}
 \end{DoxyReturn}
 
 
-\-Definition at line 230 of file str.\-c.
+\-Definition at line 228 of file str.\-c.
 

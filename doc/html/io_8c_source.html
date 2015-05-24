@@ -318,7 +318,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00302"></a><a class="code" href="fsm_8h.html#acb881baaa8e12249b25112855ab136c5">00302</a> <span class="keywordtype">void</span> <a class="code" href="io_8c.html#acb881baaa8e12249b25112855ab136c5" title="Print the FSM to the desired output stream.">fsm_print</a>(<span class="keyword">const</span> <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f, FILE *dest)
 <a name="l00303"></a>00303 {
 <a name="l00304"></a>00304   <span class="keywordtype">wchar_t</span> *str = <a class="code" href="io_8c.html#a4bcd6fb8cb67f0c3abd0574887338fb3" title="Return a wchar_t* representation of the fsm (suitable for printing).">fsm_str</a>(f);
-<a name="l00305"></a>00305   fputws(str, dest);
+<a name="l00305"></a>00305   fprintf(dest, <span class="stringliteral">&quot;%ls&quot;</span>, str);
 <a name="l00306"></a>00306   smb_free(str);
 <a name="l00307"></a>00307 }
 <a name="l00308"></a>00308 
@@ -417,7 +417,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 21:11:41 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 22:30:07 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

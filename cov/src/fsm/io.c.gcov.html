@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-24 21:11:41</td>
+            <td class="headerValue">2015-05-24 22:30:06</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -364,7 +364,7 @@
 <span class="lineNum">     302 </span><span class="lineNoCov">          0 : void fsm_print(const fsm *f, FILE *dest)</span>
 <span class="lineNum">     303 </span>            : {
 <span class="lineNum">     304 </span><span class="lineNoCov">          0 :   wchar_t *str = fsm_str(f);</span>
-<span class="lineNum">     305 </span><span class="lineNoCov">          0 :   fputws(str, dest);</span>
+<span class="lineNum">     305 </span><span class="lineNoCov">          0 :   fprintf(dest, &quot;%ls&quot;, str);</span>
 <span class="lineNum">     306 </span><span class="lineNoCov">          0 :   smb_free(str);</span>
 <span class="lineNum">     307 </span><span class="lineNoCov">          0 : }</span>
 <span class="lineNum">     308 </span>            : 

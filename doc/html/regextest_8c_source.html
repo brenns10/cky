@@ -133,9 +133,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00065"></a>00065   <span class="keywordflow">return</span> 0;
 <a name="l00066"></a>00066 }
 <a name="l00067"></a>00067 
-<a name="l00068"></a>00068 <span class="keyword">static</span> <span class="keywordtype">int</span> test_subexpression(<span class="keywordtype">void</span>)
+<a name="l00068"></a>00068 <span class="keyword">static</span> <span class="keywordtype">int</span> test_class_range(<span class="keywordtype">void</span>)
 <a name="l00069"></a>00069 {
-<a name="l00070"></a>00070   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;(a|b|c|d)&quot;</span>);
+<a name="l00070"></a>00070   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;[a-d]&quot;</span>);
 <a name="l00071"></a>00071   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
 <a name="l00072"></a>00072   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;b&quot;</span>));
 <a name="l00073"></a>00073   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;c&quot;</span>));
@@ -148,76 +148,282 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00080"></a>00080   <span class="keywordflow">return</span> 0;
 <a name="l00081"></a>00081 }
 <a name="l00082"></a>00082 
-<a name="l00083"></a>00083 <span class="keyword">static</span> <span class="keywordtype">int</span> test_plus(<span class="keywordtype">void</span>)
+<a name="l00083"></a>00083 <span class="keyword">static</span> <span class="keywordtype">int</span> test_subexpression(<span class="keywordtype">void</span>)
 <a name="l00084"></a>00084 {
-<a name="l00085"></a>00085   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;a+&quot;</span>);
-<a name="l00086"></a>00086   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
-<a name="l00087"></a>00087   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
-<a name="l00088"></a>00088   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aa&quot;</span>));
-<a name="l00089"></a>00089   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aaa&quot;</span>));
-<a name="l00090"></a>00090   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
-<a name="l00091"></a>00091   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ba&quot;</span>));
-<a name="l00092"></a>00092   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
-<a name="l00093"></a>00093   <span class="keywordflow">return</span> 0;
-<a name="l00094"></a>00094 }
-<a name="l00095"></a>00095 
-<a name="l00096"></a>00096 <span class="keyword">static</span> <span class="keywordtype">int</span> test_kleene(<span class="keywordtype">void</span>)
-<a name="l00097"></a>00097 {
-<a name="l00098"></a>00098   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;a*&quot;</span>);
-<a name="l00099"></a>00099   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
-<a name="l00100"></a>00100   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
-<a name="l00101"></a>00101   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aa&quot;</span>));
-<a name="l00102"></a>00102   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aaa&quot;</span>));
-<a name="l00103"></a>00103   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
-<a name="l00104"></a>00104   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ba&quot;</span>));
-<a name="l00105"></a>00105   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
-<a name="l00106"></a>00106   <span class="keywordflow">return</span> 0;
-<a name="l00107"></a>00107 }
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109 <span class="keyword">static</span> <span class="keywordtype">int</span> test_dot(<span class="keywordtype">void</span>)
-<a name="l00110"></a>00110 {
-<a name="l00111"></a>00111   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;.&quot;</span>);
-<a name="l00112"></a>00112   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
-<a name="l00113"></a>00113   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
-<a name="l00114"></a>00114   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;b&quot;</span>));
-<a name="l00115"></a>00115   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;!&quot;</span>));
-<a name="l00116"></a>00116   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
-<a name="l00117"></a>00117   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ba&quot;</span>));
-<a name="l00118"></a>00118   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
-<a name="l00119"></a>00119   <span class="keywordflow">return</span> 0;
-<a name="l00120"></a>00120 }
-<a name="l00121"></a>00121 
-<a name="l00122"></a>00122 <span class="keywordtype">void</span> regex_test(<span class="keywordtype">void</span>)
-<a name="l00123"></a>00123 {
-<a name="l00124"></a>00124   smb_ut_group *group = su_create_test_group(<span class="stringliteral">&quot;regex&quot;</span>);
-<a name="l00125"></a>00125 
-<a name="l00126"></a>00126   smb_ut_test *memory = su_create_test(<span class="stringliteral">&quot;memory&quot;</span>, test_memory);
-<a name="l00127"></a>00127   su_add_test(group, memory);
-<a name="l00128"></a>00128 
-<a name="l00129"></a>00129   smb_ut_test *single = su_create_test(<span class="stringliteral">&quot;single&quot;</span>, test_single);
-<a name="l00130"></a>00130   su_add_test(group, single);
-<a name="l00131"></a>00131 
-<a name="l00132"></a>00132   smb_ut_test *multiple = su_create_test(<span class="stringliteral">&quot;multiple&quot;</span>, test_multiple);
-<a name="l00133"></a>00133   su_add_test(group, multiple);
-<a name="l00134"></a>00134 
-<a name="l00135"></a>00135   smb_ut_test *character_class = su_create_test(<span class="stringliteral">&quot;character_class&quot;</span>, test_character_class);
-<a name="l00136"></a>00136   su_add_test(group, character_class);
-<a name="l00137"></a>00137 
-<a name="l00138"></a>00138   smb_ut_test *subexpression = su_create_test(<span class="stringliteral">&quot;subexpression&quot;</span>, test_subexpression);
-<a name="l00139"></a>00139   su_add_test(group, subexpression);
-<a name="l00140"></a>00140 
-<a name="l00141"></a>00141   smb_ut_test *plus = su_create_test(<span class="stringliteral">&quot;plus&quot;</span>, test_plus);
-<a name="l00142"></a>00142   su_add_test(group, plus);
-<a name="l00143"></a>00143 
-<a name="l00144"></a>00144   smb_ut_test *kleene = su_create_test(<span class="stringliteral">&quot;kleene&quot;</span>, test_kleene);
-<a name="l00145"></a>00145   su_add_test(group, kleene);
-<a name="l00146"></a>00146 
-<a name="l00147"></a>00147   smb_ut_test *<a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a> = su_create_test(<span class="stringliteral">&quot;dot&quot;</span>, test_dot);
-<a name="l00148"></a>00148   su_add_test(group, dot);
+<a name="l00085"></a>00085   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;(a|b|c|d)&quot;</span>);
+<a name="l00086"></a>00086   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00087"></a>00087   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;b&quot;</span>));
+<a name="l00088"></a>00088   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;c&quot;</span>));
+<a name="l00089"></a>00089   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;d&quot;</span>));
+<a name="l00090"></a>00090   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;e&quot;</span>));
+<a name="l00091"></a>00091   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00092"></a>00092   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;abcd&quot;</span>));
+<a name="l00093"></a>00093   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;uuuu&quot;</span>));
+<a name="l00094"></a>00094   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00095"></a>00095   <span class="keywordflow">return</span> 0;
+<a name="l00096"></a>00096 }
+<a name="l00097"></a>00097 
+<a name="l00098"></a>00098 <span class="keyword">static</span> <span class="keywordtype">int</span> test_plus(<span class="keywordtype">void</span>)
+<a name="l00099"></a>00099 {
+<a name="l00100"></a>00100   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;a+&quot;</span>);
+<a name="l00101"></a>00101   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00102"></a>00102   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00103"></a>00103   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aa&quot;</span>));
+<a name="l00104"></a>00104   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aaa&quot;</span>));
+<a name="l00105"></a>00105   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
+<a name="l00106"></a>00106   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ba&quot;</span>));
+<a name="l00107"></a>00107   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00108"></a>00108   <span class="keywordflow">return</span> 0;
+<a name="l00109"></a>00109 }
+<a name="l00110"></a>00110 
+<a name="l00111"></a>00111 <span class="keyword">static</span> <span class="keywordtype">int</span> test_question(<span class="keywordtype">void</span>)
+<a name="l00112"></a>00112 {
+<a name="l00113"></a>00113   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;a?&quot;</span>);
+<a name="l00114"></a>00114   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00115"></a>00115   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00116"></a>00116   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aa&quot;</span>));
+<a name="l00117"></a>00117   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aaa&quot;</span>));
+<a name="l00118"></a>00118   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
+<a name="l00119"></a>00119   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ba&quot;</span>));
+<a name="l00120"></a>00120   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00121"></a>00121   <span class="keywordflow">return</span> 0;
+<a name="l00122"></a>00122 }
+<a name="l00123"></a>00123 
+<a name="l00124"></a>00124 <span class="keyword">static</span> <span class="keywordtype">int</span> test_kleene(<span class="keywordtype">void</span>)
+<a name="l00125"></a>00125 {
+<a name="l00126"></a>00126   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;a*&quot;</span>);
+<a name="l00127"></a>00127   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00128"></a>00128   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00129"></a>00129   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aa&quot;</span>));
+<a name="l00130"></a>00130   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aaa&quot;</span>));
+<a name="l00131"></a>00131   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
+<a name="l00132"></a>00132   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ba&quot;</span>));
+<a name="l00133"></a>00133   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00134"></a>00134   <span class="keywordflow">return</span> 0;
+<a name="l00135"></a>00135 }
+<a name="l00136"></a>00136 
+<a name="l00137"></a>00137 <span class="keyword">static</span> <span class="keywordtype">int</span> test_dot(<span class="keywordtype">void</span>)
+<a name="l00138"></a>00138 {
+<a name="l00139"></a>00139   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;.&quot;</span>);
+<a name="l00140"></a>00140   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00141"></a>00141   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00142"></a>00142   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;b&quot;</span>));
+<a name="l00143"></a>00143   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;!&quot;</span>));
+<a name="l00144"></a>00144   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
+<a name="l00145"></a>00145   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ba&quot;</span>));
+<a name="l00146"></a>00146   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00147"></a>00147   <span class="keywordflow">return</span> 0;
+<a name="l00148"></a>00148 }
 <a name="l00149"></a>00149 
-<a name="l00150"></a>00150   su_run_group(group);
-<a name="l00151"></a>00151   su_delete_group(group);
-<a name="l00152"></a>00152 }
+<a name="l00150"></a>00150 <span class="keyword">static</span> <span class="keywordtype">int</span> test_whitespace(<span class="keywordtype">void</span>)
+<a name="l00151"></a>00151 {
+<a name="l00152"></a>00152   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;\\s+&quot;</span>);
+<a name="l00153"></a>00153   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00154"></a>00154   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; \t \v\r\n\f&quot;</span>));
+<a name="l00155"></a>00155   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; \t\v\r\n\f,&quot;</span>));
+<a name="l00156"></a>00156   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; \t\v\r\n\fa&quot;</span>));
+<a name="l00157"></a>00157   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; \t\v\r\n\fA&quot;</span>));
+<a name="l00158"></a>00158   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; \t\v\r\n\f1&quot;</span>));
+<a name="l00159"></a>00159   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00160"></a>00160   <span class="keywordflow">return</span> 0;
+<a name="l00161"></a>00161 }
+<a name="l00162"></a>00162 
+<a name="l00163"></a>00163 <span class="keyword">static</span> <span class="keywordtype">int</span> test_word(<span class="keywordtype">void</span>)
+<a name="l00164"></a>00164 {
+<a name="l00165"></a>00165   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;\\w+&quot;</span>);
+<a name="l00166"></a>00166   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00167"></a>00167   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;Aa0_9zBZ&quot;</span>));
+<a name="l00168"></a>00168   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;Aa0_9zBZ,&quot;</span>));
+<a name="l00169"></a>00169   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;Aa0_9zBZ &quot;</span>));
+<a name="l00170"></a>00170   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;Aa0_9zBZ&#39;&quot;</span>));
+<a name="l00171"></a>00171   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;Aa0_9zBZ\t&quot;</span>));
+<a name="l00172"></a>00172   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00173"></a>00173   <span class="keywordflow">return</span> 0;
+<a name="l00174"></a>00174 }
+<a name="l00175"></a>00175 
+<a name="l00176"></a>00176 <span class="keyword">static</span> <span class="keywordtype">int</span> test_digit(<span class="keywordtype">void</span>)
+<a name="l00177"></a>00177 {
+<a name="l00178"></a>00178   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;\\d+&quot;</span>);
+<a name="l00179"></a>00179   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00180"></a>00180   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;0123456789&quot;</span>));
+<a name="l00181"></a>00181   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;0123456789_&quot;</span>));
+<a name="l00182"></a>00182   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;0123456789a&quot;</span>));
+<a name="l00183"></a>00183   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;0123456789A&quot;</span>));
+<a name="l00184"></a>00184   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;0123456789!&quot;</span>));
+<a name="l00185"></a>00185   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;0123456789 &quot;</span>));
+<a name="l00186"></a>00186   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00187"></a>00187   <span class="keywordflow">return</span> 0;
+<a name="l00188"></a>00188 }
+<a name="l00189"></a>00189 
+<a name="l00190"></a>00190 <span class="keyword">static</span> <span class="keywordtype">int</span> test_whitespace_neg(<span class="keywordtype">void</span>)
+<a name="l00191"></a>00191 {
+<a name="l00192"></a>00192   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;\\S+&quot;</span>);
+<a name="l00193"></a>00193   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00194"></a>00194   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; \t \v\r\n\f&quot;</span>));
+<a name="l00195"></a>00195   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aoeu_1245+[!{(&quot;</span>));
+<a name="l00196"></a>00196   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00197"></a>00197   <span class="keywordflow">return</span> 0;
+<a name="l00198"></a>00198 }
+<a name="l00199"></a>00199 
+<a name="l00200"></a>00200 <span class="keyword">static</span> <span class="keywordtype">int</span> test_word_neg(<span class="keywordtype">void</span>)
+<a name="l00201"></a>00201 {
+<a name="l00202"></a>00202   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;\\W+&quot;</span>);
+<a name="l00203"></a>00203   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00204"></a>00204   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;Aa0_9zBZ&quot;</span>));
+<a name="l00205"></a>00205   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&amp;=!}([=*})+ \t\v\r\n&quot;</span>));
+<a name="l00206"></a>00206   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00207"></a>00207   <span class="keywordflow">return</span> 0;
+<a name="l00208"></a>00208 }
+<a name="l00209"></a>00209 
+<a name="l00210"></a>00210 <span class="keyword">static</span> <span class="keywordtype">int</span> test_digit_neg(<span class="keywordtype">void</span>)
+<a name="l00211"></a>00211 {
+<a name="l00212"></a>00212   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;\\D+&quot;</span>);
+<a name="l00213"></a>00213   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00214"></a>00214   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;0123456789&quot;</span>));
+<a name="l00215"></a>00215   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;aBcD \t\r\n =}#!]!&quot;</span>));
+<a name="l00216"></a>00216   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00217"></a>00217   <span class="keywordflow">return</span> 0;
+<a name="l00218"></a>00218 }
+<a name="l00219"></a>00219 
+<a name="l00220"></a>00220 <span class="keyword">static</span> <span class="keywordtype">int</span> test_class_neg(<span class="keywordtype">void</span>)
+<a name="l00221"></a>00221 {
+<a name="l00222"></a>00222   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;[^abc]&quot;</span>);
+<a name="l00223"></a>00223   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00224"></a>00224   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;d&quot;</span>));
+<a name="l00225"></a>00225   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;A&quot;</span>));
+<a name="l00226"></a>00226   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;9&quot;</span>));
+<a name="l00227"></a>00227   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; &quot;</span>));
+<a name="l00228"></a>00228   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;!&quot;</span>));
+<a name="l00229"></a>00229   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00230"></a>00230   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;b&quot;</span>));
+<a name="l00231"></a>00231   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;c&quot;</span>));
+<a name="l00232"></a>00232   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00233"></a>00233   <span class="keywordflow">return</span> 0;
+<a name="l00234"></a>00234 }
+<a name="l00235"></a>00235 
+<a name="l00236"></a>00236 <span class="keyword">static</span> <span class="keywordtype">int</span> test_class_neg_range(<span class="keywordtype">void</span>)
+<a name="l00237"></a>00237 {
+<a name="l00238"></a>00238   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;[^a-c]&quot;</span>);
+<a name="l00239"></a>00239   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00240"></a>00240   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;d&quot;</span>));
+<a name="l00241"></a>00241   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;A&quot;</span>));
+<a name="l00242"></a>00242   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;9&quot;</span>));
+<a name="l00243"></a>00243   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; &quot;</span>));
+<a name="l00244"></a>00244   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;!&quot;</span>));
+<a name="l00245"></a>00245   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00246"></a>00246   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;b&quot;</span>));
+<a name="l00247"></a>00247   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;c&quot;</span>));
+<a name="l00248"></a>00248   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00249"></a>00249   <span class="keywordflow">return</span> 0;
+<a name="l00250"></a>00250 }
+<a name="l00251"></a>00251 
+<a name="l00252"></a>00252 <span class="keyword">static</span> <span class="keywordtype">int</span> test_hyphen(<span class="keywordtype">void</span>)
+<a name="l00253"></a>00253 {
+<a name="l00254"></a>00254   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> * f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;[^a-c-]&quot;</span>);
+<a name="l00255"></a>00255   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00256"></a>00256   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;d&quot;</span>));
+<a name="l00257"></a>00257   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00258"></a>00258   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;b&quot;</span>));
+<a name="l00259"></a>00259   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;c&quot;</span>));
+<a name="l00260"></a>00260   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;-&quot;</span>));
+<a name="l00261"></a>00261   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00262"></a>00262   <span class="keywordflow">return</span> 0;
+<a name="l00263"></a>00263 }
+<a name="l00264"></a>00264 
+<a name="l00265"></a>00265 <span class="keyword">static</span> <span class="keywordtype">int</span> test_class_escape(<span class="keywordtype">void</span>)
+<a name="l00266"></a>00266 {
+<a name="l00267"></a>00267   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;[^\\n]&quot;</span>);
+<a name="l00268"></a>00268   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00269"></a>00269   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;\n&quot;</span>));
+<a name="l00270"></a>00270   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00271"></a>00271   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot; &quot;</span>));
+<a name="l00272"></a>00272   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;#&quot;</span>));
+<a name="l00273"></a>00273   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;ab&quot;</span>));
+<a name="l00274"></a>00274   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;\nb&quot;</span>));
+<a name="l00275"></a>00275   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00276"></a>00276   <span class="keywordflow">return</span> 0;
+<a name="l00277"></a>00277 }
+<a name="l00278"></a>00278 
+<a name="l00279"></a>00279 <span class="keyword">static</span> <span class="keywordtype">int</span> test_escape(<span class="keywordtype">void</span>)
+<a name="l00280"></a>00280 {
+<a name="l00281"></a>00281   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> * f = <a class="code" href="parse_8c.html#a58c440b23a9f0be68aea919a81a5ca00" title="Construct a FSM to accept the given regex.">regex_parse</a>(L<span class="stringliteral">&quot;\\n&quot;</span>);
+<a name="l00282"></a>00282   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00283"></a>00283   TEST_ASSERT(!<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;a&quot;</span>));
+<a name="l00284"></a>00284   TEST_ASSERT(<a class="code" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612" title="Simulate the FSM as a non-deterministic state machine.">fsm_sim_nondet</a>(f, L<span class="stringliteral">&quot;\n&quot;</span>));
+<a name="l00285"></a>00285   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(f, <span class="keyword">true</span>);
+<a name="l00286"></a>00286   <span class="keywordflow">return</span> 0;
+<a name="l00287"></a>00287 }
+<a name="l00288"></a>00288 
+<a name="l00289"></a>00289 <span class="keywordtype">void</span> regex_test(<span class="keywordtype">void</span>)
+<a name="l00290"></a>00290 {
+<a name="l00291"></a>00291   smb_ut_group *group = su_create_test_group(<span class="stringliteral">&quot;regex&quot;</span>);
+<a name="l00292"></a>00292 
+<a name="l00293"></a>00293   smb_ut_test *memory = su_create_test(<span class="stringliteral">&quot;memory&quot;</span>, test_memory);
+<a name="l00294"></a>00294   su_add_test(group, memory);
+<a name="l00295"></a>00295 
+<a name="l00296"></a>00296   smb_ut_test *single = su_create_test(<span class="stringliteral">&quot;single&quot;</span>, test_single);
+<a name="l00297"></a>00297   su_add_test(group, single);
+<a name="l00298"></a>00298 
+<a name="l00299"></a>00299   smb_ut_test *multiple = su_create_test(<span class="stringliteral">&quot;multiple&quot;</span>, test_multiple);
+<a name="l00300"></a>00300   su_add_test(group, multiple);
+<a name="l00301"></a>00301 
+<a name="l00302"></a>00302   smb_ut_test *character_class = su_create_test(<span class="stringliteral">&quot;character_class&quot;</span>, test_character_class);
+<a name="l00303"></a>00303   su_add_test(group, character_class);
+<a name="l00304"></a>00304 
+<a name="l00305"></a>00305   smb_ut_test *class_range = su_create_test(<span class="stringliteral">&quot;class_range&quot;</span>, test_class_range);
+<a name="l00306"></a>00306   su_add_test(group, class_range);
+<a name="l00307"></a>00307 
+<a name="l00308"></a>00308   smb_ut_test *subexpression = su_create_test(<span class="stringliteral">&quot;subexpression&quot;</span>, test_subexpression);
+<a name="l00309"></a>00309   su_add_test(group, subexpression);
+<a name="l00310"></a>00310 
+<a name="l00311"></a>00311   smb_ut_test *plus = su_create_test(<span class="stringliteral">&quot;plus&quot;</span>, test_plus);
+<a name="l00312"></a>00312   su_add_test(group, plus);
+<a name="l00313"></a>00313 
+<a name="l00314"></a>00314   smb_ut_test *question = su_create_test(<span class="stringliteral">&quot;question&quot;</span>, test_question);
+<a name="l00315"></a>00315   su_add_test(group, question);
+<a name="l00316"></a>00316 
+<a name="l00317"></a>00317   smb_ut_test *kleene = su_create_test(<span class="stringliteral">&quot;kleene&quot;</span>, test_kleene);
+<a name="l00318"></a>00318   su_add_test(group, kleene);
+<a name="l00319"></a>00319 
+<a name="l00320"></a>00320   smb_ut_test *<a class="code" href="main_8c.html#aa9a86d612578e54e79a11bc53bfb0b5c" title="Read a regex from stdin and print to stdout a dot representation.">dot</a> = su_create_test(<span class="stringliteral">&quot;dot&quot;</span>, test_dot);
+<a name="l00321"></a>00321   su_add_test(group, dot);
+<a name="l00322"></a>00322 
+<a name="l00323"></a>00323   smb_ut_test *whitespace = su_create_test(<span class="stringliteral">&quot;whitespace&quot;</span>, test_whitespace);
+<a name="l00324"></a>00324   su_add_test(group, whitespace);
+<a name="l00325"></a>00325 
+<a name="l00326"></a>00326   smb_ut_test *word = su_create_test(<span class="stringliteral">&quot;word&quot;</span>, test_word);
+<a name="l00327"></a>00327   su_add_test(group, word);
+<a name="l00328"></a>00328 
+<a name="l00329"></a>00329   smb_ut_test *digit = su_create_test(<span class="stringliteral">&quot;digit&quot;</span>, test_digit);
+<a name="l00330"></a>00330   su_add_test(group, digit);
+<a name="l00331"></a>00331 
+<a name="l00332"></a>00332   smb_ut_test *whitespace_neg = su_create_test(<span class="stringliteral">&quot;whitespace_neg&quot;</span>, test_whitespace_neg);
+<a name="l00333"></a>00333   su_add_test(group, whitespace_neg);
+<a name="l00334"></a>00334 
+<a name="l00335"></a>00335   smb_ut_test *word_neg = su_create_test(<span class="stringliteral">&quot;word_neg&quot;</span>, test_word_neg);
+<a name="l00336"></a>00336   su_add_test(group, word_neg);
+<a name="l00337"></a>00337 
+<a name="l00338"></a>00338   smb_ut_test *digit_neg = su_create_test(<span class="stringliteral">&quot;digit_neg&quot;</span>, test_digit_neg);
+<a name="l00339"></a>00339   su_add_test(group, digit_neg);
+<a name="l00340"></a>00340 
+<a name="l00341"></a>00341   smb_ut_test *class_neg = su_create_test(<span class="stringliteral">&quot;class_neg&quot;</span>, test_class_neg);
+<a name="l00342"></a>00342   su_add_test(group, class_neg);
+<a name="l00343"></a>00343 
+<a name="l00344"></a>00344   smb_ut_test *class_neg_range = su_create_test(<span class="stringliteral">&quot;class_neg_range&quot;</span>, test_class_neg_range);
+<a name="l00345"></a>00345   su_add_test(group, class_neg_range);
+<a name="l00346"></a>00346 
+<a name="l00347"></a>00347   smb_ut_test *hyphen = su_create_test(<span class="stringliteral">&quot;hyphen&quot;</span>, test_hyphen);
+<a name="l00348"></a>00348   su_add_test(group, hyphen);
+<a name="l00349"></a>00349 
+<a name="l00350"></a>00350   smb_ut_test *class_escape = su_create_test(<span class="stringliteral">&quot;class_escape&quot;</span>, test_class_escape);
+<a name="l00351"></a>00351   su_add_test(group, class_escape);
+<a name="l00352"></a>00352 
+<a name="l00353"></a>00353   smb_ut_test *escape = su_create_test(<span class="stringliteral">&quot;escape&quot;</span>, test_escape);
+<a name="l00354"></a>00354   su_add_test(group, escape);
+<a name="l00355"></a>00355 
+<a name="l00356"></a>00356   su_run_group(group);
+<a name="l00357"></a>00357   su_delete_group(group);
+<a name="l00358"></a>00358 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -236,7 +442,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 21:11:41 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 22:30:07 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
