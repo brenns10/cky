@@ -15,13 +15,28 @@
 {\ttfamily \#include \char`\"{}str.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/ll.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/cb.\-h\char`\"{}}\*
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{io_8c_a3e78bc9fcc082758cec660450164157a}{\#define {\bfseries \-C\-H\-A\-R\-S\-\_\-\-P\-E\-R\-\_\-\-D\-E\-C\-L\-A\-R\-A\-T\-I\-O\-N}~8}\label{io_8c_a3e78bc9fcc082758cec660450164157a}
+
+\item 
+\hypertarget{io_8c_a6a8d72502d3a3c50710d4cbb33b8f4c0}{\#define {\bfseries \-C\-H\-A\-R\-S\-\_\-\-P\-E\-R\-\_\-\-T\-R\-A\-N\-S\-I\-T\-I\-O\-N}~12}\label{io_8c_a6a8d72502d3a3c50710d4cbb33b8f4c0}
+
+\item 
+\hypertarget{io_8c_a081d34628e10fa71e62268e2a4840a15}{\#define {\bfseries \-T\-R\-A\-N\-S\-I\-T\-I\-O\-N\-S\-\_\-\-P\-E\-R\-\_\-\-S\-T\-A\-T\-E}~2}\label{io_8c_a081d34628e10fa71e62268e2a4840a15}
+
+\end{DoxyCompactItemize}
 \subsection*{\-Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{structfsm}{fsm} $\ast$ \hyperlink{io_8c_a156b01e2dc6a3219d79725c9f33b738e}{fsm\-\_\-read} (const wchar\-\_\-t $\ast$source, smb\-\_\-status $\ast$status)
 \begin{DoxyCompactList}\small\item\em \-Read a \-Finite \-State \-Machine from its text representation. \end{DoxyCompactList}\item 
-void \hyperlink{io_8c_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print} (\hyperlink{structfsm}{fsm} $\ast$f, \-F\-I\-L\-E $\ast$dest)
-\begin{DoxyCompactList}\small\item\em \-Print a string representation of the \-F\-S\-M to a file (or stdout). \end{DoxyCompactList}\item 
+wchar\-\_\-t $\ast$ \hyperlink{io_8c_a4bcd6fb8cb67f0c3abd0574887338fb3}{fsm\-\_\-str} (const \hyperlink{structfsm}{fsm} $\ast$f)
+\begin{DoxyCompactList}\small\item\em \-Return a wchar\-\_\-t$\ast$ representation of the fsm (suitable for printing). \end{DoxyCompactList}\item 
+void \hyperlink{io_8c_acb881baaa8e12249b25112855ab136c5}{fsm\-\_\-print} (const \hyperlink{structfsm}{fsm} $\ast$f, \-F\-I\-L\-E $\ast$dest)
+\begin{DoxyCompactList}\small\item\em \-Print the \-F\-S\-M to the desired output stream. \end{DoxyCompactList}\item 
 void \hyperlink{io_8c_ac7cf43e628d0aefef49a3d290b065e9c}{fsm\-\_\-dot\-\_\-char} (\-F\-I\-L\-E $\ast$dest, wchar\-\_\-t c)
 \begin{DoxyCompactList}\small\item\em \-Prints a character in an \-F\-S\-M specification to dot format. \end{DoxyCompactList}\item 
 void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperlink{structfsm}{fsm} $\ast$f, \-F\-I\-L\-E $\ast$dest)
@@ -72,7 +87,7 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 \end{DoxyParams}
 
 
-\-Definition at line 353 of file io.\-c.
+\-Definition at line 372 of file io.\-c.
 
 \hypertarget{io_8c_ac7cf43e628d0aefef49a3d290b065e9c}{\index{io.\-c@{io.\-c}!fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}}
 \index{fsm\-\_\-dot\-\_\-char@{fsm\-\_\-dot\-\_\-char}!io.c@{io.\-c}}
@@ -97,30 +112,30 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 \end{DoxyParams}
 
 
-\-Definition at line 324 of file io.\-c.
+\-Definition at line 343 of file io.\-c.
 
-\hypertarget{io_8c_a3ba204b76773dffba8aca574d7e63434}{\index{io.\-c@{io.\-c}!fsm\-\_\-print@{fsm\-\_\-print}}
+\hypertarget{io_8c_acb881baaa8e12249b25112855ab136c5}{\index{io.\-c@{io.\-c}!fsm\-\_\-print@{fsm\-\_\-print}}
 \index{fsm\-\_\-print@{fsm\-\_\-print}!io.c@{io.\-c}}
 \subsubsection[{fsm\-\_\-print}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-print} (
 \begin{DoxyParamCaption}
-\item[{{\bf fsm} $\ast$}]{f, }
+\item[{const {\bf fsm} $\ast$}]{f, }
 \item[{\-F\-I\-L\-E $\ast$}]{dest}
 \end{DoxyParamCaption}
-)}}\label{io_8c_a3ba204b76773dffba8aca574d7e63434}
+)}}\label{io_8c_acb881baaa8e12249b25112855ab136c5}
 
 
-\-Print a string representation of the \-F\-S\-M to a file (or stdout). 
+\-Print the \-F\-S\-M to the desired output stream. 
 
 
 \begin{DoxyParams}{\-Parameters}
-{\em f} & \-The \-F\-S\-M to print \\
+{\em f} & \-F\-S\-M to print. \\
 \hline
-{\em dest} & \-The file to print to \\
+{\em dest} & \-Output stream/file to print to. \\
 \hline
 \end{DoxyParams}
 
 
-\-Definition at line 270 of file io.\-c.
+\-Definition at line 326 of file io.\-c.
 
 \hypertarget{io_8c_a156b01e2dc6a3219d79725c9f33b738e}{\index{io.\-c@{io.\-c}!fsm\-\_\-read@{fsm\-\_\-read}}
 \index{fsm\-\_\-read@{fsm\-\_\-read}!io.c@{io.\-c}}
@@ -134,7 +149,7 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 
 \-Read a \-Finite \-State \-Machine from its text representation. 
 
-\-All fsm's can be printed using \hyperlink{io_8c_a3ba204b76773dffba8aca574d7e63434}{fsm\-\_\-print()}. \-This function $\ast$should$\ast$ be able to take any such string representation and convert it back into an equivalent fsm again. 
+\-All fsm's can be printed using \hyperlink{io_8c_acb881baaa8e12249b25112855ab136c5}{fsm\-\_\-print()}. \-This function $\ast$should$\ast$ be able to take any such string representation and convert it back into an equivalent fsm again. 
 \begin{DoxyParams}{\-Parameters}
 {\em source} & \-The string to read in. \\
 \hline
@@ -154,4 +169,27 @@ void \hyperlink{io_8c_a068179080f09c38af390ad19772f7aba}{fsm\-\_\-dot} (\hyperli
 
 
 \-Definition at line 243 of file io.\-c.
+
+\hypertarget{io_8c_a4bcd6fb8cb67f0c3abd0574887338fb3}{\index{io.\-c@{io.\-c}!fsm\-\_\-str@{fsm\-\_\-str}}
+\index{fsm\-\_\-str@{fsm\-\_\-str}!io.c@{io.\-c}}
+\subsubsection[{fsm\-\_\-str}]{\setlength{\rightskip}{0pt plus 5cm}wchar\-\_\-t$\ast$ {\bf fsm\-\_\-str} (
+\begin{DoxyParamCaption}
+\item[{const {\bf fsm} $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{io_8c_a4bcd6fb8cb67f0c3abd0574887338fb3}
+
+
+\-Return a wchar\-\_\-t$\ast$ representation of the fsm (suitable for printing). 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The \-F\-S\-M to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-The string version of the \-F\-S\-M. 
+\end{DoxyReturn}
+
+
+\-Definition at line 269 of file io.\-c.
 

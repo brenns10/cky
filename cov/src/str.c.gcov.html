@@ -31,18 +31,18 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntry">68</td>
             <td class="headerCovTableEntry">110</td>
-            <td class="headerCovTableEntryLo">58.2 %</td>
+            <td class="headerCovTableEntryLo">61.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-24 04:09:49</td>
+            <td class="headerValue">2015-05-24 19:34:23</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">5</td>
             <td class="headerCovTableEntry">6</td>
-            <td class="headerCovTableEntryLo">66.7 %</td>
+            <td class="headerCovTableEntryMed">83.3 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -259,10 +259,10 @@
 <span class="lineNum">     197 </span>            :    @param dest The file to print to.
 <a name="198"><span class="lineNum">     198 </span>            :    @param input The character to filter.</a>
 <span class="lineNum">     199 </span>            :  */
-<span class="lineNum">     200 </span><span class="lineNoCov">          0 : wchar_t *escape_wchar(wchar_t input)</span>
+<span class="lineNum">     200 </span><span class="lineCov">          6 : wchar_t *escape_wchar(wchar_t input)</span>
 <span class="lineNum">     201 </span>            : {
 <span class="lineNum">     202 </span>            :   static wchar_t buf[] = {L' ', L'\0'};
-<span class="lineNum">     203 </span><span class="lineNoCov">          0 :   switch (input) {</span>
+<span class="lineNum">     203 </span><span class="lineCov">          6 :   switch (input) {</span>
 <span class="lineNum">     204 </span>            :   case L'\a':
 <span class="lineNum">     205 </span><span class="lineNoCov">          0 :     return L&quot;\\a&quot;;</span>
 <span class="lineNum">     206 </span>            :   case L'\b':
@@ -283,8 +283,8 @@
 <span class="lineNum">     221 </span><span class="lineNoCov">          0 :     return L&quot;\\\\&quot;;</span>
 <span class="lineNum">     222 </span>            :   default:
 <span class="lineNum">     223 </span>            :     // Print other characters as verbatim
-<span class="lineNum">     224 </span><span class="lineNoCov">          0 :     buf[0] = input;</span>
-<span class="lineNum">     225 </span><span class="lineNoCov">          0 :     return buf;</span>
+<span class="lineNum">     224 </span><span class="lineCov">          6 :     buf[0] = input;</span>
+<span class="lineNum">     225 </span><span class="lineCov">          6 :     return buf;</span>
 <span class="lineNum">     226 </span>            :   }
 <span class="lineNum">     227 </span>            : }
 <span class="lineNum">     228 </span>            : 

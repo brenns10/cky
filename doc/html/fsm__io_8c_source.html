@@ -336,52 +336,82 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00274"></a>00274   <span class="keywordflow">return</span> fail_on(L<span class="stringliteral">&quot;start:0\naccept:1\n0-1:+\\&quot;</span>);
 <a name="l00275"></a>00275 }
 <a name="l00276"></a>00276 
-<a name="l00277"></a>00277 <span class="keywordtype">void</span> fsm_io_test(<span class="keywordtype">void</span>)
+<a name="l00277"></a>00277 <span class="keywordtype">int</span> test_simple_str(<span class="keywordtype">void</span>)
 <a name="l00278"></a>00278 {
-<a name="l00279"></a>00279   smb_ut_group *group = su_create_test_group(<span class="stringliteral">&quot;fsm_io&quot;</span>);
-<a name="l00280"></a>00280 
-<a name="l00281"></a>00281   smb_ut_test *read_fsm = su_create_test(<span class="stringliteral">&quot;read_fsm&quot;</span>, test_read_fsm);
-<a name="l00282"></a>00282   su_add_test(group, read_fsm);
-<a name="l00283"></a>00283 
-<a name="l00284"></a>00284   smb_ut_test *escape = su_create_test(<span class="stringliteral">&quot;escape&quot;</span>, test_escape);
-<a name="l00285"></a>00285   su_add_test(group, escape);
-<a name="l00286"></a>00286 
-<a name="l00287"></a>00287   smb_ut_test *read_combine = su_create_test(<span class="stringliteral">&quot;read_combine&quot;</span>, test_read_combine);
-<a name="l00288"></a>00288   su_add_test(group, read_combine);
-<a name="l00289"></a>00289 
-<a name="l00290"></a>00290   smb_ut_test *empty_string = su_create_test(<span class="stringliteral">&quot;empty_string&quot;</span>, test_empty_string);
-<a name="l00291"></a>00291   su_add_test(group, empty_string);
-<a name="l00292"></a>00292 
-<a name="l00293"></a>00293   smb_ut_test *no_start = su_create_test(<span class="stringliteral">&quot;no_start&quot;</span>, test_no_start);
-<a name="l00294"></a>00294   su_add_test(group, no_start);
-<a name="l00295"></a>00295 
-<a name="l00296"></a>00296   smb_ut_test *no_trailing_newline = su_create_test(<span class="stringliteral">&quot;no_trailing_newline&quot;</span>, test_no_trailing_newline);
-<a name="l00297"></a>00297   su_add_test(group, no_trailing_newline);
-<a name="l00298"></a>00298 
-<a name="l00299"></a>00299   smb_ut_test *whitespace = su_create_test(<span class="stringliteral">&quot;whitespace&quot;</span>, test_whitespace);
-<a name="l00300"></a>00300   su_add_test(group, whitespace);
-<a name="l00301"></a>00301 
-<a name="l00302"></a>00302   smb_ut_test *missing_src = su_create_test(<span class="stringliteral">&quot;missing_src&quot;</span>, test_missing_src);
-<a name="l00303"></a>00303   su_add_test(group, missing_src);
-<a name="l00304"></a>00304 
-<a name="l00305"></a>00305   smb_ut_test *missing_hyphen = su_create_test(<span class="stringliteral">&quot;missing_hyphen&quot;</span>, test_missing_hyphen);
-<a name="l00306"></a>00306   su_add_test(group, missing_hyphen);
+<a name="l00279"></a>00279   <span class="comment">// Create FSM &quot;src&quot; that accepts &quot;foo&quot;.</span>
+<a name="l00280"></a>00280   <span class="keywordtype">wchar_t</span> *machine =
+<a name="l00281"></a>00281     L<span class="stringliteral">&quot;start:0\n&quot;</span>
+<a name="l00282"></a>00282     L<span class="stringliteral">&quot;accept:3\n&quot;</span>
+<a name="l00283"></a>00283     L<span class="stringliteral">&quot;0-1:+f-f\n&quot;</span>
+<a name="l00284"></a>00284     L<span class="stringliteral">&quot;1-2:+o-o\n&quot;</span>
+<a name="l00285"></a>00285     L<span class="stringliteral">&quot;2-3:+o-o\n&quot;</span>;
+<a name="l00286"></a>00286   <span class="keywordtype">wchar_t</span> *out;
+<a name="l00287"></a>00287   <a class="code" href="structfsm.html" title="A structure representing an FSM.">fsm</a> *src = <a class="code" href="fsm_2datastructs_8c.html#a81bb701b090eeab2a57dd58311b04ddf" title="Allocate and initialize an FSM.">fsm_create</a>();
+<a name="l00288"></a>00288   <span class="keywordtype">int</span> s00 = <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(src, <span class="keyword">false</span>);
+<a name="l00289"></a>00289   <span class="keywordtype">int</span> s01 = <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(src, <span class="keyword">false</span>);
+<a name="l00290"></a>00290   <span class="keywordtype">int</span> s02 = <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(src, <span class="keyword">false</span>);
+<a name="l00291"></a>00291   <span class="keywordtype">int</span> s03 = <a class="code" href="fsm_2datastructs_8c.html#aa1917d964efee7185d38a3d03949022c" title="Add a state to the FSM.">fsm_add_state</a>(src, <span class="keyword">true</span>);
+<a name="l00292"></a>00292   src-&gt;<a class="code" href="structfsm.html#a37722a150250e2a5a98e5e0d11e53449" title="The index of the start states.">start</a> = s00;
+<a name="l00293"></a>00293   <a class="code" href="fsm_2datastructs_8c.html#a91daa87b98f7318c8609b56a09093a01" title="Add a single range transition to the FSM.">fsm_add_single</a>(src, s00, s01, L<span class="charliteral">&#39;f&#39;</span>, L<span class="charliteral">&#39;f&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>);
+<a name="l00294"></a>00294   <a class="code" href="fsm_2datastructs_8c.html#a91daa87b98f7318c8609b56a09093a01" title="Add a single range transition to the FSM.">fsm_add_single</a>(src, s01, s02, L<span class="charliteral">&#39;o&#39;</span>, L<span class="charliteral">&#39;o&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>);
+<a name="l00295"></a>00295   <a class="code" href="fsm_2datastructs_8c.html#a91daa87b98f7318c8609b56a09093a01" title="Add a single range transition to the FSM.">fsm_add_single</a>(src, s02, s03, L<span class="charliteral">&#39;o&#39;</span>, L<span class="charliteral">&#39;o&#39;</span>, <a class="code" href="fsm_8h.html#a792cb9bba1114fc1a5d50457e54b5478" title="A value for fsm_trans.type indicating that the ranges are positive.">FSM_TRANS_POSITIVE</a>);
+<a name="l00296"></a>00296 
+<a name="l00297"></a>00297   out = <a class="code" href="io_8c.html#a4bcd6fb8cb67f0c3abd0574887338fb3" title="Return a wchar_t* representation of the fsm (suitable for printing).">fsm_str</a>(src);
+<a name="l00298"></a>00298   TEST_ASSERT(0 == wcscmp(machine, out));
+<a name="l00299"></a>00299   smb_free(out);
+<a name="l00300"></a>00300   <a class="code" href="fsm_2datastructs_8c.html#aaeae4a8cee76a6876cb4e9c13f753cc3" title="Clean up and free an FSM.">fsm_delete</a>(src, <span class="keyword">true</span>);
+<a name="l00301"></a>00301   <span class="keywordflow">return</span> 0;
+<a name="l00302"></a>00302 }
+<a name="l00303"></a>00303 
+<a name="l00304"></a>00304 <span class="keywordtype">void</span> fsm_io_test(<span class="keywordtype">void</span>)
+<a name="l00305"></a>00305 {
+<a name="l00306"></a>00306   smb_ut_group *group = su_create_test_group(<span class="stringliteral">&quot;fsm_io&quot;</span>);
 <a name="l00307"></a>00307 
-<a name="l00308"></a>00308   smb_ut_test *missing_dst = su_create_test(<span class="stringliteral">&quot;missing_dst&quot;</span>, test_missing_dst);
-<a name="l00309"></a>00309   su_add_test(group, missing_dst);
+<a name="l00308"></a>00308   smb_ut_test *read_fsm = su_create_test(<span class="stringliteral">&quot;read_fsm&quot;</span>, test_read_fsm);
+<a name="l00309"></a>00309   su_add_test(group, read_fsm);
 <a name="l00310"></a>00310 
-<a name="l00311"></a>00311   smb_ut_test *missing_type = su_create_test(<span class="stringliteral">&quot;missing_type&quot;</span>, test_missing_type);
-<a name="l00312"></a>00312   su_add_test(group, missing_type);
+<a name="l00311"></a>00311   smb_ut_test *escape = su_create_test(<span class="stringliteral">&quot;escape&quot;</span>, test_escape);
+<a name="l00312"></a>00312   su_add_test(group, escape);
 <a name="l00313"></a>00313 
-<a name="l00314"></a>00314   smb_ut_test *bad_escaping = su_create_test(<span class="stringliteral">&quot;bad_escaping&quot;</span>, test_bad_escaping);
-<a name="l00315"></a>00315   su_add_test(group, bad_escaping);
+<a name="l00314"></a>00314   smb_ut_test *read_combine = su_create_test(<span class="stringliteral">&quot;read_combine&quot;</span>, test_read_combine);
+<a name="l00315"></a>00315   su_add_test(group, read_combine);
 <a name="l00316"></a>00316 
-<a name="l00317"></a>00317   smb_ut_test *bad_escaping2 = su_create_test(<span class="stringliteral">&quot;bad_escaping2&quot;</span>, test_bad_escaping2);
-<a name="l00318"></a>00318   su_add_test(group, bad_escaping2);
+<a name="l00317"></a>00317   smb_ut_test *empty_string = su_create_test(<span class="stringliteral">&quot;empty_string&quot;</span>, test_empty_string);
+<a name="l00318"></a>00318   su_add_test(group, empty_string);
 <a name="l00319"></a>00319 
-<a name="l00320"></a>00320   su_run_group(group);
-<a name="l00321"></a>00321   su_delete_group(group);
-<a name="l00322"></a>00322 }
+<a name="l00320"></a>00320   smb_ut_test *no_start = su_create_test(<span class="stringliteral">&quot;no_start&quot;</span>, test_no_start);
+<a name="l00321"></a>00321   su_add_test(group, no_start);
+<a name="l00322"></a>00322 
+<a name="l00323"></a>00323   smb_ut_test *no_trailing_newline = su_create_test(<span class="stringliteral">&quot;no_trailing_newline&quot;</span>, test_no_trailing_newline);
+<a name="l00324"></a>00324   su_add_test(group, no_trailing_newline);
+<a name="l00325"></a>00325 
+<a name="l00326"></a>00326   smb_ut_test *whitespace = su_create_test(<span class="stringliteral">&quot;whitespace&quot;</span>, test_whitespace);
+<a name="l00327"></a>00327   su_add_test(group, whitespace);
+<a name="l00328"></a>00328 
+<a name="l00329"></a>00329   smb_ut_test *missing_src = su_create_test(<span class="stringliteral">&quot;missing_src&quot;</span>, test_missing_src);
+<a name="l00330"></a>00330   su_add_test(group, missing_src);
+<a name="l00331"></a>00331 
+<a name="l00332"></a>00332   smb_ut_test *missing_hyphen = su_create_test(<span class="stringliteral">&quot;missing_hyphen&quot;</span>, test_missing_hyphen);
+<a name="l00333"></a>00333   su_add_test(group, missing_hyphen);
+<a name="l00334"></a>00334 
+<a name="l00335"></a>00335   smb_ut_test *missing_dst = su_create_test(<span class="stringliteral">&quot;missing_dst&quot;</span>, test_missing_dst);
+<a name="l00336"></a>00336   su_add_test(group, missing_dst);
+<a name="l00337"></a>00337 
+<a name="l00338"></a>00338   smb_ut_test *missing_type = su_create_test(<span class="stringliteral">&quot;missing_type&quot;</span>, test_missing_type);
+<a name="l00339"></a>00339   su_add_test(group, missing_type);
+<a name="l00340"></a>00340 
+<a name="l00341"></a>00341   smb_ut_test *bad_escaping = su_create_test(<span class="stringliteral">&quot;bad_escaping&quot;</span>, test_bad_escaping);
+<a name="l00342"></a>00342   su_add_test(group, bad_escaping);
+<a name="l00343"></a>00343 
+<a name="l00344"></a>00344   smb_ut_test *bad_escaping2 = su_create_test(<span class="stringliteral">&quot;bad_escaping2&quot;</span>, test_bad_escaping2);
+<a name="l00345"></a>00345   su_add_test(group, bad_escaping2);
+<a name="l00346"></a>00346 
+<a name="l00347"></a>00347   smb_ut_test *simple_str = su_create_test(<span class="stringliteral">&quot;simple_str&quot;</span>, test_simple_str);
+<a name="l00348"></a>00348   su_add_test(group, simple_str);
+<a name="l00349"></a>00349 
+<a name="l00350"></a>00350   su_run_group(group);
+<a name="l00351"></a>00351   su_delete_group(group);
+<a name="l00352"></a>00352 }
 </pre></div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -400,7 +430,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 04:09:49 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 19:34:23 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

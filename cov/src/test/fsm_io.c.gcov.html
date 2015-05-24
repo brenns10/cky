@@ -31,17 +31,17 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">138</td>
-            <td class="headerCovTableEntry">138</td>
+            <td class="headerCovTableEntry">156</td>
+            <td class="headerCovTableEntry">156</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-05-24 04:09:49</td>
+            <td class="headerValue">2015-05-24 19:34:23</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">15</td>
-            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">16</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -336,52 +336,82 @@
 <span class="lineNum">     274 </span><span class="lineCov">          1 :   return fail_on(L&quot;start:0\naccept:1\n0-1:+\\&quot;);</span>
 <a name="275"><span class="lineNum">     275 </span>            : }</a>
 <span class="lineNum">     276 </span>            : 
-<span class="lineNum">     277 </span><span class="lineCov">          1 : void fsm_io_test(void)</span>
+<span class="lineNum">     277 </span><span class="lineCov">          1 : int test_simple_str(void)</span>
 <span class="lineNum">     278 </span>            : {
-<span class="lineNum">     279 </span><span class="lineCov">          1 :   smb_ut_group *group = su_create_test_group(&quot;fsm_io&quot;);</span>
-<span class="lineNum">     280 </span>            : 
-<span class="lineNum">     281 </span><span class="lineCov">          1 :   smb_ut_test *read_fsm = su_create_test(&quot;read_fsm&quot;, test_read_fsm);</span>
-<span class="lineNum">     282 </span><span class="lineCov">          1 :   su_add_test(group, read_fsm);</span>
-<span class="lineNum">     283 </span>            : 
-<span class="lineNum">     284 </span><span class="lineCov">          1 :   smb_ut_test *escape = su_create_test(&quot;escape&quot;, test_escape);</span>
-<span class="lineNum">     285 </span><span class="lineCov">          1 :   su_add_test(group, escape);</span>
-<span class="lineNum">     286 </span>            : 
-<span class="lineNum">     287 </span><span class="lineCov">          1 :   smb_ut_test *read_combine = su_create_test(&quot;read_combine&quot;, test_read_combine);</span>
-<span class="lineNum">     288 </span><span class="lineCov">          1 :   su_add_test(group, read_combine);</span>
-<span class="lineNum">     289 </span>            : 
-<span class="lineNum">     290 </span><span class="lineCov">          1 :   smb_ut_test *empty_string = su_create_test(&quot;empty_string&quot;, test_empty_string);</span>
-<span class="lineNum">     291 </span><span class="lineCov">          1 :   su_add_test(group, empty_string);</span>
-<span class="lineNum">     292 </span>            : 
-<span class="lineNum">     293 </span><span class="lineCov">          1 :   smb_ut_test *no_start = su_create_test(&quot;no_start&quot;, test_no_start);</span>
-<span class="lineNum">     294 </span><span class="lineCov">          1 :   su_add_test(group, no_start);</span>
-<span class="lineNum">     295 </span>            : 
-<span class="lineNum">     296 </span><span class="lineCov">          1 :   smb_ut_test *no_trailing_newline = su_create_test(&quot;no_trailing_newline&quot;, test_no_trailing_newline);</span>
-<span class="lineNum">     297 </span><span class="lineCov">          1 :   su_add_test(group, no_trailing_newline);</span>
-<span class="lineNum">     298 </span>            : 
-<span class="lineNum">     299 </span><span class="lineCov">          1 :   smb_ut_test *whitespace = su_create_test(&quot;whitespace&quot;, test_whitespace);</span>
-<span class="lineNum">     300 </span><span class="lineCov">          1 :   su_add_test(group, whitespace);</span>
-<span class="lineNum">     301 </span>            : 
-<span class="lineNum">     302 </span><span class="lineCov">          1 :   smb_ut_test *missing_src = su_create_test(&quot;missing_src&quot;, test_missing_src);</span>
-<span class="lineNum">     303 </span><span class="lineCov">          1 :   su_add_test(group, missing_src);</span>
-<span class="lineNum">     304 </span>            : 
-<span class="lineNum">     305 </span><span class="lineCov">          1 :   smb_ut_test *missing_hyphen = su_create_test(&quot;missing_hyphen&quot;, test_missing_hyphen);</span>
-<span class="lineNum">     306 </span><span class="lineCov">          1 :   su_add_test(group, missing_hyphen);</span>
+<span class="lineNum">     279 </span>            :   // Create FSM &quot;src&quot; that accepts &quot;foo&quot;.
+<span class="lineNum">     280 </span><span class="lineCov">          1 :   wchar_t *machine =</span>
+<span class="lineNum">     281 </span>            :     L&quot;start:0\n&quot;
+<span class="lineNum">     282 </span>            :     L&quot;accept:3\n&quot;
+<span class="lineNum">     283 </span>            :     L&quot;0-1:+f-f\n&quot;
+<span class="lineNum">     284 </span>            :     L&quot;1-2:+o-o\n&quot;
+<span class="lineNum">     285 </span>            :     L&quot;2-3:+o-o\n&quot;;
+<span class="lineNum">     286 </span>            :   wchar_t *out;
+<span class="lineNum">     287 </span><span class="lineCov">          1 :   fsm *src = fsm_create();</span>
+<span class="lineNum">     288 </span><span class="lineCov">          1 :   int s00 = fsm_add_state(src, false);</span>
+<span class="lineNum">     289 </span><span class="lineCov">          1 :   int s01 = fsm_add_state(src, false);</span>
+<span class="lineNum">     290 </span><span class="lineCov">          1 :   int s02 = fsm_add_state(src, false);</span>
+<span class="lineNum">     291 </span><span class="lineCov">          1 :   int s03 = fsm_add_state(src, true);</span>
+<span class="lineNum">     292 </span><span class="lineCov">          1 :   src-&gt;start = s00;</span>
+<span class="lineNum">     293 </span><span class="lineCov">          1 :   fsm_add_single(src, s00, s01, L'f', L'f', FSM_TRANS_POSITIVE);</span>
+<span class="lineNum">     294 </span><span class="lineCov">          1 :   fsm_add_single(src, s01, s02, L'o', L'o', FSM_TRANS_POSITIVE);</span>
+<span class="lineNum">     295 </span><span class="lineCov">          1 :   fsm_add_single(src, s02, s03, L'o', L'o', FSM_TRANS_POSITIVE);</span>
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span><span class="lineCov">          1 :   out = fsm_str(src);</span>
+<span class="lineNum">     298 </span><span class="lineCov">          1 :   TEST_ASSERT(0 == wcscmp(machine, out));</span>
+<span class="lineNum">     299 </span><span class="lineCov">          1 :   smb_free(out);</span>
+<span class="lineNum">     300 </span><span class="lineCov">          1 :   fsm_delete(src, true);</span>
+<span class="lineNum">     301 </span><span class="lineCov">          1 :   return 0;</span>
+<a name="302"><span class="lineNum">     302 </span>            : }</a>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span><span class="lineCov">          1 : void fsm_io_test(void)</span>
+<span class="lineNum">     305 </span>            : {
+<span class="lineNum">     306 </span><span class="lineCov">          1 :   smb_ut_group *group = su_create_test_group(&quot;fsm_io&quot;);</span>
 <span class="lineNum">     307 </span>            : 
-<span class="lineNum">     308 </span><span class="lineCov">          1 :   smb_ut_test *missing_dst = su_create_test(&quot;missing_dst&quot;, test_missing_dst);</span>
-<span class="lineNum">     309 </span><span class="lineCov">          1 :   su_add_test(group, missing_dst);</span>
+<span class="lineNum">     308 </span><span class="lineCov">          1 :   smb_ut_test *read_fsm = su_create_test(&quot;read_fsm&quot;, test_read_fsm);</span>
+<span class="lineNum">     309 </span><span class="lineCov">          1 :   su_add_test(group, read_fsm);</span>
 <span class="lineNum">     310 </span>            : 
-<span class="lineNum">     311 </span><span class="lineCov">          1 :   smb_ut_test *missing_type = su_create_test(&quot;missing_type&quot;, test_missing_type);</span>
-<span class="lineNum">     312 </span><span class="lineCov">          1 :   su_add_test(group, missing_type);</span>
+<span class="lineNum">     311 </span><span class="lineCov">          1 :   smb_ut_test *escape = su_create_test(&quot;escape&quot;, test_escape);</span>
+<span class="lineNum">     312 </span><span class="lineCov">          1 :   su_add_test(group, escape);</span>
 <span class="lineNum">     313 </span>            : 
-<span class="lineNum">     314 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping = su_create_test(&quot;bad_escaping&quot;, test_bad_escaping);</span>
-<span class="lineNum">     315 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping);</span>
+<span class="lineNum">     314 </span><span class="lineCov">          1 :   smb_ut_test *read_combine = su_create_test(&quot;read_combine&quot;, test_read_combine);</span>
+<span class="lineNum">     315 </span><span class="lineCov">          1 :   su_add_test(group, read_combine);</span>
 <span class="lineNum">     316 </span>            : 
-<span class="lineNum">     317 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping2 = su_create_test(&quot;bad_escaping2&quot;, test_bad_escaping2);</span>
-<span class="lineNum">     318 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping2);</span>
+<span class="lineNum">     317 </span><span class="lineCov">          1 :   smb_ut_test *empty_string = su_create_test(&quot;empty_string&quot;, test_empty_string);</span>
+<span class="lineNum">     318 </span><span class="lineCov">          1 :   su_add_test(group, empty_string);</span>
 <span class="lineNum">     319 </span>            : 
-<span class="lineNum">     320 </span><span class="lineCov">          1 :   su_run_group(group);</span>
-<span class="lineNum">     321 </span><span class="lineCov">          1 :   su_delete_group(group);</span>
-<span class="lineNum">     322 </span><span class="lineCov">          1 : }</span>
+<span class="lineNum">     320 </span><span class="lineCov">          1 :   smb_ut_test *no_start = su_create_test(&quot;no_start&quot;, test_no_start);</span>
+<span class="lineNum">     321 </span><span class="lineCov">          1 :   su_add_test(group, no_start);</span>
+<span class="lineNum">     322 </span>            : 
+<span class="lineNum">     323 </span><span class="lineCov">          1 :   smb_ut_test *no_trailing_newline = su_create_test(&quot;no_trailing_newline&quot;, test_no_trailing_newline);</span>
+<span class="lineNum">     324 </span><span class="lineCov">          1 :   su_add_test(group, no_trailing_newline);</span>
+<span class="lineNum">     325 </span>            : 
+<span class="lineNum">     326 </span><span class="lineCov">          1 :   smb_ut_test *whitespace = su_create_test(&quot;whitespace&quot;, test_whitespace);</span>
+<span class="lineNum">     327 </span><span class="lineCov">          1 :   su_add_test(group, whitespace);</span>
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span><span class="lineCov">          1 :   smb_ut_test *missing_src = su_create_test(&quot;missing_src&quot;, test_missing_src);</span>
+<span class="lineNum">     330 </span><span class="lineCov">          1 :   su_add_test(group, missing_src);</span>
+<span class="lineNum">     331 </span>            : 
+<span class="lineNum">     332 </span><span class="lineCov">          1 :   smb_ut_test *missing_hyphen = su_create_test(&quot;missing_hyphen&quot;, test_missing_hyphen);</span>
+<span class="lineNum">     333 </span><span class="lineCov">          1 :   su_add_test(group, missing_hyphen);</span>
+<span class="lineNum">     334 </span>            : 
+<span class="lineNum">     335 </span><span class="lineCov">          1 :   smb_ut_test *missing_dst = su_create_test(&quot;missing_dst&quot;, test_missing_dst);</span>
+<span class="lineNum">     336 </span><span class="lineCov">          1 :   su_add_test(group, missing_dst);</span>
+<span class="lineNum">     337 </span>            : 
+<span class="lineNum">     338 </span><span class="lineCov">          1 :   smb_ut_test *missing_type = su_create_test(&quot;missing_type&quot;, test_missing_type);</span>
+<span class="lineNum">     339 </span><span class="lineCov">          1 :   su_add_test(group, missing_type);</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping = su_create_test(&quot;bad_escaping&quot;, test_bad_escaping);</span>
+<span class="lineNum">     342 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping);</span>
+<span class="lineNum">     343 </span>            : 
+<span class="lineNum">     344 </span><span class="lineCov">          1 :   smb_ut_test *bad_escaping2 = su_create_test(&quot;bad_escaping2&quot;, test_bad_escaping2);</span>
+<span class="lineNum">     345 </span><span class="lineCov">          1 :   su_add_test(group, bad_escaping2);</span>
+<span class="lineNum">     346 </span>            : 
+<span class="lineNum">     347 </span><span class="lineCov">          1 :   smb_ut_test *simple_str = su_create_test(&quot;simple_str&quot;, test_simple_str);</span>
+<span class="lineNum">     348 </span><span class="lineCov">          1 :   su_add_test(group, simple_str);</span>
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span><span class="lineCov">          1 :   su_run_group(group);</span>
+<span class="lineNum">     351 </span><span class="lineCov">          1 :   su_delete_group(group);</span>
+<span class="lineNum">     352 </span><span class="lineCov">          1 : }</span>
 </pre>
       </td>
     </tr>

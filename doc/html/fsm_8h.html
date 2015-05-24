@@ -173,8 +173,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_print_char</b> (F
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a character in an FSM specification to dot format.  <a href="#ac7cf43e628d0aefef49a3d290b065e9c"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm.html">fsm</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a156b01e2dc6a3219d79725c9f33b738e">fsm_read</a> (const wchar_t *source, smb_status *status)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a Finite State Machine from its text representation.  <a href="#a156b01e2dc6a3219d79725c9f33b738e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a3ba204b76773dffba8aca574d7e63434">fsm_print</a> (<a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a string representation of the FSM to a file (or stdout).  <a href="#a3ba204b76773dffba8aca574d7e63434"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">wchar_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a4bcd6fb8cb67f0c3abd0574887338fb3">fsm_str</a> (const <a class="el" href="structfsm.html">fsm</a> *f)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a wchar_t* representation of the fsm (suitable for printing).  <a href="#a4bcd6fb8cb67f0c3abd0574887338fb3"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#acb881baaa8e12249b25112855ab136c5">fsm_print</a> (const <a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the FSM to the desired output stream.  <a href="#acb881baaa8e12249b25112855ab136c5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a068179080f09c38af390ad19772f7aba">fsm_dot</a> (<a class="el" href="structfsm.html">fsm</a> *f, FILE *dest)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print an FSM to graphviz dot format.  <a href="#a068179080f09c38af390ad19772f7aba"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fsm_8h.html#a6691ba1de6653c52bce26ebd2a40cdeb">al_copy_all</a> (smb_al *dest, const smb_al *from)</td></tr>
@@ -809,7 +811,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00353">353</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00372">372</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -848,7 +850,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00324">324</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00343">343</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -907,14 +909,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 </div>
 </div>
-<a class="anchor" id="a3ba204b76773dffba8aca574d7e63434"></a><!-- doxytag: member="fsm.h::fsm_print" ref="a3ba204b76773dffba8aca574d7e63434" args="(fsm *f, FILE *dest)" -->
+<a class="anchor" id="acb881baaa8e12249b25112855ab136c5"></a><!-- doxytag: member="fsm.h::fsm_print" ref="acb881baaa8e12249b25112855ab136c5" args="(const fsm *f, FILE *dest)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="fsm_8h.html#a3ba204b76773dffba8aca574d7e63434">fsm_print</a> </td>
+          <td class="memname">void <a class="el" href="fsm_8h.html#acb881baaa8e12249b25112855ab136c5">fsm_print</a> </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structfsm.html">fsm</a> *&#160;</td>
+          <td class="paramtype">const <a class="el" href="structfsm.html">fsm</a> *&#160;</td>
           <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
@@ -932,16 +934,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 </div>
 <div class="memdoc">
 
-<p>Print a string representation of the FSM to a file (or stdout). </p>
+<p>Print the FSM to the desired output stream. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">f</td><td>The FSM to print </td></tr>
-    <tr><td class="paramname">dest</td><td>The file to print to </td></tr>
+    <tr><td class="paramname">f</td><td>FSM to print. </td></tr>
+    <tr><td class="paramname">dest</td><td>Output stream/file to print to. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="io_8c_source.html#l00270">270</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+<p>Definition at line <a class="el" href="io_8c_source.html#l00326">326</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
 
 </div>
 </div>
@@ -971,7 +973,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <div class="memdoc">
 
 <p>Read a Finite State Machine from its text representation. </p>
-<p>All fsm's can be printed using <a class="el" href="io_8c.html#a3ba204b76773dffba8aca574d7e63434" title="Print a string representation of the FSM to a file (or stdout).">fsm_print()</a>. This function *should* be able to take any such string representation and convert it back into an equivalent fsm again. </p>
+<p>All fsm's can be printed using <a class="el" href="io_8c.html#acb881baaa8e12249b25112855ab136c5" title="Print the FSM to the desired output stream.">fsm_print()</a>. This function *should* be able to take any such string representation and convert it back into an equivalent fsm again. </p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">source</td><td>The string to read in. </td></tr>
@@ -1484,6 +1486,34 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 </div>
 </div>
+<a class="anchor" id="a4bcd6fb8cb67f0c3abd0574887338fb3"></a><!-- doxytag: member="fsm.h::fsm_str" ref="a4bcd6fb8cb67f0c3abd0574887338fb3" args="(const fsm *f)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">wchar_t* <a class="el" href="fsm_8h.html#a4bcd6fb8cb67f0c3abd0574887338fb3">fsm_str</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structfsm.html">fsm</a> *&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Return a wchar_t* representation of the fsm (suitable for printing). </p>
+<dl class="params"><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>The FSM to print </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The string version of the FSM. </dd></dl>
+
+<p>Definition at line <a class="el" href="io_8c_source.html#l00269">269</a> of file <a class="el" href="io_8c_source.html">io.c</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a1e398044606cf5c1efc9ae5b06215f01"></a><!-- doxytag: member="fsm.h::fsm_trans_check" ref="a1e398044606cf5c1efc9ae5b06215f01" args="(const fsm_trans *ft, wchar_t c)" -->
 <div class="memitem">
 <div class="memproto">
@@ -1869,7 +1899,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun May 24 2015 04:09:49 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2015 19:34:24 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
