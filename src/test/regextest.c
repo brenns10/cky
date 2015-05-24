@@ -249,6 +249,19 @@ static int test_class_neg_range(void)
   return 0;
 }
 
+static int test_hyphen(void)
+{
+  fsm * f = regex_parse(L"[^a-c-]");
+  TEST_ASSERT(!fsm_sim_nondet(f, L""));
+  TEST_ASSERT(fsm_sim_nondet(f, L"d"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"a"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"b"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"c"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"-"));
+  fsm_delete(f, true);
+  return 0;
+}
+
 void regex_test(void)
 {
   smb_ut_group *group = su_create_test_group("regex");
@@ -306,6 +319,9 @@ void regex_test(void)
 
   smb_ut_test *class_neg_range = su_create_test("class_neg_range", test_class_neg_range);
   su_add_test(group, class_neg_range);
+
+  smb_ut_test *hyphen = su_create_test("hyphen", test_hyphen);
+  su_add_test(group, hyphen);
 
   su_run_group(group);
   su_delete_group(group);
