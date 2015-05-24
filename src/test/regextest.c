@@ -202,6 +202,22 @@ static int test_digit_neg(void)
   return 0;
 }
 
+static int test_class_neg(void)
+{
+  fsm *f = regex_parse(L"[^abc]");
+  TEST_ASSERT(!fsm_sim_nondet(f, L""));
+  TEST_ASSERT(fsm_sim_nondet(f, L"d"));
+  TEST_ASSERT(fsm_sim_nondet(f, L"A"));
+  TEST_ASSERT(fsm_sim_nondet(f, L"9"));
+  TEST_ASSERT(fsm_sim_nondet(f, L" "));
+  TEST_ASSERT(fsm_sim_nondet(f, L"!"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"a"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"b"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"c"));
+  fsm_delete(f, true);
+  return 0;
+}
+
 void regex_test(void)
 {
   smb_ut_group *group = su_create_test_group("regex");
@@ -250,6 +266,9 @@ void regex_test(void)
 
   smb_ut_test *digit_neg = su_create_test("digit_neg", test_digit_neg);
   su_add_test(group, digit_neg);
+
+  smb_ut_test *class_neg = su_create_test("class_neg", test_class_neg);
+  su_add_test(group, class_neg);
 
   su_run_group(group);
   su_delete_group(group);

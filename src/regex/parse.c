@@ -284,7 +284,8 @@ fsm *regex_parse_char_class(const wchar_t **regex)
   src = fsm_add_state(f, false);
   dest = fsm_add_state(f, true);
   f->start = src;
-  ft = fsm_trans_create(ll_length(&start), type, dest);
+  ft = fsm_trans_create(ll_length(&start) + (type == FSM_TRANS_NEGATIVE ? 1 : 0),
+                        type, dest);
 
   iter = ll_get_iter(&start);
   while (iter.has_next(&iter)) {
@@ -297,6 +298,11 @@ fsm *regex_parse_char_class(const wchar_t **regex)
     d = iter.next(&iter, &status);
     assert(status == SMB_SUCCESS);
     ft->end[iter.index-1] = (wchar_t) d.data_llint;
+  }
+  if (type == FSM_TRANS_NEGATIVE) {
+    // We cannot allow epsilon to be matched in an actual character class.
+    ft->start[ll_length(&start)] = EPSILON;
+    ft->start[ll_length(&start)] = EPSILON;
   }
 
   fsm_add_trans(f, src, ft);
