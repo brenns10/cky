@@ -111,25 +111,26 @@ static void fsm_parsetrans(wchar_t *line, fsm *f, smb_status *status)
   DATA d;
   smb_iter src_it, dst_it;
   fsm_trans *t;
+  ll_init(&sources);
+  ll_init(&destinations);
 
   // First, get the source state, destination state, and type.
   if (swscanf(line, L"%d-%d:%lc%n", &src_state, &dst_state,
               &type_char, &numread) != 3) {
-    *status = CKY_MALFORMED_TRANS;
-    return;
+    goto error;
   }
+  if (type_char != L'+' && type_char != L'-') goto error;
   type = type_char == L'+' ? FSM_TRANS_POSITIVE : FSM_TRANS_NEGATIVE;
   length = wcslen(line);
 
   // Now, we initialize some lists to contain the range sources and
   // destinations, and begin reading these ranges.
-  ll_init(&sources);
-  ll_init(&destinations);
   while (numread < length) {
     // add one to skip the hyphen! ------------------------------------v
     numread += read_wchar(line + numread, length-numread, &src_char) + 1;
     d.data_llint = src_char;
     ll_append(&sources, d);
+    if (numread >= length) goto error;
     numread += read_wchar(line + numread, length-numread,  &dst_char);
     d.data_llint = dst_char;
     ll_append(&destinations, d);

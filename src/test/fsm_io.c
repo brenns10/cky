@@ -186,6 +186,94 @@ int test_read_combine(void)
   return 0;
 }
 
+int test_empty_string(void)
+{
+  const wchar_t *machine = L"";
+  smb_status status = SMB_SUCCESS;
+  fsm *f = fsm_read(machine, &status);
+  TEST_ASSERT(f == NULL);
+  TEST_ASSERT(status == CKY_TOO_FEW_LINES);
+  return 0;
+}
+
+int test_no_start(void)
+{
+  const wchar_t *machine = L"accept:1\n0-1:+a-a\n";
+  smb_status status = SMB_SUCCESS;
+  fsm *f = fsm_read(machine, &status);
+  TEST_ASSERT(f != NULL);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(fsm_sim_nondet(f, L"a"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"b"));
+  fsm_delete(f, true);
+  return 0;
+}
+
+int test_no_trailing_newline(void)
+{
+  const wchar_t *machine = L"start:0\naccept:1\n0-1:+a-a";
+  smb_status status = SMB_SUCCESS;
+  fsm *f = fsm_read(machine, &status);
+  TEST_ASSERT(f != NULL);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(fsm_sim_nondet(f, L"a"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"b"));
+  fsm_delete(f, true);
+  return 0;
+}
+
+int test_whitespace(void)
+{
+  const wchar_t *machine = L"start: 0\naccept: 1\n0-1:+a-a";
+  smb_status status = SMB_SUCCESS;
+  fsm *f = fsm_read(machine, &status);
+  TEST_ASSERT(f != NULL);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(fsm_sim_nondet(f, L"a"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"b"));
+  fsm_delete(f, true);
+  return 0;
+}
+
+static int fail_on(const wchar_t *machine)
+{
+  smb_status status = SMB_SUCCESS;
+  fsm *f = fsm_read(machine, &status);
+  TEST_ASSERT(f == NULL);
+  TEST_ASSERT(status == CKY_MALFORMED_TRANS);
+  return 0;
+}
+
+int test_missing_src(void)
+{
+  return fail_on(L"start:0\naccept:1\n-1:+a-a");
+}
+
+int test_missing_hyphen(void)
+{
+  return fail_on(L"start:0\naccept:1\n01:+a-a");
+}
+
+int test_missing_dst(void)
+{
+  return fail_on(L"start:0\naccept:1\n-1:+a-a");
+}
+
+int test_missing_type(void)
+{
+  return fail_on(L"start:0\naccept:1\n0-1:a-a");
+}
+
+int test_bad_escaping(void)
+{
+  return fail_on(L"start:0\naccept:1\n0-1:+\\u-\\u");
+}
+
+int test_bad_escaping2(void)
+{
+  return fail_on(L"start:0\naccept:1\n0-1:+\\");
+}
+
 void fsm_io_test(void)
 {
   smb_ut_group *group = su_create_test_group("fsm_io");
@@ -198,6 +286,36 @@ void fsm_io_test(void)
 
   smb_ut_test *read_combine = su_create_test("read_combine", test_read_combine);
   su_add_test(group, read_combine);
+
+  smb_ut_test *empty_string = su_create_test("empty_string", test_empty_string);
+  su_add_test(group, empty_string);
+
+  smb_ut_test *no_start = su_create_test("no_start", test_no_start);
+  su_add_test(group, no_start);
+
+  smb_ut_test *no_trailing_newline = su_create_test("no_trailing_newline", test_no_trailing_newline);
+  su_add_test(group, no_trailing_newline);
+
+  smb_ut_test *whitespace = su_create_test("whitespace", test_whitespace);
+  su_add_test(group, whitespace);
+
+  smb_ut_test *missing_src = su_create_test("missing_src", test_missing_src);
+  su_add_test(group, missing_src);
+
+  smb_ut_test *missing_hyphen = su_create_test("missing_hyphen", test_missing_hyphen);
+  su_add_test(group, missing_hyphen);
+
+  smb_ut_test *missing_dst = su_create_test("missing_dst", test_missing_dst);
+  su_add_test(group, missing_dst);
+
+  smb_ut_test *missing_type = su_create_test("missing_type", test_missing_type);
+  su_add_test(group, missing_type);
+
+  smb_ut_test *bad_escaping = su_create_test("bad_escaping", test_bad_escaping);
+  su_add_test(group, bad_escaping);
+
+  smb_ut_test *bad_escaping2 = su_create_test("bad_escaping2", test_bad_escaping2);
+  su_add_test(group, bad_escaping2);
 
   su_run_group(group);
   su_delete_group(group);
