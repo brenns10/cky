@@ -93,6 +93,19 @@ static int test_plus(void)
   return 0;
 }
 
+static int test_question(void)
+{
+  fsm *f = regex_parse(L"a?");
+  TEST_ASSERT(fsm_sim_nondet(f, L""));
+  TEST_ASSERT(fsm_sim_nondet(f, L"a"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"aa"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"aaa"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"ab"));
+  TEST_ASSERT(!fsm_sim_nondet(f, L"ba"));
+  fsm_delete(f, true);
+  return 0;
+}
+
 static int test_kleene(void)
 {
   fsm *f = regex_parse(L"a*");
@@ -140,6 +153,9 @@ void regex_test(void)
 
   smb_ut_test *plus = su_create_test("plus", test_plus);
   su_add_test(group, plus);
+
+  smb_ut_test *question = su_create_test("question", test_question);
+  su_add_test(group, question);
 
   smb_ut_test *kleene = su_create_test("kleene", test_kleene);
   su_add_test(group, kleene);
