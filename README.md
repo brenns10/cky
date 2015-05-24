@@ -94,3 +94,8 @@ I plan on the following:
 
 - Further in the future, I plan on actually implementing a parser.  It will use
   my regex engine as the lexical scanner.
+
+## License
+
+Copyright (c) 2014-2015, Stephen Brennan.  Released under the Revised BSD
+License.  See [the license](LICENSE.txt) for details.

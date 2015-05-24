@@ -8,6 +8,9 @@
 
   @brief        Test fsm functions.
 
+  @copyright    Copyright (c) 2015, Stephen Brennan.  Released under the Revised
+                BSD License.  See the LICENSE.txt file for details.
+
 *******************************************************************************/
 
 #include <stdbool.h>
