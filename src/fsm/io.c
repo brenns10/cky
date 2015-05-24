@@ -290,8 +290,8 @@ void fsm_print(fsm *f, FILE *dest)
    others.  In dot format, quotes should be escaped.  Also, epsilon transitions
    should be labelled something readable.
 
-   @brief dest Destination file.
-   @brief c The character to print
+   @param dest Destination file.
+   @param c The character to print
  */
 void fsm_dot_char(FILE * dest, wchar_t c)
 {
