@@ -16,3 +16,4 @@
 void fsm_test(void);
 void fsm_io_test(void);
 void regex_test(void);
+void regex_search_test(void);
