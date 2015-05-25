@@ -27,7 +27,6 @@
 #include "test/tests.h"
 
 void simple_gram(void);
-void simple_fsm(void);
 void regex(void);
 void search(void);
 void dot(void);
@@ -43,7 +42,6 @@ void help(char *name)
   puts("");
   puts("Tests:");
   puts("  -g, --simple-gram       create and print a grammar");
-  puts("  -f, --simple-fsm        programmatically create and run a certain FSM");
   puts("  -e, --regex             input regex and test strings");
   puts("  -s, --search            regex search file");
   puts("  -d, --dot               create graphviz dot from regex");
@@ -80,10 +78,6 @@ int main(int argc, char **argv)
 
   if (check_flag(&data, 'g') || check_long_flag(&data, "simple-gram")) {
     simple_gram();
-    executed = true;
-  }
-  if (check_flag(&data, 'f') || check_long_flag(&data, "simple-fsm")) {
-    simple_fsm();
     executed = true;
   }
   if (check_flag(&data, 'e') || check_long_flag(&data, "regex")) {
@@ -268,68 +262,6 @@ void regex(void)
     smb_free(str);
   }
   fsm_delete(compiled_fsm, true);
-}
-
-/**
-   @brief A function that tests the basic construction of a simple FSM.
-
-   Using the actual creation functions, creates a FSM to accept a string with an
-   even number of a's and b's.  Currently, the function simulates it
-   nondeterministically, even though the machine is deterministic.
- */
-void simple_fsm(void)
-{
-  fsm *f = fsm_create();
-
-  fsm_trans *T01 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 1);
-  fsm_trans *T10 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 0);
-  fsm_trans *T13 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 3);
-  fsm_trans *T31 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 1);
-  fsm_trans *T32 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 2);
-  fsm_trans *T23 = fsm_trans_create_single(L'a', L'a', FSM_TRANS_POSITIVE, 3);
-  fsm_trans *T20 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 0);
-  fsm_trans *T02 = fsm_trans_create_single(L'b', L'b', FSM_TRANS_POSITIVE, 2);
-
-  wchar_t *i1 = L"abab";
-  wchar_t *i2 = L"aab";
-  wchar_t *i3 = L"aaaabbbba";
-
-  f->start = 0;
-
-  fsm_add_state(f, true);  // 0
-  fsm_add_state(f, false); // 1
-  fsm_add_state(f, false); // 2
-  fsm_add_state(f, false); // 3
-
-  fsm_add_trans(f, 0, T01);
-  fsm_add_trans(f, 1, T10);
-  fsm_add_trans(f, 1, T13);
-  fsm_add_trans(f, 3, T31);
-  fsm_add_trans(f, 3, T32);
-  fsm_add_trans(f, 2, T23);
-  fsm_add_trans(f, 2, T20);
-  fsm_add_trans(f, 0, T02);
-
-  printf("Running on i1=\"%ls\"\n", i1);
-  if (fsm_sim_nondet(f, i1))
-    printf("Accept.\n");
-  else
-    printf("Reject.\n");
-
-  printf("Running on i2=\"%ls\"\n", i2);
-  if (fsm_sim_nondet(f, i2))
-    printf("Accept.\n");
-  else
-    printf("Reject.\n");
-
-  printf("Running on i3=\"%ls\"\n", i3);
-  if (fsm_sim_nondet(f, i3))
-    printf("Accept.\n");
-  else
-    printf("Reject.\n");
-
-  fsm_print(f, stdout);
-  fsm_delete(f, true);
 }
 
 /**
