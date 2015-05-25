@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>CKY Parser: src/test/tests.h File Reference</title>
+<title>CKY Parser: src/test/regexsearchtest.c File Reference</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -79,33 +79,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">src/test/tests.h File Reference</div>  </div>
+<div class="title">src/test/regexsearchtest.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Test runners.  
+<p>Test regex search functions.  
 <a href="#details">More...</a></p>
-
-<p><a href="tests_8h_source.html">Go to the source code of this file.</a></p>
+<div class="textblock"><code>#include &quot;libstephen/ut.h&quot;</code><br/>
+<code>#include &quot;<a class="el" href="regex_8h_source.html">regex.h</a>&quot;</code><br/>
+</div>
+<p><a href="regexsearchtest_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0815eac3133a1830f96131a2775a23c"></a><!-- doxytag: member="tests.h::fsm_test" ref="aa0815eac3133a1830f96131a2775a23c" args="(void)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_test</b> (void)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a714fa1b6bf7c175b628cc57109d364da"></a><!-- doxytag: member="tests.h::fsm_io_test" ref="a714fa1b6bf7c175b628cc57109d364da" args="(void)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>fsm_io_test</b> (void)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ce54bba4f8254aa11ea7cb94066314d"></a><!-- doxytag: member="tests.h::regex_test" ref="a9ce54bba4f8254aa11ea7cb94066314d" args="(void)" -->
-void&#160;</td><td class="memItemRight" valign="bottom"><b>regex_test</b> (void)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ba038b68660c822428fe7cd878a58f1"></a><!-- doxytag: member="tests.h::regex_search_test" ref="a6ba038b68660c822428fe7cd878a58f1" args="(void)" -->
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53478e84e65c153ee77b1f7aae8d978a"></a><!-- doxytag: member="regexsearchtest.c::test_simple_search" ref="a53478e84e65c153ee77b1f7aae8d978a" args="(void)" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>test_simple_search</b> (void)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56cfd240e14f471568b3fe4a59109871"></a><!-- doxytag: member="regexsearchtest.c::test_greedy_search" ref="a56cfd240e14f471568b3fe4a59109871" args="(void)" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>test_greedy_search</b> (void)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4aa012b2bd675c0b982adda0ac3da9c1"></a><!-- doxytag: member="regexsearchtest.c::test_overlap" ref="a4aa012b2bd675c0b982adda0ac3da9c1" args="(void)" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>test_overlap</b> (void)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ba038b68660c822428fe7cd878a58f1"></a><!-- doxytag: member="regexsearchtest.c::regex_search_test" ref="a6ba038b68660c822428fe7cd878a58f1" args="(void)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>regex_search_test</b> (void)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Test runners. </p>
+<div class="textblock"><p>Test regex search functions. </p>
 <dl class="author"><dt><b>Author:</b></dt><dd>Stephen Brennan</dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>Sunday, 18 January 2015</dd></dl>
-<dl class="copyright"><dt><b>Copyright:</b></dt><dd>Copyright (c) 2015, Stephen Brennan. Released under the Revised BSD License. See the LICENSE.txt file for details. </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>Created Sunday, 24 May 2015</dd></dl>
+<dl class="copyright"><dt><b>Copyright:</b></dt><dd>Copyright (c) 2015, Stephen Brennan. Released under the Revised BSD License. See LICENSE.txt for details. </dd></dl>
 
-<p>Definition in file <a class="el" href="tests_8h_source.html">tests.h</a>.</p>
+<p>Definition in file <a class="el" href="regexsearchtest_8c_source.html">regexsearchtest.c</a>.</p>
 </div></div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
