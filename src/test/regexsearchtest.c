@@ -37,12 +37,32 @@ int test_simple_search(void)
   return 0;
 }
 
+int test_greedy_search(void)
+{
+  smb_status status = SMB_SUCCESS;
+  wchar_t *search_text = L"Give me a call at (123) 456-7890!";
+  smb_al *results = regex_search(L"\\(\\d\\d\\d\\) ?\\d\\d\\d-\\d\\d\\d\\d",
+                                 search_text, true, false);
+  regex_hit *hit;
+  TEST_ASSERT(al_length(results) == 1);
+  hit = al_get(results, 0, &status).data_ptr;
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(hit->start == 18);
+  TEST_ASSERT(hit->length == 14);
+  regex_hit_delete(hit);
+  al_delete(results);
+  return 0;
+}
+
 void regex_search_test(void)
 {
   smb_ut_group *group = su_create_test_group("regex_search");
 
   smb_ut_test *simple_search = su_create_test("simple_search", test_simple_search);
   su_add_test(group, simple_search);
+
+  smb_ut_test *greedy_search = su_create_test("greedy_search", test_greedy_search);
+  su_add_test(group, greedy_search);
 
   su_run_group(group);
   su_delete_group(group);
