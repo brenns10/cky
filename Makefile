@@ -44,9 +44,8 @@ endif
 
 # Sources and Objects
 SOURCES=$(shell find src/ -type f -name "*.c")
-SOURCEDIRS=$(shell find src/ -type d)
-
 OBJECTS=$(patsubst src/%.c,obj/$(CFG)/%.o,$(SOURCES)) obj/$(CFG)/libstephen.a
+DEPS=$(patsubst src/%.c,deps/%.d,$(SOURCES))
 
 # Main targets
 .PHONY: all clean clean_all clean_docs clean_cov libstephen_build docs gcov
@@ -87,24 +86,6 @@ obj/$(CFG)/libstephen.a: libstephen_build
 libstephen_build:
 	make -C libstephen CFG=$(CFG) lib
 
-# Explicit dependencies in the sources.
-src/gram.c: src/gram.h
-src/gram.h:
-src/main.c: src/gram.h src/fsm.h src/regex.h
-src/fsm.h:
-src/regex.c: src/regex.h src/fsm.h src/str.h
-src/regex.h: src/fsm.h
-src/str.c: src/str.h src/fsm.h
-
-src/fsm/datastructs.c: src/fsm.h
-src/fsm/io.c: src/fsm.h src/str.h
-src/fsm/simulation.c: src/fsm.h
-src/fsm/operations.c: src/fsm.h
-
-src/regex/datastructs.c: src/regex.h
-src/regex/parse.c: src/regex.h src/fsm.h src/str.h
-src/regex/search.c: src/regex.h src/fsm.h
-
 # --- Compile Rule
 obj/$(CFG)/%.o: src/%.c
 	$(DIR_GUARD)
@@ -114,3 +95,12 @@ obj/$(CFG)/%.o: src/%.c
 bin/$(CFG)/main: $(OBJECTS) obj/$(CFG)/libstephen.a
 	$(DIR_GUARD)
 	$(CC) $(LFLAGS) $(OBJECTS) -o bin/$(CFG)/main
+
+# --- Dependency Rule
+deps/%.d: src/%.c
+	$(DIR_GUARD)
+	$(CC) $(CFLAGS) -MM $< | sed -e 's/~\(.*\)\.o:/\1.d \1.o:/' > $@
+
+ifneq "$(MAKECMDGOALS)" "clean_all"
+-include $(DEPS)
+endif
