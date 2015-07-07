@@ -306,4 +306,5 @@ void test(void)
   fsm_io_test();
   regex_test();
   regex_search_test();
+  lex_test();
 }
