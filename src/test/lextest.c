@@ -13,6 +13,8 @@
 
 *******************************************************************************/
 
+#include <wchar.h>
+
 #include "libstephen/ut.h"
 #include "lex.h"
 
@@ -53,6 +55,62 @@ static int test_multiple(void)
   return 0;
 }
 
+static int test_simple_lex(void)
+{
+  smb_status status = SMB_SUCCESS;
+  int length, idx = 0;
+  DATA token;
+  wchar_t *config =
+    L"[a-zA-Z_]\\w*\tidentifier\n"
+    L"\\d+\tinteger\n"
+    L"\\+\tADD\n"
+    L"\\-\tSUBTRACT\n"
+    L"\\s+\twhitespace\n";
+  wchar_t *test = L"var-12+ id3";
+  smb_lex *lex = lex_create();
+  lex_load(lex, config, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(al_length(&lex->patterns) == 5);
+
+  lex_yylex(lex, test, &token, &length, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(length == 3);
+  TEST_ASSERT(wcscmp(token.data_ptr, L"identifier") == 0);
+  idx += length;
+
+  lex_yylex(lex, test+idx, &token, &length, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(length == 1);
+  TEST_ASSERT(wcscmp(token.data_ptr, L"SUBTRACT") == 0);
+  idx += length;
+
+  lex_yylex(lex, test+idx, &token, &length, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(length == 2);
+  TEST_ASSERT(wcscmp(token.data_ptr, L"integer") == 0);
+  idx += length;
+
+  lex_yylex(lex, test+idx, &token, &length, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(length == 1);
+  TEST_ASSERT(wcscmp(token.data_ptr, L"ADD") == 0);
+  idx += length;
+
+  lex_yylex(lex, test+idx, &token, &length, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(length == 1);
+  TEST_ASSERT(wcscmp(token.data_ptr, L"whitespace") == 0);
+  idx += length;
+
+  lex_yylex(lex, test+idx, &token, &length, &status);
+  TEST_ASSERT(status == SMB_SUCCESS);
+  TEST_ASSERT(length == 3);
+  TEST_ASSERT(wcscmp(token.data_ptr, L"identifier") == 0);
+
+  lex_delete(lex);
+  return 0;
+}
+
 void lex_test(void)
 {
   smb_ut_group *group = su_create_test_group("lex");
@@ -65,6 +123,9 @@ void lex_test(void)
 
   smb_ut_test *multiple = su_create_test("multiple", test_multiple);
   su_add_test(group, multiple);
+
+  smb_ut_test *simple_lex = su_create_test("simple_lex", test_simple_lex);
+  su_add_test(group, simple_lex);
 
   su_run_group(group);
   su_delete_group(group);

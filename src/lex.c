@@ -117,3 +117,61 @@ void lex_load(smb_lex *obj, const wchar_t *str, smb_status *status)
   smb_free(buf);
   ll_delete(lines);
 }
+
+void lex_yylex(smb_lex *obj, wchar_t *input, DATA *token, int *length,
+               smb_status *status)
+{
+  int i, j, last_pattern, last_index;
+  int state;
+  fsm_sim *fs;
+  smb_al simulations;
+  al_init(&simulations);
+
+  // First, create simulations for each pattern.
+  for (i = 0; i < al_length(&obj->patterns); i++) {
+    fs = fsm_sim_nondet_begin(al_get(&obj->patterns, i, status).data_ptr, input);
+    assert(*status == SMB_SUCCESS);
+    al_append(&simulations, (DATA){.data_ptr=fs});
+  }
+
+  // Then, iterate over each character.
+  last_pattern = -1;
+  last_index = -1;
+  for (j = 0; input[j] != L'\0'; j++) {
+
+    // For each simulation...
+    for (i = 0; i < al_length(&obj->patterns); i++) {
+      // Advance the simulation one step.
+      fs = al_get(&simulations, i, status).data_ptr;
+      assert(*status == SMB_SUCCESS);
+      fsm_sim_nondet_step(fs);
+      state = fsm_sim_nondet_state(fs);
+
+      // If the simulation is in an accepting state...
+      if (state == FSM_SIM_ACCEPTING || state == FSM_SIM_ACCEPTED) {
+        // And no other simulation has been accepting at this index...
+        if (last_index < j) {
+          // Record this pattern and simulation.
+          last_pattern = i;
+          last_index = j;
+        }
+      }
+    }
+
+    // If none of the simulations were accepting after this character...
+    if (last_index < j) {
+      break;  // terminate early
+    }
+  }
+
+  // The result is the last token, and the length is the last index.
+  if (last_pattern >= 0) {
+    *token = al_get(&obj->tokens, last_pattern, status);
+    assert(*status == SMB_SUCCESS);
+    *length = last_index + 1;
+  } else {
+    *length = -1;
+  }
+  *status = SMB_SUCCESS;
+  al_destroy(&simulations);
+}

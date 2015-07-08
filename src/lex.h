@@ -35,7 +35,7 @@ void lex_delete(smb_lex *obj);
 void lex_load(smb_lex *obj, const wchar_t *str, smb_status *status);
 
 // Doing the actual tokenizing.
-void lex_yylex(smb_lex *obj, FILE *f, DATA *token, wchar_t *match,
+void lex_yylex(smb_lex *obj, wchar_t *input, DATA *token, int *length,
                smb_status *st);
 
 #endif//SMB_LEX_H
