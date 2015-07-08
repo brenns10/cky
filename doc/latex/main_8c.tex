@@ -10,12 +10,15 @@
 {\ttfamily \#include $<$stdlib.\-h$>$}\*
 {\ttfamily \#include $<$wchar.\-h$>$}\*
 {\ttfamily \#include $<$string.\-h$>$}\*
+{\ttfamily \#include $<$assert.\-h$>$}\*
 {\ttfamily \#include \char`\"{}libstephen/base.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/ad.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/util.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/cb.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}gram.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}regex.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}lex.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}test/tests.\-h\char`\"{}}\*
 \subsection*{\-Functions}
 \begin{DoxyCompactItemize}
@@ -23,8 +26,6 @@
 \hypertarget{main_8c_ae6944b49c049abac30afba21d5cafeee}{void \hyperlink{main_8c_ae6944b49c049abac30afba21d5cafeee}{simple\-\_\-gram} (void)}\label{main_8c_ae6944b49c049abac30afba21d5cafeee}
 
 \begin{DoxyCompactList}\small\item\em \-Tests creating a grammar, and printing it out. \end{DoxyCompactList}\item 
-void \hyperlink{main_8c_a199259c75545a52be8cb131a39a38f86}{simple\-\_\-fsm} (void)
-\begin{DoxyCompactList}\small\item\em \-A function that tests the basic construction of a simple \-F\-S\-M. \end{DoxyCompactList}\item 
 void \hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex} (void)
 \begin{DoxyCompactList}\small\item\em \-A light test of my regular expression parser. \end{DoxyCompactList}\item 
 \hypertarget{main_8c_a8c16096db9937d634d96eb8f6b79c024}{void \hyperlink{main_8c_a8c16096db9937d634d96eb8f6b79c024}{search} (void)}\label{main_8c_a8c16096db9937d634d96eb8f6b79c024}
@@ -33,6 +34,8 @@ void \hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex} (void)
 \hypertarget{main_8c_aa9a86d612578e54e79a11bc53bfb0b5c}{void \hyperlink{main_8c_aa9a86d612578e54e79a11bc53bfb0b5c}{dot} (void)}\label{main_8c_aa9a86d612578e54e79a11bc53bfb0b5c}
 
 \begin{DoxyCompactList}\small\item\em \-Read a regex from stdin and print to stdout a dot representation. \end{DoxyCompactList}\item 
+void \hyperlink{main_8c_a33236449363e9eb55d45b6db3c5fa401}{lex} (char $\ast$filename)
+\begin{DoxyCompactList}\small\item\em \-Open a lexer description file, and then lex from stdin. \end{DoxyCompactList}\item 
 \hypertarget{main_8c_a708a4c1a4d0c4acc4c447310dd4db27f}{void {\bfseries test} (void)}\label{main_8c_a708a4c1a4d0c4acc4c447310dd4db27f}
 
 \item 
@@ -62,6 +65,26 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 
 
 \subsection{\-Function \-Documentation}
+\hypertarget{main_8c_a33236449363e9eb55d45b6db3c5fa401}{\index{main.\-c@{main.\-c}!lex@{lex}}
+\index{lex@{lex}!main.c@{main.\-c}}
+\subsubsection[{lex}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf lex} (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{filename}
+\end{DoxyParamCaption}
+)}}\label{main_8c_a33236449363e9eb55d45b6db3c5fa401}
+
+
+\-Open a lexer description file, and then lex from stdin. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em filename} & \-Lexer description file. \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 320 of file main.\-c.
+
 \hypertarget{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{\index{main.\-c@{main.\-c}!main@{main}}
 \index{main@{main}!main.c@{main.\-c}}
 \subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf main} (
@@ -88,7 +111,7 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 \end{DoxyReturn}
 
 
-\-Definition at line 67 of file main.\-c.
+\-Definition at line 70 of file main.\-c.
 
 \hypertarget{main_8c_a8e150082e585faad4c237eefa1ae290e}{\index{main.\-c@{main.\-c}!read\-\_\-file@{read\-\_\-file}}
 \index{read\-\_\-file@{read\-\_\-file}!main.c@{main.\-c}}
@@ -116,7 +139,7 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 \end{DoxyReturn}
 
 
-\-Definition at line 145 of file main.\-c.
+\-Definition at line 152 of file main.\-c.
 
 \hypertarget{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{\index{main.\-c@{main.\-c}!regex@{regex}}
 \index{regex@{regex}!main.c@{main.\-c}}
@@ -131,20 +154,5 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 
 \-Prompts for a regex, and then loops prompting for test strings. \-Runs the regex on each test string and reports to stdout whether they are accepted or rejected. 
 
-\-Definition at line 238 of file main.\-c.
-
-\hypertarget{main_8c_a199259c75545a52be8cb131a39a38f86}{\index{main.\-c@{main.\-c}!simple\-\_\-fsm@{simple\-\_\-fsm}}
-\index{simple\-\_\-fsm@{simple\-\_\-fsm}!main.c@{main.\-c}}
-\subsubsection[{simple\-\_\-fsm}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf simple\-\_\-fsm} (
-\begin{DoxyParamCaption}
-\item[{void}]{}
-\end{DoxyParamCaption}
-)}}\label{main_8c_a199259c75545a52be8cb131a39a38f86}
-
-
-\-A function that tests the basic construction of a simple \-F\-S\-M. 
-
-\-Using the actual creation functions, creates a \-F\-S\-M to accept a string with an even number of a's and b's. \-Currently, the function simulates it nondeterministically, even though the machine is deterministic. 
-
-\-Definition at line 280 of file main.\-c.
+\-Definition at line 245 of file main.\-c.
 

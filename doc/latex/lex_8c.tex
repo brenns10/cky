@@ -1,0 +1,54 @@
+\hypertarget{lex_8c}{\section{src/lex.c \-File \-Reference}
+\label{lex_8c}\index{src/lex.\-c@{src/lex.\-c}}
+}
+
+
+\-Lexer.  
+
+
+{\ttfamily \#include $<$assert.\-h$>$}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+{\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}regex.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}lex.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}str.\-h\char`\"{}}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{lex_8c_a7cc647b97e47294e30c05324095a440e}{void {\bfseries lex\-\_\-init} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj)}\label{lex_8c_a7cc647b97e47294e30c05324095a440e}
+
+\item 
+\hypertarget{lex_8c_a8d4a469709619092cce29475c623ba0f}{\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$ {\bfseries lex\-\_\-create} (void)}\label{lex_8c_a8d4a469709619092cce29475c623ba0f}
+
+\item 
+\hypertarget{lex_8c_ab3f85b55da021b5bbe8eded6a2f44552}{void {\bfseries lex\-\_\-destroy} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj)}\label{lex_8c_ab3f85b55da021b5bbe8eded6a2f44552}
+
+\item 
+\hypertarget{lex_8c_a8d53497a077558fb7a240d1753626ac2}{void {\bfseries lex\-\_\-delete} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj)}\label{lex_8c_a8d53497a077558fb7a240d1753626ac2}
+
+\item 
+\hypertarget{lex_8c_a4e535a1a1e7457452134275061e3db2d}{void {\bfseries lex\-\_\-add\-\_\-pattern} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, wchar\-\_\-t $\ast$\hyperlink{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{regex}, wchar\-\_\-t $\ast$token)}\label{lex_8c_a4e535a1a1e7457452134275061e3db2d}
+
+\item 
+\hypertarget{lex_8c_a141f97e0745517668052f71ee7eca286}{void {\bfseries lex\-\_\-load} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, const wchar\-\_\-t $\ast$str, smb\-\_\-status $\ast$status)}\label{lex_8c_a141f97e0745517668052f71ee7eca286}
+
+\item 
+\hypertarget{lex_8c_a1f555c05e247cad8ca82459ee57caac0}{void {\bfseries lex\-\_\-yylex} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, wchar\-\_\-t $\ast$input, \-D\-A\-T\-A $\ast$token, int $\ast$length, smb\-\_\-status $\ast$status)}\label{lex_8c_a1f555c05e247cad8ca82459ee57caac0}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Lexer. \begin{DoxyAuthor}{\-Author}
+\-Stephen \-Brennan
+\end{DoxyAuthor}
+\begin{DoxyDate}{\-Date}
+\-Created \-Monday, 6 \-July 2015
+\end{DoxyDate}
+\begin{DoxyCopyright}{\-Copyright}
+\-Copyright (c) 2015, \-Stephen \-Brennan. \-Released under the \-Revised \-B\-S\-D \-License. \-See \-L\-I\-C\-E\-N\-S\-E.\-txt for details. 
+\end{DoxyCopyright}
+
+
+\-Definition in file \hyperlink{lex_8c_source}{lex.\-c}.
+
