@@ -348,7 +348,7 @@ void lex(char *filename)
     int length;
     DATA token;
     lex_yylex(lex, input.buf + offset, &token, &length, &status);
-    printf("%ls: at index=%d, length=&%d\n", (wchar_t*)token.data_ptr, offset,
+    printf("%ls: at index=%d, length=%d\n", (wchar_t*)token.data_ptr, offset,
            length);
     offset += length;
   }
