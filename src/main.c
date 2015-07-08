@@ -17,19 +17,23 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include <string.h>
+#include <assert.h>
 
 #include "libstephen/base.h"
 #include "libstephen/ad.h"
 #include "libstephen/util.h"
+#include "libstephen/cb.h"
 #include "gram.h"
 #include "fsm.h"
 #include "regex.h"
+#include "lex.h"
 #include "test/tests.h"
 
 void simple_gram(void);
 void regex(void);
 void search(void);
 void dot(void);
+void lex(char*);
 void test(void);
 
 /**
@@ -45,6 +49,7 @@ void help(char *name)
   puts("  -e, --regex             input regex and test strings");
   puts("  -s, --search            regex search file");
   puts("  -d, --dot               create graphviz dot from regex");
+  puts("  -l, --lex [FILE]        perform lexical analysis");
   puts("  -t, --test              run tests");
   puts("");
   puts("Misc:");
@@ -92,6 +97,14 @@ int main(int argc, char **argv)
     dot();
     arg_data_destroy(&data);
     return 0; // exit silently
+  }
+  if (check_flag(&data, 'l') || check_long_flag(&data, "lex")) {
+    char *filename;
+    filename = get_flag_parameter(&data, 'l');
+    if (filename == NULL)
+      filename = get_long_flag_parameter(&data, "lex");
+    lex(filename);
+    executed = true;
   }
   if (check_flag(&data, 't') || check_long_flag(&data, "test")) {
     test();
@@ -298,6 +311,50 @@ void simple_gram(void)
 
   cfg_print(gram);
   cfg_delete(gram, false);
+}
+
+/**
+  @brief Open a lexer description file, and then lex from stdin.
+  @param filename Lexer description file.
+ */
+void lex(char *filename)
+{
+  smb_lex *lex = lex_create();
+  smb_status status = SMB_SUCCESS;
+  wcbuf desc;
+  wcbuf input;
+  wint_t wc;
+  wchar_t buf[2] = L"_";
+  int offset = 0;
+  FILE *f = fopen(filename, "r");
+  wcb_init(&desc, 2048);
+  wcb_init(&input, 2048);
+
+  while ((wc = fgetwc(f)) != WEOF) {
+    buf[0] = (wchar_t) wc;
+    wcb_append(&desc, buf);
+  }
+  fclose(f);
+
+  while ((wc = fgetwc(stdin)) != WEOF) {
+    buf[0] = (wchar_t) wc;
+    wcb_append(&input, buf);
+  }
+
+  lex_load(lex, desc.buf, &status);
+  assert(status == SMB_SUCCESS);
+
+  for (offset = 0; input.buf[offset] != L'\0'; ) {
+    int length;
+    DATA token;
+    lex_yylex(lex, input.buf + offset, &token, &length, &status);
+    printf("%ls: at index=%d, length=&%d\n", (wchar_t*)token.data_ptr, offset,
+           length);
+    offset += length;
+  }
+  wcb_destroy(&desc);
+  wcb_destroy(&input);
+  lex_delete(lex);
 }
 
 void test(void)

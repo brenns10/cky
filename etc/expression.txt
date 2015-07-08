@@ -1,0 +1,9 @@
+################################################################################
+# This is a simple lexer description for a C-like expression language.  You can
+# use it with the "-l" option to parse stdin using the expression language.
+################################################################################
+[a-zA-Z_]\w*	identifier
+\d+	integer
+\+	ADD
+\-	SUBTRACT
+\s+	whitespace
