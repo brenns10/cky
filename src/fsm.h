@@ -199,11 +199,6 @@ typedef struct {
    */
   smb_al *curr;
 
-  /**
-     @brief Pointer to the current input (advances each step of simulation).
-   */
-  const wchar_t *input;
-
 } fsm_sim;
 
 // Error constant declarations:
@@ -232,8 +227,8 @@ void fsm_add_trans(fsm *f, int state, const fsm_trans *ft);
 fsm_trans *fsm_add_single(fsm *f, int from, int to, wchar_t start, wchar_t end,
                           int type);
 
-void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input);
-fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input);
+void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr);
+fsm_sim *fsm_sim_create(fsm *f, smb_al *curr);
 void fsm_sim_destroy(fsm_sim *fs, bool free_curr);
 void fsm_sim_delete(fsm_sim *fs, bool free_curr);
 
@@ -255,9 +250,9 @@ void fsm_sim_nondet_union_and_delete(smb_al *first, smb_al *second);
 bool fsm_sim_nondet_non_empty_intersection(smb_al *first, smb_al *second);
 
 bool fsm_sim_det(fsm *f, const wchar_t *input);
-fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input);
-int fsm_sim_nondet_state(const fsm_sim *s);
-void fsm_sim_nondet_step(fsm_sim *s);
+fsm_sim *fsm_sim_nondet_begin(fsm *f);
+int fsm_sim_nondet_state(const fsm_sim *s, wchar_t input);
+void fsm_sim_nondet_step(fsm_sim *s, wchar_t input);
 bool fsm_sim_nondet(fsm *f, const wchar_t *input);
 
 // operations.c

@@ -194,18 +194,20 @@ bool fsm_sim_det(fsm *f, const wchar_t *input)
    be empty.
 
    @param f The FSM to simulate
-   @param input The input to run on
  */
-fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input)
+fsm_sim *fsm_sim_nondet_begin(fsm *f)
 {
   smb_al *curr = fsm_sim_nondet_epsilon_closure(f, f->start);
-  fsm_sim *fs = fsm_sim_create(f, curr, input);
+  fsm_sim *fs = fsm_sim_create(f, curr);
   return fs;
 }
 
 /**
    @brief Check the state of the simulation.
    @param s The simulation to check.
+   @param input The character that will be the next input.  This is used to
+   determine whether or not the decision is final (ACCEPTED/REJECTED), or may
+   change if you continue the simulation.
    @retval FSM_SIM_ACCEPTING when the simulation has not ended, but is accepting
    @retval FSM_SIM_NOT_ACCEPTING when the simulation has not ended, and is not
    accepting
@@ -216,7 +218,7 @@ fsm_sim *fsm_sim_nondet_begin(fsm *f, const wchar_t *input)
    @see FSM_SIM_REJECTED
    @see FSM_SIM_ACCEPTED
  */
-int fsm_sim_nondet_state(const fsm_sim *s)
+int fsm_sim_nondet_state(const fsm_sim *s, wchar_t input)
 {
   // If the current state is empty, REJECT
   if (al_length(s->curr) == 0) {
@@ -224,7 +226,7 @@ int fsm_sim_nondet_state(const fsm_sim *s)
   }
   if (fsm_sim_nondet_non_empty_intersection(&s->f->accepting, s->curr)) {
     // If one of our current states is accepting...
-    if (*s->input == L'\0') {
+    if (input == L'\0') {
       // ... and input is exhausted, ACCEPT
       return FSM_SIM_ACCEPTED;
     } else {
@@ -233,7 +235,7 @@ int fsm_sim_nondet_state(const fsm_sim *s)
     }
   } else {
     // If no current state is accepting ...
-    if (*s->input == L'\0') {
+    if (input == L'\0') {
       // ... and the input is exhausted, REJECT
       return FSM_SIM_REJECTED;
     } else {
@@ -253,7 +255,7 @@ int fsm_sim_nondet_state(const fsm_sim *s)
 
    @param s The simulation state struct
  */
-void fsm_sim_nondet_step(fsm_sim *s)
+void fsm_sim_nondet_step(fsm_sim *s, wchar_t input)
 {
   smb_status status;
   int i, j, state, original;
@@ -281,7 +283,7 @@ void fsm_sim_nondet_step(fsm_sim *s)
 
       // If the transition contains the current input, and it's not already in
       // the next state list, add it to the next state list.
-      if (fsm_trans_check(t, *s->input) &&
+      if (fsm_trans_check(t, input) &&
           al_index_of(next, d, &data_compare_int) == -1) {
         al_append(next, d);
       }
@@ -301,7 +303,6 @@ void fsm_sim_nondet_step(fsm_sim *s)
   // Delete the old state, set the new one, and advance the input
   al_delete(s->curr);
   s->curr = next;
-  s->input++;
 
   // For diagnostics, print the new state
   SMB_DP("New state: ");
@@ -325,12 +326,14 @@ void fsm_sim_nondet_step(fsm_sim *s)
  */
 bool fsm_sim_nondet(fsm *f, const wchar_t *input)
 {
-  fsm_sim *sim = fsm_sim_nondet_begin(f, input);
-  int res = fsm_sim_nondet_state(sim);
+  fsm_sim *sim = fsm_sim_nondet_begin(f);
+  int i = 0;
+  int res = fsm_sim_nondet_state(sim, input[i]);
 
   while (res != FSM_SIM_REJECTED && res != FSM_SIM_ACCEPTED) {
-    fsm_sim_nondet_step(sim);
-    res = fsm_sim_nondet_state(sim);
+    fsm_sim_nondet_step(sim, input[i]);
+    i++;
+    res = fsm_sim_nondet_state(sim, input[i]);
     SMB_DP("Current result: %d\n", res);
   }
 

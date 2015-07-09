@@ -129,7 +129,7 @@ void lex_yylex(smb_lex *obj, wchar_t *input, DATA *token, int *length,
 
   // First, create simulations for each pattern.
   for (i = 0; i < al_length(&obj->patterns); i++) {
-    fs = fsm_sim_nondet_begin(al_get(&obj->patterns, i, status).data_ptr, input);
+    fs = fsm_sim_nondet_begin(al_get(&obj->patterns, i, status).data_ptr);
     assert(*status == SMB_SUCCESS);
     al_append(&simulations, (DATA){.data_ptr=fs});
   }
@@ -144,8 +144,8 @@ void lex_yylex(smb_lex *obj, wchar_t *input, DATA *token, int *length,
       // Advance the simulation one step.
       fs = al_get(&simulations, i, status).data_ptr;
       assert(*status == SMB_SUCCESS);
-      fsm_sim_nondet_step(fs);
-      state = fsm_sim_nondet_state(fs);
+      fsm_sim_nondet_step(fs, input[j]);
+      state = fsm_sim_nondet_state(fs, input[j]);
 
       // If the simulation is in an accepting state...
       if (state == FSM_SIM_ACCEPTING || state == FSM_SIM_ACCEPTED) {

@@ -60,7 +60,7 @@ static int test_fsm_sim_memory(void)
   fsm_init(&f);
 
   // Test is to make sure that these work properly.
-  pfs = fsm_sim_create(&f, state, L"abctest");
+  pfs = fsm_sim_create(&f, state);
   fsm_sim_delete(pfs, true);
 
   // Only need to destroy the FSM, since the "curr" state was freed.

@@ -50,7 +50,7 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
   // OUTER WHILE: iterate over starting characters.
   while (srchText[start] != L'\0') {
     // Simulate the FSM at each character.
-    curr_sim = fsm_sim_nondet_begin(regex_fsm, srchText + start);
+    curr_sim = fsm_sim_nondet_begin(regex_fsm);
     length = 0;
     last_length = -1;
     res = -1;
@@ -61,8 +61,8 @@ smb_al *fsm_search(fsm *regex_fsm, const wchar_t *srchText, bool greedy,
     while (srchText[start + length] != L'\0' && res != FSM_SIM_REJECTED) {
       // Step through the FSM simulation until we hit the end of the string, are
       // rejected, or are accepted.
-      fsm_sim_nondet_step(curr_sim);
-      res = fsm_sim_nondet_state(curr_sim);
+      fsm_sim_nondet_step(curr_sim, srchText[start + length]);
+      res = fsm_sim_nondet_state(curr_sim, srchText[start + length]);
       length++;
       SMB_DP("   => On step (length %d), res=%d.\n", length, res);
 
