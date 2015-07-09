@@ -26,13 +26,13 @@ struct \hyperlink{structfsm__sim}{fsm\-\_\-sim}
 \#define \hyperlink{fsm_8h_a65d49ee6a31fba2735a0fa4e7235ae7f}{\-F\-S\-M\-\_\-\-T\-R\-A\-N\-S\-\_\-\-N\-E\-G\-A\-T\-I\-V\-E}~1
 \begin{DoxyCompactList}\small\item\em \-A value for \hyperlink{structfsm__trans_ac765329451135abec74c45e1897abf26}{fsm\-\_\-trans.\-type} indicating that the ranges are negative. \end{DoxyCompactList}\item 
 \#define \hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~0
-\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
 \#define \hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~1
-\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
 \#define \hyperlink{fsm_8h_a444d48979225db63614a9783b4b9ad30}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}~2
-\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
 \#define \hyperlink{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}~3
-\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em \-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. \end{DoxyCompactList}\item 
 \#define \hyperlink{fsm_8h_a002b2f4894492820fe708b1b7e7c5e70}{\-E\-P\-S\-I\-L\-O\-N}~((wchar\-\_\-t)-\/2)
 \begin{DoxyCompactList}\small\item\em \-A value of type `wchar\-\_\-t` that is used to represent the empty string. \end{DoxyCompactList}\item 
 \hypertarget{fsm_8h_a6f33ef36ff9302837cc7c412fae67147}{\#define {\bfseries \-C\-K\-Y\-\_\-\-T\-O\-O\-\_\-\-F\-E\-W\-\_\-\-L\-I\-N\-E\-S}~(\-S\-M\-B\-\_\-\-E\-X\-T\-E\-R\-N\-A\-L\-\_\-\-E\-X\-C\-E\-P\-T\-I\-O\-N\-\_\-\-S\-T\-A\-R\-T + 0)}\label{fsm_8h_a6f33ef36ff9302837cc7c412fae67147}
@@ -77,9 +77,9 @@ void \hyperlink{fsm_8h_ab76ad642dc83c77ae9f458faa8444bf9}{fsm\-\_\-add\-\_\-tran
 \begin{DoxyCompactList}\small\item\em \-Add a transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
 \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_8h_a91daa87b98f7318c8609b56a09093a01}{fsm\-\_\-add\-\_\-single} (\hyperlink{structfsm}{fsm} $\ast$f, int from, int to, wchar\-\_\-t start, wchar\-\_\-t end, int type)
 \begin{DoxyCompactList}\small\item\em \-Add a single range transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
-void \hyperlink{fsm_8h_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{fsm\-\_\-sim\-\_\-init} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, \hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+void \hyperlink{fsm_8h_ad8fbae30eba24870045e39e4ac3937e6}{fsm\-\_\-sim\-\_\-init} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, \hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr)
 \begin{DoxyCompactList}\small\item\em \-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
-\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_8h_a7af8fcfc37e238c0d85d48649c2d209b}{fsm\-\_\-sim\-\_\-create} (\hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_8h_a0b05dfb3e534ad249f74d2612be9a112}{fsm\-\_\-sim\-\_\-create} (\hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr)
 \begin{DoxyCompactList}\small\item\em \-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
 void \hyperlink{fsm_8h_a74507e3eeaafc4250ec923acf9578871}{fsm\-\_\-sim\-\_\-destroy} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, bool free\-\_\-curr)
 \begin{DoxyCompactList}\small\item\em \-Clean up any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}. \end{DoxyCompactList}\item 
@@ -114,11 +114,11 @@ bool \hyperlink{fsm_8h_a9196a9811703b9beb4065428de78c60c}{fsm\-\_\-sim\-\_\-nond
 \begin{DoxyCompactList}\small\item\em \-Test if the intersection between the two lists is non-\/empty. \end{DoxyCompactList}\item 
 bool \hyperlink{fsm_8h_a31bc1652fab6793018512508db1cf74a}{fsm\-\_\-sim\-\_\-det} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
 \begin{DoxyCompactList}\small\item\em \-Run the finite state machine as a deterministic one. \end{DoxyCompactList}\item 
-\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_8h_a4f3c4fb388e554216d0e0d1f2deef77b}{fsm\-\_\-sim\-\_\-nondet\-\_\-begin} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
+\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_8h_a4e4edd8bca5b5c48216c55efdaedb1cb}{fsm\-\_\-sim\-\_\-nondet\-\_\-begin} (\hyperlink{structfsm}{fsm} $\ast$f)
 \begin{DoxyCompactList}\small\item\em \-Begin a non-\/deterministic simulation of this finite state machine. \end{DoxyCompactList}\item 
-int \hyperlink{fsm_8h_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state} (const \hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s)
+int \hyperlink{fsm_8h_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state} (const \hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s, wchar\-\_\-t input)
 \begin{DoxyCompactList}\small\item\em \-Check the state of the simulation. \end{DoxyCompactList}\item 
-void \hyperlink{fsm_8h_a13abb199061ecaa47d343b25c90de327}{fsm\-\_\-sim\-\_\-nondet\-\_\-step} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s)
+void \hyperlink{fsm_8h_a2c51e3c58c4a1e182beaea9b5cbc4101}{fsm\-\_\-sim\-\_\-nondet\-\_\-step} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$s, wchar\-\_\-t input)
 \begin{DoxyCompactList}\small\item\em \-Perform a single step in the non-\/deterministic simulation. \end{DoxyCompactList}\item 
 bool \hyperlink{fsm_8h_ab39350b6a48388414f90cb3d248be612}{fsm\-\_\-sim\-\_\-nondet} (\hyperlink{structfsm}{fsm} $\ast$f, const wchar\-\_\-t $\ast$input)
 \begin{DoxyCompactList}\small\item\em \-Simulate the \-F\-S\-M as a non-\/deterministic state machine. \end{DoxyCompactList}\item 
@@ -169,12 +169,12 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-E\-D}~3}}\label{fsm_8h_a04ef1a1d749f5d7861edaebaac9ecc6e}
 
 
-\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+\-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
 
 \-This return value indicates that the simulation is complete, and that there is at least one possible run of the \-N\-D\-F\-S\-M that accepts the input.
 
 \begin{DoxySeeAlso}{\-See also}
-\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+\hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
 
 \hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
 
@@ -191,12 +191,12 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~0}}\label{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}
 
 
-\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+\-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
 
 \-This return value indicates that there is a part of the simulation that is currently in an accepting state, but that not all input has been exhausted yet.
 
 \begin{DoxySeeAlso}{\-See also}
-\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+\hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
 
 \hyperlink{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
 
@@ -213,12 +213,12 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-N\-O\-T\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G}~1}}\label{fsm_8h_a2c5cfe65ca4941e24f7d376b8b876b6d}
 
 
-\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+\-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
 
 \-This return value indicates that there no part of the simulation that is currently in an accepting state, but that not all input has been exhausted yet.
 
 \begin{DoxySeeAlso}{\-See also}
-\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+\hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
 
 \hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
 
@@ -235,12 +235,12 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \subsubsection[{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define {\bf \-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-R\-E\-J\-E\-C\-T\-E\-D}~2}}\label{fsm_8h_a444d48979225db63614a9783b4b9ad30}
 
 
-\-A possible return value for \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
+\-A possible return value for \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()}. 
 
 \-This return value indicates that the simulation is complete, and that all possible runs of the \-N\-D\-F\-S\-M have rejected the input.
 
 \begin{DoxySeeAlso}{\-See also}
-\hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
+\hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} 
 
 \hyperlink{fsm_8h_a09886028c7ef43db1470aa3c3bda5605}{\-F\-S\-M\-\_\-\-S\-I\-M\-\_\-\-A\-C\-C\-E\-P\-T\-I\-N\-G} 
 
@@ -691,15 +691,14 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 
 \-Definition at line 219 of file io.\-c.
 
-\hypertarget{fsm_8h_a7af8fcfc37e238c0d85d48649c2d209b}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}}
+\hypertarget{fsm_8h_a0b05dfb3e534ad249f74d2612be9a112}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}}
 \index{fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}!fsm.h@{fsm.\-h}}
 \subsubsection[{fsm\-\_\-sim\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-sim}$\ast$ {\bf fsm\-\_\-sim\-\_\-create} (
 \begin{DoxyParamCaption}
 \item[{{\bf fsm} $\ast$}]{f, }
-\item[{smb\-\_\-al $\ast$}]{curr, }
-\item[{const wchar\-\_\-t $\ast$}]{input}
+\item[{smb\-\_\-al $\ast$}]{curr}
 \end{DoxyParamCaption}
-)}}\label{fsm_8h_a7af8fcfc37e238c0d85d48649c2d209b}
+)}}\label{fsm_8h_a0b05dfb3e534ad249f74d2612be9a112}
 
 
 \-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
@@ -710,15 +709,13 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \hline
 {\em curr} & \-The current state of the simulation \\
 \hline
-{\em input} & \-The input string \\
-\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{\-Returns}
 \-The allocated simulation 
 \end{DoxyReturn}
 
 
-\-Definition at line 350 of file datastructs.\-c.
+\-Definition at line 347 of file datastructs.\-c.
 
 \hypertarget{fsm_8h_a2525328d01dee0d928da0ae8c498f984}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}}
 \index{fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}!fsm.h@{fsm.\-h}}
@@ -741,7 +738,7 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \end{DoxyParams}
 
 
-\-Definition at line 374 of file datastructs.\-c.
+\-Definition at line 371 of file datastructs.\-c.
 
 \hypertarget{fsm_8h_a74507e3eeaafc4250ec923acf9578871}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}}
 \index{fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}!fsm.h@{fsm.\-h}}
@@ -764,7 +761,7 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \end{DoxyParams}
 
 
-\-Definition at line 362 of file datastructs.\-c.
+\-Definition at line 359 of file datastructs.\-c.
 
 \hypertarget{fsm_8h_a31bc1652fab6793018512508db1cf74a}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-det@{fsm\-\_\-sim\-\_\-det}}
 \index{fsm\-\_\-sim\-\_\-det@{fsm\-\_\-sim\-\_\-det}!fsm.h@{fsm.\-h}}
@@ -791,16 +788,15 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 
 \-Definition at line 142 of file simulation.\-c.
 
-\hypertarget{fsm_8h_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}}
+\hypertarget{fsm_8h_ad8fbae30eba24870045e39e4ac3937e6}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}}
 \index{fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}!fsm.h@{fsm.\-h}}
 \subsubsection[{fsm\-\_\-sim\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-init} (
 \begin{DoxyParamCaption}
 \item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
 \item[{{\bf fsm} $\ast$}]{f, }
-\item[{smb\-\_\-al $\ast$}]{curr, }
-\item[{const wchar\-\_\-t $\ast$}]{input}
+\item[{smb\-\_\-al $\ast$}]{curr}
 \end{DoxyParamCaption}
-)}}\label{fsm_8h_ab8bd310bf9223a7ef2fafa5c5ce6ed38}
+)}}\label{fsm_8h_ad8fbae30eba24870045e39e4ac3937e6}
 
 
 \-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
@@ -813,12 +809,10 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \hline
 {\em curr} & \-The current state of the simulation \\
 \hline
-{\em input} & \-The input string \\
-\hline
 \end{DoxyParams}
 
 
-\-Definition at line 336 of file datastructs.\-c.
+\-Definition at line 335 of file datastructs.\-c.
 
 \hypertarget{fsm_8h_ab39350b6a48388414f90cb3d248be612}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet@{fsm\-\_\-sim\-\_\-nondet}}
 \index{fsm\-\_\-sim\-\_\-nondet@{fsm\-\_\-sim\-\_\-nondet}!fsm.h@{fsm.\-h}}
@@ -850,32 +844,29 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \end{DoxyRetVals}
 
 
-\-Definition at line 326 of file simulation.\-c.
+\-Definition at line 327 of file simulation.\-c.
 
-\hypertarget{fsm_8h_a4f3c4fb388e554216d0e0d1f2deef77b}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-begin@{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}}
+\hypertarget{fsm_8h_a4e4edd8bca5b5c48216c55efdaedb1cb}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-begin@{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}}
 \index{fsm\-\_\-sim\-\_\-nondet\-\_\-begin@{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}!fsm.h@{fsm.\-h}}
 \subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-begin}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-sim}$\ast$ {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-begin} (
 \begin{DoxyParamCaption}
-\item[{{\bf fsm} $\ast$}]{f, }
-\item[{const wchar\-\_\-t $\ast$}]{input}
+\item[{{\bf fsm} $\ast$}]{f}
 \end{DoxyParamCaption}
-)}}\label{fsm_8h_a4f3c4fb388e554216d0e0d1f2deef77b}
+)}}\label{fsm_8h_a4e4edd8bca5b5c48216c55efdaedb1cb}
 
 
 \-Begin a non-\/deterministic simulation of this finite state machine. 
 
-\-This simulation is designed to be run in steps. \-First, call this function. \-Then, loop through many calls to \hyperlink{simulation_8c_a13abb199061ecaa47d343b25c90de327}{fsm\-\_\-sim\-\_\-nondet\-\_\-step()}. \-When \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} returns a value indicating that the simulation is complete, you will have your answer. \-Note that you should also call \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} after a call to this function, because the input may be empty.
+\-This simulation is designed to be run in steps. \-First, call this function. \-Then, loop through many calls to \hyperlink{simulation_8c_a2c51e3c58c4a1e182beaea9b5cbc4101}{fsm\-\_\-sim\-\_\-nondet\-\_\-step()}. \-When \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} returns a value indicating that the simulation is complete, you will have your answer. \-Note that you should also call \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} after a call to this function, because the input may be empty.
 
 
 \begin{DoxyParams}{\-Parameters}
 {\em f} & \-The \-F\-S\-M to simulate \\
 \hline
-{\em input} & \-The input to run on \\
-\hline
 \end{DoxyParams}
 
 
-\-Definition at line 199 of file simulation.\-c.
+\-Definition at line 198 of file simulation.\-c.
 
 \hypertarget{fsm_8h_a3c4e01d2648b8c33db093e54ab47eb94}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure@{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}}
 \index{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure@{fsm\-\_\-sim\-\_\-nondet\-\_\-epsilon\-\_\-closure}!fsm.h@{fsm.\-h}}
@@ -935,13 +926,14 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 
 \-Definition at line 101 of file simulation.\-c.
 
-\hypertarget{fsm_8h_ad0d37b7f22a38182969c80aa7a17f302}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-state@{fsm\-\_\-sim\-\_\-nondet\-\_\-state}}
+\hypertarget{fsm_8h_a902ccc588c58656c024a043c19a1ec7e}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-state@{fsm\-\_\-sim\-\_\-nondet\-\_\-state}}
 \index{fsm\-\_\-sim\-\_\-nondet\-\_\-state@{fsm\-\_\-sim\-\_\-nondet\-\_\-state}!fsm.h@{fsm.\-h}}
 \subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-state} (
 \begin{DoxyParamCaption}
-\item[{const {\bf fsm\-\_\-sim} $\ast$}]{s}
+\item[{const {\bf fsm\-\_\-sim} $\ast$}]{s, }
+\item[{wchar\-\_\-t}]{input}
 \end{DoxyParamCaption}
-)}}\label{fsm_8h_ad0d37b7f22a38182969c80aa7a17f302}
+)}}\label{fsm_8h_a902ccc588c58656c024a043c19a1ec7e}
 
 
 \-Check the state of the simulation. 
@@ -949,6 +941,8 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 
 \begin{DoxyParams}{\-Parameters}
 {\em s} & \-The simulation to check. \\
+\hline
+{\em input} & \-The character that will be the next input. \-This is used to determine whether or not the decision is final (\-A\-C\-C\-E\-P\-T\-E\-D/\-R\-E\-J\-E\-C\-T\-E\-D), or may change if you continue the simulation. \\
 \hline
 \end{DoxyParams}
 
@@ -973,20 +967,21 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \end{DoxySeeAlso}
 
 
-\-Definition at line 219 of file simulation.\-c.
+\-Definition at line 221 of file simulation.\-c.
 
-\hypertarget{fsm_8h_a13abb199061ecaa47d343b25c90de327}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-step@{fsm\-\_\-sim\-\_\-nondet\-\_\-step}}
+\hypertarget{fsm_8h_a2c51e3c58c4a1e182beaea9b5cbc4101}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-step@{fsm\-\_\-sim\-\_\-nondet\-\_\-step}}
 \index{fsm\-\_\-sim\-\_\-nondet\-\_\-step@{fsm\-\_\-sim\-\_\-nondet\-\_\-step}!fsm.h@{fsm.\-h}}
 \subsubsection[{fsm\-\_\-sim\-\_\-nondet\-\_\-step}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-nondet\-\_\-step} (
 \begin{DoxyParamCaption}
-\item[{{\bf fsm\-\_\-sim} $\ast$}]{s}
+\item[{{\bf fsm\-\_\-sim} $\ast$}]{s, }
+\item[{wchar\-\_\-t}]{input}
 \end{DoxyParamCaption}
-)}}\label{fsm_8h_a13abb199061ecaa47d343b25c90de327}
+)}}\label{fsm_8h_a2c51e3c58c4a1e182beaea9b5cbc4101}
 
 
 \-Perform a single step in the non-\/deterministic simulation. 
 
-\-This function performs a single iteration of the simulation algorithm. \-It takes the current states, finds next states with the input character, and then adds in the epsilon closures of all the states. \-You should use \hyperlink{simulation_8c_ad0d37b7f22a38182969c80aa7a17f302}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} to determine the state of the simulation after a step.
+\-This function performs a single iteration of the simulation algorithm. \-It takes the current states, finds next states with the input character, and then adds in the epsilon closures of all the states. \-You should use \hyperlink{simulation_8c_a902ccc588c58656c024a043c19a1ec7e}{fsm\-\_\-sim\-\_\-nondet\-\_\-state()} to determine the state of the simulation after a step.
 
 
 \begin{DoxyParams}{\-Parameters}
@@ -995,7 +990,7 @@ void \hyperlink{fsm_8h_a4662ffb1d485ce12b01639a4aa57d54d}{fsm\-\_\-kleene} (\hyp
 \end{DoxyParams}
 
 
-\-Definition at line 256 of file simulation.\-c.
+\-Definition at line 258 of file simulation.\-c.
 
 \hypertarget{fsm_8h_a3fb61b8dae910aa4b46cec1b08e5455e}{\index{fsm.\-h@{fsm.\-h}!fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete@{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}}
 \index{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete@{fsm\-\_\-sim\-\_\-nondet\-\_\-union\-\_\-and\-\_\-delete}!fsm.h@{fsm.\-h}}

@@ -47,9 +47,9 @@ void \hyperlink{fsm_2datastructs_8c_ab76ad642dc83c77ae9f458faa8444bf9}{fsm\-\_\-
 \begin{DoxyCompactList}\small\item\em \-Add a transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
 \hyperlink{structfsm__trans}{fsm\-\_\-trans} $\ast$ \hyperlink{fsm_2datastructs_8c_a91daa87b98f7318c8609b56a09093a01}{fsm\-\_\-add\-\_\-single} (\hyperlink{structfsm}{fsm} $\ast$f, int from, int to, wchar\-\_\-t start, wchar\-\_\-t end, int type)
 \begin{DoxyCompactList}\small\item\em \-Add a single range transition to the \-F\-S\-M. \end{DoxyCompactList}\item 
-void \hyperlink{fsm_2datastructs_8c_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{fsm\-\_\-sim\-\_\-init} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, \hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+void \hyperlink{fsm_2datastructs_8c_ad8fbae30eba24870045e39e4ac3937e6}{fsm\-\_\-sim\-\_\-init} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, \hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr)
 \begin{DoxyCompactList}\small\item\em \-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
-\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_2datastructs_8c_a7af8fcfc37e238c0d85d48649c2d209b}{fsm\-\_\-sim\-\_\-create} (\hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr, const wchar\-\_\-t $\ast$input)
+\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$ \hyperlink{fsm_2datastructs_8c_a0b05dfb3e534ad249f74d2612be9a112}{fsm\-\_\-sim\-\_\-create} (\hyperlink{structfsm}{fsm} $\ast$f, smb\-\_\-al $\ast$curr)
 \begin{DoxyCompactList}\small\item\em \-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. \end{DoxyCompactList}\item 
 void \hyperlink{fsm_2datastructs_8c_a74507e3eeaafc4250ec923acf9578871}{fsm\-\_\-sim\-\_\-destroy} (\hyperlink{structfsm__sim}{fsm\-\_\-sim} $\ast$fs, bool free\-\_\-curr)
 \begin{DoxyCompactList}\small\item\em \-Clean up any resources held by the \hyperlink{structfsm__sim}{fsm\-\_\-sim}. \end{DoxyCompactList}\item 
@@ -255,15 +255,14 @@ void \hyperlink{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-
 
 \-Definition at line 186 of file datastructs.\-c.
 
-\hypertarget{fsm_2datastructs_8c_a7af8fcfc37e238c0d85d48649c2d209b}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}}
+\hypertarget{fsm_2datastructs_8c_a0b05dfb3e534ad249f74d2612be9a112}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}}
 \index{fsm\-\_\-sim\-\_\-create@{fsm\-\_\-sim\-\_\-create}!fsm/datastructs.c@{fsm/datastructs.\-c}}
 \subsubsection[{fsm\-\_\-sim\-\_\-create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf fsm\-\_\-sim}$\ast$ {\bf fsm\-\_\-sim\-\_\-create} (
 \begin{DoxyParamCaption}
 \item[{{\bf fsm} $\ast$}]{f, }
-\item[{smb\-\_\-al $\ast$}]{curr, }
-\item[{const wchar\-\_\-t $\ast$}]{input}
+\item[{smb\-\_\-al $\ast$}]{curr}
 \end{DoxyParamCaption}
-)}}\label{fsm_2datastructs_8c_a7af8fcfc37e238c0d85d48649c2d209b}
+)}}\label{fsm_2datastructs_8c_a0b05dfb3e534ad249f74d2612be9a112}
 
 
 \-Allocate and initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
@@ -274,15 +273,13 @@ void \hyperlink{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-
 \hline
 {\em curr} & \-The current state of the simulation \\
 \hline
-{\em input} & \-The input string \\
-\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{\-Returns}
 \-The allocated simulation 
 \end{DoxyReturn}
 
 
-\-Definition at line 350 of file datastructs.\-c.
+\-Definition at line 347 of file datastructs.\-c.
 
 \hypertarget{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}}
 \index{fsm\-\_\-sim\-\_\-delete@{fsm\-\_\-sim\-\_\-delete}!fsm/datastructs.c@{fsm/datastructs.\-c}}
@@ -305,7 +302,7 @@ void \hyperlink{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-
 \end{DoxyParams}
 
 
-\-Definition at line 374 of file datastructs.\-c.
+\-Definition at line 371 of file datastructs.\-c.
 
 \hypertarget{fsm_2datastructs_8c_a74507e3eeaafc4250ec923acf9578871}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}}
 \index{fsm\-\_\-sim\-\_\-destroy@{fsm\-\_\-sim\-\_\-destroy}!fsm/datastructs.c@{fsm/datastructs.\-c}}
@@ -328,18 +325,17 @@ void \hyperlink{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-
 \end{DoxyParams}
 
 
-\-Definition at line 362 of file datastructs.\-c.
+\-Definition at line 359 of file datastructs.\-c.
 
-\hypertarget{fsm_2datastructs_8c_ab8bd310bf9223a7ef2fafa5c5ce6ed38}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}}
+\hypertarget{fsm_2datastructs_8c_ad8fbae30eba24870045e39e4ac3937e6}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}}
 \index{fsm\-\_\-sim\-\_\-init@{fsm\-\_\-sim\-\_\-init}!fsm/datastructs.c@{fsm/datastructs.\-c}}
 \subsubsection[{fsm\-\_\-sim\-\_\-init}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf fsm\-\_\-sim\-\_\-init} (
 \begin{DoxyParamCaption}
 \item[{{\bf fsm\-\_\-sim} $\ast$}]{fs, }
 \item[{{\bf fsm} $\ast$}]{f, }
-\item[{smb\-\_\-al $\ast$}]{curr, }
-\item[{const wchar\-\_\-t $\ast$}]{input}
+\item[{smb\-\_\-al $\ast$}]{curr}
 \end{DoxyParamCaption}
-)}}\label{fsm_2datastructs_8c_ab8bd310bf9223a7ef2fafa5c5ce6ed38}
+)}}\label{fsm_2datastructs_8c_ad8fbae30eba24870045e39e4ac3937e6}
 
 
 \-Initialize an \hyperlink{structfsm__sim}{fsm\-\_\-sim} struct. 
@@ -352,12 +348,10 @@ void \hyperlink{fsm_2datastructs_8c_a2525328d01dee0d928da0ae8c498f984}{fsm\-\_\-
 \hline
 {\em curr} & \-The current state of the simulation \\
 \hline
-{\em input} & \-The input string \\
-\hline
 \end{DoxyParams}
 
 
-\-Definition at line 336 of file datastructs.\-c.
+\-Definition at line 335 of file datastructs.\-c.
 
 \hypertarget{fsm_2datastructs_8c_a1e398044606cf5c1efc9ae5b06215f01}{\index{fsm/datastructs.\-c@{fsm/datastructs.\-c}!fsm\-\_\-trans\-\_\-check@{fsm\-\_\-trans\-\_\-check}}
 \index{fsm\-\_\-trans\-\_\-check@{fsm\-\_\-trans\-\_\-check}!fsm/datastructs.c@{fsm/datastructs.\-c}}

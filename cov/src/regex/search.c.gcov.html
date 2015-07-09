@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-07-08 01:00:17</td>
+            <td class="headerValue">2015-07-09 02:03:47</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -112,7 +112,7 @@
 <span class="lineNum">      50 </span>            :   // OUTER WHILE: iterate over starting characters.
 <span class="lineNum">      51 </span><span class="lineCov">         36 :   while (srchText[start] != L'\0') {</span>
 <span class="lineNum">      52 </span>            :     // Simulate the FSM at each character.
-<span class="lineNum">      53 </span><span class="lineCov">         31 :     curr_sim = fsm_sim_nondet_begin(regex_fsm, srchText + start);</span>
+<span class="lineNum">      53 </span><span class="lineCov">         31 :     curr_sim = fsm_sim_nondet_begin(regex_fsm);</span>
 <span class="lineNum">      54 </span><span class="lineCov">         31 :     length = 0;</span>
 <span class="lineNum">      55 </span><span class="lineCov">         31 :     last_length = -1;</span>
 <span class="lineNum">      56 </span><span class="lineCov">         31 :     res = -1;</span>
@@ -120,11 +120,11 @@
 <span class="lineNum">      58 </span>            :     SMB_DP(&quot;=&gt; Begin simulation at index %d: '%lc'.\n&quot;, start, srchText[start]);
 <span class="lineNum">      59 </span>            : 
 <span class="lineNum">      60 </span>            :     // INNER WHILE: iterate over lengths.
-<span class="lineNum">      61 </span><span class="lineCov">        111 :     while (srchText[start + length] != L'\0' &amp;&amp; res != FSM_SIM_REJECTED) {</span>
+<span class="lineNum">      61 </span><span class="lineCov">        119 :     while (srchText[start + length] != L'\0' &amp;&amp; res != FSM_SIM_REJECTED) {</span>
 <span class="lineNum">      62 </span>            :       // Step through the FSM simulation until we hit the end of the string, are
 <span class="lineNum">      63 </span>            :       // rejected, or are accepted.
-<span class="lineNum">      64 </span><span class="lineCov">         80 :       fsm_sim_nondet_step(curr_sim);</span>
-<span class="lineNum">      65 </span><span class="lineCov">         80 :       res = fsm_sim_nondet_state(curr_sim);</span>
+<span class="lineNum">      64 </span><span class="lineCov">         80 :       fsm_sim_nondet_step(curr_sim, srchText[start + length]);</span>
+<span class="lineNum">      65 </span><span class="lineCov">         80 :       res = fsm_sim_nondet_state(curr_sim, srchText[start + length]);</span>
 <span class="lineNum">      66 </span><span class="lineCov">         80 :       length++;</span>
 <span class="lineNum">      67 </span>            :       SMB_DP(&quot;   =&gt; On step (length %d), res=%d.\n&quot;, length, res);
 <span class="lineNum">      68 </span>            : 

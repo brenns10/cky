@@ -119,7 +119,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00060"></a>00060   <a class="code" href="fsm_2datastructs_8c.html#afacfbf350f8cfbaa5982803593273551" title="Initialize a FSM.">fsm_init</a>(&amp;f);
 <a name="l00061"></a>00061 
 <a name="l00062"></a>00062   <span class="comment">// Test is to make sure that these work properly.</span>
-<a name="l00063"></a>00063   pfs = <a class="code" href="fsm_2datastructs_8c.html#a7af8fcfc37e238c0d85d48649c2d209b" title="Allocate and initialize an fsm_sim struct.">fsm_sim_create</a>(&amp;f, state, L<span class="stringliteral">&quot;abctest&quot;</span>);
+<a name="l00063"></a>00063   pfs = <a class="code" href="fsm_2datastructs_8c.html#a0b05dfb3e534ad249f74d2612be9a112" title="Allocate and initialize an fsm_sim struct.">fsm_sim_create</a>(&amp;f, state);
 <a name="l00064"></a>00064   <a class="code" href="fsm_2datastructs_8c.html#a2525328d01dee0d928da0ae8c498f984" title="Clean up and any resources held by the fsm_sim, and free it.">fsm_sim_delete</a>(pfs, <span class="keyword">true</span>);
 <a name="l00065"></a>00065 
 <a name="l00066"></a>00066   <span class="comment">// Only need to destroy the FSM, since the &quot;curr&quot; state was freed.</span>
@@ -459,7 +459,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 8 2015 01:00:17 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 9 2015 02:03:48 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

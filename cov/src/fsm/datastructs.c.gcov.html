@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">120</td>
-            <td class="headerCovTableEntry">120</td>
+            <td class="headerCovTableEntry">119</td>
+            <td class="headerCovTableEntry">119</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-07-08 01:00:17</td>
+            <td class="headerValue">2015-07-09 02:03:47</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">20</td>
@@ -392,52 +392,49 @@
 <span class="lineNum">     330 </span>            :    @brief Initialize an fsm_sim struct
 <span class="lineNum">     331 </span>            :    @param fs The struct to init
 <span class="lineNum">     332 </span>            :    @param f The FSM to simulate
-<span class="lineNum">     333 </span>            :    @param curr The current state of the simulation
-<a name="334"><span class="lineNum">     334 </span>            :    @param input The input string</a>
-<span class="lineNum">     335 </span>            :  */
-<span class="lineNum">     336 </span><span class="lineCov">        286 : void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr, const wchar_t *input)</span>
-<span class="lineNum">     337 </span>            : {
-<span class="lineNum">     338 </span><span class="lineCov">        286 :   fs-&gt;f = f;</span>
-<span class="lineNum">     339 </span><span class="lineCov">        286 :   fs-&gt;curr = curr;</span>
-<span class="lineNum">     340 </span><span class="lineCov">        286 :   fs-&gt;input = input;</span>
-<span class="lineNum">     341 </span><span class="lineCov">        286 : }</span>
-<span class="lineNum">     342 </span>            : 
-<span class="lineNum">     343 </span>            : /**
-<span class="lineNum">     344 </span>            :    @brief Allocate and initialize an fsm_sim struct
-<span class="lineNum">     345 </span>            :    @param f The FSM to simulate
-<span class="lineNum">     346 </span>            :    @param curr The current state of the simulation
-<span class="lineNum">     347 </span>            :    @param input The input string
-<a name="348"><span class="lineNum">     348 </span>            :    @return The allocated simulation</a>
-<span class="lineNum">     349 </span>            :  */
-<span class="lineNum">     350 </span><span class="lineCov">        286 : fsm_sim *fsm_sim_create(fsm *f, smb_al *curr, const wchar_t *input)</span>
-<span class="lineNum">     351 </span>            : {
-<span class="lineNum">     352 </span><span class="lineCov">        286 :   fsm_sim *fs = smb_new(fsm_sim, 1);</span>
-<span class="lineNum">     353 </span><span class="lineCov">        286 :   fsm_sim_init(fs, f, curr, input);</span>
-<span class="lineNum">     354 </span><span class="lineCov">        286 :   return fs;</span>
-<span class="lineNum">     355 </span>            : }
-<span class="lineNum">     356 </span>            : 
-<span class="lineNum">     357 </span>            : /**
-<span class="lineNum">     358 </span>            :    @brief Clean up any resources held by the fsm_sim
-<span class="lineNum">     359 </span>            :    @param fs The simulation
-<a name="360"><span class="lineNum">     360 </span>            :    @param free_curr Do we free the state list (generally, true)</a>
-<span class="lineNum">     361 </span>            :  */
-<span class="lineNum">     362 </span><span class="lineCov">        256 : void fsm_sim_destroy(fsm_sim *fs, bool free_curr)</span>
-<span class="lineNum">     363 </span>            : {
-<span class="lineNum">     364 </span><span class="lineCov">        256 :   if (free_curr) {</span>
-<span class="lineNum">     365 </span><span class="lineCov">        256 :     al_delete(fs-&gt;curr);</span>
-<span class="lineNum">     366 </span>            :   }
-<span class="lineNum">     367 </span><span class="lineCov">        256 : }</span>
-<span class="lineNum">     368 </span>            : 
-<span class="lineNum">     369 </span>            : /**
-<span class="lineNum">     370 </span>            :    @brief Clean up and any resources held by the fsm_sim, and free it.
-<span class="lineNum">     371 </span>            :    @param fs The simulation
-<a name="372"><span class="lineNum">     372 </span>            :    @param free_curr Do we free the state list (generally, true)</a>
-<span class="lineNum">     373 </span>            :  */
-<span class="lineNum">     374 </span><span class="lineCov">        256 : void fsm_sim_delete(fsm_sim *fs, bool free_curr)</span>
-<span class="lineNum">     375 </span>            : {
-<span class="lineNum">     376 </span><span class="lineCov">        256 :   fsm_sim_destroy(fs, free_curr);</span>
-<span class="lineNum">     377 </span><span class="lineCov">        256 :   smb_free(fs);</span>
-<span class="lineNum">     378 </span><span class="lineCov">        256 : }</span>
+<a name="333"><span class="lineNum">     333 </span>            :    @param curr The current state of the simulation</a>
+<span class="lineNum">     334 </span>            :  */
+<span class="lineNum">     335 </span><span class="lineCov">        286 : void fsm_sim_init(fsm_sim *fs, fsm *f, smb_al *curr)</span>
+<span class="lineNum">     336 </span>            : {
+<span class="lineNum">     337 </span><span class="lineCov">        286 :   fs-&gt;f = f;</span>
+<span class="lineNum">     338 </span><span class="lineCov">        286 :   fs-&gt;curr = curr;</span>
+<span class="lineNum">     339 </span><span class="lineCov">        286 : }</span>
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span>            : /**
+<span class="lineNum">     342 </span>            :    @brief Allocate and initialize an fsm_sim struct
+<span class="lineNum">     343 </span>            :    @param f The FSM to simulate
+<span class="lineNum">     344 </span>            :    @param curr The current state of the simulation
+<a name="345"><span class="lineNum">     345 </span>            :    @return The allocated simulation</a>
+<span class="lineNum">     346 </span>            :  */
+<span class="lineNum">     347 </span><span class="lineCov">        286 : fsm_sim *fsm_sim_create(fsm *f, smb_al *curr)</span>
+<span class="lineNum">     348 </span>            : {
+<span class="lineNum">     349 </span><span class="lineCov">        286 :   fsm_sim *fs = smb_new(fsm_sim, 1);</span>
+<span class="lineNum">     350 </span><span class="lineCov">        286 :   fsm_sim_init(fs, f, curr);</span>
+<span class="lineNum">     351 </span><span class="lineCov">        286 :   return fs;</span>
+<span class="lineNum">     352 </span>            : }
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span>            : /**
+<span class="lineNum">     355 </span>            :    @brief Clean up any resources held by the fsm_sim
+<span class="lineNum">     356 </span>            :    @param fs The simulation
+<a name="357"><span class="lineNum">     357 </span>            :    @param free_curr Do we free the state list (generally, true)</a>
+<span class="lineNum">     358 </span>            :  */
+<span class="lineNum">     359 </span><span class="lineCov">        286 : void fsm_sim_destroy(fsm_sim *fs, bool free_curr)</span>
+<span class="lineNum">     360 </span>            : {
+<span class="lineNum">     361 </span><span class="lineCov">        286 :   if (free_curr) {</span>
+<span class="lineNum">     362 </span><span class="lineCov">        286 :     al_delete(fs-&gt;curr);</span>
+<span class="lineNum">     363 </span>            :   }
+<span class="lineNum">     364 </span><span class="lineCov">        286 : }</span>
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            : /**
+<span class="lineNum">     367 </span>            :    @brief Clean up and any resources held by the fsm_sim, and free it.
+<span class="lineNum">     368 </span>            :    @param fs The simulation
+<a name="369"><span class="lineNum">     369 </span>            :    @param free_curr Do we free the state list (generally, true)</a>
+<span class="lineNum">     370 </span>            :  */
+<span class="lineNum">     371 </span><span class="lineCov">        286 : void fsm_sim_delete(fsm_sim *fs, bool free_curr)</span>
+<span class="lineNum">     372 </span>            : {
+<span class="lineNum">     373 </span><span class="lineCov">        286 :   fsm_sim_destroy(fs, free_curr);</span>
+<span class="lineNum">     374 </span><span class="lineCov">        286 :   smb_free(fs);</span>
+<span class="lineNum">     375 </span><span class="lineCov">        286 : }</span>
 </pre>
       </td>
     </tr>

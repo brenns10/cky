@@ -104,12 +104,12 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy all the values from one array list into another.  <a href="#a6691ba1de6653c52bce26ebd2a40cdeb"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#a31bc1652fab6793018512508db1cf74a">fsm_sim_det</a> (<a class="el" href="structfsm.html">fsm</a> *f, const wchar_t *input)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the finite state machine as a deterministic one.  <a href="#a31bc1652fab6793018512508db1cf74a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm__sim.html">fsm_sim</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#a4f3c4fb388e554216d0e0d1f2deef77b">fsm_sim_nondet_begin</a> (<a class="el" href="structfsm.html">fsm</a> *f, const wchar_t *input)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin a non-deterministic simulation of this finite state machine.  <a href="#a4f3c4fb388e554216d0e0d1f2deef77b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#ad0d37b7f22a38182969c80aa7a17f302">fsm_sim_nondet_state</a> (const <a class="el" href="structfsm__sim.html">fsm_sim</a> *s)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the state of the simulation.  <a href="#ad0d37b7f22a38182969c80aa7a17f302"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#a13abb199061ecaa47d343b25c90de327">fsm_sim_nondet_step</a> (<a class="el" href="structfsm__sim.html">fsm_sim</a> *s)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a single step in the non-deterministic simulation.  <a href="#a13abb199061ecaa47d343b25c90de327"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="structfsm__sim.html">fsm_sim</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#a4e4edd8bca5b5c48216c55efdaedb1cb">fsm_sim_nondet_begin</a> (<a class="el" href="structfsm.html">fsm</a> *f)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin a non-deterministic simulation of this finite state machine.  <a href="#a4e4edd8bca5b5c48216c55efdaedb1cb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#a902ccc588c58656c024a043c19a1ec7e">fsm_sim_nondet_state</a> (const <a class="el" href="structfsm__sim.html">fsm_sim</a> *s, wchar_t input)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the state of the simulation.  <a href="#a902ccc588c58656c024a043c19a1ec7e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#a2c51e3c58c4a1e182beaea9b5cbc4101">fsm_sim_nondet_step</a> (<a class="el" href="structfsm__sim.html">fsm_sim</a> *s, wchar_t input)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a single step in the non-deterministic simulation.  <a href="#a2c51e3c58c4a1e182beaea9b5cbc4101"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8c.html#ab39350b6a48388414f90cb3d248be612">fsm_sim_nondet</a> (<a class="el" href="structfsm.html">fsm</a> *f, const wchar_t *input)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulate the FSM as a non-deterministic state machine.  <a href="#ab39350b6a48388414f90cb3d248be612"></a><br/></td></tr>
 </table>
@@ -240,46 +240,35 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="simulation_8c_source.html#l00326">326</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
+<p>Definition at line <a class="el" href="simulation_8c_source.html#l00327">327</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4f3c4fb388e554216d0e0d1f2deef77b"></a><!-- doxytag: member="simulation.c::fsm_sim_nondet_begin" ref="a4f3c4fb388e554216d0e0d1f2deef77b" args="(fsm *f, const wchar_t *input)" -->
+<a class="anchor" id="a4e4edd8bca5b5c48216c55efdaedb1cb"></a><!-- doxytag: member="simulation.c::fsm_sim_nondet_begin" ref="a4e4edd8bca5b5c48216c55efdaedb1cb" args="(fsm *f)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structfsm__sim.html">fsm_sim</a>* <a class="el" href="fsm_8h.html#a4f3c4fb388e554216d0e0d1f2deef77b">fsm_sim_nondet_begin</a> </td>
+          <td class="memname"><a class="el" href="structfsm__sim.html">fsm_sim</a>* <a class="el" href="fsm_8h.html#a4e4edd8bca5b5c48216c55efdaedb1cb">fsm_sim_nondet_begin</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structfsm.html">fsm</a> *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const wchar_t *&#160;</td>
-          <td class="paramname"><em>input</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>Begin a non-deterministic simulation of this finite state machine. </p>
-<p>This simulation is designed to be run in steps. First, call this function. Then, loop through many calls to <a class="el" href="simulation_8c.html#a13abb199061ecaa47d343b25c90de327" title="Perform a single step in the non-deterministic simulation.">fsm_sim_nondet_step()</a>. When <a class="el" href="simulation_8c.html#ad0d37b7f22a38182969c80aa7a17f302" title="Check the state of the simulation.">fsm_sim_nondet_state()</a> returns a value indicating that the simulation is complete, you will have your answer. Note that you should also call <a class="el" href="simulation_8c.html#ad0d37b7f22a38182969c80aa7a17f302" title="Check the state of the simulation.">fsm_sim_nondet_state()</a> after a call to this function, because the input may be empty.</p>
+<p>This simulation is designed to be run in steps. First, call this function. Then, loop through many calls to <a class="el" href="simulation_8c.html#a2c51e3c58c4a1e182beaea9b5cbc4101" title="Perform a single step in the non-deterministic simulation.">fsm_sim_nondet_step()</a>. When <a class="el" href="simulation_8c.html#a902ccc588c58656c024a043c19a1ec7e" title="Check the state of the simulation.">fsm_sim_nondet_state()</a> returns a value indicating that the simulation is complete, you will have your answer. Note that you should also call <a class="el" href="simulation_8c.html#a902ccc588c58656c024a043c19a1ec7e" title="Check the state of the simulation.">fsm_sim_nondet_state()</a> after a call to this function, because the input may be empty.</p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">f</td><td>The FSM to simulate </td></tr>
-    <tr><td class="paramname">input</td><td>The input to run on </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="simulation_8c_source.html#l00199">199</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
+<p>Definition at line <a class="el" href="simulation_8c_source.html#l00198">198</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
 
 </div>
 </div>
@@ -368,16 +357,26 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad0d37b7f22a38182969c80aa7a17f302"></a><!-- doxytag: member="simulation.c::fsm_sim_nondet_state" ref="ad0d37b7f22a38182969c80aa7a17f302" args="(const fsm_sim *s)" -->
+<a class="anchor" id="a902ccc588c58656c024a043c19a1ec7e"></a><!-- doxytag: member="simulation.c::fsm_sim_nondet_state" ref="a902ccc588c58656c024a043c19a1ec7e" args="(const fsm_sim *s, wchar_t input)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int <a class="el" href="fsm_8h.html#ad0d37b7f22a38182969c80aa7a17f302">fsm_sim_nondet_state</a> </td>
+          <td class="memname">int <a class="el" href="fsm_8h.html#a902ccc588c58656c024a043c19a1ec7e">fsm_sim_nondet_state</a> </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structfsm__sim.html">fsm_sim</a> *&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">wchar_t&#160;</td>
+          <td class="paramname"><em>input</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -387,6 +386,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">s</td><td>The simulation to check. </td></tr>
+    <tr><td class="paramname">input</td><td>The character that will be the next input. This is used to determine whether or not the decision is final (ACCEPTED/REJECTED), or may change if you continue the simulation. </td></tr>
   </table>
   </dd>
 </dl>
@@ -407,27 +407,37 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="fsm_8h.html#a04ef1a1d749f5d7861edaebaac9ecc6e" title="A possible return value for fsm_sim_nondet_state().">FSM_SIM_ACCEPTED</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="simulation_8c_source.html#l00219">219</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
+<p>Definition at line <a class="el" href="simulation_8c_source.html#l00221">221</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a13abb199061ecaa47d343b25c90de327"></a><!-- doxytag: member="simulation.c::fsm_sim_nondet_step" ref="a13abb199061ecaa47d343b25c90de327" args="(fsm_sim *s)" -->
+<a class="anchor" id="a2c51e3c58c4a1e182beaea9b5cbc4101"></a><!-- doxytag: member="simulation.c::fsm_sim_nondet_step" ref="a2c51e3c58c4a1e182beaea9b5cbc4101" args="(fsm_sim *s, wchar_t input)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="fsm_8h.html#a13abb199061ecaa47d343b25c90de327">fsm_sim_nondet_step</a> </td>
+          <td class="memname">void <a class="el" href="fsm_8h.html#a2c51e3c58c4a1e182beaea9b5cbc4101">fsm_sim_nondet_step</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structfsm__sim.html">fsm_sim</a> *&#160;</td>
-          <td class="paramname"><em>s</em></td><td>)</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">wchar_t&#160;</td>
+          <td class="paramname"><em>input</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>Perform a single step in the non-deterministic simulation. </p>
-<p>This function performs a single iteration of the simulation algorithm. It takes the current states, finds next states with the input character, and then adds in the epsilon closures of all the states. You should use <a class="el" href="simulation_8c.html#ad0d37b7f22a38182969c80aa7a17f302" title="Check the state of the simulation.">fsm_sim_nondet_state()</a> to determine the state of the simulation after a step.</p>
+<p>This function performs a single iteration of the simulation algorithm. It takes the current states, finds next states with the input character, and then adds in the epsilon closures of all the states. You should use <a class="el" href="simulation_8c.html#a902ccc588c58656c024a043c19a1ec7e" title="Check the state of the simulation.">fsm_sim_nondet_state()</a> to determine the state of the simulation after a step.</p>
 <dl class="params"><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">s</td><td>The simulation state struct </td></tr>
@@ -435,7 +445,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="simulation_8c_source.html#l00256">256</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
+<p>Definition at line <a class="el" href="simulation_8c_source.html#l00258">258</a> of file <a class="el" href="simulation_8c_source.html">simulation.c</a>.</p>
 
 </div>
 </div>
@@ -495,7 +505,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 8 2015 01:00:18 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 9 2015 02:03:48 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

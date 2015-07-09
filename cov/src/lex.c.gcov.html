@@ -31,13 +31,13 @@
             <td class="headerValue">coverage.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">85</td>
             <td class="headerCovTableEntry">88</td>
-            <td class="headerCovTableEntryHi">96.6 %</td>
+            <td class="headerCovTableEntry">91</td>
+            <td class="headerCovTableEntryHi">96.7 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2015-07-08 01:00:17</td>
+            <td class="headerValue">2015-07-09 02:03:47</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">8</td>
@@ -191,7 +191,7 @@
 <span class="lineNum">     129 </span>            : 
 <span class="lineNum">     130 </span>            :   // First, create simulations for each pattern.
 <span class="lineNum">     131 </span><span class="lineCov">         36 :   for (i = 0; i &lt; al_length(&amp;obj-&gt;patterns); i++) {</span>
-<span class="lineNum">     132 </span><span class="lineCov">         30 :     fs = fsm_sim_nondet_begin(al_get(&amp;obj-&gt;patterns, i, status).data_ptr, input);</span>
+<span class="lineNum">     132 </span><span class="lineCov">         30 :     fs = fsm_sim_nondet_begin(al_get(&amp;obj-&gt;patterns, i, status).data_ptr);</span>
 <span class="lineNum">     133 </span><span class="lineCov">         30 :     assert(*status == SMB_SUCCESS);</span>
 <span class="lineNum">     134 </span><span class="lineCov">         30 :     al_append(&amp;simulations, (DATA){.data_ptr=fs});</span>
 <span class="lineNum">     135 </span>            :   }
@@ -206,8 +206,8 @@
 <span class="lineNum">     144 </span>            :       // Advance the simulation one step.
 <span class="lineNum">     145 </span><span class="lineCov">         80 :       fs = al_get(&amp;simulations, i, status).data_ptr;</span>
 <span class="lineNum">     146 </span><span class="lineCov">         80 :       assert(*status == SMB_SUCCESS);</span>
-<span class="lineNum">     147 </span><span class="lineCov">         80 :       fsm_sim_nondet_step(fs);</span>
-<span class="lineNum">     148 </span><span class="lineCov">         80 :       state = fsm_sim_nondet_state(fs);</span>
+<span class="lineNum">     147 </span><span class="lineCov">         80 :       fsm_sim_nondet_step(fs, input[j]);</span>
+<span class="lineNum">     148 </span><span class="lineCov">         80 :       state = fsm_sim_nondet_state(fs, input[j]);</span>
 <span class="lineNum">     149 </span>            : 
 <span class="lineNum">     150 </span>            :       // If the simulation is in an accepting state...
 <span class="lineNum">     151 </span><span class="lineCov">         80 :       if (state == FSM_SIM_ACCEPTING || state == FSM_SIM_ACCEPTED) {</span>
@@ -234,9 +234,16 @@
 <span class="lineNum">     172 </span>            :   } else {
 <span class="lineNum">     173 </span><span class="lineNoCov">          0 :     *length = -1;</span>
 <span class="lineNum">     174 </span>            :   }
-<span class="lineNum">     175 </span><span class="lineCov">          6 :   *status = SMB_SUCCESS;</span>
-<span class="lineNum">     176 </span><span class="lineCov">          6 :   al_destroy(&amp;simulations);</span>
-<span class="lineNum">     177 </span><span class="lineCov">          6 : }</span>
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            :   // Finally, destroy the simulations for each pattern.
+<span class="lineNum">     177 </span><span class="lineCov">         36 :   for (i = 0; i &lt; al_length(&amp;simulations); i++) {</span>
+<span class="lineNum">     178 </span><span class="lineCov">         30 :     fsm_sim_delete(al_get(&amp;simulations, i, status).data_ptr, true);</span>
+<span class="lineNum">     179 </span><span class="lineCov">         30 :     assert(*status == SMB_SUCCESS);</span>
+<span class="lineNum">     180 </span>            :   }
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span><span class="lineCov">          6 :   *status = SMB_SUCCESS;</span>
+<span class="lineNum">     183 </span><span class="lineCov">          6 :   al_destroy(&amp;simulations);</span>
+<span class="lineNum">     184 </span><span class="lineCov">          6 : }</span>
 </pre>
       </td>
     </tr>
