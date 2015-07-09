@@ -172,6 +172,13 @@ void lex_yylex(smb_lex *obj, wchar_t *input, DATA *token, int *length,
   } else {
     *length = -1;
   }
+
+  // Finally, destroy the simulations for each pattern.
+  for (i = 0; i < al_length(&simulations); i++) {
+    fsm_sim_delete(al_get(&simulations, i, status).data_ptr, true);
+    assert(*status == SMB_SUCCESS);
+  }
+
   *status = SMB_SUCCESS;
   al_destroy(&simulations);
 }
