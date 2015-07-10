@@ -322,35 +322,32 @@ void lex(char *filename)
   smb_lex *lex = lex_create();
   smb_status status = SMB_SUCCESS;
   wcbuf desc;
-  wcbuf input;
   wint_t wc;
-  int offset = 0;
+  int idx = 0;
   FILE *f = fopen(filename, "r");
   wcb_init(&desc, 2048);
-  wcb_init(&input, 2048);
 
   while ((wc = fgetwc(f)) != WEOF) {
     wcb_append(&desc, wc);
   }
   fclose(f);
 
-  while ((wc = fgetwc(stdin)) != WEOF) {
-    wcb_append(&input, wc);
-  }
-
   lex_load(lex, desc.buf, &status);
   assert(status == SMB_SUCCESS);
 
-  for (offset = 0; input.buf[offset] != L'\0'; ) {
+  while (!feof(stdin)) {
     int length;
     DATA token;
-    lex_yylex(lex, input.buf + offset, &token, &length, &status);
-    printf("%ls: at index=%d, length=%d\n", (wchar_t*)token.data_ptr, offset,
+    wchar_t *tokstr;
+    tokstr = lex_fyylex(lex, stdin, &token, &length, &status);
+    printf("%ls: at index=%d, length=%d\n", (wchar_t*)token.data_ptr, idx,
            length);
-    offset += length;
+    if (wcscmp(token.data_ptr, L"whitespace") != 0) {
+      printf("  => \"%ls\"\n", tokstr);
+    }
+    idx += length;
   }
   wcb_destroy(&desc);
-  wcb_destroy(&input);
   lex_delete(lex);
 }
 
