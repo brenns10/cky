@@ -178,7 +178,7 @@ void search(void)
   fsm *regex_fsm;
   char *input;
   wchar_t *winput;
-  int len;
+  size_t len;
   smb_al *results;
   regex_hit *hit;
   smb_status status = SMB_SUCCESS;
@@ -195,9 +195,9 @@ void search(void)
 
   printf("Input Regex: ");
   regex = smb_read_line(stdin, &status);
-  len = strlen(regex) + 1;
-  wregex = smb_new(wchar_t, len);
-  if (utf8toucs4(wregex, regex, len) != 0) {
+  len = mbstowcs(NULL, regex, 0);
+  wregex = smb_new(wchar_t, len + 1);
+  if (mbstowcs(wregex, regex, len+1) != len) {
     PRINT_ERROR_LOC;
     fprintf(stderr, "Error converting to UCS 4.\n");
     smb_free(regex);
@@ -210,9 +210,9 @@ void search(void)
 
   input = read_file(file, &status);
   fclose(file);
-  len = strlen(input) + 1;
-  winput = smb_new(wchar_t, len);
-  if (utf8toucs4(winput, input, len) != 0) {
+  len = mbstowcs(NULL, regex, 0);
+  winput = smb_new(wchar_t, len + 1);
+  if (mbstowcs(winput, input, len+1) != len) {
     PRINT_ERROR_LOC;
     fprintf(stderr, "Error converting to UCS 4.\n");
     fsm_delete(regex_fsm, true);
@@ -324,21 +324,18 @@ void lex(char *filename)
   wcbuf desc;
   wcbuf input;
   wint_t wc;
-  wchar_t buf[2] = L"_";
   int offset = 0;
   FILE *f = fopen(filename, "r");
   wcb_init(&desc, 2048);
   wcb_init(&input, 2048);
 
   while ((wc = fgetwc(f)) != WEOF) {
-    buf[0] = (wchar_t) wc;
-    wcb_append(&desc, buf);
+    wcb_append(&desc, wc);
   }
   fclose(f);
 
   while ((wc = fgetwc(stdin)) != WEOF) {
-    buf[0] = (wchar_t) wc;
-    wcb_append(&input, buf);
+    wcb_append(&input, wc);
   }
 
   lex_load(lex, desc.buf, &status);

@@ -285,7 +285,7 @@ wchar_t *fsm_str(const fsm *f)
       for (start = ft->start, end = ft->end; *start != L'\0'; start++, end++) {
         wcb_printf(&wc, L"%ls-%ls", escape_wchar(*start), escape_wchar(*end));
       }
-      wcb_append(&wc, L"\n");
+      wcb_concat(&wc, L"\n");
     }
   }
   // Reallocate to exactly the right size for the string.
