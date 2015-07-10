@@ -346,6 +346,7 @@ void lex(char *filename)
       printf("  => \"%ls\"\n", tokstr);
     }
     idx += length;
+    smb_free(tokstr);
   }
   wcb_destroy(&desc);
   lex_delete(lex);
