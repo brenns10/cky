@@ -24,6 +24,7 @@
 #include "libstephen/al.h"
 #include "libstephen/ll.h"
 #include "libstephen/cb.h"
+#include "libstephen/str.h"
 
 /**
    @brief Expand f to have as many states as referenced in the transition.
@@ -226,7 +227,7 @@ fsm *fsm_read(const wchar_t *source, smb_status *status)
   wcscpy(copy, source);
 
   // Split the string.
-  lines = split_lines(copy);
+  lines = split_linesw(copy);
 
   // could do some further removal of empty lines, etc. here
 

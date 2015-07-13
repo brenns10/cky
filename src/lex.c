@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include "libstephen/al.h"
 #include "libstephen/cb.h"
+#include "libstephen/str.h"
 #include "regex.h"
 #include "lex.h"
 #include "str.h"
@@ -100,7 +101,7 @@ void lex_load(smb_lex *obj, const wchar_t *str, smb_status *status)
   wchar_t *buf = smb_new(wchar_t, wcslen(str) + 1);
   wchar_t *line;
   wcscpy(buf, str);
-  lines = split_lines(buf);
+  lines = split_linesw(buf);
   iter = ll_get_iter(lines);
 
   while (iter.has_next(&iter)) {

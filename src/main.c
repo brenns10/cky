@@ -23,6 +23,7 @@
 #include "libstephen/ad.h"
 #include "libstephen/util.h"
 #include "libstephen/cb.h"
+#include "libstephen/str.h"
 #include "gram.h"
 #include "fsm.h"
 #include "regex.h"
@@ -138,35 +139,6 @@ void dot(void)
 }
 
 /**
-   @brief Read a file completely into memory.
-
-   This function allocates space for a file's contents and reads it into memory.
-   The function also requires a parameter in which to store the number of chars
-   it has allocated in the buffer, so the memory can be accounted for when
-   freed.  This function is independent of encoding.
-
-   @param file The file to read into memory.
-   @param[out] bytes Pointer to variable to store number of chars allocated.
-   @return Pointer to the file contents in memory.
- */
-char *read_file(FILE *file, int *bytes)
-{
-  char *buffer;
-  // assume file is open
-  fseek(file, 0L, SEEK_END);
-  *bytes = (int) ftell(file) + 1; // extra for null terminator
-  fseek(file, 0L, SEEK_SET);
-  buffer = smb_new(char, *bytes);
-  if (buffer == NULL) {
-    PRINT_ERROR_LOC;
-    fprintf(stderr, "Error allocating memory for file.\n");
-    return NULL;
-  }
-  fread(buffer, sizeof(char), *bytes, file);
-  return buffer;
-}
-
-/**
    @brief Interactively search a file for a pattern.
  */
 void search(void)
@@ -208,7 +180,7 @@ void search(void)
   regex_fsm = regex_parse(wregex);
   smb_free(wregex);
 
-  input = read_file(file, &status);
+  input = read_file(file);
   fclose(file);
   len = mbstowcs(NULL, regex, 0);
   winput = smb_new(wchar_t, len + 1);
