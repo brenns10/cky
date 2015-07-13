@@ -15,6 +15,7 @@
 {\ttfamily \#include \char`\"{}libstephen/ad.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/util.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}libstephen/cb.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}libstephen/str.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}gram.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}fsm.\-h\char`\"{}}\*
 {\ttfamily \#include \char`\"{}regex.\-h\char`\"{}}\*
@@ -43,9 +44,7 @@ void \hyperlink{main_8c_a33236449363e9eb55d45b6db3c5fa401}{lex} (char $\ast$file
 
 \begin{DoxyCompactList}\small\item\em \-Print the help message for the main program. \end{DoxyCompactList}\item 
 int \hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main} (int argc, char $\ast$$\ast$argv)
-\begin{DoxyCompactList}\small\item\em \-Main entry point of the program. \end{DoxyCompactList}\item 
-char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file} (\-F\-I\-L\-E $\ast$file, int $\ast$bytes)
-\begin{DoxyCompactList}\small\item\em \-Read a file completely into memory. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \-Main entry point of the program. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{\-Detailed \-Description}
@@ -83,7 +82,7 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 \end{DoxyParams}
 
 
-\-Definition at line 320 of file main.\-c.
+\-Definition at line 292 of file main.\-c.
 
 \hypertarget{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{\index{main.\-c@{main.\-c}!main@{main}}
 \index{main@{main}!main.c@{main.\-c}}
@@ -111,35 +110,7 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 \end{DoxyReturn}
 
 
-\-Definition at line 70 of file main.\-c.
-
-\hypertarget{main_8c_a8e150082e585faad4c237eefa1ae290e}{\index{main.\-c@{main.\-c}!read\-\_\-file@{read\-\_\-file}}
-\index{read\-\_\-file@{read\-\_\-file}!main.c@{main.\-c}}
-\subsubsection[{read\-\_\-file}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf read\-\_\-file} (
-\begin{DoxyParamCaption}
-\item[{\-F\-I\-L\-E $\ast$}]{file, }
-\item[{int $\ast$}]{bytes}
-\end{DoxyParamCaption}
-)}}\label{main_8c_a8e150082e585faad4c237eefa1ae290e}
-
-
-\-Read a file completely into memory. 
-
-\-This function allocates space for a file's contents and reads it into memory. \-The function also requires a parameter in which to store the number of chars it has allocated in the buffer, so the memory can be accounted for when freed. \-This function is independent of encoding.
-
-
-\begin{DoxyParams}[1]{\-Parameters}
- & {\em file} & \-The file to read into memory. \\
-\hline
-\mbox{\tt out}  & {\em bytes} & \-Pointer to variable to store number of chars allocated. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-Pointer to the file contents in memory. 
-\end{DoxyReturn}
-
-
-\-Definition at line 152 of file main.\-c.
+\-Definition at line 71 of file main.\-c.
 
 \hypertarget{main_8c_a43a8f57687aa2fc48598046c021ed7e9}{\index{main.\-c@{main.\-c}!regex@{regex}}
 \index{regex@{regex}!main.c@{main.\-c}}
@@ -154,5 +125,5 @@ char $\ast$ \hyperlink{main_8c_a8e150082e585faad4c237eefa1ae290e}{read\-\_\-file
 
 \-Prompts for a regex, and then loops prompting for test strings. \-Runs the regex on each test string and reports to stdout whether they are accepted or rejected. 
 
-\-Definition at line 245 of file main.\-c.
+\-Definition at line 217 of file main.\-c.
 

@@ -98,8 +98,6 @@ Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an escaped character from the string source.  <a href="#a40d05018488beaaf81d524413833a682"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8h.html#a25b3736bf633be787ba3b6c9a8d99890">read_escape</a> (const wchar_t *source, int len, wchar_t *out)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Place the escaped wchar in source into out.  <a href="#a25b3736bf633be787ba3b6c9a8d99890"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">smb_ll *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8h.html#a3184340dd1acca4224fcff44a77e5f29">split_lines</a> (wchar_t *source)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a list of lines from the given string.  <a href="#a3184340dd1acca4224fcff44a77e5f29"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8h.html#a84b6142837916c633216658e38c5fcda">read_wchar</a> (const wchar_t *source, int len, wchar_t *out)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a single character from the string, accepting escape sequences.  <a href="#a84b6142837916c633216658e38c5fcda"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">wchar_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str_8h.html#ac21e56b9ef36b81143763d44d3f88598">escape_wchar</a> (wchar_t input)</td></tr>
@@ -299,35 +297,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3184340dd1acca4224fcff44a77e5f29"></a><!-- doxytag: member="str.h::split_lines" ref="a3184340dd1acca4224fcff44a77e5f29" args="(wchar_t *source)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">smb_ll* <a class="el" href="str_8h.html#a3184340dd1acca4224fcff44a77e5f29">split_lines</a> </td>
-          <td>(</td>
-          <td class="paramtype">wchar_t *&#160;</td>
-          <td class="paramname"><em>source</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Return a list of lines from the given string. </p>
-<p>The string is modified! You should make a copy before doing this. </p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">source</td><td>The string to split into lines. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>A linked list containing wchar_t* to each line. </dd></dl>
-
-<p>Definition at line <a class="el" href="str_8c_source.html#l00228">228</a> of file <a class="el" href="str_8c_source.html">str.c</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -346,7 +315,7 @@ Functions</h2></td></tr>
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 9 2015 02:03:48 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 13 2015 00:05:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

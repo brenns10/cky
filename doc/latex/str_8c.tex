@@ -23,9 +23,7 @@ int \hyperlink{str_8c_a25b3736bf633be787ba3b6c9a8d99890}{read\-\_\-escape} (cons
 wchar\-\_\-t $\ast$ \hyperlink{str_8c_ac21e56b9ef36b81143763d44d3f88598}{escape\-\_\-wchar} (wchar\-\_\-t input)
 \begin{DoxyCompactList}\small\item\em \-Return a string representation of a character, escaped if necessary. \end{DoxyCompactList}\item 
 int \hyperlink{str_8c_a84b6142837916c633216658e38c5fcda}{read\-\_\-wchar} (const wchar\-\_\-t $\ast$source, int len, wchar\-\_\-t $\ast$out)
-\begin{DoxyCompactList}\small\item\em \-Read a single character from the string, accepting escape sequences. \end{DoxyCompactList}\item 
-smb\-\_\-ll $\ast$ \hyperlink{str_8c_a3184340dd1acca4224fcff44a77e5f29}{split\-\_\-lines} (wchar\-\_\-t $\ast$source)
-\begin{DoxyCompactList}\small\item\em \-Return a list of lines from the given string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \-Read a single character from the string, accepting escape sequences. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{\-Detailed \-Description}
@@ -177,27 +175,4 @@ source \-The source pointer \begin{DoxyReturn}{\-Returns}
 
 
 \-Definition at line 211 of file str.\-c.
-
-\hypertarget{str_8c_a3184340dd1acca4224fcff44a77e5f29}{\index{str.\-c@{str.\-c}!split\-\_\-lines@{split\-\_\-lines}}
-\index{split\-\_\-lines@{split\-\_\-lines}!str.c@{str.\-c}}
-\subsubsection[{split\-\_\-lines}]{\setlength{\rightskip}{0pt plus 5cm}smb\-\_\-ll$\ast$ {\bf split\-\_\-lines} (
-\begin{DoxyParamCaption}
-\item[{wchar\-\_\-t $\ast$}]{source}
-\end{DoxyParamCaption}
-)}}\label{str_8c_a3184340dd1acca4224fcff44a77e5f29}
-
-
-\-Return a list of lines from the given string. 
-
-\-The string is modified! \-You should make a copy before doing this. 
-\begin{DoxyParams}{\-Parameters}
-{\em source} & \-The string to split into lines. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-A linked list containing wchar\-\_\-t$\ast$ to each line. 
-\end{DoxyReturn}
-
-
-\-Definition at line 228 of file str.\-c.
 

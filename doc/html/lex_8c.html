@@ -88,6 +88,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;assert.h&gt;</code><br/>
 <code>#include &lt;stdio.h&gt;</code><br/>
 <code>#include &quot;libstephen/al.h&quot;</code><br/>
+<code>#include &quot;libstephen/cb.h&quot;</code><br/>
+<code>#include &quot;libstephen/str.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="regex_8h_source.html">regex.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="lex_8h_source.html">lex.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="str_8h_source.html">str.h</a>&quot;</code><br/>
@@ -108,8 +110,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>lex_delete</b> (<a cl
 void&#160;</td><td class="memItemRight" valign="bottom"><b>lex_add_pattern</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj, wchar_t *<a class="el" href="main_8c.html#a43a8f57687aa2fc48598046c021ed7e9">regex</a>, wchar_t *token)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a141f97e0745517668052f71ee7eca286"></a><!-- doxytag: member="lex.c::lex_load" ref="a141f97e0745517668052f71ee7eca286" args="(smb_lex *obj, const wchar_t *str, smb_status *status)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>lex_load</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj, const wchar_t *str, smb_status *status)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8f33c95f259749225620ab90b9dcbba5"></a><!-- doxytag: member="lex.c::lex_start" ref="a8f33c95f259749225620ab90b9dcbba5" args="(smb_lex *obj)" -->
+<a class="el" href="structsmb__lex__sim.html">smb_lex_sim</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>lex_start</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adbe5782dc4b00640575a3068465834da"></a><!-- doxytag: member="lex.c::lex_step" ref="adbe5782dc4b00640575a3068465834da" args="(smb_lex *obj, smb_lex_sim *sim, wchar_t input)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>lex_step</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj, <a class="el" href="structsmb__lex__sim.html">smb_lex_sim</a> *sim, wchar_t input)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ab40fdfcbc6d6cade783a9012bacf11"></a><!-- doxytag: member="lex.c::lex_get_token" ref="a3ab40fdfcbc6d6cade783a9012bacf11" args="(smb_lex *obj, smb_lex_sim *sim)" -->
+DATA&#160;</td><td class="memItemRight" valign="bottom"><b>lex_get_token</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj, <a class="el" href="structsmb__lex__sim.html">smb_lex_sim</a> *sim)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af19ad983ea0c169842fa617d2c23ff75"></a><!-- doxytag: member="lex.c::lex_get_length" ref="af19ad983ea0c169842fa617d2c23ff75" args="(smb_lex *obj, smb_lex_sim *sim)" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>lex_get_length</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj, <a class="el" href="structsmb__lex__sim.html">smb_lex_sim</a> *sim)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a405bcf4a089401cb39420ec96bb2d9ec"></a><!-- doxytag: member="lex.c::lex_sim_delete" ref="a405bcf4a089401cb39420ec96bb2d9ec" args="(smb_lex_sim *sim)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>lex_sim_delete</b> (<a class="el" href="structsmb__lex__sim.html">smb_lex_sim</a> *sim)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1f555c05e247cad8ca82459ee57caac0"></a><!-- doxytag: member="lex.c::lex_yylex" ref="a1f555c05e247cad8ca82459ee57caac0" args="(smb_lex *obj, wchar_t *input, DATA *token, int *length, smb_status *status)" -->
 void&#160;</td><td class="memItemRight" valign="bottom"><b>lex_yylex</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj, wchar_t *input, DATA *token, int *length, smb_status *status)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a37c98d5740fce9de2b1ac45009a32682"></a><!-- doxytag: member="lex.c::lex_fyylex" ref="a37c98d5740fce9de2b1ac45009a32682" args="(smb_lex *obj, FILE *input, DATA *token, int *length, smb_status *status)" -->
+wchar_t *&#160;</td><td class="memItemRight" valign="bottom"><b>lex_fyylex</b> (<a class="el" href="structsmb__lex.html">smb_lex</a> *obj, FILE *input, DATA *token, int *length, smb_status *status)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Lexer. </p>
@@ -136,7 +150,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>lex_yylex</b> (<a cla
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 9 2015 02:03:48 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 13 2015 00:05:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>

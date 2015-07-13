@@ -1,7 +1,6 @@
 var searchData=
 [
   ['read_5fescape',['read_escape',['../str_8c.html#a25b3736bf633be787ba3b6c9a8d99890',1,'read_escape(const wchar_t *source, int len, wchar_t *out):&#160;str.c'],['../str_8h.html#a25b3736bf633be787ba3b6c9a8d99890',1,'read_escape(const wchar_t *source, int len, wchar_t *out):&#160;str.c']]],
-  ['read_5ffile',['read_file',['../main_8c.html#a8e150082e585faad4c237eefa1ae290e',1,'main.c']]],
   ['read_5fwchar',['read_wchar',['../str_8c.html#a84b6142837916c633216658e38c5fcda',1,'read_wchar(const wchar_t *source, int len, wchar_t *out):&#160;str.c'],['../str_8h.html#a84b6142837916c633216658e38c5fcda',1,'read_wchar(const wchar_t *source, int len, wchar_t *out):&#160;str.c']]],
   ['regex',['regex',['../main_8c.html#a43a8f57687aa2fc48598046c021ed7e9',1,'main.c']]],
   ['regex_5fhit_5fcreate',['regex_hit_create',['../regex_2datastructs_8c.html#af780fe7ad3fe1abdc77113d94cd85aa2',1,'regex_hit_create(int start, int length):&#160;datastructs.c'],['../regex_8h.html#af780fe7ad3fe1abdc77113d94cd85aa2',1,'regex_hit_create(int start, int length):&#160;datastructs.c']]],

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>CKY Parser: cnf_rule Struct Reference</title>
+<title>CKY Parser: smb_lex_sim Struct Reference</title>
 
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -80,39 +80,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">cnf_rule Struct Reference</div>  </div>
+<div class="title">smb_lex_sim Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<!-- doxytag: class="cnf_rule" -->
-<p>A struct to represent a rule in a CNF CFG.  
- <a href="structcnf__rule.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="gram_8h_source.html">gram.h</a>&gt;</code></p>
-<table class="memberdecls">
+<!-- doxytag: class="smb_lex_sim" --><table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad79dfb552ae253049535ec9313589411"></a><!-- doxytag: member="cnf_rule::lhs" ref="ad79dfb552ae253049535ec9313589411" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcnf__rule.html#ad79dfb552ae253049535ec9313589411">lhs</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The symbol on the left-hand side of the rule. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab118ace8dd815d94943b47babf4eb145"></a><!-- doxytag: member="cnf_rule::rhs_one" ref="ab118ace8dd815d94943b47babf4eb145" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcnf__rule.html#ab118ace8dd815d94943b47babf4eb145">rhs_one</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The first symbol on the right hand side of the rule. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac5c0566f94de7cc364b2a1bd7120eb66"></a><!-- doxytag: member="cnf_rule::rhs_two" ref="ac5c0566f94de7cc364b2a1bd7120eb66" args="" -->
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcnf__rule.html#ac5c0566f94de7cc364b2a1bd7120eb66">rhs_two</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The second (optional) symbol on the right hand side of the rule. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a322e99f0764ad9729090ffee6dd746e9"></a><!-- doxytag: member="smb_lex_sim::simulations" ref="a322e99f0764ad9729090ffee6dd746e9" args="" -->
+smb_al&#160;</td><td class="memItemRight" valign="bottom"><b>simulations</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2223b714d2cd11cf2716b2dd975a578"></a><!-- doxytag: member="smb_lex_sim::last_pattern" ref="ac2223b714d2cd11cf2716b2dd975a578" args="" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>last_pattern</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acb33d3d488accef766f58627ba85260d"></a><!-- doxytag: member="smb_lex_sim::last_index" ref="acb33d3d488accef766f58627ba85260d" args="" -->
+int&#160;</td><td class="memItemRight" valign="bottom"><b>last_index</b></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9324389a5cdc532c6417a87ccafe18ce"></a><!-- doxytag: member="smb_lex_sim::finished" ref="a9324389a5cdc532c6417a87ccafe18ce" args="" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>finished</b></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>A struct to represent a rule in a CNF CFG. </p>
-<p>CNF grammars are context-free grammars that are restricted in their form. The rules may have the form `A -&gt; b`, where `b` is a terminal symbol, or they may be of the form `A -&gt; B C`, where `B` and `C` are non-terminal symbols.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="structcnf.html" title="A structure to store a CNF context-free grammar.">cnf</a> </dd>
-<dd>
-<a class="el" href="gram_8h.html#a8273268c6def6207571b2e197ad77825" title="Initialize a CNF rule.">cnf_rule_init</a> </dd>
-<dd>
-<a class="el" href="gram_8h.html#af35cacdaab51e6aa556d85147def56f4" title="Allocate and initialize a CNF rule.">cnf_rule_create</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="gram_8h_source.html#l00068">68</a> of file <a class="el" href="gram_8h_source.html">gram.h</a>.</p>
+<div class="textblock">
+<p>Definition at line <a class="el" href="lex_8h_source.html#l00029">29</a> of file <a class="el" href="lex_8h_source.html">lex.h</a>.</p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/<a class="el" href="gram_8h_source.html">gram.h</a></li>
+<li>src/<a class="el" href="lex_8h_source.html">lex.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- window showing the filter options -->

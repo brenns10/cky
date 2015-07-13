@@ -6,11 +6,14 @@
 \-Lexer.  
 
 
+{\ttfamily \#include $<$stdbool.\-h$>$}\*
 {\ttfamily \#include \char`\"{}libstephen/al.\-h\char`\"{}}\*
 \subsection*{\-Data \-Structures}
 \begin{DoxyCompactItemize}
 \item 
 struct \hyperlink{structsmb__lex}{smb\-\_\-lex}
+\item 
+struct \hyperlink{structsmb__lex__sim}{smb\-\_\-lex\-\_\-sim}
 \end{DoxyCompactItemize}
 \subsection*{\-Functions}
 \begin{DoxyCompactItemize}
@@ -30,7 +33,25 @@ struct \hyperlink{structsmb__lex}{smb\-\_\-lex}
 \hypertarget{lex_8h_a141f97e0745517668052f71ee7eca286}{void {\bfseries lex\-\_\-load} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, const wchar\-\_\-t $\ast$str, smb\-\_\-status $\ast$status)}\label{lex_8h_a141f97e0745517668052f71ee7eca286}
 
 \item 
+\hypertarget{lex_8h_a8f33c95f259749225620ab90b9dcbba5}{\hyperlink{structsmb__lex__sim}{smb\-\_\-lex\-\_\-sim} $\ast$ {\bfseries lex\-\_\-start} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj)}\label{lex_8h_a8f33c95f259749225620ab90b9dcbba5}
+
+\item 
+\hypertarget{lex_8h_adbe5782dc4b00640575a3068465834da}{bool {\bfseries lex\-\_\-step} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, \hyperlink{structsmb__lex__sim}{smb\-\_\-lex\-\_\-sim} $\ast$sim, wchar\-\_\-t input)}\label{lex_8h_adbe5782dc4b00640575a3068465834da}
+
+\item 
+\hypertarget{lex_8h_a3ab40fdfcbc6d6cade783a9012bacf11}{\-D\-A\-T\-A {\bfseries lex\-\_\-get\-\_\-token} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, \hyperlink{structsmb__lex__sim}{smb\-\_\-lex\-\_\-sim} $\ast$sim)}\label{lex_8h_a3ab40fdfcbc6d6cade783a9012bacf11}
+
+\item 
+\hypertarget{lex_8h_af19ad983ea0c169842fa617d2c23ff75}{int {\bfseries lex\-\_\-get\-\_\-length} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, \hyperlink{structsmb__lex__sim}{smb\-\_\-lex\-\_\-sim} $\ast$sim)}\label{lex_8h_af19ad983ea0c169842fa617d2c23ff75}
+
+\item 
+\hypertarget{lex_8h_a405bcf4a089401cb39420ec96bb2d9ec}{void {\bfseries lex\-\_\-sim\-\_\-delete} (\hyperlink{structsmb__lex__sim}{smb\-\_\-lex\-\_\-sim} $\ast$sim)}\label{lex_8h_a405bcf4a089401cb39420ec96bb2d9ec}
+
+\item 
 \hypertarget{lex_8h_a42a245b7169b6c3c36b58944e6c51bbd}{void {\bfseries lex\-\_\-yylex} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, wchar\-\_\-t $\ast$input, \-D\-A\-T\-A $\ast$token, int $\ast$length, smb\-\_\-status $\ast$st)}\label{lex_8h_a42a245b7169b6c3c36b58944e6c51bbd}
+
+\item 
+\hypertarget{lex_8h_af9db8aa844108ebe5d38b0565dddf75b}{wchar\-\_\-t $\ast$ {\bfseries lex\-\_\-fyylex} (\hyperlink{structsmb__lex}{smb\-\_\-lex} $\ast$obj, \-F\-I\-L\-E $\ast$f, \-D\-A\-T\-A $\ast$token, int $\ast$length, smb\-\_\-status $\ast$s)}\label{lex_8h_af9db8aa844108ebe5d38b0565dddf75b}
 
 \end{DoxyCompactItemize}
 

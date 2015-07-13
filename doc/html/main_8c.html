@@ -94,6 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &quot;libstephen/ad.h&quot;</code><br/>
 <code>#include &quot;libstephen/util.h&quot;</code><br/>
 <code>#include &quot;libstephen/cb.h&quot;</code><br/>
+<code>#include &quot;libstephen/str.h&quot;</code><br/>
 <code>#include &quot;<a class="el" href="gram_8h_source.html">gram.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="fsm_8h_source.html">fsm.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="regex_8h_source.html">regex.h</a>&quot;</code><br/>
@@ -124,8 +125,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the help message for the main program. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Main entry point of the program.  <a href="#a3c04138a5bfe5d72780bb7e82a18e627"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e">read_file</a> (FILE *file, int *bytes)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a file completely into memory.  <a href="#a8e150082e585faad4c237eefa1ae290e"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>CKY parser project main program. </p>
@@ -158,7 +157,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00320">320</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00292">292</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -198,47 +197,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The program's exit code. </dd></dl>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00070">70</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a8e150082e585faad4c237eefa1ae290e"></a><!-- doxytag: member="main.c::read_file" ref="a8e150082e585faad4c237eefa1ae290e" args="(FILE *file, int *bytes)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char* <a class="el" href="main_8c.html#a8e150082e585faad4c237eefa1ae290e">read_file</a> </td>
-          <td>(</td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>bytes</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Read a file completely into memory. </p>
-<p>This function allocates space for a file's contents and reads it into memory. The function also requires a parameter in which to store the number of chars it has allocated in the buffer, so the memory can be accounted for when freed. This function is independent of encoding.</p>
-<dl class="params"><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">file</td><td>The file to read into memory. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">bytes</td><td>Pointer to variable to store number of chars allocated. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>Pointer to the file contents in memory. </dd></dl>
-
-<p>Definition at line <a class="el" href="main_8c_source.html#l00152">152</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00071">71</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -260,7 +219,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main
 <p>A light test of my regular expression parser. </p>
 <p>Prompts for a regex, and then loops prompting for test strings. Runs the regex on each test string and reports to stdout whether they are accepted or rejected. </p>
 
-<p>Definition at line <a class="el" href="main_8c_source.html#l00245">245</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
+<p>Definition at line <a class="el" href="main_8c_source.html#l00217">217</a> of file <a class="el" href="main_8c_source.html">main.c</a>.</p>
 
 </div>
 </div>
@@ -282,7 +241,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main
 
 
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 9 2015 02:03:48 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 13 2015 00:05:15 for CKY Parser by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.7.6.1
 </small></address>
