@@ -12,12 +12,10 @@ set -e
 COMMIT=$(git rev-parse HEAD)
 
 # Generate coverage information.
-make CFG=coverage
-bin/coverage/main -t
-make gcov
+make CFG=coverage cov
 
 # Generate documentation.
-make docs
+make doc
 
 # In a new directory, clone the gh-pages branch.
 cd ..

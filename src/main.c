@@ -28,14 +28,12 @@
 #include "fsm.h"
 #include "regex.h"
 #include "lex.h"
-#include "test/tests.h"
 
 void simple_gram(void);
 void regex(void);
 void search(void);
 void dot(void);
 void lex(char*);
-void test(void);
 
 /**
    @brief Print the help message for the main program.
@@ -51,7 +49,6 @@ void help(char *name)
   puts("  -s, --search            regex search file");
   puts("  -d, --dot               create graphviz dot from regex");
   puts("  -l, --lex [FILE]        perform lexical analysis");
-  puts("  -t, --test              run tests");
   puts("");
   puts("Misc:");
   puts("  -h, --help              display this help message and exit");
@@ -105,10 +102,6 @@ int main(int argc, char **argv)
     if (filename == NULL)
       filename = get_long_flag_parameter(&data, "lex");
     lex(filename);
-    executed = true;
-  }
-  if (check_flag(&data, 't') || check_long_flag(&data, "test")) {
-    test();
     executed = true;
   }
 
@@ -322,13 +315,4 @@ void lex(char *filename)
   }
   wcb_destroy(&desc);
   lex_delete(lex);
-}
-
-void test(void)
-{
-  fsm_test();
-  fsm_io_test();
-  regex_test();
-  regex_search_test();
-  lex_test();
 }
