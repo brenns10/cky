@@ -24,9 +24,9 @@
 #include "libstephen/util.h"
 #include "libstephen/cb.h"
 #include "libstephen/str.h"
+#include "libstephen/fsm.h"
+#include "libstephen/regex.h"
 #include "gram.h"
-#include "fsm.h"
-#include "regex.h"
 #include "lex.h"
 
 void simple_gram(void);

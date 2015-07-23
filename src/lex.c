@@ -18,9 +18,8 @@
 #include "libstephen/al.h"
 #include "libstephen/cb.h"
 #include "libstephen/str.h"
-#include "regex.h"
+#include "libstephen/regex.h"
 #include "lex.h"
-#include "str.h"
 
 void lex_init(smb_lex *obj)
 {
