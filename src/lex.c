@@ -35,7 +35,7 @@ smb_lex *lex_create(void)
   return obj;
 }
 
-void lex_destroy(smb_lex *obj)
+void lex_destroy(smb_lex *obj, bool free_strings)
 {
   // Cleanup logic
   smb_iter it;
@@ -55,23 +55,30 @@ void lex_destroy(smb_lex *obj)
   while (it.has_next(&it)) {
     s = it.next(&it, &status).data_ptr;
     assert(status == SMB_SUCCESS);
-    smb_free(s); // assumes we can free the string, may change that.
+    if (free_strings) {
+      smb_free(s);
+    }
   }
   al_destroy(&obj->tokens);
 }
 
-void lex_delete(smb_lex *obj) {
-  lex_destroy(obj);
+void lex_delete(smb_lex *obj, bool free_strings) {
+  lex_destroy(obj, free_strings);
   smb_free(obj);
+}
+
+void lex_add_token(smb_lex *obj, wchar_t *regex, DATA token)
+{
+  fsm *f = regex_parse(regex);
+  al_append(&obj->patterns, (DATA){.data_ptr=f});
+  al_append(&obj->tokens, token);
 }
 
 void lex_add_pattern(smb_lex *obj, wchar_t *regex, wchar_t *token)
 {
-  fsm *f = regex_parse(regex);
   wchar_t *s = smb_new(wchar_t, wcslen(token) + 1);
-  al_append(&obj->patterns, (DATA){.data_ptr=f});
   wcscpy(s, token);
-  al_append(&obj->tokens, (DATA){.data_ptr=s});
+  lex_add_token(obj, regex, PTR(token));
 }
 
 static void lex_load_line(smb_lex *obj, wchar_t *line, smb_status *status)

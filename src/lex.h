@@ -38,8 +38,11 @@ typedef struct {
 // Data structure functions.
 void lex_init(smb_lex *obj);
 smb_lex *lex_create();
-void lex_destroy(smb_lex *obj);
-void lex_delete(smb_lex *obj);
+void lex_destroy(smb_lex *obj, bool free_strings);
+void lex_delete(smb_lex *obj, bool free_strings);
+
+// Adding patterns
+void lex_add_token(smb_lex *obj, wchar_t *regex, DATA token);
 
 // Loading from a file.
 void lex_load(smb_lex *obj, const wchar_t *str, smb_status *status);
