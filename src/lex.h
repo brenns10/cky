@@ -29,7 +29,8 @@ typedef struct {
 typedef struct {
 
   smb_al simulations;
-  int last_pattern;
+  int last_matched_pattern;
+  int last_matched_index;
   int last_index;
   bool finished;
 

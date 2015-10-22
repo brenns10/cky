@@ -18,8 +18,14 @@
 #include "libstephen/al.h"
 #include "libstephen/cb.h"
 #include "libstephen/str.h"
+#include "libstephen/log.h"
 #include "libstephen/regex.h"
 #include "lex.h"
+
+smb_logger lex_log = {
+  .format = SMB_DEFAULT_LOGFORMAT,
+  .num = 0
+};
 
 void lex_init(smb_lex *obj)
 {
@@ -141,7 +147,8 @@ smb_lex_sim *lex_start(smb_lex *obj)
     al_append(&sim->simulations, (DATA){.data_ptr=fs});
   }
 
-  sim->last_pattern = -1;
+  sim->last_matched_pattern = -1;
+  sim->last_matched_index = -1;
   sim->last_index = -1;
   sim->finished = false;
   return sim;
@@ -152,8 +159,8 @@ bool lex_step(smb_lex *obj, smb_lex_sim *sim, wchar_t input)
   smb_status status = SMB_SUCCESS;
   fsm_sim *fs;
   int i, state;
-  int curr_idx = sim->last_index + 1;
   bool all_rejected = true;
+  sim->last_index++;
 
   // For each simulation...
   for (i = 0; i < al_length(&obj->patterns); i++) {
@@ -161,20 +168,25 @@ bool lex_step(smb_lex *obj, smb_lex_sim *sim, wchar_t input)
     fs = al_get(&sim->simulations, i, &status).data_ptr;
     assert(status == SMB_SUCCESS);
     fsm_sim_nondet_step(fs, input);
-    // Use null byte as next input, since we don't know it yet.
-    state = fsm_sim_nondet_state(fs, L'\0');
+    // It doesn't actually matter what the next input is, just that it's not a
+    // null byte :/
+    state = fsm_sim_nondet_state(fs, L'a');
 
     // If the simulation is in an accepting state...
     if (state == FSM_SIM_ACCEPTING || state == FSM_SIM_ACCEPTED) {
+      LDEBUG(&lex_log, "lex_step() - L'%lc' - fsm %d - accepting", input, i);
       // And no other simulation has been accepting at this index...
-      if (sim->last_index < curr_idx) {
+      if (sim->last_matched_index < sim->last_index) {
         // Record this pattern and simulation.
-        sim->last_pattern = i;
-        sim->last_index = curr_idx;
+        sim->last_matched_pattern = i;
+        sim->last_matched_index = sim->last_index;
       }
-    }
-    if (state != FSM_SIM_REJECTED) {
       all_rejected = false;
+    } else if (state == FSM_SIM_NOT_ACCEPTING) {
+      LDEBUG(&lex_log, "lex_step() - L'%lc' - fsm %d - not accepting", input, i);
+      all_rejected = false;
+    } else {
+      LDEBUG(&lex_log, "lex_step() - L'%lc' - fsm %d - rejected", input, i);
     }
   }
 
@@ -187,10 +199,10 @@ DATA lex_get_token(smb_lex *obj, smb_lex_sim *sim)
 {
   smb_status status;
   DATA token;
-  if (!sim->finished || sim->last_pattern < 0) {
+  if (!sim->finished || sim->last_matched_pattern < 0) {
     return (DATA){.data_ptr=NULL};
   } else {
-    token = al_get(&obj->tokens, sim->last_pattern, &status);
+    token = al_get(&obj->tokens, sim->last_matched_pattern, &status);
     assert(status == SMB_SUCCESS);
     return token;
   }
@@ -201,7 +213,7 @@ int lex_get_length(smb_lex *obj, smb_lex_sim *sim)
   if (!sim->finished) {
     return -1;
   } else {
-    return sim->last_index + 1;
+    return sim->last_matched_index + 1;
   }
 }
 

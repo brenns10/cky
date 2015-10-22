@@ -19,6 +19,7 @@
 #include "libstephen/ll.h"
 #include "libstephen/ht.h"
 #include "libstephen/str.h"
+#include "libstephen/log.h"
 #include "lex.h"
 
 #define WHITESPACE  0
@@ -36,6 +37,11 @@
 #define TP_FUNCTION 4
 #define TP_FUNCCALL 5
 #define TP_IDENTIFIER 6
+
+smb_logger lisp_log = {
+  .format = SMB_DEFAULT_LOGFORMAT,
+  .num = 0,
+};
 
 typedef struct {
 
@@ -103,11 +109,11 @@ smb_ll *lisp_lex(wchar_t *str)
   smb_status status = SMB_SUCCESS;
 
   while (*str != L'\0') {
-    printf("%ls\n", str);
+    LDEBUG(&lisp_log, "lisp_lex(): remaining text: \"%ls\"\n", str);
     lisp_token *lt = smb_new(lisp_token, 1);
     int length;
     lex_yylex(lex, str, &lt->token, &length, &status);
-    printf("%d\n", length);
+    printf(&lisp_log, "lisp_lex(): match length %d\n", length);
     switch (lt->token.data_llint) {
     case WHITESPACE:
       smb_free(lt);
