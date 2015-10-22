@@ -34,6 +34,7 @@ void regex(void);
 void search(void);
 void dot(void);
 void lex(char*);
+void lisp(void);
 
 /**
    @brief Print the help message for the main program.
@@ -48,6 +49,7 @@ void help(char *name)
   puts("  -e, --regex             input regex and test strings");
   puts("  -s, --search            regex search file");
   puts("  -d, --dot               create graphviz dot from regex");
+  puts("  -p, --lisp              interpret lisp");
   puts("  -l, --lex [FILE]        perform lexical analysis");
   puts("");
   puts("Misc:");
@@ -95,6 +97,11 @@ int main(int argc, char **argv)
     dot();
     arg_data_destroy(&data);
     return 0; // exit silently
+  }
+  if (check_flag(&data, 'p') || check_long_flag(&data, "lisp")) {
+    lisp();
+    arg_data_destroy(&data);
+    return 0;
   }
   if (check_flag(&data, 'l') || check_long_flag(&data, "lex")) {
     char *filename;
@@ -314,5 +321,5 @@ void lex(char *filename)
     smb_free(tokstr);
   }
   wcb_destroy(&desc);
-  lex_delete(lex);
+  lex_delete(lex, true);
 }

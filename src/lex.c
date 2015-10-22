@@ -153,6 +153,8 @@ bool lex_step(smb_lex *obj, smb_lex_sim *sim, wchar_t input)
   fsm_sim *fs;
   int i, state;
   int curr_idx = sim->last_index + 1;
+  bool all_rejected = true;
+
   // For each simulation...
   for (i = 0; i < al_length(&obj->patterns); i++) {
     // Drive forward the simulation, and get its state.
@@ -171,16 +173,13 @@ bool lex_step(smb_lex *obj, smb_lex_sim *sim, wchar_t input)
         sim->last_index = curr_idx;
       }
     }
+    if (state != FSM_SIM_REJECTED) {
+      all_rejected = false;
+    }
   }
 
-  // If none of the simulations were accepting after this character...
-  if (sim->last_index < curr_idx) {
-    // Then we don't need any more input.
-    sim->finished = true;
-  } else {
-    // Otherwise, we still do need more input.
-    sim->finished = false;
-  }
+  // The simulation is done when all are rejected.
+  sim->finished = all_rejected;
   return sim->finished;
 }
 
