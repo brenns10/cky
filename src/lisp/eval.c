@@ -31,7 +31,7 @@ lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope);
 static lisp_list *lisp_evaluate_list(lisp_list *list, lisp_scope *scope)
 {
   if (list == NULL) return NULL;
-  lisp_list *l = (lisp_list*) tp_list.tp_alloc();;
+  lisp_list *l = (lisp_list*) tp_list.tp_alloc();
   l->value = lisp_evaluate(list->value, scope);
   l->next = lisp_evaluate_list(list->next, scope);
   return l;
@@ -72,6 +72,7 @@ lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope)
     id = (lisp_identifier*)expression;
     rv = ht_get(&scope->table, PTR(id->value), &st).data_ptr;
     assert(st == SMB_SUCCESS);
+    lisp_incref(rv); // we are returning a new reference not owned by scope
     return rv;
   }
   return rv;
