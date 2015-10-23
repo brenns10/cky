@@ -97,15 +97,19 @@ lisp_value *lisp_run(wchar_t *str)
 
 void lisp_interact(void)
 {
+  // Create an iterator of lisp tokens taken from stdin.
   smb_iter token_iter = lisp_lex_file(stdin);
   lisp_scope *scope = lisp_create_globals();
 
+  // While there are still tokens remaining...
   while (token_iter.has_next(&token_iter)) {
     printf("> ");
     fflush(stdout);
+
     lisp_value *code = lisp_parse(&token_iter);
     lisp_value *res = lisp_evaluate(code, scope);
     res->type->tp_print(res, stdout, 0);
+
     lisp_decref(code);
     lisp_decref(res);
   }
