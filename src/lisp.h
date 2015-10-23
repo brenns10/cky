@@ -76,30 +76,9 @@ struct lisp_value {
 
 };
 
-
-/**
-   @brief The lisp list type.
- */
-typedef struct lisp_list {
-
-  /**
-     @brief Standard header for lisp_values.
-   */
-  lisp_value lv;
-
-  /**
-     @brief Pointer the value stored in this cell.
-   */
-  lisp_value *value;
-
-  /**
-     @brief Pointer to the next node in the list.
-   */
-  struct lisp_list *next;
-
-} lisp_list;
-lisp_type tp_list;
-
+/*******************************************************************************
+                          "Child" types of lisp_value
+*******************************************************************************/
 typedef struct {
   lisp_value lv;
   long int value;
@@ -117,6 +96,13 @@ typedef struct {
   wchar_t *value;
 } lisp_identifier;
 lisp_type tp_identifier;
+
+typedef struct lisp_list {
+  lisp_value lv;
+  lisp_value *value;
+  struct lisp_list *next;
+} lisp_list;
+lisp_type tp_list;
 
 typedef struct {
   lisp_value lv;
