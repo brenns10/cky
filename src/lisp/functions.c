@@ -21,19 +21,17 @@
  */
 static lisp_value *lisp_add(lisp_list *params)
 {
-  if (params && params->val.type == TP_INT &&
-      params->next && params->next->val.type == TP_INT) {
-    lisp_value *rv = smb_new(lisp_value, 1);
-    rv->type = TP_INT;
-    rv->value = LLINT(params->val.value.data_llint + params->next->val.value.data_llint);
-    return rv;
-  } else {
-    fprintf(stderr, "lisp_add: error\n");
-    exit(EXIT_FAILURE);
+  lisp_int *rv = (lisp_int*)tp_int.tp_alloc();
+  while (params) {
+    if (params->value->type != &tp_int) {
+      fprintf(stderr, "lisp_add(): error\n");
+    }
+    rv->value += ((lisp_int*)params->value)->value;
+    params = params->next;
   }
+  return (lisp_value *)rv;
 }
 
-lisp_value lv_add = {TP_BUILTIN, PTR(&lisp_add)};
 
 /**
    @brief Return a scope containing the top-level variables for our lisp.
@@ -41,10 +39,13 @@ lisp_value lv_add = {TP_BUILTIN, PTR(&lisp_add)};
 lisp_scope *lisp_create_globals(void)
 {
   lisp_scope *scope = smb_new(lisp_scope, 1);
+  lisp_builtin *bi;
   scope->up = NULL;
   ht_init(&scope->table, &ht_string_hash, &data_compare_string);
 
-  ht_insert(&scope->table, PTR("+"), PTR(&lv_add));
+  bi = (lisp_builtin*)tp_builtin.tp_alloc();
+  bi->function = &lisp_add;
+  ht_insert(&scope->table, PTR("+"), PTR(bi));
 
   return scope;
 }

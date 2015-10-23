@@ -13,6 +13,8 @@
 
 *******************************************************************************/
 
+#include <wchar.h>
+
 #include "libstephen/log.h"
 #include "lex.h"
 #include "lisp.h"
@@ -76,9 +78,6 @@ typedef struct {
 
 } lisp_token;
 
-
-
-
 /**
    @brief Return an instance of the lexer for lisp.
 
@@ -108,7 +107,7 @@ smb_ll *lisp_lex(wchar_t *str)
     lisp_token *lt = smb_new(lisp_token, 1);
     int length;
     lex_yylex(lex, str, &lt->token, &length, &status);
-    printf(&lisp_log, "lisp_lex(): match length %d\n", length);
+    LDEBUG(&lisp_log, "lisp_lex(): match length %d\n", length);
     switch (lt->token.data_llint) {
     case WHITESPACE:
       smb_free(lt);
@@ -157,9 +156,8 @@ static lisp_list *lisp_parse_list(smb_iter *it, bool within_list) {
 
   // lisp_parse_rec() will return NULL when the matching closing paren is reached
   while ((value = lisp_parse_rec(it, within_list)) != NULL) {
-    list = smb_new(lisp_list, 1);
-    list->val = *value;
-    smb_free(value);
+    list = (lisp_list*)tp_list.tp_alloc();
+    list->value = value;
     list->next = NULL;
     if (prev) {
       prev->next = list;
@@ -186,40 +184,50 @@ static lisp_list *lisp_parse_list(smb_iter *it, bool within_list) {
 lisp_value *lisp_parse_rec(smb_iter *it, bool within_list)
 {
   smb_status st = SMB_SUCCESS;
-  lisp_value *lv = smb_new(lisp_value, 1);
+  lisp_value *lv;
+  lisp_atom *atom;
+  lisp_identifier *id;
+  lisp_int *int_;
+  lisp_funccall *funccall;
   lisp_token *lt = it->next(it, &st).data_ptr;
 
   switch (lt->token.data_llint) {
   case ATOM:
-    lv->type = TP_ATOM;
-    lv->value = PTR(lt->text);
+    lv = tp_atom.tp_alloc();
+    atom = (lisp_atom*)lv;
+    atom->value = lt->text;
     break;
   case IDENTIFIER:
     if (within_list) {
-      lv->type = TP_ATOM;
+      lv = tp_atom.tp_alloc();
+      atom = (lisp_atom*)lv;
+      atom->value = lt->text;
     } else {
-      lv->type = TP_IDENTIFIER;
+      lv = tp_identifier.tp_alloc();
+      id = (lisp_identifier*)lv;
+      id->value = lt->text;
     }
-    lv->value = PTR(lt->text);
     break;
   case INTEGER:
-    lv->type = TP_INT;
-    swscanf(lt->text, L"%ld", &lv->value.data_llint);
+    lv = tp_int.tp_alloc();
+    int_ = (lisp_int*)lv;
+    swscanf(lt->text, L"%ld", &int_->value);
+    smb_free(lt->text);
     break;
   case OPEN_PAREN:
     if (within_list) {
-      lv->type = TP_LIST;
+      lv = (lisp_value*)lisp_parse_list(it, within_list);
     } else {
-      lv->type = TP_FUNCCALL;
+      lv = tp_funccall.tp_alloc();
+      funccall = (lisp_funccall*)lv;
+      funccall->function = lisp_parse_rec(it, within_list);
+      funccall->arguments = lisp_parse_list(it, within_list);
     }
-    lv->value = PTR(lisp_parse_list(it, within_list));
     break;
   case OPEN_LIST:
-    lv->type = TP_LIST;
-    lv->value = PTR(lisp_parse_list(it, true));
+    lv = (lisp_value*)lisp_parse_list(it, within_list);
     break;
   case CLOSE_PAREN:
-    smb_free(lv);
     lv = NULL;
     break;
   }

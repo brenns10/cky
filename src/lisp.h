@@ -16,6 +16,8 @@
 #ifndef CKY_LISP_H
 #define CKY_LISP_H
 
+#include <stdio.h>
+
 #include "libstephen/ht.h"
 #include "libstephen/ll.h"
 
@@ -30,21 +32,49 @@
 #define TP_FUNCCALL 5
 #define TP_IDENTIFIER 6
 
+struct lisp_value;
+typedef struct lisp_value lisp_value;
+
 /**
-  @brief The base lisp value type.
+   @brief Type objects define how values of some type should behave.
  */
 typedef struct {
 
   /**
+     @brief The name of this type.
+   */
+  const char *tp_name;
+  /**
+     @brief Memory allocator for this type.
+   */
+  lisp_value* (*tp_alloc)(void);
+  /**
+     @brief Memory deallocator for this type.
+   */
+  void (*tp_dealloc)(lisp_value*);
+  /**
+     @brief Output function.
+   */
+  void (*tp_print)(lisp_value*, FILE *, int);
+
+} lisp_type;
+
+/**
+  @brief The base lisp value type.
+ */
+struct lisp_value {
+
+  /**
      @brief The type of the value.
    */
-  int type;
-  /**
-     @brief The value contained.
-   */
-  DATA value;
+  lisp_type *type;
 
-} lisp_value;
+  /**
+     @brief Number of references to this value.
+   */
+  unsigned int refcount;
+
+};
 
 
 /**
@@ -53,15 +83,53 @@ typedef struct {
 typedef struct lisp_list {
 
   /**
-     @brief The value contained in this part of the singly linked list.
+     @brief Standard header for lisp_values.
    */
-  lisp_value val;
+  lisp_value lv;
+
+  /**
+     @brief Pointer the value stored in this cell.
+   */
+  lisp_value *value;
+
   /**
      @brief Pointer to the next node in the list.
    */
   struct lisp_list *next;
 
 } lisp_list;
+lisp_type tp_list;
+
+typedef struct {
+  lisp_value lv;
+  long int value;
+} lisp_int;
+lisp_type tp_int;
+
+typedef struct {
+  lisp_value lv;
+  wchar_t *value;
+} lisp_atom;
+lisp_type tp_atom;
+
+typedef struct {
+  lisp_value lv;
+  wchar_t *value;
+} lisp_identifier;
+lisp_type tp_identifier;
+
+typedef struct {
+  lisp_value lv;
+  lisp_value *function;
+  lisp_list *arguments;
+} lisp_funccall;
+lisp_type tp_funccall;
+
+typedef struct {
+  lisp_value lv;
+  lisp_value * (*function) (lisp_list *);
+} lisp_builtin;
+lisp_type tp_builtin;
 
 /**
    @brief A struct to represent one level of scope.
@@ -115,5 +183,7 @@ lisp_value *lisp_evaluate(lisp_value *expr, lisp_scope *scope);
  */
 lisp_value *lisp_run(wchar_t *str);
 
-
+void lisp_incref(lisp_value *lv);
+void lisp_decref(lisp_value *lv);
+lisp_scope *lisp_create_globals(void);
 #endif // CKY_LISP_H

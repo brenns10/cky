@@ -15,79 +15,9 @@
 
 #include <assert.h>
 
+#include "libstephen/str.h"
 #include "lex.h"
 #include "lisp.h"
-
-/**
-   @brief "Pretty-print" a lisp value.
-
-   Prints (complete with nesting) a lisp value.  This can be a piece of lisp
-   code, or just a value.
-
-   @param lv Value to print.
-   @param indent_level Number of spaces to print at the beginning of the line.
- */
-static void print_lisp_value(lisp_value *lv, int indent_level)
-{
-  int i;
-  lisp_list *l;
-
-  // Indent however much necessary.
-  for (i = 0; i < indent_level; i++) {
-    putchar(' ');
-  }
-
-  // Print out this value.
-  switch (lv->type) {
-  case TP_INT:
-    printf("%d\n", lv->value.data_llint);
-    break;
-
-  case TP_ATOM:
-    printf("'%ls\n", lv->value.data_ptr);
-    break;
-
-  case TP_LIST:
-    if (lv->value.data_ptr == NULL) {
-      printf("'()\n");
-    } else {
-      printf("'(\n");
-      l = lv->value.data_ptr;
-      while (l != NULL) {
-        print_lisp_value(&l->val, indent_level + 1);
-        l = l->next;
-      }
-      // indent again
-      for (i = 0; i < indent_level; i++) {
-        putchar(' ');
-      }
-      printf(")\n");
-    }
-    break;
-
-  case TP_FUNCTION:
-    printf("a function?\n");
-    break;
-
-  case TP_FUNCCALL:
-    l = lv->value.data_ptr;
-    printf("(%ls\n", l->val.value.data_ptr);
-    l = l->next;
-    while (l != NULL) {
-      print_lisp_value(&l->val, indent_level + 1);
-      l = l->next;
-    }
-    for (i = 0; i < indent_level; i++) {
-      putchar(' ');
-    }
-    printf(")\n");
-    break;
-
-  case TP_IDENTIFIER:
-    printf("'%ls\n", lv->value.data_ptr);
-    break;
-  }
-}
 
 // forward-declaration
 lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope);
@@ -101,8 +31,8 @@ lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope);
 static lisp_list *lisp_evaluate_list(lisp_list *list, lisp_scope *scope)
 {
   if (list == NULL) return NULL;
-  lisp_list *l = smb_new(lisp_list, 1);
-  l->val = *lisp_evaluate(&list->val, scope);
+  lisp_list *l = (lisp_list*) tp_list.tp_alloc();;
+  l->value = lisp_evaluate(list->value, scope);
   l->next = lisp_evaluate_list(list->next, scope);
   return l;
 }
@@ -115,38 +45,41 @@ static lisp_list *lisp_evaluate_list(lisp_list *list, lisp_scope *scope)
 lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope)
 {
   smb_status st = SMB_SUCCESS;
-  lisp_value *rv, *f;
-  lisp_list *l;
+  lisp_funccall *call;
+  lisp_value *rv, *func;
+  lisp_list *args;
+  lisp_identifier *id;
 
-  switch (expression->type) {
-  case TP_INT:
-  case TP_ATOM:
-  case TP_LIST:
-  case TP_FUNCTION:
-    return expression;
-
-  case TP_FUNCCALL:
-    l = lisp_evaluate_list(expression->value.data_ptr, scope);
-    f = &l->val;
-    l = l->next;
-    if (f->type == TP_BUILTIN) {
-      lisp_value* (*func)(lisp_list*);
-      func = f->value.data_ptr;
-      return func(l);
+  if (expression->type == &tp_int ||
+      expression->type == &tp_atom ||
+      expression->type == &tp_list ||
+      expression->type == &tp_builtin) {
+    lisp_incref(expression);
+    rv = expression;
+  } else if (expression->type == &tp_funccall) {
+    call = (lisp_funccall *)expression;
+    func = lisp_evaluate((lisp_value*)call->function, scope);
+    args = lisp_evaluate_list(call->arguments, scope);
+    if (func->type == &tp_builtin) {
+      lisp_builtin *builtin = (lisp_builtin*) func;
+      rv = builtin->function(args);
+      lisp_decref((lisp_value*)args);
+      lisp_decref(func);
     } else {
       printf("error in evaluation\n");
     }
-    break;
-
-  case TP_IDENTIFIER:
-    rv = ht_get(&scope->table, expression->value, &st).data_ptr;
+  } else {
+    id = (lisp_identifier*)expression;
+    rv = ht_get(&scope->table, PTR(id->value), &st).data_ptr;
     assert(st == SMB_SUCCESS);
     return rv;
   }
+  return rv;
 }
 
 lisp_value *lisp_run(wchar_t *str)
 {
+  smb_status st = SMB_SUCCESS;
   // given string, return list of tokens (with strings if necessary)
   smb_ll *tokens = lisp_lex(str);
   // then, parse it to a (list of) lisp_value
@@ -155,7 +88,17 @@ lisp_value *lisp_run(wchar_t *str)
   // then, evaluate that
   lisp_scope *scope = lisp_create_globals();
   lisp_value *res = lisp_evaluate(code, scope);
-  print_lisp_value(res, 0);
+  res->type->tp_print(res, stdout, 0);
+  lisp_decref(res);
+  lisp_decref(code);
+  ht_destroy(&scope->table);
+  smb_free(scope);
+  it = ll_get_iter(tokens);
+  while (it.has_next(&it)) {
+    smb_free(it.next(&it, &st).data_ptr);
+    assert(st == SMB_SUCCESS);
+  }
+  ll_delete(tokens);
   return res;
 }
 
@@ -166,4 +109,5 @@ void lisp(void)
 {
   wchar_t *file = read_filew(stdin);
   lisp_run(file);
+  smb_free(file);
 }
