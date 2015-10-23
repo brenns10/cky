@@ -100,7 +100,7 @@ static void lisp_atom_dealloc(lisp_value *value)
 static void lisp_atom_print(lisp_value *value, FILE *f, int indent)
 {
   lisp_atom *val = (lisp_atom *) value;
-  fprintf(f, "%ls", val->value);
+  fprintf(f, "'%ls\n", val->value);
 }
 
 lisp_type tp_atom = {
@@ -133,7 +133,7 @@ static void lisp_identifier_dealloc(lisp_value *value)
 static void lisp_identifier_print(lisp_value *value, FILE *f, int indent)
 {
   lisp_identifier *val = (lisp_identifier *) value;
-  fprintf(f, "%ls", val->value);
+  fprintf(f, "%ls\n", val->value);
 }
 
 lisp_type tp_identifier = {
