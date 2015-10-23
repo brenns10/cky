@@ -225,7 +225,7 @@ lisp_value *lisp_parse_rec(smb_iter *it, bool within_list)
     }
     break;
   case OPEN_LIST:
-    lv = (lisp_value*)lisp_parse_list(it, within_list);
+    lv = (lisp_value*)lisp_parse_list(it, true);
     break;
   case CLOSE_PAREN:
     lv = NULL;
