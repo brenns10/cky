@@ -80,7 +80,6 @@ lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope)
 
 lisp_value *lisp_run(wchar_t *str)
 {
-  smb_status st = SMB_SUCCESS;
   // given string, return list of tokens (with strings if necessary)
   smb_ll *tokens = lisp_lex(str);
   // then, parse it to a (list of) lisp_value
@@ -92,13 +91,26 @@ lisp_value *lisp_run(wchar_t *str)
   res->type->tp_print(res, stdout, 0);
   lisp_decref(code);
   lisp_scope_delete(scope);
-  it = ll_get_iter(tokens);
-  while (it.has_next(&it)) {
-    smb_free(it.next(&it, &st).data_ptr);
-    assert(st == SMB_SUCCESS);
-  }
   ll_delete(tokens);
   return res;
+}
+
+void lisp_interact(void)
+{
+  smb_iter token_iter = lisp_lex_file(stdin);
+  lisp_scope *scope = lisp_create_globals();
+
+  while (token_iter.has_next(&token_iter)) {
+    printf("> ");
+    fflush(stdout);
+    lisp_value *code = lisp_parse(&token_iter);
+    lisp_value *res = lisp_evaluate(code, scope);
+    res->type->tp_print(res, stdout, 0);
+    lisp_decref(code);
+    lisp_decref(res);
+  }
+
+  lisp_scope_delete(scope);
 }
 
 /**
@@ -106,7 +118,8 @@ lisp_value *lisp_run(wchar_t *str)
  */
 void lisp(void)
 {
-  wchar_t *file = read_filew(stdin);
+  /*  wchar_t *file = read_filew(stdin);
   lisp_decref(lisp_run(file));
-  smb_free(file);
+  smb_free(file);*/
+  lisp_interact();
 }

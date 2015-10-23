@@ -133,6 +133,62 @@ smb_ll *lisp_lex(wchar_t *str)
   return tokens;
 }
 
+static DATA lisp_lex_file_next(smb_iter *it, smb_status *st) {
+  smb_status status = SMB_SUCCESS;
+  smb_lex *lex = it->ds;
+  FILE *f = (FILE*)it->state.data_ptr;
+  lisp_token *lt = smb_new(lisp_token, 1);
+  int length;
+
+  lt->text = lex_fyylex(lex, f, &lt->token, &length, &status);
+  switch (lt->token.data_llint) {
+  case WHITESPACE:
+    smb_free(lt->text);
+    smb_free(lt);
+    return lisp_lex_file_next(it, st);
+    break;
+  case ATOM:
+  case IDENTIFIER:
+  case INTEGER:
+    break;
+  default:
+    smb_free(lt->text);
+    lt->text = NULL;
+    break;
+  }
+  return PTR(lt);
+}
+
+static bool lisp_lex_file_has_next(smb_iter *it)
+{
+  return !feof((FILE*)it->state.data_ptr);
+}
+
+static void lisp_lex_file_destroy(smb_iter *it)
+{
+  lex_destroy((smb_lex*)it->ds, false);
+}
+
+static void lisp_lex_file_delete(smb_iter *it)
+{
+  lisp_lex_file_destroy(it);
+  smb_free(it);
+}
+
+smb_iter lisp_lex_file(FILE *f)
+{
+  smb_lex *lex = lisp_create_lexer();
+  smb_iter it = {
+    .ds = lex,
+    .state = PTR(f),
+    .next = &lisp_lex_file_next,
+    .has_next = &lisp_lex_file_has_next,
+    .destroy = &lisp_lex_file_destroy,
+    .delete = &lisp_lex_file_delete
+  };
+  return it;
+}
+
 /*
   Forward declaration breaks dependency cycle between lisp_parse_rec and
   lisp_parse_list.
@@ -232,6 +288,9 @@ lisp_value *lisp_parse_rec(smb_iter *it, bool within_list)
     break;
   }
 
+  // The token is no longer needed.  The text may exist, but if it does, it will
+  // be handled by the garbage collector from now on.
+  smb_free(lt);
   return lv;
 }
 

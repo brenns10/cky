@@ -153,6 +153,11 @@ typedef struct lisp_scope {
 smb_ll *lisp_lex(wchar_t *str);
 
 /**
+   @brief Tokenize a file incrementally.
+ */
+smb_iter lisp_lex_file(FILE *f);
+
+/**
    @brief Parse a token stream and return the first expression.
    @param it Pointer to the iterator over the stream.
    @returns NEW REFERENCE to code
