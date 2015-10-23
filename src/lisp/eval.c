@@ -90,7 +90,6 @@ lisp_value *lisp_run(wchar_t *str)
   lisp_scope *scope = lisp_create_globals();
   lisp_value *res = lisp_evaluate(code, scope);
   res->type->tp_print(res, stdout, 0);
-  lisp_decref(res);
   lisp_decref(code);
   ht_destroy(&scope->table);
   smb_free(scope);
@@ -109,6 +108,6 @@ lisp_value *lisp_run(wchar_t *str)
 void lisp(void)
 {
   wchar_t *file = read_filew(stdin);
-  lisp_run(file);
+  lisp_decref(lisp_run(file));
   smb_free(file);
 }
