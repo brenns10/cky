@@ -146,15 +146,33 @@ static lisp_value *lisp_car(lisp_list *params)
   return val;
 }
 
+lisp_scope *lisp_scope_create(void)
+{
+  lisp_scope *scope = smb_new(lisp_scope, 1);
+  scope->up = NULL;
+  ht_init(&scope->table, &wchar_hash, &data_compare_wstring);
+  return scope;
+}
+
+static void lisp_scope_values_decref(DATA d)
+{
+  lisp_value *v = d.data_ptr;
+  lisp_decref(v);
+}
+
+void *lisp_scope_delete(lisp_scope *scope)
+{
+  ht_destroy_act(&scope->table, &lisp_scope_values_decref);
+  smb_free(scope);
+}
+
 /**
    @brief Return a scope containing the top-level variables for our lisp.
  */
 lisp_scope *lisp_create_globals(void)
 {
-  lisp_scope *scope = smb_new(lisp_scope, 1);
+  lisp_scope *scope = lisp_scope_create();
   lisp_builtin *bi;
-  scope->up = NULL;
-  ht_init(&scope->table, &wchar_hash, &data_compare_wstring);
 
   bi = (lisp_builtin*)tp_builtin.tp_alloc();
   bi->function = &lisp_add;
