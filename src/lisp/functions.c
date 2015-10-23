@@ -117,9 +117,34 @@ static lisp_value *lisp_subtract(lisp_list *params)
   return (lisp_value*)rv;
 }
 
-/**
-   @brief
- */
+static lisp_value *lisp_car(lisp_list *params)
+{
+  lisp_list *l;
+  lisp_value *val;
+  int len = lisp_list_length(params);
+
+  if (len <= 0) {
+    fprintf(stderr, "lisp_car(): too few arguments\n");
+    exit(EXIT_FAILURE);
+  } else if (len == 1) {
+    if (params->value == NULL) {
+      fprintf(stderr, "lisp_car(): car of empty list\n");
+      exit(EXIT_FAILURE);
+    }
+    if (params->value->type != &tp_list) {
+      fprintf(stderr, "lisp_car(): must provide list\n");
+      exit(EXIT_FAILURE);
+    }
+    l = (lisp_list *)params->value;
+    val = l->value;
+    lisp_incref(val);
+  } else {
+    fprintf(stderr, "lisp_car(): too many arguments\n");
+    exit(EXIT_FAILURE);
+  }
+
+  return val;
+}
 
 /**
    @brief Return a scope containing the top-level variables for our lisp.
@@ -142,6 +167,10 @@ lisp_scope *lisp_create_globals(void)
   bi = (lisp_builtin*)tp_builtin.tp_alloc();
   bi->function = &lisp_length;
   ht_insert(&scope->table, PTR(L"length"), PTR(bi));
+
+  bi = (lisp_builtin*)tp_builtin.tp_alloc();
+  bi->function = &lisp_car;
+  ht_insert(&scope->table, PTR(L"car"), PTR(bi));
 
   return scope;
 }
