@@ -16,12 +16,9 @@
 #include "libstephen/base.h"
 #include "lisp.h"
 
-static void print_n_spaces(FILE *f, int nspaces)
-{
-  while (nspaces--) {
-    fputc(' ', f);
-  }
-}
+/*******************************************************************************
+                      Major Garbage Collection Functions!
+*******************************************************************************/
 
 void lisp_incref(lisp_value *lv)
 {
@@ -38,10 +35,25 @@ void lisp_decref(lisp_value *lv)
   }
 }
 
-void generic_dealloc(lisp_value *lv)
+/*******************************************************************************
+                                Private Helpers
+*******************************************************************************/
+
+static void print_n_spaces(FILE *f, int nspaces)
+{
+  while (nspaces--) {
+    fputc(' ', f);
+  }
+}
+
+static void generic_dealloc(lisp_value *lv)
 {
   smb_free(lv);
 }
+
+/*******************************************************************************
+                               tp_int / lisp_int
+*******************************************************************************/
 
 static lisp_value *lisp_int_alloc(void)
 {
@@ -64,6 +76,10 @@ lisp_type tp_int = {
   .tp_dealloc = &generic_dealloc,
   .tp_print = &lisp_int_print
 };
+
+/*******************************************************************************
+                              tp_atom / lisp_atom
+*******************************************************************************/
 
 static lisp_value *lisp_atom_alloc(void)
 {
@@ -94,6 +110,10 @@ lisp_type tp_atom = {
   .tp_print = &lisp_atom_print
 };
 
+/*******************************************************************************
+                        tp_identifier / lisp_identifier
+*******************************************************************************/
+
 static lisp_value *lisp_identifier_alloc(void)
 {
   lisp_identifier *rv = smb_new(lisp_identifier, 1);
@@ -122,6 +142,10 @@ lisp_type tp_identifier = {
   .tp_dealloc = &lisp_identifier_dealloc,
   .tp_print = &lisp_identifier_print
 };
+
+/*******************************************************************************
+                          tp_funccall / lisp_funccall
+*******************************************************************************/
 
 static lisp_value *lisp_funccall_alloc(void)
 {
@@ -168,6 +192,10 @@ lisp_type tp_funccall = {
   .tp_print = &lisp_funccall_print
 };
 
+/*******************************************************************************
+                              tp_list / lisp_list
+*******************************************************************************/
+
 static lisp_value *lisp_list_alloc(void)
 {
   lisp_list *rv = smb_new(lisp_list, 1);
@@ -209,6 +237,10 @@ lisp_type tp_list = {
   .tp_dealloc = &lisp_list_dealloc,
   .tp_print = &lisp_list_print
 };
+
+/*******************************************************************************
+                           tp_builtin / lisp_builtin
+*******************************************************************************/
 
 static lisp_value *lisp_builtin_alloc(void)
 {

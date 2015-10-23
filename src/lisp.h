@@ -164,7 +164,7 @@ smb_ll *lisp_lex(wchar_t *str);
 /**
    @brief Parse a token stream and return the first expression.
    @param it Pointer to the iterator over the stream.
-   @returns A lisp value!
+   @returns NEW REFERENCE to code
  */
 lisp_value *lisp_parse(smb_iter *it);
 
@@ -172,7 +172,7 @@ lisp_value *lisp_parse(smb_iter *it);
    @brief Evaluate an expression within a scope.
    @param expr Reference to expression.
    @param scope The scope to run in.
-   @returns The value of the code.
+   @returns NEW REFERENCE to the return value
  */
 lisp_value *lisp_evaluate(lisp_value *expr, lisp_scope *scope);
 
@@ -183,7 +183,22 @@ lisp_value *lisp_evaluate(lisp_value *expr, lisp_scope *scope);
  */
 lisp_value *lisp_run(wchar_t *str);
 
+/**
+   @brief Increment the reference count of an object.
+   @param lv Object to incref (nullable)
+ */
 void lisp_incref(lisp_value *lv);
+
+/**
+   @brief Decrement the reference count of an object.
+   @param lv Object to decref (nullable)
+
+   When an object goes down to 0 references, it is deallocated.
+ */
 void lisp_decref(lisp_value *lv);
+
+/**
+   @brief Return a "scope" containing global definitions.
+ */
 lisp_scope *lisp_create_globals(void);
 #endif // CKY_LISP_H
