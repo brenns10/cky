@@ -238,6 +238,16 @@ lisp_type tp_list = {
   .tp_print = &lisp_list_print
 };
 
+int lisp_list_length(lisp_list *l)
+{
+  int i = 0;
+  while (l) {
+    i++;
+    l = l->next;
+  }
+  return i;
+}
+
 /*******************************************************************************
                            tp_builtin / lisp_builtin
 *******************************************************************************/

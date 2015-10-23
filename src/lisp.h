@@ -117,6 +117,11 @@ typedef struct {
 } lisp_builtin;
 lisp_type tp_builtin;
 
+/*******************************************************************************
+                    Some useful utility functions on lists.
+*******************************************************************************/
+int lisp_list_length(lisp_list *l);
+
 /**
    @brief A struct to represent one level of scope.
  */
