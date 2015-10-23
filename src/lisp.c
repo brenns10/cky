@@ -23,6 +23,9 @@
 #include "libstephen/log.h"
 #include "lex.h"
 
+/*
+  These are the different tokens I've defined for my Lisp.
+ */
 #define WHITESPACE  0
 #define OPEN_PAREN  1
 #define CLOSE_PAREN 2
@@ -31,6 +34,9 @@
 #define INTEGER     5
 #define OPEN_LIST   6
 
+/*
+  These are the types of values in my Lisp.
+ */
 #define TP_INT  0
 #define TP_ATOM 1
 #define TP_LIST 2
@@ -39,11 +45,17 @@
 #define TP_FUNCCALL 5
 #define TP_IDENTIFIER 6
 
+/*
+  A logger for when I want to see debug output.
+ */
 smb_logger lisp_log = {
   .format = SMB_DEFAULT_LOGFORMAT,
   .num = 0,
 };
 
+/*
+  A lisp "value", which could be anything.
+ */
 typedef struct {
 
   int type;
@@ -51,6 +63,9 @@ typedef struct {
 
 } lisp_value;
 
+/*
+  A lisp "list", which contains lisp values.
+ */
 typedef struct lisp_list {
 
   lisp_value val;
@@ -58,20 +73,45 @@ typedef struct lisp_list {
 
 } lisp_list;
 
+/**
+   @brief A struct to represent the tokens of a lisp program.
+ */
 typedef struct {
 
+  /**
+     @brief The token type.
+
+     Token types are defined as integers in macros above.
+   */
   DATA token;
+
+  /**
+     @brief Text associated with a token (if necessary).
+   */
   wchar_t *text;
 
 } lisp_token;
 
+/**
+   @brief A struct to represent one level of scope.
+ */
 typedef struct lisp_scope {
 
+  /**
+     @brief Hash table containing variables!
+   */
   smb_ht table;
+
+  /**
+     @brief Pointer to the previous level of scope.
+   */
   struct lisp_scope *up;
 
 } lisp_scope;
 
+/**
+   @brief Add two values.
+ */
 static lisp_value *lisp_add(lisp_list *params)
 {
   if (params && params->val.type == TP_INT &&
@@ -88,6 +128,11 @@ static lisp_value *lisp_add(lisp_list *params)
 
 lisp_value lv_add = {TP_BUILTIN, PTR(&lisp_add)};
 
+/**
+   @brief Return an instance of the lexer for lisp.
+
+   Must be freed by the caller!
+ */
 smb_lex *lisp_create_lexer(void)
 {
   smb_lex *lexer = lex_create();
@@ -101,6 +146,9 @@ smb_lex *lisp_create_lexer(void)
   return lexer;
 }
 
+/**
+   @brief Return a scope containing the top-level variables for our lisp.
+ */
 lisp_scope *lisp_create_globals(void)
 {
   lisp_scope *scope = smb_new(lisp_scope, 1);
@@ -112,6 +160,17 @@ lisp_scope *lisp_create_globals(void)
   return scope;
 }
 
+/**
+   @brief Tokenize a string.
+
+   The input string is not modified.  All returned tokens are newly allocated,
+   so the input string does not need to be "kept around" while the tokens are
+   used.  On the flip side, you must free all the tokens when you are done with
+   them.
+
+   @param str The string to tokenize.
+   @returns A `smb_ll` containing `lisp_token` structs.
+ */
 smb_ll *lisp_lex(wchar_t *str)
 {
   smb_ll *tokens = ll_create();
@@ -149,12 +208,25 @@ smb_ll *lisp_lex(wchar_t *str)
   return tokens;
 }
 
+// forward declaration!
 lisp_value *lisp_parse(smb_iter *, bool);
 
+/**
+   @brief Parse a lisp list.
+
+   This returns a lisp_list corresponding to a token stream.  The token stream
+   may be a list literal, or a list of arguments.  This difference is specified
+   by the within_list parameter.
+
+   @param it Pointer to the token iterator.
+   @param within_list True if this literal is within a list literal.
+   @returns A lisp list containing parsed code.
+ */
 lisp_list *lisp_parse_list(smb_iter *it, bool within_list) {
   lisp_list *prev = NULL, *list = NULL, *orig = NULL;
   lisp_value *value;
 
+  // lisp_parse() will return NULL when the matching closing paren is reached
   while ((value = lisp_parse(it, within_list)) != NULL) {
     list = smb_new(lisp_list, 1);
     list->val = *value;
@@ -171,6 +243,17 @@ lisp_list *lisp_parse_list(smb_iter *it, bool within_list) {
   return orig;
 }
 
+/**
+   @brief Parse a single piece of lisp code.
+
+   If we are within a list literal, than open-parens are other lists, and things
+   that look like identifiers are just atoms.  This is the only difference in
+   parsing.
+
+   @param it Pointer to an iterator of tokens.
+   @param within_list Are we within a list literal?
+   @return Parsed code as a lisp_value*.
+ */
 lisp_value *lisp_parse(smb_iter *it, bool within_list)
 {
   smb_status st = SMB_SUCCESS;
@@ -215,6 +298,15 @@ lisp_value *lisp_parse(smb_iter *it, bool within_list)
   return lv;
 }
 
+/**
+   @brief "Pretty-print" a lisp value.
+
+   Prints (complete with nesting) a lisp value.  This can be a piece of lisp
+   code, or just a value.
+
+   @param lv Value to print.
+   @param indent_level Number of spaces to print at the beginning of the line.
+ */
 void print_lisp_value(lisp_value *lv, int indent_level)
 {
   int i;
@@ -277,14 +369,24 @@ void print_lisp_value(lisp_value *lv, int indent_level)
   }
 }
 
+/**
+   @brief Function for printing a lisp_token.
+ */
 void data_printer_token(FILE *f, DATA d)
 {
   lisp_token *lt = d.data_ptr;
   fprintf(f, "%d: %ls", lt->token.data_llint, lt->text);
 }
 
+// forward-declaration
 lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope);
 
+/**
+   @brief Return a list containing each item in a list, evaluated.
+   @param list List of items to evaluate.
+   @param scope Scope to evaluate each list item within.
+   @returns A list of the evaluated items!
+ */
 lisp_list *lisp_evaluate_list(lisp_list *list, lisp_scope *scope)
 {
   if (list == NULL) return NULL;
@@ -294,6 +396,11 @@ lisp_list *lisp_evaluate_list(lisp_list *list, lisp_scope *scope)
   return l;
 }
 
+/**
+   @brief Return the value of a piece of lisp code!
+   @param expression The code to evaluate.
+   @param scope The scope to evaluate the code within.
+ */
 lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope)
 {
   smb_status st = SMB_SUCCESS;
@@ -327,6 +434,11 @@ lisp_value *lisp_evaluate(lisp_value *expression, lisp_scope *scope)
   }
 }
 
+/**
+   @brief Run a piece of lisp code.
+   @param str Code to run.
+   @returns Not sure right now.
+ */
 smb_ll *lisp_eval(wchar_t *str)
 {
   // given string, return list of tokens (with strings if necessary)
@@ -343,6 +455,9 @@ smb_ll *lisp_eval(wchar_t *str)
   return NULL;
 }
 
+/**
+   @brief This is the demo for main.c.
+ */
 void lisp(void)
 {
   wchar_t *file = read_filew(stdin);
